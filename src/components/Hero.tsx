@@ -121,13 +121,11 @@ export function Hero() {
     >
       {/* Z-0: media background (immagine; sostituibile con <video>) */}
       <div ref={mediaRef} className="absolute inset-0 will-change-transform">
-        {/* {/* sostituire src con video/immagine reale del cliente */}
-          <video
-            className="h-full w-full object-cover"
-            autoPlay muted loop playsInline
-            poster={heroImg}
-            src=""
-          />
+        {/*
+          SOSTITUIRE src con video/immagine reale del cliente:
+          <video className="h-full w-full object-cover"
+                 autoPlay muted loop playsInline
+                 poster={heroImg} src="..." />
         */}
         <img
           src={heroImg}
