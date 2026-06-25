@@ -9,6 +9,7 @@ import { EventsSection } from "@/components/EventsSection";
 import { SeasonsSection } from "@/components/SeasonsSection";
 import { GallerySection } from "@/components/GallerySection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { VisitSection } from "@/components/VisitSection";
 import { useLenis } from "@/hooks/use-lenis";
 
 export const Route = createFileRoute("/")({
