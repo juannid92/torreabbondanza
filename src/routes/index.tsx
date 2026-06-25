@@ -10,6 +10,7 @@ import { SeasonsSection } from "@/components/SeasonsSection";
 import { GallerySection } from "@/components/GallerySection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { VisitSection } from "@/components/VisitSection";
+import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 
 export const Route = createFileRoute("/")({
@@ -48,7 +49,7 @@ function Index() {
       <GallerySection />
       <TestimonialsSection />
       <VisitSection />
-      <section id="next-12" className="min-h-[20vh] w-full bg-ivory" />
+      <SiteFooter />
     </main>
   );
 }

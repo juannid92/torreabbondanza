@@ -248,6 +248,7 @@ export function StorySection() {
   return (
     <section
       ref={sectionRef}
+      id="storia"
       aria-labelledby="story-title"
       className="relative w-full overflow-hidden bg-stone text-ink"
       style={{ minHeight: "100svh" }}
