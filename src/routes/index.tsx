@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { HeroSoglia } from "@/components/HeroSoglia";
+import { ManifestoSection } from "@/components/ManifestoSection";
 import { useLenis } from "@/hooks/use-lenis";
 
 export const Route = createFileRoute("/")({
@@ -28,7 +29,8 @@ function Index() {
   return (
     <main className="bg-background text-foreground">
       <HeroSoglia />
-      <section id="next" className="min-h-screen w-full bg-background" />
+      <ManifestoSection />
+      <section id="next-03" className="min-h-screen w-full bg-stone" />
     </main>
   );
 }
