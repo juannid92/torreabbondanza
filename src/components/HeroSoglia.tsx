@@ -177,13 +177,14 @@ export function HeroSoglia() {
 
       {/* === Layer 2: Arch frame === */}
       <div
-        className="absolute z-20 left-1/2 top-[6%] h-[48vh] w-[68vw] -translate-x-1/2 md:left-auto md:translate-x-0 md:right-[6%] md:top-[8%] md:h-[min(74vh,720px)] md:w-[min(46vw,540px)]"
+        className="absolute z-20 left-1/2 top-[22%] h-[44vh] w-[64vw] -translate-x-1/2 md:left-auto md:translate-x-0 md:right-[6%] md:top-[8%] md:h-[min(74vh,720px)] md:w-[min(46vw,540px)]"
       >
         <ArchFrame
           src={heroImg}
           alt="La facciata in pietra della Masseria Torre Abbondanza al tramonto dorato, con archi storici e ulivi della Murgia."
         />
       </div>
+
 
 
       {/* === Layer 3: ABBONDANZA front (solo il frammento che scavalca il bordo SINISTRO dell'arco) === */}
@@ -233,24 +234,25 @@ export function HeroSoglia() {
         <span className="text-ink/50">Est. XVIII sec.</span>
       </div>
 
-      {/* TORRE kicker + meta su mobile */}
+      {/* TORRE kicker + meta su mobile (sopra l'arco, niente overlap) */}
       <div
         className="absolute left-6 right-6 z-30 md:hidden"
-        style={{ top: "12%" }}
+        style={{ top: "7%" }}
       >
         <span
           data-torre
           className="block font-display font-semibold text-ink"
-          style={{ fontSize: "clamp(2rem, 9vw, 3.5rem)", letterSpacing: "-0.02em" }}
+          style={{ fontSize: "clamp(1.8rem, 8vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1 }}
         >
           TORRE
         </span>
-        <div data-meta className="mt-2 flex gap-3 text-eyebrow text-ink/60">
+        <div data-meta className="mt-3 flex gap-2 text-eyebrow text-ink/60">
           <span>Noci · Puglia</span>
           <span>·</span>
           <span>Est. XVIII sec.</span>
         </div>
       </div>
+
 
 
       {/* === Sottotitolo + CTA === */}
