@@ -158,14 +158,14 @@ export function HeroSoglia() {
 
       {/* === Layer 1: ABBONDANZA back (watermark dietro l'arco) === */}
       <div
-        className="pointer-events-none absolute inset-x-0 z-10 flex justify-start"
-        style={{ top: "38%", transform: "translateY(-50%)" }}
+        className="pointer-events-none absolute inset-x-0 z-10 flex justify-start top-[62%] md:top-[38%]"
+        style={{ transform: "translateY(-50%)" }}
       >
         <span
           data-abbondanza-back
           className="block font-display font-bold leading-[0.85] text-ink/[0.12] whitespace-nowrap select-none"
           style={{
-            fontSize: "clamp(4rem, 18vw, 16rem)",
+            fontSize: "clamp(3.2rem, 18vw, 16rem)",
             marginLeft: "-3vw",
             letterSpacing: "-0.04em",
           }}
@@ -173,6 +173,7 @@ export function HeroSoglia() {
           ABBONDANZA
         </span>
       </div>
+
 
       {/* === Layer 2: Arch frame === */}
       <div
@@ -185,14 +186,12 @@ export function HeroSoglia() {
       </div>
 
 
-      {/* === Layer 3: ABBONDANZA front (frammento terracotta, davanti all'arco) === */}
+      {/* === Layer 3: ABBONDANZA front (frammento terracotta, davanti all'arco) — solo desktop === */}
       <div
-        className="pointer-events-none absolute inset-x-0 z-30 flex justify-start"
+        className="pointer-events-none absolute inset-x-0 z-30 hidden md:flex justify-start"
         style={{
           top: "38%",
           transform: "translateY(-50%)",
-          // Clip che mostra solo la porzione che scavalca il bordo sinistro dell'arco
-          // (dal 48% al 62% della larghezza viewport, sopra l'arco)
           clipPath: "polygon(48% 0, 62% 0, 62% 100%, 48% 100%)",
         }}
       >
@@ -209,6 +208,7 @@ export function HeroSoglia() {
           ABBONDANZA
         </span>
       </div>
+
 
       {/* === Layer 4: TORRE verticale a sinistra === */}
       <div
