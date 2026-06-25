@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactElement } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
@@ -112,7 +112,7 @@ const ENTRIES: EventEntryData[] = [
   },
 ];
 
-const SEASON_GLYPHS: Record<SeasonKey, JSX.Element> = {
+const SEASON_GLYPHS: Record<SeasonKey, ReactElement> = {
   winter: (
     <g>
       <line x1="20" y1="6" x2="20" y2="34" />
@@ -643,7 +643,7 @@ export function SeasonsSection() {
             <MagneticButton href="#eventi" variant="pill">
               Scopri i prossimi eventi →
             </MagneticButton>
-            <MagneticButton href="#contatti" variant="ghost">
+            <MagneticButton href="#contatti" variant="link">
               Contattaci →
             </MagneticButton>
           </div>
