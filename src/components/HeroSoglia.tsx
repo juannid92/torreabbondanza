@@ -177,7 +177,7 @@ export function HeroSoglia() {
 
       {/* === Layer 2: Arch frame === */}
       <div
-        className="absolute z-20 left-1/2 top-[6%] h-[48vh] w-[68vw] -translate-x-1/2 md:left-auto md:translate-x-0 md:right-[6%] md:top-[8%] md:h-[min(74vh,720px)] md:w-[min(46vw,540px)]"
+        className="absolute z-20 left-1/2 top-[20%] h-[38vh] w-[60vw] -translate-x-1/2 md:left-auto md:translate-x-0 md:right-[6%] md:top-[8%] md:h-[min(74vh,720px)] md:w-[min(46vw,540px)]"
       >
         <ArchFrame
           src={heroImg}
@@ -186,13 +186,15 @@ export function HeroSoglia() {
       </div>
 
 
-      {/* === Layer 3: ABBONDANZA front (frammento terracotta, davanti all'arco) — solo desktop === */}
+
+      {/* === Layer 3: ABBONDANZA front (solo il frammento che scavalca il bordo SINISTRO dell'arco) === */}
       <div
         className="pointer-events-none absolute inset-x-0 z-30 hidden md:flex justify-start"
         style={{
           top: "38%",
           transform: "translateY(-50%)",
-          clipPath: "polygon(48% 0, 62% 0, 62% 100%, 48% 100%)",
+          // Striscia stretta proprio sul bordo sinistro dell'arco (~48% viewport)
+          clipPath: "polygon(46% 0, 53% 0, 53% 100%, 46% 100%)",
         }}
       >
         <span
@@ -221,28 +223,37 @@ export function HeroSoglia() {
           children="TORRE"
         />
       </div>
+
+      {/* Etichette luogo · epoca: in alto, accanto all'arco (NON in basso) */}
       <div
         data-meta
-        className="absolute left-6 z-40 hidden md:flex flex-col gap-1 text-eyebrow text-ink/70"
-        style={{ top: "78%" }}
+        className="absolute z-40 hidden md:flex flex-col gap-1 text-right text-eyebrow text-ink/70"
+        style={{ top: "10%", right: "calc(6% + min(46vw, 540px) + 24px)" }}
       >
         <span>Noci · Puglia</span>
         <span className="text-ink/50">Est. XVIII sec.</span>
       </div>
 
-      {/* TORRE kicker orizzontale su mobile */}
+      {/* TORRE kicker + meta su mobile (sopra l'arco, niente overlap) */}
       <div
         className="absolute left-6 right-6 z-30 md:hidden"
-        style={{ top: "12%" }}
+        style={{ top: "7%" }}
       >
         <span
           data-torre
           className="block font-display font-semibold text-ink"
-          style={{ fontSize: "clamp(2rem, 9vw, 3.5rem)", letterSpacing: "-0.02em" }}
+          style={{ fontSize: "clamp(1.8rem, 8vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1 }}
         >
           TORRE
         </span>
+        <div data-meta className="mt-3 flex gap-2 text-eyebrow text-ink/60">
+          <span>Noci · Puglia</span>
+          <span>·</span>
+          <span>Est. XVIII sec.</span>
+        </div>
       </div>
+
+
 
       {/* === Sottotitolo + CTA === */}
       <div

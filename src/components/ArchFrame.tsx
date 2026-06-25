@@ -10,16 +10,19 @@ interface ArchFrameProps {
 }
 
 /**
- * Finestra ad arco a tutto sesto (rettangolo verticale + arco in cima).
- * - clip-path SVG referenziato via url(#archMask)
- * - intro: l'arco "si disegna" rivelandosi dal basso verso l'alto
- * - loop: micro Ken Burns dell'immagine interna
- * - parallax: l'immagine si muove in direzione opposta al frame allo scroll
+ * Finestra ad arco a tutto sesto:
+ * lati verticali dritti + sommità semicircolare.
+ * Ottenuta con border-radius asimmetrico (ellisse top adattata a box ~3:4).
+ * Intro: la soglia "si apre" dal basso verso l'alto (clip-path inset animato).
  */
 export function ArchFrame({ src, alt }: ArchFrameProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLImageElement>(null);
   const revealRef = useRef<HTMLDivElement>(null);
+
+  // border-radius: orizzontale 50% (semicerchio sui lati),
+  // verticale 38% (≈ width/2 di un box 3:4) → arco a tutto sesto coerente.
+  const archRadius = "50% 50% 0 0 / 38% 38% 0 0";
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -30,7 +33,7 @@ export function ArchFrame({ src, alt }: ArchFrameProps) {
         return;
       }
 
-      // Intro: clip-path inset si apre dal basso (la "soglia" si apre)
+      // Intro: la soglia si disegna dal basso verso l'alto
       gsap.fromTo(
         revealRef.current,
         { clipPath: "inset(100% 0% 0% 0%)" },
@@ -42,7 +45,6 @@ export function ArchFrame({ src, alt }: ArchFrameProps) {
         },
       );
 
-      // Immagine: scale-in
       gsap.fromTo(
         innerRef.current,
         { scale: 1.12 },
@@ -61,7 +63,7 @@ export function ArchFrame({ src, alt }: ArchFrameProps) {
         delay: 1.8,
       });
 
-      // Parallax: frame sale, immagine interna scende (depth)
+      // Parallax depth
       gsap.to(wrapRef.current, {
         yPercent: -12,
         ease: "none",
@@ -89,22 +91,28 @@ export function ArchFrame({ src, alt }: ArchFrameProps) {
 
   return (
     <div ref={wrapRef} className="relative h-full w-full">
-      {/* SVG mask con arco a tutto sesto */}
-      <svg width="0" height="0" className="absolute" aria-hidden>
-        <defs>
-          <clipPath id="archMask" clipPathUnits="objectBoundingBox">
-            {/* Rettangolo verticale 3:4, parte alta arco semicircolare */}
-            <path d="M 0,0.5 A 0.5,0.5 0 0 1 1,0.5 L 1,1 L 0,1 Z" />
-          </clipPath>
-        </defs>
-      </svg>
+      {/* Ombra calda esterna che segue la forma dell'arco */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10"
+        style={{
+          borderRadius: archRadius,
+          boxShadow:
+            "0 60px 120px -30px color-mix(in oklab, var(--ink) 55%, transparent), 0 20px 40px -20px color-mix(in oklab, var(--ink) 35%, transparent)",
+        }}
+      />
 
+      {/* Reveal wrapper (animato in intro con clip-path inset) */}
       <div
         ref={revealRef}
-        className="relative h-full w-full will-change-[clip-path]"
-        style={{ clipPath: "url(#archMask)" }}
+        className="relative h-full w-full overflow-hidden will-change-[clip-path]"
+        style={{
+          borderRadius: archRadius,
+          // Bordo pietra che segue il profilo dell'arco
+          boxShadow:
+            "inset 0 0 0 1.5px #E7DDCF, inset 0 0 0 4px color-mix(in oklab, #E7DDCF 35%, transparent)",
+        }}
       >
-        {/* Filetto doppio interno: ottenuto con due bordi/box-shadow su un overlay */}
         <img
           ref={innerRef}
           src={src}
@@ -113,41 +121,25 @@ export function ArchFrame({ src, alt }: ArchFrameProps) {
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover will-change-transform"
         />
-        {/* Velatura calda per integrazione cromatica */}
+        {/* Velatura calda */}
         <div
           aria-hidden
-          className="absolute inset-0"
+          className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--ink) 8%, transparent) 0%, transparent 30%, color-mix(in oklab, var(--ink) 22%, transparent) 100%)",
+              "linear-gradient(180deg, color-mix(in oklab, var(--ink) 8%, transparent) 0%, transparent 30%, color-mix(in oklab, var(--ink) 28%, transparent) 100%)",
           }}
         />
-        {/* Doppio filetto interno (dettaglio editoriale) */}
+        {/* Doppio filetto interno editoriale */}
         <div
           aria-hidden
           className="absolute inset-3 pointer-events-none"
           style={{
-            border: "1px solid color-mix(in oklab, var(--ivory) 35%, transparent)",
-            clipPath: "url(#archMask)",
+            border: "1px solid color-mix(in oklab, #E7DDCF 45%, transparent)",
+            borderRadius: archRadius,
           }}
         />
-        {/* Sostituire con media reale del cliente:
-            <video autoPlay muted playsInline loop poster={src}
-              className="absolute inset-0 h-full w-full object-cover">
-              <source src="/media/masseria.mp4" type="video/mp4" />
-            </video>
-        */}
       </div>
-      {/* Ombra calda esterna (segue la forma) */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10"
-        style={{
-          clipPath: "url(#archMask)",
-          boxShadow: "0 60px 120px -40px color-mix(in oklab, var(--ink) 55%, transparent)",
-          filter: "blur(0.5px)",
-        }}
-      />
     </div>
   );
 }
