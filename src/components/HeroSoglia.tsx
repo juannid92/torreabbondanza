@@ -246,8 +246,7 @@ export function HeroSoglia() {
 
       {/* === Sottotitolo + CTA === */}
       <div
-        className="absolute left-6 right-6 z-40 flex flex-col gap-7 md:left-24 md:right-auto md:max-w-[520px]"
-        style={{ bottom: "13%" }}
+        className="absolute left-6 right-6 z-40 flex flex-col gap-5 md:gap-7 md:left-24 md:right-auto md:max-w-[520px] bottom-[16%] md:bottom-[13%]"
       >
         <p
           data-subtitle
