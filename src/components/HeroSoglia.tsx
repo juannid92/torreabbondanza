@@ -176,19 +176,14 @@ export function HeroSoglia() {
 
       {/* === Layer 2: Arch frame === */}
       <div
-        className="absolute z-20"
-        style={{
-          right: "6%",
-          top: "8%",
-          width: "min(46vw, 540px)",
-          height: "min(74vh, 720px)",
-        }}
+        className="absolute z-20 left-1/2 top-[6%] h-[48vh] w-[68vw] -translate-x-1/2 md:left-auto md:translate-x-0 md:right-[6%] md:top-[8%] md:h-[min(74vh,720px)] md:w-[min(46vw,540px)]"
       >
         <ArchFrame
           src={heroImg}
           alt="La facciata in pietra della Masseria Torre Abbondanza al tramonto dorato, con archi storici e ulivi della Murgia."
         />
       </div>
+
 
       {/* === Layer 3: ABBONDANZA front (frammento terracotta, davanti all'arco) === */}
       <div
