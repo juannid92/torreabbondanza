@@ -49,7 +49,7 @@ function Index() {
       <GallerySection />
       <TestimonialsSection />
       <VisitSection />
-      <section id="next-12" className="min-h-[20vh] w-full bg-ivory" />
+      <SiteFooter />
     </main>
   );
 }
