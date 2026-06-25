@@ -2,7 +2,7 @@ import { useRef, useState, type ReactNode, type MouseEvent } from "react";
 import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary";
+type Variant = "link" | "pill";
 
 interface MagneticButtonProps {
   children: ReactNode;
@@ -14,12 +14,14 @@ interface MagneticButtonProps {
 }
 
 /**
- * Bottone con effetto magnetico (desktop only).
- * Su touch/mobile/reduced-motion: comportamento standard, solo hover/focus.
+ * CTA magnetiche editoriali su sfondo chiaro.
+ * - "link": testo maiuscoletto + underline che si disegna + freccia che scatta.
+ * - "pill": pill outline sottile con wipe orizzontale interno.
+ * Magnetic disattivato su touch e prefers-reduced-motion.
  */
 export function MagneticButton({
   children,
-  variant = "primary",
+  variant = "link",
   href,
   onClick,
   className,
@@ -33,13 +35,8 @@ export function MagneticButton({
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const xLabel = useMotionValue(0);
-  const yLabel = useMotionValue(0);
-
   const sx = useSpring(x, { stiffness: 150, damping: 15, mass: 0.4 });
   const sy = useSpring(y, { stiffness: 150, damping: 15, mass: 0.4 });
-  const lx = useSpring(xLabel, { stiffness: 200, damping: 18, mass: 0.3 });
-  const ly = useSpring(yLabel, { stiffness: 200, damping: 18, mass: 0.3 });
 
   const magneticEnabled = !reduced && !isCoarse;
 
@@ -48,28 +45,22 @@ export function MagneticButton({
     const rect = ref.current.getBoundingClientRect();
     const relX = e.clientX - rect.left - rect.width / 2;
     const relY = e.clientY - rect.top - rect.height / 2;
-    const strength = 0.35;
+    const strength = 0.3;
     x.set(relX * strength);
     y.set(relY * strength);
-    xLabel.set(relX * 0.12);
-    yLabel.set(relY * 0.12);
   };
 
   const handleLeave = () => {
     x.set(0);
     y.set(0);
-    xLabel.set(0);
-    yLabel.set(0);
   };
 
   const base =
-    "group relative inline-flex items-center justify-center overflow-hidden rounded-full px-8 py-4 text-sm font-medium tracking-wide transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent will-change-transform";
+    "group relative inline-flex items-center gap-3 will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-ivory rounded-sm";
 
   const variants: Record<Variant, string> = {
-    primary:
-      "bg-terracotta text-ivory hover:bg-gold focus-visible:ring-gold shadow-[var(--shadow-cta)]",
-    secondary:
-      "border border-ivory/70 text-ivory bg-transparent focus-visible:ring-ivory",
+    link: "text-ink uppercase tracking-[0.28em] text-xs font-medium py-2",
+    pill: "px-7 py-3 rounded-full border border-ink/30 text-ink uppercase tracking-[0.24em] text-xs font-medium overflow-hidden",
   };
 
   const MotionEl = href ? motion.a : motion.button;
@@ -84,23 +75,46 @@ export function MagneticButton({
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       style={{ x: sx, y: sy }}
-      whileHover={{ scale: magneticEnabled ? 1.03 : 1 }}
       whileTap={{ scale: 0.97 }}
       transition={{ type: "spring", stiffness: 220, damping: 20 }}
       className={cn(base, variants[variant], className)}
     >
-      {variant === "secondary" && (
+      {variant === "pill" && (
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-0 -translate-x-full bg-ivory/10 transition-transform duration-500 ease-out group-hover:translate-x-0"
+          className="pointer-events-none absolute inset-0 -translate-x-full bg-ink/[0.06] transition-transform duration-500 ease-out group-hover:translate-x-0"
         />
       )}
-      <motion.span
-        style={{ x: lx, y: ly }}
-        className="relative z-10 inline-flex items-center gap-2"
-      >
+      <span className="relative z-10 inline-flex items-center gap-2">
         {children}
-      </motion.span>
+        <motion.span
+          aria-hidden
+          className="inline-block"
+          initial={false}
+          whileHover={{}}
+        >
+          <svg
+            width="18"
+            height="10"
+            viewBox="0 0 18 10"
+            fill="none"
+            className="transition-transform duration-300 ease-out group-hover:translate-x-1.5"
+          >
+            <path
+              d="M1 5h15M12 1l4 4-4 4"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="square"
+            />
+          </svg>
+        </motion.span>
+      </span>
+      {variant === "link" && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute left-0 right-6 bottom-1 h-px origin-left scale-x-0 bg-current transition-transform duration-500 ease-out group-hover:scale-x-100"
+        />
+      )}
     </MotionEl>
   );
 }
