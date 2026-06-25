@@ -186,13 +186,14 @@ export function HeroSoglia() {
       </div>
 
 
-      {/* === Layer 3: ABBONDANZA front (frammento terracotta, davanti all'arco) — solo desktop === */}
+      {/* === Layer 3: ABBONDANZA front (solo il frammento che scavalca il bordo SINISTRO dell'arco) === */}
       <div
         className="pointer-events-none absolute inset-x-0 z-30 hidden md:flex justify-start"
         style={{
           top: "38%",
           transform: "translateY(-50%)",
-          clipPath: "polygon(48% 0, 62% 0, 62% 100%, 48% 100%)",
+          // Striscia stretta proprio sul bordo sinistro dell'arco (~48% viewport)
+          clipPath: "polygon(46% 0, 53% 0, 53% 100%, 46% 100%)",
         }}
       >
         <span
@@ -221,16 +222,18 @@ export function HeroSoglia() {
           children="TORRE"
         />
       </div>
+
+      {/* Etichette luogo · epoca: in alto, accanto all'arco (NON in basso) */}
       <div
         data-meta
-        className="absolute left-6 z-40 hidden md:flex flex-col gap-1 text-eyebrow text-ink/70"
-        style={{ top: "78%" }}
+        className="absolute z-40 hidden md:flex flex-col gap-1 text-right text-eyebrow text-ink/70"
+        style={{ top: "10%", right: "calc(6% + min(46vw, 540px) + 24px)" }}
       >
         <span>Noci · Puglia</span>
         <span className="text-ink/50">Est. XVIII sec.</span>
       </div>
 
-      {/* TORRE kicker orizzontale su mobile */}
+      {/* TORRE kicker + meta su mobile */}
       <div
         className="absolute left-6 right-6 z-30 md:hidden"
         style={{ top: "12%" }}
@@ -242,7 +245,13 @@ export function HeroSoglia() {
         >
           TORRE
         </span>
+        <div data-meta className="mt-2 flex gap-3 text-eyebrow text-ink/60">
+          <span>Noci · Puglia</span>
+          <span>·</span>
+          <span>Est. XVIII sec.</span>
+        </div>
       </div>
+
 
       {/* === Sottotitolo + CTA === */}
       <div
