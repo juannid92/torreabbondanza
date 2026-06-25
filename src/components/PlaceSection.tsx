@@ -79,6 +79,7 @@ export function PlaceSection() {
 
   return (
     <section
+      id="luogo"
       aria-labelledby="place-title"
       className="relative w-full bg-ivory text-ink"
     >
