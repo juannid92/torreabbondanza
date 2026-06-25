@@ -175,7 +175,7 @@ export function KitchenSection() {
             <MagneticButton
               href="#"
               variant="link"
-              aria-label="Scarica il menù (link da confermare)"
+              ariaLabel="Scarica il menù (link da confermare)"
             >
               {/* DA CONFERMARE link menu */}
               Scarica il menù →
