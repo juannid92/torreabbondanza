@@ -7,6 +7,7 @@ import { KitchenSection } from "@/components/KitchenSection";
 import { MenuSection } from "@/components/MenuSection";
 import { EventsSection } from "@/components/EventsSection";
 import { SeasonsSection } from "@/components/SeasonsSection";
+import { GallerySection } from "@/components/GallerySection";
 import { useLenis } from "@/hooks/use-lenis";
 
 export const Route = createFileRoute("/")({
@@ -42,7 +43,8 @@ function Index() {
       <MenuSection />
       <EventsSection />
       <SeasonsSection />
-      <section id="next-09" className="min-h-screen w-full bg-ivory" />
+      <GallerySection />
+      <section id="next-10" className="min-h-screen w-full bg-ivory" />
     </main>
   );
 }
