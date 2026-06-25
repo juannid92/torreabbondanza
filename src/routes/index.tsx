@@ -47,7 +47,8 @@ function Index() {
       <SeasonsSection />
       <GallerySection />
       <TestimonialsSection />
-      <section id="next-11" className="min-h-screen w-full bg-ivory" />
+      <VisitSection />
+      <section id="next-12" className="min-h-[20vh] w-full bg-ivory" />
     </main>
   );
 }
