@@ -232,7 +232,7 @@ function RatingStat({ rating, className = "" }: { rating: Rating; className?: st
 function FeatureQuote() {
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
-  const quoteRef = useRef<HTMLDivElement>(null);
+  const quoteRef = useRef<HTMLQuoteElement>(null);
   const markRef = useRef<HTMLSpanElement>(null);
   const current = QUOTES[index];
 
