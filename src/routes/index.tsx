@@ -3,6 +3,7 @@ import { HeroSoglia } from "@/components/HeroSoglia";
 import { ManifestoSection } from "@/components/ManifestoSection";
 import { StorySection } from "@/components/StorySection";
 import { PlaceSection } from "@/components/PlaceSection";
+import { KitchenSection } from "@/components/KitchenSection";
 import { useLenis } from "@/hooks/use-lenis";
 
 export const Route = createFileRoute("/")({
@@ -34,7 +35,8 @@ function Index() {
       <ManifestoSection />
       <StorySection />
       <PlaceSection />
-      <section id="next-05" className="min-h-screen w-full bg-ivory" />
+      <KitchenSection />
+      <section id="next-06" className="min-h-screen w-full bg-ivory" />
     </main>
   );
 }
