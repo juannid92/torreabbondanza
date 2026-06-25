@@ -177,7 +177,7 @@ export function HeroSoglia() {
 
       {/* === Layer 2: Arch frame === */}
       <div
-        className="absolute z-20 left-1/2 top-[22%] h-[44vh] w-[64vw] -translate-x-1/2 md:left-auto md:translate-x-0 md:right-[6%] md:top-[8%] md:h-[min(74vh,720px)] md:w-[min(46vw,540px)]"
+        className="absolute z-20 left-1/2 top-[20%] h-[38vh] w-[60vw] -translate-x-1/2 md:left-auto md:translate-x-0 md:right-[6%] md:top-[8%] md:h-[min(74vh,720px)] md:w-[min(46vw,540px)]"
       >
         <ArchFrame
           src={heroImg}
