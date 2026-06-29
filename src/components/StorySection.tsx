@@ -159,7 +159,91 @@ export function StorySection() {
     if (reduced || isMobile) {
       // Layout verticale statico: niente pin orizzontale.
       gsap.set(track, { x: 0 });
-      return;
+
+      if (reduced) return;
+
+      const ctxMobile = gsap.context(() => {
+        const panels = gsap.utils.toArray<HTMLElement>("[data-panel]", track);
+
+        panels.forEach((panel) => {
+          const arch = panel.querySelector<HTMLElement>("[data-arch-reveal]");
+          const img = panel.querySelector<HTMLElement>("[data-arch-image]");
+          const eyebrow = panel.querySelector<HTMLElement>("[data-panel-eyebrow]");
+          const title = panel.querySelector<HTMLElement>("[data-panel-title]");
+          const body = panel.querySelector<HTMLElement>("[data-panel-body]");
+
+          if (arch) {
+            gsap.fromTo(
+              arch,
+              { clipPath: "inset(100% 0% 0% 0%)" },
+              {
+                clipPath: "inset(0% 0% 0% 0%)",
+                ease: "power3.out",
+                duration: 1.1,
+                scrollTrigger: {
+                  trigger: panel,
+                  start: "top 80%",
+                  toggleActions: "play none none reverse",
+                },
+              },
+            );
+          }
+          if (img) {
+            gsap.fromTo(
+              img,
+              { yPercent: 6 },
+              {
+                yPercent: -6,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: panel,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: true,
+                },
+              },
+            );
+          }
+
+          const reveals = [eyebrow, title, body].filter(Boolean) as HTMLElement[];
+          if (reveals.length) {
+            gsap.fromTo(
+              reveals,
+              { y: 24, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: "power2.out",
+                stagger: 0.08,
+                scrollTrigger: {
+                  trigger: panel,
+                  start: "top 75%",
+                  toggleActions: "play none none reverse",
+                },
+              },
+            );
+          }
+
+          ScrollTrigger.create({
+            trigger: panel,
+            start: "top 60%",
+            end: "bottom 40%",
+            onToggle: (self) => {
+              if (self.isActive) {
+                const idx = Number(panel.getAttribute("data-panel-index") ?? 0);
+                setActiveIndex(idx);
+              }
+            },
+          });
+        });
+
+        const refresh = () => ScrollTrigger.refresh();
+        window.addEventListener("load", refresh);
+        return () => window.removeEventListener("load", refresh);
+      }, section);
+
+      return () => ctxMobile.revert();
     }
 
     const ctx = gsap.context(() => {
