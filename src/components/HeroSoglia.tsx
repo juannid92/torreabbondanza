@@ -256,13 +256,13 @@ export function HeroSoglia() {
 
       {/* === Layer 10: ABBONDANZA back — watermark sopra il video === */}
       <div
-        className="pointer-events-none absolute inset-x-0 z-10 flex justify-center md:bottom-[18%] bottom-[6%]"
+        className="pointer-events-none absolute inset-x-0 z-10 flex justify-center px-3 md:bottom-[18%] bottom-[6%]"
       >
         <span
           data-abbondanza-back
-          className="block font-display font-bold leading-[0.85] text-ink/20 whitespace-nowrap select-none text-center"
+          className="block max-w-full font-display font-bold leading-[0.85] text-ink/20 whitespace-nowrap select-none text-center"
           style={{
-            fontSize: "clamp(2rem, 9.5vw, 15rem)",
+            fontSize: "clamp(1.6rem, 8.6vw, 15rem)",
             letterSpacing: "-0.04em",
           }}
         >
@@ -272,14 +272,14 @@ export function HeroSoglia() {
 
       {/* === Layer 30: ABBONDANZA accento terracotta — sopra il watermark === */}
       <div
-        className="pointer-events-none absolute inset-x-0 z-30 flex justify-center md:bottom-[18%] bottom-[6%]"
+        className="pointer-events-none absolute inset-x-0 z-30 flex justify-center px-3 md:bottom-[18%] bottom-[6%]"
       >
         <span
           data-abbondanza-front
           aria-hidden
-          className="block font-display font-bold leading-[0.85] text-terracotta whitespace-nowrap select-none text-center"
+          className="block max-w-full font-display font-bold leading-[0.85] text-terracotta whitespace-nowrap select-none text-center"
           style={{
-            fontSize: "clamp(2rem, 9.5vw, 15rem)",
+            fontSize: "clamp(1.6rem, 8.6vw, 15rem)",
             letterSpacing: "-0.04em",
             mixBlendMode: "normal",
           }}
