@@ -76,15 +76,24 @@ export function CinematicOpener() {
     return () => ctx.revert();
   }, []);
 
-  const phrase = "Le feste della vita meritano un luogo che le ricordi.".split(" ");
+  const phrase = "Le occasioni che restano".split(" ");
   // Parole-accento in corsivo terracotta
-  const accentSet = new Set(["feste", "ricordi."]);
+  const accentSet = new Set(["restano"]);
 
   return (
     <div
       ref={rootRef}
       className="relative isolate flex h-[100svh] min-h-[640px] w-full items-end overflow-hidden"
     >
+      {/* Risalita dal nero Murgese: alba calda che apre la sezione */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-48"
+        style={{
+          background:
+            "linear-gradient(180deg, var(--murgese) 0%, color-mix(in oklab, var(--murgese) 55%, transparent) 35%, transparent 100%)",
+        }}
+      />
       <img
         data-opener-image
         src={openerImg}
@@ -107,16 +116,16 @@ export function CinematicOpener() {
 
       <div className="relative mx-auto w-full max-w-7xl px-6 pb-16 md:px-12 md:pb-24">
         <p data-opener-meta className="text-eyebrow text-ivory/80">
-          06 — Eventi & Matrimoni
+          07 — Eventi & Matrimoni
         </p>
 
         <h2
-          aria-label="Le feste della vita meritano un luogo che le ricordi."
+          aria-label="Le occasioni che restano"
           className="mt-6 font-display font-semibold leading-[1.02] text-ivory"
           style={{
             fontSize: "clamp(2.4rem, 6.8vw, 6rem)",
             letterSpacing: "-0.025em",
-            maxWidth: "20ch",
+            maxWidth: "16ch",
           }}
         >
           {phrase.map((w, i) => {
@@ -140,6 +149,14 @@ export function CinematicOpener() {
             );
           })}
         </h2>
+
+        <p
+          data-opener-meta
+          className="mt-8 max-w-2xl font-display text-lg italic leading-snug text-ivory/85 md:text-2xl"
+        >
+          Cerimonie, matrimoni e feste private in una masseria del Settecento,
+          tra pietra, ulivi e cielo aperto.
+        </p>
 
         <div
           data-opener-meta
