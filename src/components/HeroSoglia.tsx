@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "@/lib/split-text";
-import { ArchFrame } from "./ArchFrame";
 import { KineticMarquee } from "./KineticMarquee";
 import { VerticalWord } from "./VerticalWord";
 import { MagneticButton } from "./MagneticButton";
@@ -31,6 +30,8 @@ const MARQUEE_ITEMS = [
  */
 export function HeroSoglia() {
   const root = useRef<HTMLElement>(null);
+  const posterRef = useRef<HTMLImageElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -43,13 +44,46 @@ export function HeroSoglia() {
       const subtitle = root.current!.querySelector<HTMLElement>("[data-subtitle]")!;
       const ctas = root.current!.querySelectorAll<HTMLElement>("[data-cta]");
       const scrollCue = root.current!.querySelector<HTMLElement>("[data-scroll-cue]")!;
+      const media = root.current!.querySelector<HTMLElement>("[data-media]")!;
+      const poster = posterRef.current;
+      const video = videoRef.current;
 
       if (reduced) {
         gsap.set(
           [back, front, torre, ...meta, subtitle, ...ctas, scrollCue],
           { opacity: 1, y: 0, clipPath: "inset(0%)" },
         );
+        if (poster) gsap.set(poster, { opacity: 1, scale: 1 });
+        if (video) gsap.set(video, { opacity: 0 });
         return;
+      }
+
+      // === Media full-bleed: foto (poster) → video con crossfade ===
+      if (poster) {
+        gsap.fromTo(
+          poster,
+          { scale: 1.04 },
+          { scale: 1.0, duration: 1.5, ease: "power3.out" },
+        );
+      }
+      if (video) {
+        gsap.set(video, { opacity: 0, scale: 1.02, transformOrigin: "center center" });
+        gsap.delayedCall(1.5, () => {
+          video.play().catch(() => {
+            /* autoplay bloccato: resta la foto */
+          });
+        });
+        gsap.to(video, { opacity: 1, duration: 0.8, ease: "power2.out", delay: 1.6 });
+        gsap.to(video, { scale: 1.0, duration: 1.6, ease: "power3.out", delay: 1.6 });
+        // Ken Burns continuo sul video
+        gsap.to(video, {
+          scale: 1.05,
+          duration: 16,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          delay: 3.5,
+        });
       }
 
       // Split "ABBONDANZA" per lettere (back e front sincronizzati)
@@ -101,10 +135,13 @@ export function HeroSoglia() {
         scrub: true,
         animation: gsap
           .timeline()
-          .to(back, { yPercent: -5, ease: "none" }, 0)
-          .to(front, { yPercent: -18, ease: "none" }, 0)
+          .to(media, { yPercent: 12, ease: "none" }, 0)
+          .to(back, { y: -40, ease: "none" }, 0)
+          .to(front, { y: -120, ease: "none" }, 0)
           .to(torre, { yPercent: -25, opacity: 0, ease: "none" }, 0)
-          .to(meta, { yPercent: -30, opacity: 0, ease: "none" }, 0),
+          .to(meta, { yPercent: -30, opacity: 0, ease: "none" }, 0)
+          .to(subtitle, { opacity: 0, ease: "none" }, 0)
+          .to(ctas, { opacity: 0, ease: "none" }, 0),
       });
 
       ScrollTrigger.create({
@@ -129,7 +166,72 @@ export function HeroSoglia() {
       style={{ height: "100svh", minHeight: "640px" }}
       aria-label="Masseria Torre Abbondanza — la soglia delle due anime"
     >
-      <div className="grain-overlay" />
+      {/* === Layer 0 (z-0): MEDIA FULL-BLEED — foto → video === */}
+      {/* MEDIA REALE DEL CLIENTE: ripresa cinematografica full-screen che inquadra
+          insieme la masseria del '700 e i cavalli Murgesi nella Murgia all'ora dorata.
+          Foto come poster + video mp4/webm muto in loop. */}
+      <div data-media className="absolute inset-0 z-0 overflow-hidden">
+        <img
+          ref={posterRef}
+          src={sogliaImg}
+          alt="La masseria del Settecento e i cavalli Murgesi insieme nella campagna della Murgia all'ora dorata."
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover will-change-transform"
+        />
+        <video
+          ref={videoRef}
+          src={sogliaVideoAsset.url}
+          poster={sogliaImg}
+          muted
+          loop
+          playsInline
+          autoPlay
+          preload="auto"
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover will-change-transform"
+          style={{ opacity: 0 }}
+        />
+      </div>
+
+      {/* === Layer 1 (z-[1]): Overlay caldo per leggibilità === */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[1]"
+        style={{
+          background:
+            "radial-gradient(120% 80% at 50% 45%, transparent 0%, transparent 38%, rgba(247,243,236,0.18) 70%, rgba(247,243,236,0.35) 100%)",
+        }}
+      />
+      {/* Protezione alto-sinistra (TORRE + metadati) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[1]"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(247,243,236,0.55) 0%, rgba(247,243,236,0.25) 22%, transparent 45%)",
+        }}
+      />
+      {/* Protezione basso-sinistra (sottotitolo + CTA + marquee) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[1]"
+        style={{
+          background:
+            "linear-gradient(20deg, rgba(247,243,236,0.62) 0%, rgba(247,243,236,0.32) 28%, transparent 55%)",
+        }}
+      />
+      {/* Vignettatura calda + grain */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[1]"
+        style={{
+          background:
+            "radial-gradient(140% 100% at 50% 50%, transparent 55%, color-mix(in oklab, var(--ink) 18%, transparent) 100%)",
+        }}
+      />
+      <div className="grain-overlay z-[2]" />
 
       <h1 className="sr-only">
         Torre Abbondanza — Masseria del XVIII secolo a Noci, Puglia: ristorante, cerimonie e allevamento di cavalli Murgesi
@@ -152,13 +254,13 @@ export function HeroSoglia() {
         40.72° N — 17.13° E
       </div>
 
-      {/* === Layer 1 (z-10): ABBONDANZA back — watermark dietro al dittico === */}
+      {/* === Layer 10: ABBONDANZA back — watermark sopra il video === */}
       <div
         className="pointer-events-none absolute inset-x-0 z-10 flex justify-center md:bottom-[18%] bottom-[6%]"
       >
         <span
           data-abbondanza-back
-          className="block font-display font-bold leading-[0.85] text-ink/[0.12] whitespace-nowrap select-none text-center"
+          className="block font-display font-bold leading-[0.85] text-ink/20 whitespace-nowrap select-none text-center"
           style={{
             fontSize: "clamp(4rem, 16vw, 15rem)",
             letterSpacing: "-0.04em",
@@ -168,33 +270,9 @@ export function HeroSoglia() {
         </span>
       </div>
 
-      {/* === Layer 2 (z-20): DITTICO DI ARCHI GEMELLI ===
-          Desktop: affiancati, stessa size, leggero sfasamento verticale.
-          Mobile: impilati, stessa size, gap identico. */}
-      {/* === Layer 2 (z-20): SOGLIA UNICA — un solo arco centrale ===
-          Contiene un media (foto → video) che mostra masseria + cavalli Murgesi insieme. */}
-      <div className="absolute inset-x-0 z-20 flex justify-center px-6 top-[14%] md:top-[8%]">
-        <figure className="relative h-[58vh] w-[88vw] max-w-[520px] md:h-[min(70vh,720px)] md:w-[min(52vw,640px)]">
-          <ArchFrame
-            src={sogliaImg}
-            videoSrc={sogliaVideoAsset.url}
-            alt="La masseria del Settecento e i cavalli Murgesi insieme nella campagna della Murgia all'ora dorata."
-          />
-          {/* MEDIA REALE DEL CLIENTE: una sola ripresa cinematografica che inquadra
-              insieme la masseria del '700 e i cavalli Murgesi (es. cavalli in primo piano
-              e la masseria sullo sfondo nella luce dell'ora dorata).
-              Foto come poster + video mp4/webm muto in loop. */}
-        </figure>
-      </div>
-
-      {/* === Layer 4 (z-30): ABBONDANZA front — frammento terracotta che abbraccia entrambe le soglie ===
-          Clip in due bande verticali: una sul bordo interno dx dell'arco A, una sul bordo interno sx dell'arco B. */}
+      {/* === Layer 30: ABBONDANZA accento terracotta — sopra il watermark === */}
       <div
-        className="pointer-events-none absolute inset-x-0 z-30 hidden md:flex justify-center md:bottom-[18%]"
-        style={{
-          clipPath:
-            "polygon(0 0, 33% 0, 33% 100%, 0 100%, 0 0, 48% 0, 52% 0, 52% 100%, 48% 100%, 48% 0, 67% 0, 100% 0, 100% 100%, 67% 100%)",
-        }}
+        className="pointer-events-none absolute inset-x-0 z-30 flex justify-center md:bottom-[18%] bottom-[6%]"
       >
         <span
           data-abbondanza-front
@@ -203,6 +281,7 @@ export function HeroSoglia() {
           style={{
             fontSize: "clamp(4rem, 16vw, 15rem)",
             letterSpacing: "-0.04em",
+            mixBlendMode: "normal",
           }}
         >
           ABBONDANZA
