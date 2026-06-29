@@ -246,7 +246,7 @@ function ImmersiveLightbox({
           ref={archRef}
           className="relative w-full overflow-hidden"
           style={{
-            borderRadius: ARCH_RADIUS,
+            borderRadius: "10px",
             aspectRatio: "4 / 5",
             maxHeight: "72vh",
             border: "1px solid color-mix(in oklab, var(--ivory) 25%, transparent)",
