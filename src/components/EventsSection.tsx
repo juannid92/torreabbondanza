@@ -184,7 +184,7 @@ export function EventsSection() {
         const trackWidth = cTrack.scrollWidth;
         const distance = trackWidth - window.innerWidth;
 
-        gsap.to(cTrack, {
+        const trackTween = gsap.to(cTrack, {
           x: () => -distance,
           ease: "none",
           scrollTrigger: {
@@ -246,7 +246,7 @@ export function EventsSection() {
           gsap.set(phrase, { opacity: 0, y: 20 });
           ScrollTrigger.create({
             trigger: occ,
-            containerAnimation: ScrollTrigger.getById("__none") ?? undefined,
+            containerAnimation: trackTween,
             start: "left center",
             end: "right center",
             onEnter: () => {
