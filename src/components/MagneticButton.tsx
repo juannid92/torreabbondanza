@@ -64,7 +64,7 @@ export function MagneticButton({
     "pill-solid":
       "px-7 py-3 rounded-full bg-terracotta text-ivory uppercase tracking-[0.24em] text-xs font-medium overflow-hidden shadow-[0_18px_40px_-18px_color-mix(in_oklab,var(--terracotta)_55%,transparent)] hover:bg-[color:var(--gold)] transition-colors duration-300",
     "pill-murgese":
-      "px-7 py-3 rounded-full border-2 text-[color:var(--murgese)] uppercase tracking-[0.24em] text-xs font-medium overflow-hidden bg-transparent transition-colors duration-300 hover:text-ivory",
+      "px-7 py-3 rounded-full border border-[color:var(--murgese)] text-[color:var(--murgese)] uppercase tracking-[0.24em] text-xs font-medium overflow-hidden bg-transparent transition-colors duration-300 hover:text-ivory hover:border-[color:var(--olive)]",
   };
 
   const MotionEl = href ? motion.a : motion.button;
@@ -87,6 +87,12 @@ export function MagneticButton({
         <span
           aria-hidden
           className="pointer-events-none absolute inset-0 -translate-x-full bg-ink/[0.06] transition-transform duration-500 ease-out group-hover:translate-x-0"
+        />
+      )}
+      {variant === "pill-murgese" && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -translate-y-full bg-[color:var(--murgese)] transition-transform duration-500 ease-out group-hover:translate-y-0"
         />
       )}
       <span className="relative z-10 inline-flex items-center gap-2">
