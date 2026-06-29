@@ -66,6 +66,7 @@ const FULL_TEXT = LINES.map((l) => l.map((t) => t.text).join(" ")).join(" ");
 export function ManifestoSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
+  const blockquoteRef = useRef<HTMLQuoteElement | null>(null);
   const wordsRef = useRef<HTMLSpanElement[]>([]);
   const ruleRef = useRef<HTMLSpanElement | null>(null);
   const arcPathRef = useRef<SVGPathElement | null>(null);
@@ -78,7 +79,8 @@ export function ManifestoSection() {
 
     const section = sectionRef.current;
     const stage = stageRef.current;
-    if (!section || !stage) return;
+    const blockquote = blockquoteRef.current;
+    if (!section || !stage || !blockquote) return;
 
     const words = wordsRef.current.filter(Boolean);
 
@@ -115,60 +117,92 @@ export function ManifestoSection() {
         });
       }
 
-      // Pin + spotlight reading
+      // === Pin + spotlight reading + teleprompter ===
       const isMobile = window.matchMedia("(max-width: 767px)").matches;
-      const pinDistance = isMobile ? "+=120%" : "+=150%";
+
+      // Stato iniziale: tutte parole "futura"
+      gsap.set(words, { opacity: 0.18, scale: 1 });
+
+      // Calcolo offset teleprompter: trasla il blockquote per tenere la
+      // riga attiva nella banda di lettura (~50% viewport).
+      // Si rilegge ad ogni refresh (resize/font load).
+      const computeOffset = () => {
+        const textH = blockquote.scrollHeight;
+        const bandH = window.innerHeight * 0.55;
+        return Math.max(0, textH - bandH);
+      };
+
+      // Durata in scroll-px: proporzionale al numero di parole.
+      const pxPerWord = isMobile ? 80 : 90;
+      const exitPx = 600;
+      const totalPx = words.length * pxPerWord + exitPx;
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: pinDistance,
+          end: `+=${totalPx}`,
           pin: true,
-          scrub: 0.6,
+          pinSpacing: true,
+          scrub: true,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
-      // Imposta stato iniziale: tutte futura
-      gsap.set(words, { opacity: 0.18, scale: 1 });
+      // Sequenza karaoke: ogni parola passa 0.18 → 1 → 0.55, in posizione assoluta.
+      const stepIn = 0.6;
+      const stepHold = 0.3;
+      const stepOut = 0.5;
+      const wordSlot = 1.0; // 1 "unità" per parola: scroll mappato 1:1
 
-      // Sequenza karaoke: ogni parola passa 0.18 → 1 → 0.55
-      const stepIn = 0.6;   // segmento per "accendere"
-      const stepHold = 0.4; // hold prima di attenuare
-      const stepOut = 0.5;  // segmento per "attenuare"
-
-      words.forEach((w) => {
+      words.forEach((w, i) => {
         const accent = w.dataset.accent === "true";
         const tone = w.dataset.tone as AccentTone | undefined;
         const activeColor = accent
           ? tone === "deep" ? DEEP : WARM
           : "var(--ink)";
+        const at = i * wordSlot;
         tl.to(w, {
           opacity: 1,
           scale: 1.02,
           color: activeColor,
           duration: stepIn,
           ease: "power2.out",
-        })
-          .to(w, { duration: stepHold }, ">")
-          .to(w, {
-            opacity: 0.55,
-            scale: 1,
-            duration: stepOut,
-            ease: "power2.inOut",
-          }, ">");
+        }, at);
+        tl.to(w, {
+          opacity: 0.55,
+          scale: 1,
+          duration: stepOut,
+          ease: "power2.inOut",
+        }, at + stepIn + stepHold);
       });
 
-      // Firma fade-in verso la fine
-      tl.from(signatureRef.current, {
-        opacity: 0, y: 12, duration: 1, ease: "power2.out",
-      }, ">-1");
+      const readingDuration = words.length * wordSlot;
 
-      // Uscita morbida del manifesto (fade + slide-y -40)
+      // Teleprompter: trasla il blockquote linearmente sulla stessa progress.
+      tl.to(blockquote, {
+        y: () => -computeOffset(),
+        ease: "none",
+        duration: readingDuration,
+      }, 0);
+
+      // Firma fade-in nel finale della lettura
+      tl.from(signatureRef.current, {
+        opacity: 0, y: 12, duration: 1.2, ease: "power2.out",
+      }, readingDuration - 1.5);
+
+      // Hold confortevole (~6% finale prima dell'uscita)
+      const holdDuration = Math.max(0.6, readingDuration * 0.06);
+      tl.to({}, { duration: holdDuration }, readingDuration);
+
+      // Uscita morbida: fade + scale-out del manifesto prima di sganciare il pin
       tl.to(stage, {
-        opacity: 0.2, y: -40, duration: 1.2, ease: "power2.in",
-      }, ">");
+        opacity: 0,
+        scale: 0.98,
+        duration: Math.max(1.5, readingDuration * 0.1),
+        ease: "power2.in",
+      }, readingDuration + holdDuration);
     }, section);
 
     return () => ctx.revert();
@@ -208,7 +242,7 @@ export function ManifestoSection() {
       {/* H2 semanticamente presente ma visivamente nascosto */}
       <h2 id="manifesto-title" className="sr-only">Manifesto — Il Tempo Lento</h2>
 
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1400px] flex-col px-6 pt-[12vh] pb-[10vh] md:px-12 lg:px-20">
+      <div className="relative z-10 mx-auto flex h-[100svh] max-w-[1400px] flex-col px-6 pt-[10vh] pb-[8vh] md:px-12 lg:px-20">
         {/* Eyebrow + filetto */}
         <div className="flex items-center gap-4">
           <span ref={eyebrowTextRef} className="text-eyebrow text-ink/70">
@@ -225,7 +259,7 @@ export function ManifestoSection() {
         {/* Manifesto */}
         <div
           ref={stageRef}
-          className="relative mt-[8vh] flex-1"
+          className="relative mt-[6vh] flex-1 overflow-hidden"
           style={{ willChange: "opacity, transform" }}
         >
           {/* Testo accessibile (screen reader) */}
@@ -233,11 +267,13 @@ export function ManifestoSection() {
 
           {/* Blocco visivo (aria-hidden) — broken grid */}
           <blockquote
+            ref={blockquoteRef}
             aria-hidden
-            className="font-display font-normal leading-[1.25] text-ink"
+            className="font-display font-normal leading-[1.2] text-ink"
             style={{
-              fontSize: "clamp(1.8rem, 4.5vw, 4rem)",
-              maxWidth: "min(70ch, 78%)",
+              fontSize: "clamp(1.5rem, 3.6vw, 3rem)",
+              maxWidth: "min(70ch, 80%)",
+              willChange: "transform",
             }}
           >
             {LINES.map((line, li) => {
