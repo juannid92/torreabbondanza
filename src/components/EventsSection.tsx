@@ -69,7 +69,6 @@ export function EventsSection() {
     const root = rootRef.current;
     if (!root) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
     root.querySelectorAll<HTMLElement>("[data-fade]").forEach((el) => {
       el.setAttribute("data-reveal", "soft");
     });
@@ -126,73 +125,14 @@ export function EventsSection() {
         );
       }
 
-      /* ---------- MOMENTO B — Si accende (pinned scrub) ---------- */
-      const bScene = root.querySelector<HTMLElement>("[data-scene-b]");
-      const bSticky = root.querySelector<HTMLElement>("[data-scene-b-sticky]");
+      /* ---------- MOMENTI B + C — switch desktop/mobile via matchMedia ---------- */
       const nightLayer = root.querySelector<HTMLElement>("[data-night-layer]");
       const skyLayer = root.querySelector<HTMLElement>("[data-sky-layer]");
       const lightEls = root.querySelectorAll<HTMLElement>("[data-light]");
       const candleEls = root.querySelectorAll<HTMLElement>("[data-candle]");
       const bokehLayer = root.querySelector<HTMLElement>("[data-bokeh-layer]");
       const kineticB = root.querySelector<HTMLElement>("[data-kinetic-b]");
-
-      if (isMobile) {
-        gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), { opacity: 1 });
-        gsap.set(lightEls, { opacity: 1, scale: 1 });
-        gsap.set(candleEls, { opacity: 1 });
-        if (kineticB) gsap.set(kineticB, { yPercent: 0, opacity: 0.7 });
-      }
-
-      if (!isMobile && bScene && bSticky && nightLayer && skyLayer) {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: bScene,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.6,
-            invalidateOnRefresh: true,
-          },
-        });
-        // Cielo: giorno → crepuscolo → notte profonda
-        tl.fromTo(
-          skyLayer,
-          { opacity: 0 },
-          { opacity: 1, ease: "none", duration: 1 },
-          0,
-        );
-        // Night image crossfade
-        tl.fromTo(
-          nightLayer,
-          { opacity: 0 },
-          { opacity: 1, ease: "none", duration: 1 },
-          0.15,
-        );
-        // Lucine: stagger lungo l'arco (0.25 .. 0.85)
-        lightEls.forEach((el) => {
-          const delay = parseFloat(el.dataset.delay ?? "0");
-          const at = 0.25 + delay * 0.6;
-          tl.to(el, { opacity: 1, scale: 1, duration: 0.04, ease: "power2.out" }, at);
-        });
-        // Candele: ultime ad accendersi (0.7 .. 0.95)
-        candleEls.forEach((el, i) => {
-          tl.to(el, { opacity: 1, duration: 0.04, ease: "power2.out" }, 0.7 + (i / candleEls.length) * 0.25);
-        });
-        // Bokeh che cresce
-        if (bokehLayer) {
-          tl.fromTo(bokehLayer, { opacity: 0 }, { opacity: 0.9, duration: 1, ease: "none" }, 0.35);
-        }
-        // Kinetic word parallax verticale
-        if (kineticB) {
-          tl.fromTo(
-            kineticB,
-            { yPercent: 30, opacity: 0 },
-            { yPercent: -30, opacity: 0.95, ease: "none", duration: 1 },
-            0,
-          );
-        }
-      }
-
-      /* ---------- MOMENTO C — Dolly orizzontale ---------- */
+      const bScene = root.querySelector<HTMLElement>("[data-scene-b]");
       const cScene = root.querySelector<HTMLElement>("[data-scene-c]");
       const cTrack = root.querySelector<HTMLElement>("[data-scene-c-track]");
       const cBg = root.querySelector<HTMLElement>("[data-scene-c-bg]");
@@ -200,7 +140,129 @@ export function EventsSection() {
       const cFg = root.querySelector<HTMLElement>("[data-scene-c-fg]");
       const cOccs = root.querySelectorAll<HTMLElement>("[data-occasion]");
 
-      if (isMobile) {
+      const mm = gsap.matchMedia();
+
+      // DESKTOP / TABLET (≥ 768px) — scena B pinned scrub + scena C dolly orizzontale
+      mm.add("(min-width: 768px)", () => {
+        if (bScene && nightLayer && skyLayer) {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: bScene,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: 0.6,
+              invalidateOnRefresh: true,
+            },
+          });
+          tl.fromTo(skyLayer, { opacity: 0 }, { opacity: 1, ease: "none", duration: 1 }, 0);
+          tl.fromTo(nightLayer, { opacity: 0 }, { opacity: 1, ease: "none", duration: 1 }, 0.15);
+          lightEls.forEach((el) => {
+            const delay = parseFloat(el.dataset.delay ?? "0");
+            const at = 0.25 + delay * 0.6;
+            tl.to(el, { opacity: 1, scale: 1, duration: 0.04, ease: "power2.out" }, at);
+          });
+          candleEls.forEach((el, i) => {
+            tl.to(el, { opacity: 1, duration: 0.04, ease: "power2.out" }, 0.7 + (i / candleEls.length) * 0.25);
+          });
+          if (bokehLayer) {
+            tl.fromTo(bokehLayer, { opacity: 0 }, { opacity: 0.9, duration: 1, ease: "none" }, 0.35);
+          }
+          if (kineticB) {
+            tl.fromTo(
+              kineticB,
+              { yPercent: 30, opacity: 0 },
+              { yPercent: -30, opacity: 0.95, ease: "none", duration: 1 },
+              0,
+            );
+          }
+        }
+
+        if (cScene && cTrack) {
+          const getDistance = () => Math.max(0, cTrack.scrollWidth - window.innerWidth);
+
+          const trackTween = gsap.to(cTrack, {
+            x: () => -getDistance(),
+            ease: "none",
+            scrollTrigger: {
+              trigger: cScene,
+              start: "top top",
+              end: () => `+=${getDistance()}`,
+              scrub: 0.4,
+              pin: true,
+              invalidateOnRefresh: true,
+            },
+          });
+          if (cBg) {
+            gsap.to(cBg, {
+              x: () => -getDistance() * 0.3,
+              ease: "none",
+              scrollTrigger: {
+                trigger: cScene,
+                start: "top top",
+                end: () => `+=${getDistance()}`,
+                scrub: 0.4,
+                invalidateOnRefresh: true,
+              },
+            });
+          }
+          if (cMid) {
+            gsap.to(cMid, {
+              x: () => -getDistance() * 0.6,
+              ease: "none",
+              scrollTrigger: {
+                trigger: cScene,
+                start: "top top",
+                end: () => `+=${getDistance()}`,
+                scrub: 0.4,
+                invalidateOnRefresh: true,
+              },
+            });
+          }
+          if (cFg) {
+            gsap.to(cFg, {
+              x: () => -getDistance() * 1.15,
+              ease: "none",
+              scrollTrigger: {
+                trigger: cScene,
+                start: "top top",
+                end: () => `+=${getDistance()}`,
+                scrub: 0.4,
+                invalidateOnRefresh: true,
+              },
+            });
+          }
+          cOccs.forEach((occ) => {
+            const word = occ.querySelector<HTMLElement>("[data-occ-word]");
+            const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
+            if (!word || !phrase) return;
+            const wordChars = splitWords(word);
+            ScrollTrigger.create({
+              trigger: occ,
+              containerAnimation: trackTween,
+              start: "left center",
+              end: "right center",
+              onEnter: () => {
+                gsap.fromTo(wordChars, { yPercent: 110 }, { yPercent: 0, duration: 0.9, ease: "power3.out", stagger: 0.05, overwrite: true });
+                gsap.fromTo(phrase, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 0.15, overwrite: true });
+              },
+              once: true,
+              horizontal: true,
+            });
+          });
+        }
+      });
+
+      // MOBILE (< 768px) — scena B/C statiche e verticali, fail-safe sempre visibile
+      mm.add("(max-width: 767px)", () => {
+        gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), { opacity: 1, clearProps: "transform" });
+        gsap.set(lightEls, { opacity: 1, scale: 1, clearProps: "transform" });
+        gsap.set(candleEls, { opacity: 1 });
+        if (kineticB) gsap.set(kineticB, { yPercent: 0, opacity: 0.7 });
+        if (cTrack) gsap.set(cTrack, { clearProps: "transform,x" });
+        [cBg, cMid, cFg].forEach((el) => {
+          if (el) gsap.set(el, { clearProps: "transform,x" });
+        });
+
         cOccs.forEach((occ) => {
           const word = occ.querySelector<HTMLElement>("[data-occ-word]");
           const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
@@ -216,84 +278,7 @@ export function EventsSection() {
             },
           });
         });
-      }
-
-      if (!isMobile && cScene && cTrack) {
-        const trackWidth = cTrack.scrollWidth;
-        const distance = trackWidth - window.innerWidth;
-
-        const trackTween = gsap.to(cTrack, {
-          x: () => -distance,
-          ease: "none",
-          scrollTrigger: {
-            trigger: cScene,
-            start: "top top",
-            end: () => `+=${distance}`,
-            scrub: 0.4,
-            pin: true,
-            invalidateOnRefresh: true,
-          },
-        });
-        // Parallax inverso sui layer
-        if (cBg) {
-          gsap.to(cBg, {
-            x: () => -distance * 0.3,
-            ease: "none",
-            scrollTrigger: {
-              trigger: cScene,
-              start: "top top",
-              end: () => `+=${distance}`,
-              scrub: 0.4,
-              invalidateOnRefresh: true,
-            },
-          });
-        }
-        if (cMid) {
-          gsap.to(cMid, {
-            x: () => -distance * 0.6,
-            ease: "none",
-            scrollTrigger: {
-              trigger: cScene,
-              start: "top top",
-              end: () => `+=${distance}`,
-              scrub: 0.4,
-              invalidateOnRefresh: true,
-            },
-          });
-        }
-        if (cFg) {
-          gsap.to(cFg, {
-            x: () => -distance * 1.15,
-            ease: "none",
-            scrollTrigger: {
-              trigger: cScene,
-              start: "top top",
-              end: () => `+=${distance}`,
-              scrub: 0.4,
-              invalidateOnRefresh: true,
-            },
-          });
-        }
-        // Reveal kinetic delle occasioni
-        cOccs.forEach((occ) => {
-          const word = occ.querySelector<HTMLElement>("[data-occ-word]");
-          const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
-          if (!word || !phrase) return;
-          const wordChars = splitWords(word);
-          ScrollTrigger.create({
-            trigger: occ,
-            containerAnimation: trackTween,
-            start: "left center",
-            end: "right center",
-            onEnter: () => {
-              gsap.fromTo(wordChars, { yPercent: 110 }, { yPercent: 0, duration: 0.9, ease: "power3.out", stagger: 0.05, overwrite: true });
-              gsap.fromTo(phrase, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 0.15, overwrite: true });
-            },
-            once: true,
-            horizontal: true,
-          });
-        });
-      }
+      });
 
       /* ---------- MOMENTO D — parallax carrozza ---------- */
       const carriage = root.querySelector<HTMLElement>("[data-carriage-img]");
@@ -422,10 +407,10 @@ export function EventsSection() {
       {/* ====================================================================
           MOMENTO B — "Si accende" (pinned scrub)
       ==================================================================== */}
-      <div data-scene-b className="relative h-[100svh] lg:h-[320vh]">
+      <div data-scene-b className="relative h-[100svh] md:h-[320vh]">
         <div
           data-scene-b-sticky
-          className="relative top-0 isolate h-[100svh] w-full overflow-hidden bg-murgese lg:sticky lg:h-screen"
+          className="relative top-0 isolate h-[100svh] w-full overflow-hidden bg-murgese md:sticky md:h-screen"
         >
           {/* Layer giorno (base) */}
           <img
@@ -499,7 +484,7 @@ export function EventsSection() {
                 key={i}
                 data-light
                 data-delay={l.delay}
-                className={i >= 36 ? "max-lg:hidden" : undefined}
+                className={i >= 36 ? "max-md:hidden" : undefined}
                 style={{ opacity: 0, transform: "scale(0.6)", transformOrigin: `${l.x}% ${l.y}%`, transformBox: "fill-box", willChange: "opacity, transform" }}
               >
                 <circle cx={l.x} cy={l.y} r={l.r * 3} fill="url(#bulb-glow)" />
@@ -596,7 +581,7 @@ export function EventsSection() {
               apparecchia.
             </p>
             <span
-            className="hidden text-eyebrow text-ivory/70 lg:inline-flex"
+            className="hidden text-eyebrow text-ivory/70 md:inline-flex"
               style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}
             >
               giorno → notte
@@ -610,13 +595,13 @@ export function EventsSection() {
       ==================================================================== */}
       <div
         data-scene-c
-        className="relative min-h-[100svh] overflow-hidden bg-murgese lg:h-screen"
+        className="relative min-h-[100svh] overflow-hidden bg-murgese md:h-screen"
         style={{ contain: "paint" }}
       >
         {/* Layer parallax di sfondo: panorama tavola */}
         <div
           data-scene-c-bg
-          className="absolute inset-0 -z-10 w-full lg:inset-y-0 lg:left-0 lg:w-[800%]"
+          className="absolute inset-0 -z-10 w-full md:inset-y-0 md:left-0 md:w-[800%]"
           style={{
             backgroundImage: `url(${tablePanoImg})`,
             backgroundSize: "auto 110%",
@@ -638,7 +623,7 @@ export function EventsSection() {
         {/* Lucine midground (parallax intermedio) */}
         <div
           data-scene-c-mid
-          className="absolute inset-0 -z-10 w-full lg:inset-y-0 lg:left-0 lg:w-[800%]"
+          className="absolute inset-0 -z-10 w-full md:inset-y-0 md:left-0 md:w-[800%]"
           style={{ willChange: "transform" }}
         >
           {Array.from({ length: 120 }).map((_, i) => {
@@ -647,7 +632,7 @@ export function EventsSection() {
             return (
               <span
                 key={i}
-                className={`absolute block rounded-full ${i >= 40 ? "max-lg:hidden" : ""}`}
+                className={`absolute block rounded-full ${i >= 40 ? "max-md:hidden" : ""}`}
                 style={{
                   left: `${x}%`,
                   top: `${y}%`,
@@ -666,14 +651,14 @@ export function EventsSection() {
         {/* Track orizzontale con le occasioni */}
         <div
           data-scene-c-track
-          className="relative z-10 flex min-h-[100svh] flex-col items-start justify-center gap-10 px-6 py-20 lg:absolute lg:inset-y-0 lg:left-0 lg:flex-row lg:items-center lg:justify-start lg:gap-0 lg:px-0 lg:py-0"
+          className="relative z-10 flex min-h-[100svh] flex-col items-start justify-center gap-10 px-6 py-20 md:absolute md:inset-y-0 md:left-0 md:flex-row md:items-center md:justify-start md:gap-0 md:px-0 md:py-0"
           style={{ willChange: "transform" }}
         >
           {/* Padding iniziale */}
-          <div className="hidden w-[20vw] flex-shrink-0 lg:block" />
+          <div className="hidden w-[20vw] flex-shrink-0 md:block" />
 
           {/* Eyebrow di apertura del momento C */}
-          <div data-reveal="soft" className="w-full max-w-[28rem] flex-shrink-0 lg:w-[50vw] lg:pr-12">
+          <div data-reveal="soft" className="w-full max-w-[28rem] flex-shrink-0 md:w-[50vw] md:pr-12">
             <p className="text-eyebrow text-ivory/65">II · Dentro la festa</p>
             <p
               className="mt-6 font-display font-medium italic text-ivory"
@@ -693,7 +678,7 @@ export function EventsSection() {
               key={occ.word}
               data-occasion
               data-reveal="soft"
-              className="relative flex w-full flex-shrink-0 items-center justify-start lg:w-[80vw] lg:justify-center lg:px-[8vw]"
+              className="relative flex w-full flex-shrink-0 items-center justify-start md:w-[80vw] md:justify-center md:px-[8vw]"
               style={{ minHeight: undefined }}
             >
               <div className="flex max-w-full flex-col items-start gap-6">
@@ -710,7 +695,7 @@ export function EventsSection() {
                 </h3>
                 <p
                   data-occ-phrase
-                  className="max-w-md font-display text-lg italic leading-snug text-ivory/85 lg:text-xl"
+                  className="max-w-md font-display text-lg italic leading-snug text-ivory/85 md:text-xl"
                   style={{ textShadow: "0 3px 18px rgba(0,0,0,0.5)" }}
                 >
                   {occ.phrase}
@@ -720,7 +705,7 @@ export function EventsSection() {
           ))}
 
           {/* Chiusura: spazi */}
-          <div data-reveal="soft" className="flex w-full flex-shrink-0 items-center lg:w-[80vw] lg:px-[8vw]">
+          <div data-reveal="soft" className="flex w-full flex-shrink-0 items-center md:w-[80vw] md:px-[8vw]">
             <div className="flex max-w-md flex-col gap-5">
               <p className="text-eyebrow text-gold">Gli spazi</p>
               <p
@@ -742,7 +727,7 @@ export function EventsSection() {
           </div>
 
           {/* Padding finale */}
-          <div className="hidden w-[20vw] flex-shrink-0 lg:block" />
+          <div className="hidden w-[20vw] flex-shrink-0 md:block" />
         </div>
 
         {/* Foreground bokeh (parallax veloce) */}
