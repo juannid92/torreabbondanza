@@ -151,6 +151,7 @@ export function EventsSection() {
             start: "top top",
             end: "bottom bottom",
             scrub: 0.6,
+            invalidateOnRefresh: true,
           },
         });
         // Cielo: giorno → crepuscolo → notte profonda

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { initScrollReady } from "@/lib/scroll-ready";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -16,6 +17,11 @@ export function useLenis() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    // Inizializza i fix globali di ScrollTrigger (refresh dopo fonts/immagini,
+    // resize debounce, ignoreMobileResize). Va eseguito SEMPRE, anche con
+    // prefers-reduced-motion, perché governa il calcolo delle posizioni dei pin.
+    initScrollReady();
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
