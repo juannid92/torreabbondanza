@@ -552,8 +552,8 @@ export function EventsSection() {
               style={{
                 fontSize: "clamp(7rem, 22vw, 22rem)",
                 lineHeight: 0.85,
-                color: "color-mix(in oklab, var(--ivory) 22%, transparent)",
-                mixBlendMode: "overlay",
+                color: "color-mix(in oklab, var(--ivory) 18%, transparent)",
+                mixBlendMode: "soft-light",
                 willChange: "transform, opacity",
               }}
             >
