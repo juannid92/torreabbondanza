@@ -407,10 +407,10 @@ export function EventsSection() {
       {/* ====================================================================
           MOMENTO B — "Si accende" (pinned scrub)
       ==================================================================== */}
-      <div data-scene-b className="relative h-[100svh] lg:h-[320vh]">
+      <div data-scene-b className="relative h-[100svh] md:h-[320vh]">
         <div
           data-scene-b-sticky
-          className="relative top-0 isolate h-[100svh] w-full overflow-hidden bg-murgese lg:sticky lg:h-screen"
+          className="relative top-0 isolate h-[100svh] w-full overflow-hidden bg-murgese md:sticky md:h-screen"
         >
           {/* Layer giorno (base) */}
           <img
@@ -484,7 +484,7 @@ export function EventsSection() {
                 key={i}
                 data-light
                 data-delay={l.delay}
-                className={i >= 36 ? "max-lg:hidden" : undefined}
+                className={i >= 36 ? "max-md:hidden" : undefined}
                 style={{ opacity: 0, transform: "scale(0.6)", transformOrigin: `${l.x}% ${l.y}%`, transformBox: "fill-box", willChange: "opacity, transform" }}
               >
                 <circle cx={l.x} cy={l.y} r={l.r * 3} fill="url(#bulb-glow)" />
@@ -581,7 +581,7 @@ export function EventsSection() {
               apparecchia.
             </p>
             <span
-            className="hidden text-eyebrow text-ivory/70 lg:inline-flex"
+            className="hidden text-eyebrow text-ivory/70 md:inline-flex"
               style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}
             >
               giorno → notte
@@ -595,13 +595,13 @@ export function EventsSection() {
       ==================================================================== */}
       <div
         data-scene-c
-        className="relative min-h-[100svh] overflow-hidden bg-murgese lg:h-screen"
+        className="relative min-h-[100svh] overflow-hidden bg-murgese md:h-screen"
         style={{ contain: "paint" }}
       >
         {/* Layer parallax di sfondo: panorama tavola */}
         <div
           data-scene-c-bg
-          className="absolute inset-0 -z-10 w-full lg:inset-y-0 lg:left-0 lg:w-[800%]"
+          className="absolute inset-0 -z-10 w-full md:inset-y-0 md:left-0 md:w-[800%]"
           style={{
             backgroundImage: `url(${tablePanoImg})`,
             backgroundSize: "auto 110%",
@@ -623,7 +623,7 @@ export function EventsSection() {
         {/* Lucine midground (parallax intermedio) */}
         <div
           data-scene-c-mid
-          className="absolute inset-0 -z-10 w-full lg:inset-y-0 lg:left-0 lg:w-[800%]"
+          className="absolute inset-0 -z-10 w-full md:inset-y-0 md:left-0 md:w-[800%]"
           style={{ willChange: "transform" }}
         >
           {Array.from({ length: 120 }).map((_, i) => {
@@ -632,7 +632,7 @@ export function EventsSection() {
             return (
               <span
                 key={i}
-                className={`absolute block rounded-full ${i >= 40 ? "max-lg:hidden" : ""}`}
+                className={`absolute block rounded-full ${i >= 40 ? "max-md:hidden" : ""}`}
                 style={{
                   left: `${x}%`,
                   top: `${y}%`,
@@ -651,14 +651,14 @@ export function EventsSection() {
         {/* Track orizzontale con le occasioni */}
         <div
           data-scene-c-track
-          className="relative z-10 flex min-h-[100svh] flex-col items-start justify-center gap-10 px-6 py-20 lg:absolute lg:inset-y-0 lg:left-0 lg:flex-row lg:items-center lg:justify-start lg:gap-0 lg:px-0 lg:py-0"
+          className="relative z-10 flex min-h-[100svh] flex-col items-start justify-center gap-10 px-6 py-20 md:absolute md:inset-y-0 md:left-0 md:flex-row md:items-center md:justify-start md:gap-0 md:px-0 md:py-0"
           style={{ willChange: "transform" }}
         >
           {/* Padding iniziale */}
-          <div className="hidden w-[20vw] flex-shrink-0 lg:block" />
+          <div className="hidden w-[20vw] flex-shrink-0 md:block" />
 
           {/* Eyebrow di apertura del momento C */}
-          <div data-reveal="soft" className="w-full max-w-[28rem] flex-shrink-0 lg:w-[50vw] lg:pr-12">
+          <div data-reveal="soft" className="w-full max-w-[28rem] flex-shrink-0 md:w-[50vw] md:pr-12">
             <p className="text-eyebrow text-ivory/65">II · Dentro la festa</p>
             <p
               className="mt-6 font-display font-medium italic text-ivory"
@@ -678,7 +678,7 @@ export function EventsSection() {
               key={occ.word}
               data-occasion
               data-reveal="soft"
-              className="relative flex w-full flex-shrink-0 items-center justify-start lg:w-[80vw] lg:justify-center lg:px-[8vw]"
+              className="relative flex w-full flex-shrink-0 items-center justify-start md:w-[80vw] md:justify-center md:px-[8vw]"
               style={{ minHeight: undefined }}
             >
               <div className="flex max-w-full flex-col items-start gap-6">
@@ -695,7 +695,7 @@ export function EventsSection() {
                 </h3>
                 <p
                   data-occ-phrase
-                  className="max-w-md font-display text-lg italic leading-snug text-ivory/85 lg:text-xl"
+                  className="max-w-md font-display text-lg italic leading-snug text-ivory/85 md:text-xl"
                   style={{ textShadow: "0 3px 18px rgba(0,0,0,0.5)" }}
                 >
                   {occ.phrase}
@@ -705,7 +705,7 @@ export function EventsSection() {
           ))}
 
           {/* Chiusura: spazi */}
-          <div data-reveal="soft" className="flex w-full flex-shrink-0 items-center lg:w-[80vw] lg:px-[8vw]">
+          <div data-reveal="soft" className="flex w-full flex-shrink-0 items-center md:w-[80vw] md:px-[8vw]">
             <div className="flex max-w-md flex-col gap-5">
               <p className="text-eyebrow text-gold">Gli spazi</p>
               <p
@@ -727,7 +727,7 @@ export function EventsSection() {
           </div>
 
           {/* Padding finale */}
-          <div className="hidden w-[20vw] flex-shrink-0 lg:block" />
+          <div className="hidden w-[20vw] flex-shrink-0 md:block" />
         </div>
 
         {/* Foreground bokeh (parallax veloce) */}
