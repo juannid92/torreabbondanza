@@ -90,8 +90,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Your Command Center is a developer tool that executes instructions precisely as provided." },
       { property: "og:description", content: "Your Command Center is a developer tool that executes instructions precisely as provided." },
       { name: "twitter:description", content: "Your Command Center is a developer tool that executes instructions precisely as provided." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9cce492b-9f01-4b41-8667-e4cd04818c05/id-preview-936fa7bc--4b74b673-60a5-4dfb-84e4-7c8401d84249.lovable.app-1782402616222.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9cce492b-9f01-4b41-8667-e4cd04818c05/id-preview-936fa7bc--4b74b673-60a5-4dfb-84e4-7c8401d84249.lovable.app-1782402616222.png" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/28a94ed2-487e-49f2-94ee-4f910d3020ab" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/28a94ed2-487e-49f2-94ee-4f910d3020ab" },
       { property: "og:type", content: "website" },
     ],
     links: [
@@ -104,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Inter:wght@300;400;500;600&family=Caveat:wght@400;500;600;700&family=Pinyon+Script&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Inter:wght@300;400;500;600&display=swap",
       },
     ],
   }),
