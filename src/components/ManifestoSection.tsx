@@ -11,42 +11,53 @@ if (typeof window !== "undefined") {
  * Manifesto editoriale con spotlight reading guidato dallo scroll (pin + scrub).
  */
 
-type Token = { text: string; accent?: boolean; break?: boolean; indent?: number };
+type AccentTone = "warm" | "deep";
+type Token = { text: string; accent?: boolean; tone?: AccentTone };
 
-// Righe del manifesto. `indent` = livello di rientro (0..3) per layout broken grid.
+// Due registri cromatici: warm = terracotta (Tavola), deep = nero Murgese (Cavalli).
+const WARM = "var(--terracotta)";
+const DEEP = "var(--color-murgese, #15110F)";
+
+// Righe del manifesto. Layout broken grid via LINE_INDENT.
 const LINES: Token[][] = [
   [
     { text: "C'è" }, { text: "un" }, { text: "luogo" }, { text: "dove" },
-    { text: "la" }, { text: "pietra", accent: true }, { text: "racconta" },
+    { text: "la" }, { text: "pietra", accent: true, tone: "warm" }, { text: "racconta" },
     { text: "tre" }, { text: "secoli," },
   ],
   [
-    { text: "dove" }, { text: "la" }, { text: "terra", accent: true },
+    { text: "dove" }, { text: "la" }, { text: "terra", accent: true, tone: "warm" },
     { text: "dona" }, { text: "i" }, { text: "suoi" }, { text: "frutti" },
+    { text: "e" }, { text: "ogni" }, { text: "tavola", accent: true, tone: "warm" },
+    { text: "diventa" }, { text: "una" }, { text: "festa," },
   ],
   [
-    { text: "e" }, { text: "ogni" }, { text: "tavola" }, { text: "diventa" },
-    { text: "una" }, { text: "festa.", accent: true },
+    { text: "e" }, { text: "dove" }, { text: "i" },
+    { text: "cavalli", accent: true, tone: "deep" },
+    { text: "Murgesi" }, { text: "corrono" }, { text: "liberi" },
+    { text: "come" }, { text: "un" }, { text: "tempo." },
   ],
   [
-    { text: "Qui" }, { text: "il" }, { text: "tempo", accent: true },
-    { text: "rallenta," },
+    { text: "Qui" }, { text: "il" }, { text: "tempo", accent: true, tone: "warm" },
+    { text: "rallenta," }, { text: "l'accoglienza" }, { text: "è" }, { text: "di" },
+    { text: "famiglia,", accent: true, tone: "warm" },
   ],
   [
-    { text: "l'accoglienza" }, { text: "è" }, { text: "di" },
-    { text: "famiglia,", accent: true },
-  ],
-  [
-    { text: "e" }, { text: "l'" }, { text: "abbondanza", accent: true },
+    { text: "e" }, { text: "l'" }, { text: "abbondanza", accent: true, tone: "warm" },
     { text: "non" }, { text: "è" }, { text: "quantità" }, { text: "—" },
   ],
   [
     { text: "è" }, { text: "la" }, { text: "generosità" }, { text: "di" },
-    { text: "un" }, { text: "gesto" }, { text: "antico." },
+    { text: "un" }, { text: "gesto" }, { text: "antico" },
+  ],
+  [
+    { text: "e" }, { text: "la" }, { text: "nobiltà" }, { text: "di" }, { text: "un" },
+    { text: "galoppo", accent: true, tone: "deep" },
+    { text: "che" }, { text: "dura" }, { text: "da" }, { text: "sempre." },
   ],
 ];
 
-// Indent per riga (broken grid). 0 = a filo sinistra; 1..3 = rientri progressivi.
+// Indent per riga (broken grid).
 const LINE_INDENT = [0, 1, 2, 0, 2, 1, 3];
 
 // Full text per accessibilità.
@@ -129,10 +140,14 @@ export function ManifestoSection() {
 
       words.forEach((w) => {
         const accent = w.dataset.accent === "true";
+        const tone = w.dataset.tone as AccentTone | undefined;
+        const activeColor = accent
+          ? tone === "deep" ? DEEP : WARM
+          : "var(--ink)";
         tl.to(w, {
           opacity: 1,
           scale: 1.02,
-          color: accent ? "var(--terracotta)" : "var(--ink)",
+          color: activeColor,
           duration: stepIn,
           ease: "power2.out",
         })
@@ -248,6 +263,7 @@ export function ManifestoSection() {
                           }}
                           data-word
                           data-accent={tok.accent ? "true" : "false"}
+                          data-tone={tok.tone ?? ""}
                           className={
                             tok.accent
                               ? "font-display italic"
@@ -256,7 +272,9 @@ export function ManifestoSection() {
                           style={{
                             display: "inline-block",
                             opacity: 0.18,
-                            color: tok.accent ? "var(--terracotta)" : undefined,
+                            color: tok.accent
+                              ? tok.tone === "deep" ? DEEP : WARM
+                              : undefined,
                             fontSize: tok.accent ? "1.08em" : undefined,
                             willChange: "opacity, transform, color",
                           }}
