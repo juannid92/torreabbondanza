@@ -159,7 +159,91 @@ export function StorySection() {
     if (reduced || isMobile) {
       // Layout verticale statico: niente pin orizzontale.
       gsap.set(track, { x: 0 });
-      return;
+
+      if (reduced) return;
+
+      const ctxMobile = gsap.context(() => {
+        const panels = gsap.utils.toArray<HTMLElement>("[data-panel]", track);
+
+        panels.forEach((panel) => {
+          const arch = panel.querySelector<HTMLElement>("[data-arch-reveal]");
+          const img = panel.querySelector<HTMLElement>("[data-arch-image]");
+          const eyebrow = panel.querySelector<HTMLElement>("[data-panel-eyebrow]");
+          const title = panel.querySelector<HTMLElement>("[data-panel-title]");
+          const body = panel.querySelector<HTMLElement>("[data-panel-body]");
+
+          if (arch) {
+            gsap.fromTo(
+              arch,
+              { clipPath: "inset(100% 0% 0% 0%)" },
+              {
+                clipPath: "inset(0% 0% 0% 0%)",
+                ease: "power3.out",
+                duration: 1.1,
+                scrollTrigger: {
+                  trigger: panel,
+                  start: "top 80%",
+                  toggleActions: "play none none reverse",
+                },
+              },
+            );
+          }
+          if (img) {
+            gsap.fromTo(
+              img,
+              { yPercent: 6 },
+              {
+                yPercent: -6,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: panel,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: true,
+                },
+              },
+            );
+          }
+
+          const reveals = [eyebrow, title, body].filter(Boolean) as HTMLElement[];
+          if (reveals.length) {
+            gsap.fromTo(
+              reveals,
+              { y: 24, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: "power2.out",
+                stagger: 0.08,
+                scrollTrigger: {
+                  trigger: panel,
+                  start: "top 75%",
+                  toggleActions: "play none none reverse",
+                },
+              },
+            );
+          }
+
+          ScrollTrigger.create({
+            trigger: panel,
+            start: "top 60%",
+            end: "bottom 40%",
+            onToggle: (self) => {
+              if (self.isActive) {
+                const idx = Number(panel.getAttribute("data-panel-index") ?? 0);
+                setActiveIndex(idx);
+              }
+            },
+          });
+        });
+
+        const refresh = () => ScrollTrigger.refresh();
+        window.addEventListener("load", refresh);
+        return () => window.removeEventListener("load", refresh);
+      }, section);
+
+      return () => ctxMobile.revert();
     }
 
     const ctx = gsap.context(() => {
@@ -300,6 +384,22 @@ export function StorySection() {
       <div className="grain-overlay" aria-hidden />
 
       <h2 id="story-title" className="sr-only">La storia — Tre secoli di pietra</h2>
+
+      {/* Indicatore mobile sticky */}
+      <div className="pointer-events-none sticky top-3 z-30 mx-auto mb-[-2rem] flex w-[calc(100%-1.5rem)] max-w-[420px] items-center gap-3 rounded-full border border-ink/10 bg-ivory/85 px-4 py-2 backdrop-blur md:hidden">
+        <span className="text-eyebrow text-ink/70 tabular-nums">
+          {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </span>
+        <div className="relative h-[2px] flex-1 overflow-hidden rounded-full bg-ink/10">
+          <div
+            className="absolute inset-y-0 left-0 rounded-full transition-[width,background-color] duration-500 ease-out"
+            style={{
+              width: `${((activeIndex + 1) / total) * 100}%`,
+              backgroundColor: PANELS[activeIndex]?.tone === "deep" ? "var(--murgese)" : "var(--terracotta)",
+            }}
+          />
+        </div>
+      </div>
 
       {/* Traccia orizzontale (desktop) / colonna verticale (mobile) */}
       <div
