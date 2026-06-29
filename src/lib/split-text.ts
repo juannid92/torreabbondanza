@@ -42,3 +42,30 @@ export class SplitText {
     this.chars = [];
   }
 }
+
+/**
+ * Split per-parola: avvolge ogni parola in uno <span> inline-block per consentire
+ * mask-reveal con `overflow: hidden` sul contenitore.
+ */
+export function splitWords(el: HTMLElement): HTMLSpanElement[] {
+  const text = el.textContent ?? "";
+  el.setAttribute("aria-label", text);
+  el.textContent = "";
+  const words: HTMLSpanElement[] = [];
+  const tokens = text.split(/(\s+)/);
+  for (const token of tokens) {
+    if (token === "") continue;
+    if (/^\s+$/.test(token)) {
+      el.appendChild(document.createTextNode(" "));
+      continue;
+    }
+    const span = document.createElement("span");
+    span.textContent = token;
+    span.style.display = "inline-block";
+    span.style.willChange = "transform";
+    span.setAttribute("aria-hidden", "true");
+    el.appendChild(span);
+    words.push(span);
+  }
+  return words;
+}
