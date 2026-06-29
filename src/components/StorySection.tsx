@@ -385,6 +385,22 @@ export function StorySection() {
 
       <h2 id="story-title" className="sr-only">La storia — Tre secoli di pietra</h2>
 
+      {/* Indicatore mobile sticky */}
+      <div className="pointer-events-none sticky top-3 z-30 mx-auto mb-[-2rem] flex w-[calc(100%-1.5rem)] max-w-[420px] items-center gap-3 rounded-full border border-ink/10 bg-ivory/85 px-4 py-2 backdrop-blur md:hidden">
+        <span className="text-eyebrow text-ink/70 tabular-nums">
+          {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </span>
+        <div className="relative h-[2px] flex-1 overflow-hidden rounded-full bg-ink/10">
+          <div
+            className="absolute inset-y-0 left-0 rounded-full transition-[width,background-color] duration-500 ease-out"
+            style={{
+              width: `${((activeIndex + 1) / total) * 100}%`,
+              backgroundColor: PANELS[activeIndex]?.tone === "deep" ? "var(--murgese)" : "var(--terracotta)",
+            }}
+          />
+        </div>
+      </div>
+
       {/* Traccia orizzontale (desktop) / colonna verticale (mobile) */}
       <div
         ref={trackRef}
