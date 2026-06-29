@@ -262,7 +262,7 @@ export function HeroSoglia() {
           data-abbondanza-back
           className="block font-display font-bold leading-[0.85] text-ink/20 whitespace-nowrap select-none text-center"
           style={{
-            fontSize: "clamp(2.4rem, 13vw, 15rem)",
+            fontSize: "clamp(2rem, 9.5vw, 15rem)",
             letterSpacing: "-0.04em",
           }}
         >
@@ -279,7 +279,7 @@ export function HeroSoglia() {
           aria-hidden
           className="block font-display font-bold leading-[0.85] text-terracotta whitespace-nowrap select-none text-center"
           style={{
-            fontSize: "clamp(2.4rem, 13vw, 15rem)",
+            fontSize: "clamp(2rem, 9.5vw, 15rem)",
             letterSpacing: "-0.04em",
             mixBlendMode: "normal",
           }}
