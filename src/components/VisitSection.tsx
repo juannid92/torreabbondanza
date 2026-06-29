@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Instagram, Facebook, Phone, Mail, MapPin, Check, ArrowRight } from "lucide-react";
+import { Instagram, Phone, Mail, MapPin, Globe, Check, ArrowRight } from "lucide-react";
 import { StylizedMap } from "@/components/StylizedMap";
 import { cn } from "@/lib/utils";
 
@@ -14,11 +14,13 @@ const ADDRESS = "Strada Vicinale per Massafra / SP 211, Zona E n. 49, 70015 Noci
 const PHONE = "+39 338 483 4318";
 const PHONE_TEL = "+393384834318";
 const EMAIL = "info@torreabbondanza.com";
+const SITE = "torreabbondanza.com";
+const IG_HANDLE = "@masseria_torre_abbondanza";
+const IG_URL = "https://www.instagram.com/masseria_torre_abbondanza/";
 const COORDS = { lat: 40.728664, lng: 17.132612 };
 const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${COORDS.lat},${COORDS.lng}`;
 
 type FormStatus = "idle" | "loading" | "success" | "error";
-type TabKey = "table" | "event";
 
 interface FieldProps {
   label: string;
