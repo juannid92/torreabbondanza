@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DishBlock } from "./DishBlock";
-import { WineHighlight } from "./WineHighlight";
 import { MagneticButton } from "./MagneticButton";
 import antipastiImg from "@/assets/kitchen-antipasti.jpg";
 import primiImg from "@/assets/kitchen-primi.jpg";
@@ -169,9 +168,6 @@ export function KitchenSection() {
           />
         </div>
       </div>
-
-      {/* Wine highlight full-bleed */}
-      <WineHighlight />
 
       {/* Chiusura / CTA */}
       <div className="mx-auto max-w-7xl px-6 pb-32 md:px-12 md:pb-40">
