@@ -13,6 +13,8 @@ import carriageImg from "@/assets/events-carriage.jpg";
 /* -------------------------------------------------------------------------- */
 type Light = { x: number; y: number; r: number; delay: number };
 
+const r3 = (n: number) => Math.round(n * 1000) / 1000;
+
 function buildLightStrings(): Light[] {
   const lights: Light[] = [];
   // 3 stringhe ad arco: x in [4..96]%, y centrata su 3 fasce
@@ -32,7 +34,12 @@ function buildLightStrings(): Light[] {
       // ordine di accensione semi-random per evitare onda perfetta
       const baseDelay = order / totalLights;
       const jitter = ((si * 7 + i * 11) % 13) / 13 - 0.5;
-      lights.push({ x, y, r: 2.6 + (si === 1 ? 0.6 : 0), delay: Math.min(0.95, Math.max(0, baseDelay + jitter * 0.04)) });
+      lights.push({
+        x: r3(x),
+        y: r3(y),
+        r: r3(2.6 + (si === 1 ? 0.6 : 0)),
+        delay: r3(Math.min(0.95, Math.max(0, baseDelay + jitter * 0.04))),
+      });
       order++;
     }
   });
