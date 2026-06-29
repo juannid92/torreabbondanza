@@ -1,528 +1,368 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Pause, Play, ChevronLeft, ChevronRight } from "lucide-react";
-import { MagneticButton } from "./MagneticButton";
 
-interface Quote {
+interface GuestNote {
   text: string;
-  highlight?: string; // sottostringa da virare in terracotta
-  author: string;
-  source: string;
+  signature: string;
+  origin: string;
+  soul: "tavola" | "cavalli";
+  rotate: number; // deg
+  offsetX: number; // %
+  width: string; // tailwind/clamp width
   confirmed: boolean;
 }
 
-const QUOTES: Quote[] = [
+// {/* recensioni reali DA CONFERMARE col cliente */}
+const NOTES: GuestNote[] = [
   {
-    text: "Location spettacolare nel bel mezzo delle campagne pugliesi.",
-    highlight: "spettacolare",
-    author: "Un ospite",
-    source: "Tripadvisor",
-    confirmed: true,
-  },
-  {
-    text: "Primitivo dolce prodotto dalla masseria, davvero eccezionale.",
-    highlight: "eccezionale",
-    author: "Un ospite",
-    source: "Tripadvisor",
-    confirmed: true,
-  },
-  {
-    text: "Una cena nella cornice di una masseria del Settecento, ogni dettaglio al posto giusto.",
-    highlight: "dettaglio",
-    author: "Un ospite",
-    source: "TheFork",
+    text: "Location spettacolare nel bel mezzo delle campagne pugliesi. Tornerò di sicuro.",
+    signature: "Marta",
+    origin: "Milano",
+    soul: "tavola",
+    rotate: -1.6,
+    offsetX: -2,
+    width: "max-w-[36ch]",
     confirmed: false,
   },
   {
-    text: "La cucina racconta il territorio con onestà: materie prime vere, mano sicura.",
-    highlight: "onestà",
-    author: "Un ospite",
-    source: "ViaMichelin",
+    text: "All'alba, tra gli ulivi, i Murgesi al pascolo. Non avevo mai visto cavalli così neri e così quieti.",
+    signature: "Étienne",
+    origin: "Lione",
+    soul: "cavalli",
+    rotate: 1.4,
+    offsetX: 6,
+    width: "max-w-[38ch]",
+    confirmed: false,
+  },
+  {
+    text: "Il Primitivo della masseria, le orecchiette tirate a mano, una serata che non si dimentica.",
+    signature: "Giorgia & Luca",
+    origin: "Bologna",
+    soul: "tavola",
+    rotate: -0.8,
+    offsetX: -6,
+    width: "max-w-[40ch]",
+    confirmed: false,
+  },
+  {
+    text: "Ci siamo sposati qui. Le luci nel cortile, la pietra calda, la nostra tavola sotto il cielo della Murgia.",
+    signature: "Chiara e Davide",
+    origin: "Bari",
+    soul: "tavola",
+    rotate: 1.1,
+    offsetX: 4,
+    width: "max-w-[42ch]",
+    confirmed: false,
+  },
+  {
+    text: "Una passeggiata a cavallo tra muretti a secco e trulli: la Puglia che cercavamo, senza filtri.",
+    signature: "The Hendersons",
+    origin: "London",
+    soul: "cavalli",
+    rotate: -1.2,
+    offsetX: -4,
+    width: "max-w-[40ch]",
+    confirmed: false,
+  },
+  {
+    text: "Accoglienza vera, di famiglia. Ti senti ospite, non cliente.",
+    signature: "Federica",
+    origin: "Roma",
+    soul: "tavola",
+    rotate: 0.9,
+    offsetX: 8,
+    width: "max-w-[32ch]",
+    confirmed: false,
+  },
+  {
+    text: "Gli attacchi d'epoca, i muli Martinesi, i racconti di tre secoli di pietra. Un viaggio nel tempo.",
+    signature: "Andrea",
+    origin: "Torino",
+    soul: "cavalli",
+    rotate: -0.6,
+    offsetX: -8,
+    width: "max-w-[40ch]",
     confirmed: false,
   },
 ];
 
-const VOICES: string[] = [
-  "Location spettacolare",
-  "Primitivo eccezionale",
-  "Accoglienza calorosa",
-  "Cucina del territorio",
-  "Un'oasi nella Murgia",
-  "Pietra e luce",
-  "Sapori autentici",
-  "Servizio impeccabile",
-  "Tornerò di sicuro",
-  "Atmosfera magica",
-  "Una serata indimenticabile",
-  "La Puglia vera",
-  "Tavola perfetta",
-  "Volte del Settecento",
-];
+// {/* presenza piattaforme DA CONFERMARE */}
+const PLATFORMS = ["TheFork", "Tripadvisor", "ViaMichelin", "Facebook"];
 
-interface Rating {
-  value: number;
-  display: string; // formato finale (virgola, decimale)
-  decimals: number;
-  source: string;
-  detail?: string;
-  href?: string;
-}
-
-const RATINGS: Rating[] = [
-  { value: 9.6, display: "9,6", decimals: 1, source: "TheFork", detail: "su 10" },
-  {
-    value: 4.4,
-    display: "4,4",
-    decimals: 1,
-    source: "Tripadvisor",
-    detail: "213 recensioni",
-  },
-  { value: 9.4, display: "9,4", decimals: 1, source: "ViaMichelin", detail: "su 10" },
-  {
-    value: 4.8,
-    display: "4,8",
-    decimals: 1,
-    source: "Facebook",
-    detail: "96% consigliato",
-  },
-];
-
-function formatIt(n: number, decimals: number) {
-  return n.toLocaleString("it-IT", {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  });
-}
-
-function renderHighlighted(text: string, highlight?: string) {
-  if (!highlight) return text;
-  const idx = text.toLowerCase().indexOf(highlight.toLowerCase());
-  if (idx < 0) return text;
-  const before = text.slice(0, idx);
-  const match = text.slice(idx, idx + highlight.length);
-  const after = text.slice(idx + highlight.length);
-  return (
-    <>
-      {before}
-      <em className="not-italic text-terracotta">{match}</em>
-      {after}
-    </>
-  );
-}
-
-function VoicesMarquee() {
-  // 4 righe desktop, 2 mobile via CSS
-  const rows = [
-    { speed: 70, dir: 1, opacity: 0.1 },
-    { speed: 95, dir: -1, opacity: 0.08 },
-    { speed: 55, dir: 1, opacity: 0.12, hideOnMobile: true },
-    { speed: 110, dir: -1, opacity: 0.07, hideOnMobile: true },
-  ];
-
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-0 flex flex-col justify-center gap-10 overflow-hidden"
-    >
-      {rows.map((row, i) => {
-        const items = [...VOICES, ...VOICES, ...VOICES]; // triple per loop seamless
-        return (
-          <div
-            key={i}
-            data-marquee-row
-            data-speed={row.speed}
-            data-dir={row.dir}
-            className={`flex shrink-0 whitespace-nowrap ${row.hideOnMobile ? "hidden md:flex" : "flex"}`}
-            style={{
-              opacity: row.opacity,
-              color: "var(--ink)",
-              willChange: "transform",
-            }}
-          >
-            {items.map((t, j) => (
-              <span
-                key={j}
-                className="font-display px-8 italic"
-                style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)" }}
-              >
-                {t} <span className="not-italic">·</span>
-              </span>
-            ))}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function RatingStat({ rating, className = "" }: { rating: Rating; className?: string }) {
-  const numberRef = useRef<HTMLSpanElement>(null);
-  const detailRef = useRef<HTMLDivElement>(null);
+function GuestPage({ note, index }: { note: GuestNote; index: number }) {
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const el = numberRef.current;
-    const detail = detailRef.current;
-    if (!el) return;
+    const root = ref.current;
+    if (!root) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    const quote = root.querySelector<HTMLElement>("[data-handwrite]");
+    const sign = root.querySelector<HTMLElement>("[data-signature]");
+    const stroke = root.querySelector<SVGPathElement>("[data-stroke]");
+
+    if (!quote || !sign) return;
+
     if (reduced) {
-      el.textContent = rating.display;
+      gsap.set([quote, sign], { opacity: 1 });
+      if (stroke) gsap.set(stroke, { strokeDashoffset: 0 });
       return;
     }
 
-    const obj = { v: 0 };
-    el.textContent = formatIt(0, rating.decimals);
-
-    const tween = gsap.to(obj, {
-      v: rating.value,
-      duration: 1.6,
-      ease: "power2.out",
-      onUpdate: () => {
-        el.textContent = formatIt(obj.v, rating.decimals);
-      },
-      scrollTrigger: { trigger: el, start: "top 85%", once: true },
+    // start hidden via clip-path (right to left "writing" reveal)
+    gsap.set(quote, {
+      opacity: 1,
+      clipPath: "inset(0 100% 0 0)",
     });
-
-    if (detail) {
-      gsap.from(detail, {
-        opacity: 0,
-        y: 10,
-        duration: 0.6,
-        ease: "power2.out",
-        delay: 0.2,
-        scrollTrigger: { trigger: el, start: "top 85%", once: true },
-      });
+    gsap.set(sign, { opacity: 0, y: 6 });
+    if (stroke) {
+      const len = stroke.getTotalLength();
+      stroke.style.strokeDasharray = `${len}`;
+      stroke.style.strokeDashoffset = `${len}`;
     }
 
-    // micro float
-    const float = gsap.to(el.parentElement, {
-      y: -4,
-      duration: 3 + Math.random(),
-      ease: "sine.inOut",
-      yoyo: true,
-      repeat: -1,
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: root,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    tl.to(quote, {
+      clipPath: "inset(0 0% 0 0)",
+      duration: 1.6,
+      ease: "power1.inOut",
+    })
+      .to(sign, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, "-=0.25");
+
+    if (stroke) {
+      tl.to(
+        stroke,
+        { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" },
+        "-=0.35",
+      );
+    }
+
+    // parallax leggero
+    const pTween = gsap.to(root, {
+      yPercent: index % 2 === 0 ? -6 : -10,
+      ease: "none",
+      scrollTrigger: {
+        trigger: root,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      },
     });
 
     return () => {
-      tween.kill();
-      float.kill();
+      tl.scrollTrigger?.kill();
+      tl.kill();
+      pTween.scrollTrigger?.kill();
+      pTween.kill();
     };
-  }, [rating]);
-
-  return (
-    <div className={`flex flex-col gap-2 ${className}`}>
-      <span
-        className="font-display font-medium leading-none text-gold"
-        style={{ fontSize: "clamp(3.5rem, 9vw, 7rem)", letterSpacing: "-0.04em" }}
-        aria-label={`${rating.display} su ${rating.source}`}
-      >
-        <span ref={numberRef}>{rating.display}</span>
-      </span>
-      <div ref={detailRef} className="flex flex-col gap-0.5">
-        <span className="text-eyebrow text-ink">{rating.source}</span>
-        {rating.detail && (
-          <span className="text-eyebrow text-ink/55">{rating.detail}</span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function FeatureQuote() {
-  const [index, setIndex] = useState(0);
-  const [playing, setPlaying] = useState(true);
-  const quoteRef = useRef<HTMLQuoteElement>(null);
-  const markRef = useRef<HTMLSpanElement>(null);
-  const current = QUOTES[index];
-
-  const go = (next: number) => {
-    setIndex((next + QUOTES.length) % QUOTES.length);
-  };
-
-  // Auto rotate
-  useEffect(() => {
-    if (!playing) return;
-    const id = window.setTimeout(() => go(index + 1), 5500);
-    return () => window.clearTimeout(id);
-  }, [index, playing]);
-
-  // Crossfade animation on change
-  useEffect(() => {
-    const el = quoteRef.current;
-    if (!el) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.2 });
-      return;
-    }
-    gsap.fromTo(
-      el,
-      { opacity: 0, y: 18 },
-      { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" },
-    );
   }, [index]);
 
-  // Parallax mark
-  useEffect(() => {
-    const m = markRef.current;
-    if (!m) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-    const ctx = gsap.context(() => {
-      gsap.to(m, {
-        yPercent: -25,
-        ease: "none",
-        scrollTrigger: {
-          trigger: m,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-    });
-    return () => ctx.revert();
-  }, []);
+  const accent =
+    note.soul === "tavola"
+      ? "var(--terracotta, #b65a3c)"
+      : "var(--murgese, #15110F)";
 
   return (
-    <div
-      onMouseEnter={() => setPlaying(false)}
-      onMouseLeave={() => setPlaying(true)}
-      onFocus={() => setPlaying(false)}
-      onBlur={() => setPlaying(true)}
-      className="relative mx-auto max-w-4xl"
+    <figure
+      ref={ref}
+      className={`relative ${note.width} mx-auto md:mx-0`}
+      style={{
+        transform: `rotate(${note.rotate}deg) translateX(${note.offsetX}%)`,
+      }}
     >
-      {/* Virgoletta decorativa */}
-      <span
-        ref={markRef}
-        aria-hidden
-        className="font-display absolute -left-4 -top-16 leading-none text-terracotta/25 select-none md:-left-12 md:-top-24"
-        style={{ fontSize: "clamp(10rem, 22vw, 20rem)" }}
-      >
-        “
-      </span>
-
-      <blockquote ref={quoteRef} className="relative">
+      <blockquote>
         <p
-          className="font-display font-medium leading-[1.1] text-ink"
-          style={{ fontSize: "clamp(1.8rem, 4vw, 3.5rem)", letterSpacing: "-0.015em" }}
+          data-handwrite
+          className="font-handwrite text-ink"
+          style={{
+            fontFamily: '"Caveat", "Segoe Script", cursive',
+            fontWeight: 500,
+            fontSize: "clamp(1.6rem, 2.6vw, 2.4rem)",
+            lineHeight: 1.25,
+            letterSpacing: "0.005em",
+            color: "var(--ink, #1a1410)",
+            textShadow: "0 1px 0 rgba(0,0,0,0.02)",
+          }}
         >
-          {renderHighlighted(current.text, current.highlight)}
+          {note.text}
         </p>
-        <cite className="text-eyebrow mt-8 flex flex-wrap items-center gap-3 not-italic text-ink/65">
-          <span className="h-px w-10 bg-ink/35" />
-          <span>
-            {current.author} · {current.source}
-          </span>
-          {!current.confirmed && (
-            <span className="sr-only">{/* CITAZIONE DA CONFERMARE */}</span>
-          )}
-        </cite>
       </blockquote>
-
-      {/* Controls */}
-      <div className="mt-10 flex items-center gap-4">
-        <button
-          onClick={() => go(index - 1)}
-          aria-label="Recensione precedente"
-          className="grid h-10 w-10 place-items-center rounded-full border border-ink/25 text-ink transition-colors hover:bg-ink hover:text-ivory"
+      <figcaption
+        data-signature
+        className="mt-3 flex items-end gap-3"
+        style={{ color: accent }}
+      >
+        <span
+          style={{
+            fontFamily: '"Pinyon Script", "Caveat", cursive',
+            fontSize: "clamp(1.4rem, 2.2vw, 2rem)",
+            lineHeight: 1,
+          }}
         >
-          <ChevronLeft className="h-4 w-4" />
-        </button>
-        <button
-          onClick={() => setPlaying((p) => !p)}
-          aria-label={playing ? "Metti in pausa" : "Riprendi"}
-          className="grid h-10 w-10 place-items-center rounded-full border border-ink/25 text-ink transition-colors hover:bg-ink hover:text-ivory"
+          {note.signature}
+        </span>
+        <svg
+          data-stroke-wrap
+          width="64"
+          height="18"
+          viewBox="0 0 64 18"
+          aria-hidden
+          className="mb-1 shrink-0"
         >
-          {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-        </button>
-        <button
-          onClick={() => go(index + 1)}
-          aria-label="Recensione successiva"
-          className="grid h-10 w-10 place-items-center rounded-full border border-ink/25 text-ink transition-colors hover:bg-ink hover:text-ivory"
+          <path
+            data-stroke
+            d="M2 12 C 12 2, 22 18, 34 8 S 56 14, 62 4"
+            fill="none"
+            stroke={accent}
+            strokeWidth="1.4"
+            strokeLinecap="round"
+          />
+        </svg>
+        <span
+          className="font-sans text-[0.72rem] uppercase tracking-[0.18em] text-ink/55"
+          style={{ paddingBottom: "0.15rem" }}
         >
-          <ChevronRight className="h-4 w-4" />
-        </button>
-
-        <div className="ml-2 flex items-center gap-2">
-          {QUOTES.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => go(i)}
-              aria-label={`Vai alla recensione ${i + 1}`}
-              aria-current={i === index}
-              className="h-1.5 rounded-full transition-all"
-              style={{
-                width: i === index ? 28 : 8,
-                background:
-                  i === index ? "var(--terracotta)" : "color-mix(in oklab, var(--ink) 25%, transparent)",
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
+          {note.origin}
+        </span>
+      </figcaption>
+      {!note.confirmed && <span className="sr-only">{/* DA CONFERMARE */}</span>}
+    </figure>
   );
 }
 
 export function TestimonialsSection() {
   const rootRef = useRef<HTMLElement>(null);
 
-  // Marquee + parallax scroll sui rows
   useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const ctx = gsap.context(() => {
-      const rows = root.querySelectorAll<HTMLElement>("[data-marquee-row]");
-      const cleanups: Array<() => void> = [];
-
-      rows.forEach((row) => {
-        const speed = parseFloat(row.dataset.speed || "60"); // px/s
-        const dir = parseFloat(row.dataset.dir || "1");
-        // Larghezza di un terzo (perché triplichiamo i contenuti) → offset di loop
-        const totalWidth = row.scrollWidth;
-        const segment = totalWidth / 3;
-
-        if (reduced) {
-          // Stato statico, niente loop
-          gsap.set(row, { x: dir > 0 ? -segment / 2 : segment / 2 });
-          return;
-        }
-
-        const duration = segment / speed;
-        const tween = gsap.fromTo(
-          row,
-          { x: dir > 0 ? 0 : -segment },
-          {
-            x: dir > 0 ? -segment : 0,
-            duration,
-            ease: "none",
-            repeat: -1,
-          },
-        );
-        cleanups.push(() => tween.kill());
-
-        // Parallax extra allo scroll (somma al loop)
-        const st = ScrollTrigger.create({
-          trigger: root,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-          onUpdate: (self) => {
-            const offset = (self.progress - 0.5) * 200 * dir;
-            row.style.setProperty("--row-scroll", `${offset}px`);
-          },
-        });
-        cleanups.push(() => st.kill());
-        row.style.transform = "translate3d(var(--row-x,0), 0, 0)";
-      });
-
-      return () => cleanups.forEach((c) => c());
-    }, root);
-
-    return () => ctx.revert();
+    gsap.registerPlugin(ScrollTrigger);
   }, []);
-
-  const ratingPositions = useMemo(
-    () => [
-      "md:col-start-1 md:row-start-1 md:justify-self-start",
-      "md:col-start-12 md:row-start-1 md:justify-self-end md:text-right",
-      "md:col-start-2 md:row-start-3 md:justify-self-start",
-      "md:col-start-11 md:row-start-3 md:justify-self-end md:text-right",
-    ],
-    [],
-  );
 
   return (
     <section
       id="recensioni"
       ref={rootRef}
-      aria-labelledby="testimonials-title"
-      className="relative min-h-svh overflow-hidden bg-ivory"
+      aria-labelledby="guestbook-title"
+      className="relative overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(120% 80% at 50% 0%, #f3e8d6 0%, #ecdcc3 45%, #e2cda9 100%)",
+        color: "var(--ink, #1a1410)",
+      }}
     >
-      {/* Continuità con Sez.09 */}
+      {/* Continuità con la Galleria (ingresso): velo morbido dallo scuro al caldo */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-24"
+        className="pointer-events-none absolute inset-x-0 top-0 h-40"
         style={{
           background:
-            "linear-gradient(180deg, color-mix(in oklab, var(--stone) 60%, transparent), transparent)",
+            "linear-gradient(180deg, rgba(15,15,15,0.55) 0%, rgba(15,15,15,0.12) 55%, transparent 100%)",
         }}
       />
 
-      {/* Sottofondo: il coro */}
-      <VoicesMarquee />
-
-      {/* Velatura per leggibilità del primo piano */}
+      {/* Grain / carta */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-multiply"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.15  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+          backgroundSize: "220px 220px",
+        }}
+      />
+      {/* macchie carta calde */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, color-mix(in oklab, var(--ivory) 92%, transparent) 0%, color-mix(in oklab, var(--ivory) 60%, transparent) 60%, transparent 100%)",
+            "radial-gradient(40% 30% at 18% 22%, rgba(168,120,70,0.18), transparent 70%), radial-gradient(35% 28% at 82% 70%, rgba(80,40,20,0.14), transparent 70%)",
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-32 md:px-12 md:py-48">
-        {/* Eyebrow */}
-        <p className="text-eyebrow mb-12 text-ink/65">09 — Voce degli ospiti</p>
-
-        <h2 id="testimonials-title" className="sr-only">
-          La voce degli ospiti — recensioni e punteggi della Masseria Torre Abbondanza
+      <div className="relative z-10 mx-auto max-w-7xl px-6 py-28 md:px-12 md:py-44">
+        {/* Eyebrow + titolo */}
+        <p className="text-eyebrow mb-6 text-ink/70">10 — Il libro degli ospiti</p>
+        <h2
+          id="guestbook-title"
+          className="mb-20 max-w-[18ch]"
+          style={{
+            fontFamily: '"Caveat", "Segoe Script", cursive',
+            fontWeight: 600,
+            fontSize: "clamp(2.6rem, 6.5vw, 5.6rem)",
+            lineHeight: 1.05,
+            color: "var(--ink, #1a1410)",
+          }}
+        >
+          Le voci di chi è stato qui
         </h2>
 
-        {/* Grid asimmetrica: punteggi agli angoli, quote al centro */}
-        <div className="grid grid-cols-1 gap-y-16 md:grid-cols-12 md:grid-rows-[auto_auto_auto] md:items-center md:gap-y-24">
-          {/* Quote centrale: occupa colonne centrali su riga 2 */}
-          <div className="order-2 md:order-none md:col-span-10 md:col-start-2 md:row-start-2">
-            <FeatureQuote />
-          </div>
-
-          {/* Punteggi: layout asimmetrico su desktop, 2x2 su mobile */}
-          <div className="order-1 grid grid-cols-2 gap-8 md:hidden">
-            {RATINGS.map((r) => (
-              <RatingStat key={r.source} rating={r} />
-            ))}
-          </div>
-
-          {RATINGS.map((r, i) => (
-            <div
-              key={`d-${r.source}`}
-              className={`hidden md:flex ${ratingPositions[i]}`}
-            >
-              <RatingStat rating={r} />
-            </div>
-          ))}
+        {/* Flusso pagine - layout asimmetrico */}
+        <div className="relative grid grid-cols-1 gap-y-20 md:grid-cols-12 md:gap-y-28">
+          {NOTES.map((n, i) => {
+            // distribuzione asimmetrica desktop
+            const layout = [
+              "md:col-start-1 md:col-span-6",
+              "md:col-start-8 md:col-span-5",
+              "md:col-start-2 md:col-span-6",
+              "md:col-start-7 md:col-span-6",
+              "md:col-start-1 md:col-span-5",
+              "md:col-start-8 md:col-span-4",
+              "md:col-start-3 md:col-span-7",
+            ];
+            return (
+              <div key={i} className={layout[i] ?? "md:col-span-6"}>
+                <GuestPage note={n} index={i} />
+              </div>
+            );
+          })}
         </div>
 
-        {/* Chiusura / CTA */}
-        <div className="mt-24 flex flex-col items-start gap-6 border-t border-ink/15 pt-12 md:mt-32 md:flex-row md:items-end md:justify-between md:gap-12">
+        {/* Sigillo qualitativo + piattaforme (zero numeri) */}
+        <div className="mt-32 border-t border-ink/15 pt-12 text-center">
           <p
-            className="font-display max-w-xl leading-tight text-ink"
-            style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.9rem)" }}
+            style={{
+              fontFamily: '"Caveat", "Segoe Script", cursive',
+              fontSize: "clamp(1.8rem, 3.4vw, 3rem)",
+              lineHeight: 1.1,
+              color: "var(--ink, #1a1410)",
+            }}
           >
-            Ogni voce è un pezzo della masseria. Grazie a chi torna, e a chi
-            racconta.
+            Tra le mete più amate della Murgia.
           </p>
-          <div className="flex flex-wrap gap-4">
-            <MagneticButton
-              href="https://www.tripadvisor.it/"
-              variant="pill"
-            >
-              Leggi tutte le recensioni →
-            </MagneticButton>
-            <MagneticButton
-              href="https://www.tripadvisor.it/UserReviewEdit"
-              variant="link"
-            >
-              Lascia una recensione →
-            </MagneticButton>
-          </div>
-          <p className="sr-only">{/* LINK recensioni DA CONFERMARE con cliente */}</p>
+          <ul
+            className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-4"
+            aria-label="Presenza sulle piattaforme di recensione"
+          >
+            {PLATFORMS.map((p) => (
+              <li
+                key={p}
+                className="text-eyebrow text-ink/60"
+                style={{ letterSpacing: "0.22em" }}
+              >
+                {p}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
+
+      {/* Uscita verso Contatti: sfumatura calda */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-32"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--ivory, #f4ead6) 80%, transparent) 100%)",
+        }}
+      />
     </section>
   );
 }
