@@ -183,7 +183,8 @@ export function StorySection() {
                 scrollTrigger: {
                   trigger: panel,
                   start: "top 80%",
-                  toggleActions: "play none none reverse",
+                  once: true,
+                  invalidateOnRefresh: true,
                 },
               },
             );
