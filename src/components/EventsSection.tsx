@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
+import { observeRevealElements } from "@/lib/scroll-ready";
 import dayImg from "@/assets/events-space-day.jpg";
 import nightImg from "@/assets/events-space-night.jpg";
 import tablePanoImg from "@/assets/events-table-pano.jpg";
@@ -68,24 +69,34 @@ export function EventsSection() {
     const root = rootRef.current;
     if (!root) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+    root.querySelectorAll<HTMLElement>("[data-fade]").forEach((el) => {
+      el.setAttribute("data-reveal", "soft");
+    });
+    const cleanupReveal = observeRevealElements(root);
 
     const ctx = gsap.context(() => {
       /* ---------- Titoli con mask-reveal per parola ---------- */
       const titles = root.querySelectorAll<HTMLElement>("[data-mask-title]");
       titles.forEach((title) => {
         const words = splitWords(title);
-        gsap.set(words, { yPercent: 110 });
         ScrollTrigger.create({
           trigger: title,
           start: "top 85%",
           once: true,
+          invalidateOnRefresh: true,
           onEnter: () => {
-            gsap.to(words, {
-              yPercent: 0,
-              duration: reduced ? 0.2 : 1.1,
-              ease: "power3.out",
-              stagger: reduced ? 0 : 0.06,
-            });
+            gsap.fromTo(
+              words,
+              { yPercent: 110 },
+              {
+                yPercent: 0,
+                duration: reduced ? 0.2 : 1.1,
+                ease: "power3.out",
+                stagger: reduced ? 0 : 0.06,
+                overwrite: true,
+              },
+            );
           },
         });
       });
@@ -102,25 +113,6 @@ export function EventsSection() {
           delay: 0.2,
         });
       }
-
-      /* ---------- Blocchi in dissolvenza ---------- */
-      const fades = root.querySelectorAll<HTMLElement>("[data-fade]");
-      gsap.set(fades, { opacity: 0, y: 20 });
-      fades.forEach((el) => {
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top 85%",
-          once: true,
-          onEnter: () => {
-            gsap.to(el, {
-              opacity: 1,
-              y: 0,
-              duration: reduced ? 0.3 : 0.9,
-              ease: "power3.out",
-            });
-          },
-        });
-      });
 
       if (reduced) return;
 
@@ -144,7 +136,14 @@ export function EventsSection() {
       const bokehLayer = root.querySelector<HTMLElement>("[data-bokeh-layer]");
       const kineticB = root.querySelector<HTMLElement>("[data-kinetic-b]");
 
-      if (bScene && bSticky && nightLayer && skyLayer) {
+      if (isMobile) {
+        gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), { opacity: 1 });
+        gsap.set(lightEls, { opacity: 1, scale: 1 });
+        gsap.set(candleEls, { opacity: 1 });
+        if (kineticB) gsap.set(kineticB, { yPercent: 0, opacity: 0.7 });
+      }
+
+      if (!isMobile && bScene && bSticky && nightLayer && skyLayer) {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: bScene,
@@ -201,7 +200,25 @@ export function EventsSection() {
       const cFg = root.querySelector<HTMLElement>("[data-scene-c-fg]");
       const cOccs = root.querySelectorAll<HTMLElement>("[data-occasion]");
 
-      if (cScene && cTrack) {
+      if (isMobile) {
+        cOccs.forEach((occ) => {
+          const word = occ.querySelector<HTMLElement>("[data-occ-word]");
+          const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
+          if (!word || !phrase) return;
+          ScrollTrigger.create({
+            trigger: occ,
+            start: "top 86%",
+            once: true,
+            invalidateOnRefresh: true,
+            onEnter: () => {
+              gsap.fromTo(word, { y: 18 }, { y: 0, duration: 0.75, ease: "power3.out", overwrite: true });
+              gsap.fromTo(phrase, { y: 14 }, { y: 0, duration: 0.65, ease: "power3.out", delay: 0.08, overwrite: true });
+            },
+          });
+        });
+      }
+
+      if (!isMobile && cScene && cTrack) {
         const trackWidth = cTrack.scrollWidth;
         const distance = trackWidth - window.innerWidth;
 
@@ -263,16 +280,14 @@ export function EventsSection() {
           const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
           if (!word || !phrase) return;
           const wordChars = splitWords(word);
-          gsap.set(wordChars, { yPercent: 110 });
-          gsap.set(phrase, { opacity: 0, y: 20 });
           ScrollTrigger.create({
             trigger: occ,
             containerAnimation: trackTween,
             start: "left center",
             end: "right center",
             onEnter: () => {
-              gsap.to(wordChars, { yPercent: 0, duration: 0.9, ease: "power3.out", stagger: 0.05 });
-              gsap.to(phrase, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 0.15 });
+              gsap.fromTo(wordChars, { yPercent: 110 }, { yPercent: 0, duration: 0.9, ease: "power3.out", stagger: 0.05, overwrite: true });
+              gsap.fromTo(phrase, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 0.15, overwrite: true });
             },
             once: true,
             horizontal: true,
@@ -294,13 +309,17 @@ export function EventsSection() {
               start: "top bottom",
               end: "bottom top",
               scrub: true,
+              invalidateOnRefresh: true,
             },
           },
         );
       }
     }, root);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      cleanupReveal();
+    };
   }, []);
 
   return (
@@ -403,10 +422,10 @@ export function EventsSection() {
       {/* ====================================================================
           MOMENTO B — "Si accende" (pinned scrub)
       ==================================================================== */}
-      <div data-scene-b className="relative h-[320vh]">
+      <div data-scene-b className="relative h-[100svh] lg:h-[320vh]">
         <div
           data-scene-b-sticky
-          className="sticky top-0 isolate h-screen w-full overflow-hidden bg-murgese"
+          className="relative top-0 isolate h-[100svh] w-full overflow-hidden bg-murgese lg:sticky lg:h-screen"
         >
           {/* Layer giorno (base) */}
           <img
@@ -480,6 +499,7 @@ export function EventsSection() {
                 key={i}
                 data-light
                 data-delay={l.delay}
+                className={i >= 36 ? "max-lg:hidden" : undefined}
                 style={{ opacity: 0, transform: "scale(0.6)", transformOrigin: `${l.x}% ${l.y}%`, transformBox: "fill-box", willChange: "opacity, transform" }}
               >
                 <circle cx={l.x} cy={l.y} r={l.r * 3} fill="url(#bulb-glow)" />
@@ -576,7 +596,7 @@ export function EventsSection() {
               apparecchia.
             </p>
             <span
-              className="hidden text-eyebrow text-ivory/70 md:inline-flex"
+            className="hidden text-eyebrow text-ivory/70 lg:inline-flex"
               style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}
             >
               giorno → notte
@@ -590,15 +610,14 @@ export function EventsSection() {
       ==================================================================== */}
       <div
         data-scene-c
-        className="relative h-screen overflow-hidden bg-murgese"
+        className="relative min-h-[100svh] overflow-hidden bg-murgese lg:h-screen"
         style={{ contain: "paint" }}
       >
         {/* Layer parallax di sfondo: panorama tavola */}
         <div
           data-scene-c-bg
-          className="absolute inset-y-0 left-0 -z-10"
+          className="absolute inset-0 -z-10 w-full lg:inset-y-0 lg:left-0 lg:w-[800%]"
           style={{
-            width: "800%",
             backgroundImage: `url(${tablePanoImg})`,
             backgroundSize: "auto 110%",
             backgroundRepeat: "repeat-x",
@@ -619,8 +638,8 @@ export function EventsSection() {
         {/* Lucine midground (parallax intermedio) */}
         <div
           data-scene-c-mid
-          className="absolute inset-y-0 left-0 -z-10"
-          style={{ width: "800%", willChange: "transform" }}
+          className="absolute inset-0 -z-10 w-full lg:inset-y-0 lg:left-0 lg:w-[800%]"
+          style={{ willChange: "transform" }}
         >
           {Array.from({ length: 120 }).map((_, i) => {
             const x = (i / 119) * 100;
@@ -628,7 +647,7 @@ export function EventsSection() {
             return (
               <span
                 key={i}
-                className="absolute block rounded-full"
+                className={`absolute block rounded-full ${i >= 40 ? "max-lg:hidden" : ""}`}
                 style={{
                   left: `${x}%`,
                   top: `${y}%`,
@@ -647,14 +666,14 @@ export function EventsSection() {
         {/* Track orizzontale con le occasioni */}
         <div
           data-scene-c-track
-          className="absolute inset-y-0 left-0 z-10 flex items-center"
+          className="relative z-10 flex min-h-[100svh] flex-col items-start justify-center gap-10 px-6 py-20 lg:absolute lg:inset-y-0 lg:left-0 lg:flex-row lg:items-center lg:justify-start lg:gap-0 lg:px-0 lg:py-0"
           style={{ willChange: "transform" }}
         >
           {/* Padding iniziale */}
-          <div className="w-[20vw] flex-shrink-0" />
+          <div className="hidden w-[20vw] flex-shrink-0 lg:block" />
 
           {/* Eyebrow di apertura del momento C */}
-          <div className="w-[50vw] flex-shrink-0 pr-12">
+          <div data-reveal="soft" className="w-full max-w-[28rem] flex-shrink-0 lg:w-[50vw] lg:pr-12">
             <p className="text-eyebrow text-ivory/65">II · Dentro la festa</p>
             <p
               className="mt-6 font-display font-medium italic text-ivory"
@@ -673,8 +692,9 @@ export function EventsSection() {
             <article
               key={occ.word}
               data-occasion
-              className="relative flex w-[80vw] flex-shrink-0 items-center justify-center px-[8vw]"
-              style={{ minHeight: "60vh" }}
+              data-reveal="soft"
+              className="relative flex w-full flex-shrink-0 items-center justify-start lg:w-[80vw] lg:justify-center lg:px-[8vw]"
+              style={{ minHeight: undefined }}
             >
               <div className="flex max-w-full flex-col items-start gap-6">
                 <h3
@@ -690,7 +710,7 @@ export function EventsSection() {
                 </h3>
                 <p
                   data-occ-phrase
-                  className="max-w-md font-display text-lg italic leading-snug text-ivory/85 md:text-xl"
+                  className="max-w-md font-display text-lg italic leading-snug text-ivory/85 lg:text-xl"
                   style={{ textShadow: "0 3px 18px rgba(0,0,0,0.5)" }}
                 >
                   {occ.phrase}
@@ -700,7 +720,7 @@ export function EventsSection() {
           ))}
 
           {/* Chiusura: spazi */}
-          <div className="flex w-[80vw] flex-shrink-0 items-center px-[8vw]">
+          <div data-reveal="soft" className="flex w-full flex-shrink-0 items-center lg:w-[80vw] lg:px-[8vw]">
             <div className="flex max-w-md flex-col gap-5">
               <p className="text-eyebrow text-gold">Gli spazi</p>
               <p
@@ -722,7 +742,7 @@ export function EventsSection() {
           </div>
 
           {/* Padding finale */}
-          <div className="w-[20vw] flex-shrink-0" />
+          <div className="hidden w-[20vw] flex-shrink-0 lg:block" />
         </div>
 
         {/* Foreground bokeh (parallax veloce) */}

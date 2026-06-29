@@ -7,6 +7,98 @@ if (typeof window !== "undefined") {
 
 let initialised = false;
 
+const REVEAL_SELECTOR = "[data-reveal]";
+
+export function observeRevealElements(root: ParentNode = document): () => void {
+  if (typeof window === "undefined") return () => undefined;
+
+  const elements = Array.from(root.querySelectorAll<HTMLElement>(REVEAL_SELECTOR));
+  if (!elements.length) return () => undefined;
+
+  const pending = new Set(elements);
+
+  const reveal = (el: HTMLElement) => {
+    el.classList.add("in-view");
+    el.removeAttribute("data-reveal-pending");
+    pending.delete(el);
+  };
+
+  const isInRevealZone = (el: HTMLElement) => {
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const style = window.getComputedStyle(el);
+    if (style.display === "none" || style.visibility === "hidden") return false;
+    return rect.top <= vh * 0.92 && rect.bottom >= vh * 0.04;
+  };
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced || !("IntersectionObserver" in window)) {
+    elements.forEach(reveal);
+    return () => undefined;
+  }
+
+  elements.forEach((el) => {
+    if (!el.classList.contains("in-view")) {
+      el.setAttribute("data-reveal-pending", "true");
+    }
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        reveal(el);
+        observer.unobserve(el);
+      });
+    },
+    { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+  );
+
+  elements.forEach((el) => observer.observe(el));
+
+  let raf = 0;
+  const checkVisible = () => {
+    raf = 0;
+    pending.forEach((el) => {
+      if (!document.documentElement.contains(el)) {
+        pending.delete(el);
+        return;
+      }
+      if (!isInRevealZone(el)) return;
+      reveal(el);
+      observer.unobserve(el);
+    });
+  };
+
+  const scheduleCheck = () => {
+    if (raf) return;
+    raf = requestAnimationFrame(checkVisible);
+  };
+
+  scheduleCheck();
+  window.addEventListener("scroll", scheduleCheck, { passive: true });
+  window.addEventListener("resize", scheduleCheck);
+  window.addEventListener("orientationchange", scheduleCheck);
+  window.addEventListener("load", scheduleCheck, { once: true });
+
+  // Fail-safe: se l'observer non scatta per desync/layout, nessun contenuto resta vuoto.
+  const fallback = window.setTimeout(() => {
+    elements.forEach(reveal);
+    observer.disconnect();
+  }, 1800);
+
+  return () => {
+    if (raf) cancelAnimationFrame(raf);
+    window.clearTimeout(fallback);
+    window.removeEventListener("scroll", scheduleCheck);
+    window.removeEventListener("resize", scheduleCheck);
+    window.removeEventListener("orientationchange", scheduleCheck);
+    window.removeEventListener("load", scheduleCheck);
+    observer.disconnect();
+  };
+}
+
 /**
  * Inizializza una sola volta i fix globali per ScrollTrigger su mobile/desktop:
  * - ignora il resize dovuto alla barra indirizzi iOS
@@ -20,6 +112,7 @@ export function initScrollReady(): void {
   initialised = true;
 
   ScrollTrigger.config({ ignoreMobileResize: true });
+  document.documentElement.classList.add("js-ready");
 
   const refresh = () => ScrollTrigger.refresh();
 
@@ -61,13 +154,11 @@ export function initScrollReady(): void {
   // che risolve i pin/scrub calcolati prima del layout finale.
   Promise.all([waitFonts(), waitImages()])
     .then(() => {
-      document.documentElement.classList.add("js-ready");
       // doppio refresh: uno subito, uno dopo un frame per assestare.
       ScrollTrigger.refresh(true);
       requestAnimationFrame(() => ScrollTrigger.refresh());
     })
     .catch(() => {
-      document.documentElement.classList.add("js-ready");
       ScrollTrigger.refresh(true);
     });
 
