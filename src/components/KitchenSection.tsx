@@ -9,10 +9,10 @@ import secondiImg from "@/assets/kitchen-secondi.jpg";
 import dolciImg from "@/assets/kitchen-dolci.jpg";
 
 const SERVICE_TAGS = [
-  "Alla carta ven–dom",
+  "Solo su prenotazione",
+  "Per cerimonie ed eventi",
   "Menù su misura",
-  "Veg / Vegan / Gluten-free",
-  "Menù bambini",
+  "Veg / Vegan / Gluten-free · Menù bambini",
 ];
 
 export function KitchenSection() {
@@ -90,8 +90,9 @@ export function KitchenSection() {
               className="font-sans text-base leading-relaxed text-ink/80 md:text-lg"
             >
               Tradizione pugliese e materie prime fresche del territorio,
-              attraversate da un tocco creativo. Ogni menù può essere costruito
-              su misura: dall'incontro intimo alla grande festa.
+              attraversate da un tocco creativo. La nostra cucina apre su
+              prenotazione: ogni menù viene composto su misura, pensato per
+              cerimonie, eventi e grandi occasioni.
             </p>
 
             {/* Fil rouge d'equità — ponte testuale verso l'anima equestre */}
