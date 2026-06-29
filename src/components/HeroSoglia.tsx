@@ -6,8 +6,8 @@ import { ArchFrame } from "./ArchFrame";
 import { KineticMarquee } from "./KineticMarquee";
 import { VerticalWord } from "./VerticalWord";
 import { MagneticButton } from "./MagneticButton";
-import tavolaImg from "@/assets/hero-tavola-cerimonia.jpg";
-import cavalloImg from "@/assets/hero-cavallo-murgese.jpg";
+import sogliaImg from "@/assets/hero-soglia-unica.jpg";
+import sogliaVideoAsset from "@/assets/hero-soglia-unica.mp4.asset.json";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,14 +43,12 @@ export function HeroSoglia() {
       const subtitle = root.current!.querySelector<HTMLElement>("[data-subtitle]")!;
       const ctas = root.current!.querySelectorAll<HTMLElement>("[data-cta]");
       const scrollCue = root.current!.querySelector<HTMLElement>("[data-scroll-cue]")!;
-      const connector = root.current!.querySelector<HTMLElement>("[data-connector]");
 
       if (reduced) {
         gsap.set(
           [back, front, torre, ...meta, subtitle, ...ctas, scrollCue],
           { opacity: 1, y: 0, clipPath: "inset(0%)" },
         );
-        if (connector) gsap.set(connector, { opacity: 1, scaleY: 1 });
         return;
       }
 
@@ -69,15 +67,6 @@ export function HeroSoglia() {
           { clipPath: "inset(0% 0% 0% 0%)", duration: 0.9, ease: "power3.inOut" },
           1.0,
         );
-
-      if (connector) {
-        tl.fromTo(
-          connector,
-          { scaleY: 0, opacity: 0, transformOrigin: "top center" },
-          { scaleY: 1, opacity: 1, duration: 0.9, ease: "power3.inOut" },
-          1.0,
-        );
-      }
 
       tl.fromTo(
           meta,
@@ -182,60 +171,20 @@ export function HeroSoglia() {
       {/* === Layer 2 (z-20): DITTICO DI ARCHI GEMELLI ===
           Desktop: affiancati, stessa size, leggero sfasamento verticale.
           Mobile: impilati, stessa size, gap identico. */}
-      <div
-        className="absolute inset-x-0 z-20 flex flex-col items-center gap-4 px-6 top-[16%] md:top-[10%] md:flex-row md:items-start md:justify-center md:gap-6 md:px-0"
-      >
-        {/* Arco A — LA TAVOLA */}
-        <figure className="relative h-[34vh] w-[78vw] max-w-[420px] md:h-[min(68vh,640px)] md:w-[min(32vw,360px)] md:translate-y-0">
-          <div className="h-full w-full" style={{ filter: "saturate(1.05)" }}>
-            <ArchFrame
-              src={tavolaImg}
-              alt="Tavola apparecchiata sotto le volte in pietra della masseria al tramonto, candele e fiori per una cerimonia"
-            />
-          </div>
-          <figcaption
-            data-meta
-            className="absolute -bottom-7 left-0 right-0 text-center text-eyebrow text-terracotta"
-          >
-            La Tavola
-          </figcaption>
-          {/* sostituire con media reale del cliente: tavola/cerimonia */}
+      {/* === Layer 2 (z-20): SOGLIA UNICA — un solo arco centrale ===
+          Contiene un media (foto → video) che mostra masseria + cavalli Murgesi insieme. */}
+      <div className="absolute inset-x-0 z-20 flex justify-center px-6 top-[14%] md:top-[8%]">
+        <figure className="relative h-[58vh] w-[88vw] max-w-[520px] md:h-[min(70vh,720px)] md:w-[min(52vw,640px)]">
+          <ArchFrame
+            src={sogliaImg}
+            videoSrc={sogliaVideoAsset.url}
+            alt="La masseria del Settecento e i cavalli Murgesi insieme nella campagna della Murgia all'ora dorata."
+          />
+          {/* MEDIA REALE DEL CLIENTE: una sola ripresa cinematografica che inquadra
+              insieme la masseria del '700 e i cavalli Murgesi (es. cavalli in primo piano
+              e la masseria sullo sfondo nella luce dell'ora dorata).
+              Foto come poster + video mp4/webm muto in loop. */}
         </figure>
-
-        {/* Arco B — I CAVALLI */}
-        <figure className="relative h-[34vh] w-[78vw] max-w-[420px] md:h-[min(68vh,640px)] md:w-[min(32vw,360px)] md:translate-y-6">
-          <div className="h-full w-full">
-            <ArchFrame
-              src={cavalloImg}
-              alt="Cavallo Murgese dal manto nero nella campagna della Murgia all'alba, tra ulivi e muretti a secco"
-            />
-          </div>
-          <figcaption
-            data-meta
-            className="absolute -bottom-7 left-0 right-0 text-center text-eyebrow"
-            style={{ color: "var(--murgese)" }}
-          >
-            I Cavalli
-          </figcaption>
-          {/* sostituire con media reale del cliente: cavallo Murgese */}
-        </figure>
-      </div>
-
-      {/* === Layer 3 (z-25): connettore centrale "&" === */}
-      <div
-        data-connector
-        aria-hidden
-        className="pointer-events-none absolute z-[25] hidden md:flex flex-col items-center"
-        style={{ left: "50%", top: "12%", height: "62vh", transform: "translateX(-50%)" }}
-      >
-        <span className="block w-px flex-1 bg-ink/25" />
-        <span
-          className="my-2 font-display italic text-ink/70"
-          style={{ fontSize: "clamp(1.2rem, 2vw, 1.8rem)" }}
-        >
-          &amp;
-        </span>
-        <span className="block w-px flex-1 bg-ink/25" />
       </div>
 
       {/* === Layer 4 (z-30): ABBONDANZA front — frammento terracotta che abbraccia entrambe le soglie ===
