@@ -8,6 +8,7 @@ import skyImg from "@/assets/place-sky.jpg";
 import hillsImg from "@/assets/place-hills.png";
 import olivesImg from "@/assets/place-olives.png";
 import masseriaImg from "@/assets/place-masseria.png";
+import horsesImg from "@/assets/place-horses.png";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -153,8 +154,22 @@ export function PlaceSection() {
           />
         </ParallaxLayer>
 
+        {/* L3.5 Cavalli Murgesi al pascolo — piano intermedio tra muretti e masseria */}
+        {/* presenza reale di cavalli al pascolo presso la masseria: DA CONFERMARE */}
+        <ParallaxLayer speed={-0.15} scaleBoost={0.06} zIndex={4}>
+          <img
+            src={horsesImg}
+            alt="Silhouette di cavalli Murgesi dal manto corvino al pascolo nella Murgia"
+            loading="lazy"
+            width={1920}
+            height={768}
+            className="absolute inset-x-0 bottom-[14%] h-[28%] w-full object-contain object-bottom opacity-90 md:left-[2%] md:w-[62%]"
+            style={{ filter: "drop-shadow(0 18px 20px color-mix(in oklab, var(--ink) 25%, transparent))" }}
+          />
+        </ParallaxLayer>
+
         {/* L4 Ulivi ai lati */}
-        <ParallaxLayer speed={-0.3} scaleBoost={0.08} zIndex={4}>
+        <ParallaxLayer speed={-0.3} scaleBoost={0.08} zIndex={5}>
           <img
             src={olivesImg}
             alt=""
@@ -167,7 +182,7 @@ export function PlaceSection() {
         </ParallaxLayer>
 
         {/* L5 Muretto a secco (CSS band) */}
-        <ParallaxLayer speed={-0.6} scaleBoost={0.12} zIndex={5}>
+        <ParallaxLayer speed={-0.6} scaleBoost={0.12} zIndex={6}>
           <div
             className="absolute inset-x-0 bottom-0 h-[14%]"
             style={{
@@ -236,7 +251,7 @@ export function PlaceSection() {
               style={{ fontSize: "clamp(1.05rem, 1.4vw, 1.4rem)", lineHeight: 1.5 }}
             >
               Un punto di quiete tra ulivi secolari e muretti a secco,
-              dove il paesaggio diventa silenzio.
+              dove pascolano i cavalli Murgesi e il paesaggio diventa silenzio.
             </p>
           </div>
         </div>
@@ -252,8 +267,23 @@ export function PlaceSection() {
           <FloatingDatum className="right-[14%] top-[58%]" delay={0.9} duration={5}>
             Noci (BA) · Puglia
           </FloatingDatum>
-          <FloatingDatum className="left-[10%] top-[64%]" delay={1.1} amplitude={5} duration={8}>
-            Ulivi · pietra · silenzio
+          <FloatingDatum
+            className="left-[10%] top-[64%]"
+            style={{ color: "var(--color-murgese, #15110F)" }}
+            delay={1.1}
+            amplitude={5}
+            duration={8}
+          >
+            Terra del cavallo Murgese
+          </FloatingDatum>
+          <FloatingDatum
+            className="left-[8%] top-[44%]"
+            style={{ color: "color-mix(in oklab, var(--olive) 75%, var(--ink) 25%)" }}
+            delay={1.3}
+            amplitude={6}
+            duration={9}
+          >
+            Ulivi · pietra · cavalli
           </FloatingDatum>
         </div>
 
@@ -263,12 +293,17 @@ export function PlaceSection() {
           className="absolute bottom-[18%] left-1/2 z-25 grid w-[88%] max-w-[420px] -translate-x-1/2 grid-cols-1 gap-2 text-center md:hidden"
         >
           {[
-            "40.72° N — 17.13° E",
-            "Murgia dei Trulli · altopiano",
-            "Noci (BA) · Puglia",
-            "Ulivi · pietra · silenzio",
-          ].map((t) => (
-            <li key={t} className="text-eyebrow text-ink/75">
+            { t: "40.72° N — 17.13° E", deep: false },
+            { t: "Murgia dei Trulli · altopiano", deep: false },
+            { t: "Noci (BA) · Puglia", deep: false },
+            { t: "Terra del cavallo Murgese", deep: true },
+            { t: "Ulivi · pietra · cavalli", deep: false },
+          ].map(({ t, deep }) => (
+            <li
+              key={t}
+              className="text-eyebrow"
+              style={{ color: deep ? "var(--color-murgese, #15110F)" : "color-mix(in oklab, var(--ink) 75%, transparent)" }}
+            >
               {t}
             </li>
           ))}
@@ -325,6 +360,8 @@ export function PlaceSection() {
               Zona E n. 49, 70015 Noci (BA)
             </address>
             <p className="font-sans text-ink/65" style={{ fontSize: "0.95rem", lineHeight: 1.65 }}>
+              Nel cuore della Murgia, terra di masserie e di cavalli.
+              <br />
               A breve distanza da Noci, Alberobello e dalla Valle d'Itria.
               {/* Distanze esatte DA CONFERMARE */}
             </p>
