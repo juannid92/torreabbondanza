@@ -253,6 +253,27 @@ export function PlaceSection() {
               Un punto di quiete tra ulivi secolari e muretti a secco,
               dove pascolano i cavalli Murgesi e il paesaggio diventa silenzio.
             </p>
+            {/* Lista compatta — visibile inline solo su mobile, NON in overlay */}
+            <ul
+              aria-label="Coordinate e contesto"
+              className="mt-8 grid grid-cols-1 gap-2 md:hidden"
+            >
+              {[
+                { t: "40.72° N — 17.13° E", deep: false },
+                { t: "Murgia dei Trulli · altopiano", deep: false },
+                { t: "Noci (BA) · Puglia", deep: false },
+                { t: "Terra del cavallo Murgese", deep: true },
+                { t: "Ulivi · pietra · cavalli", deep: false },
+              ].map(({ t, deep }) => (
+                <li
+                  key={t}
+                  className="text-eyebrow"
+                  style={{ color: deep ? "var(--color-murgese, #15110F)" : "color-mix(in oklab, var(--ink) 75%, transparent)" }}
+                >
+                  {t}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
@@ -286,28 +307,6 @@ export function PlaceSection() {
             Ulivi · pietra · cavalli
           </FloatingDatum>
         </div>
-
-        {/* Lista compatta mobile */}
-        <ul
-          aria-label="Coordinate e contesto"
-          className="absolute bottom-[18%] left-1/2 z-25 grid w-[88%] max-w-[420px] -translate-x-1/2 grid-cols-1 gap-2 text-center md:hidden"
-        >
-          {[
-            { t: "40.72° N — 17.13° E", deep: false },
-            { t: "Murgia dei Trulli · altopiano", deep: false },
-            { t: "Noci (BA) · Puglia", deep: false },
-            { t: "Terra del cavallo Murgese", deep: true },
-            { t: "Ulivi · pietra · cavalli", deep: false },
-          ].map(({ t, deep }) => (
-            <li
-              key={t}
-              className="text-eyebrow"
-              style={{ color: deep ? "var(--color-murgese, #15110F)" : "color-mix(in oklab, var(--ink) 75%, transparent)" }}
-            >
-              {t}
-            </li>
-          ))}
-        </ul>
 
         {/* Sfumatura di uscita verso MOMENTO B */}
         <div
