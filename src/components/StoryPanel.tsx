@@ -33,7 +33,7 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
     <article
       data-panel
       data-panel-index={index}
-      className="relative flex h-full w-screen shrink-0 items-center md:w-screen"
+      className="relative flex h-full w-screen shrink-0 items-center max-md:h-auto max-md:min-h-[90svh] max-md:w-full"
     >
       {/* Ghost year sullo sfondo */}
       <div
@@ -43,7 +43,7 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
         <GhostYear tone={tone}>{ghost}</GhostYear>
       </div>
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1400px] flex-col items-center gap-10 px-6 py-[10vh] md:flex-row md:items-center md:justify-between md:gap-16 md:px-12 lg:px-20">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1400px] flex-col items-center gap-10 px-6 py-[10vh] max-md:h-auto max-md:py-16 md:flex-row md:items-center md:justify-between md:gap-16 md:px-12 lg:px-20">
         {isOpening ? (
           <div className="flex w-full max-w-[820px] flex-col gap-6 md:gap-8">
             {eyebrow ? (
