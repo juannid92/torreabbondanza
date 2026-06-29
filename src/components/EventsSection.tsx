@@ -333,7 +333,7 @@ export function EventsSection() {
             07 — Eventi & Matrimoni
           </p>
           <h3
-            data-mask-title
+            aria-label="Quando la masseria si accende"
             className="mt-6 font-display font-semibold leading-[1.02] text-ivory"
             style={{
               fontSize: "clamp(2.4rem, 7vw, 6.4rem)",
@@ -341,7 +341,29 @@ export function EventsSection() {
               maxWidth: "18ch",
             }}
           >
-            Quando la masseria si <em className="not-italic text-gold" style={{ fontStyle: "italic" }}>accende</em>
+            {["Quando", "la", "masseria", "si", "accende"].map((w, i, arr) => {
+              const isAccent = w === "accende";
+              return (
+                <span
+                  key={i}
+                  aria-hidden
+                  className="inline-block overflow-hidden align-top"
+                  style={{ paddingBottom: "0.16em" }}
+                >
+                  <span
+                    data-opener-word
+                    className={`inline-block ${isAccent ? "italic" : ""}`}
+                    style={{
+                      willChange: "transform",
+                      color: isAccent ? "var(--gold)" : undefined,
+                    }}
+                  >
+                    {w}
+                    {i < arr.length - 1 ? "\u00A0" : ""}
+                  </span>
+                </span>
+              );
+            })}
           </h3>
           <p
             data-fade
