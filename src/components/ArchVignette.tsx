@@ -5,6 +5,7 @@ interface ArchVignetteProps {
   alt: string;
   eager?: boolean;
   className?: string;
+  tone?: "warm" | "deep";
 }
 
 /**
@@ -12,17 +13,22 @@ interface ArchVignetteProps {
  * L'immagine interna è esposta via data-arch-image per parallax esterno.
  */
 export const ArchVignette = forwardRef<HTMLDivElement, ArchVignetteProps>(
-  function ArchVignette({ src, alt, eager = false, className = "" }, ref) {
+  function ArchVignette({ src, alt, eager = false, className = "", tone = "warm" }, ref) {
+    const isDeep = tone === "deep";
+    const accent = isDeep ? "var(--murgese)" : "var(--stone)";
+    const shadow = isDeep
+      ? "0 30px 80px -40px color-mix(in oklab, var(--murgese) 65%, transparent), inset 0 0 0 1px color-mix(in oklab, var(--ivory) 55%, transparent)"
+      : "0 30px 80px -40px color-mix(in oklab, var(--ink) 45%, transparent), inset 0 0 0 1px color-mix(in oklab, var(--ivory) 60%, transparent)";
     return (
       <div
         ref={ref}
         data-arch
+        data-arch-tone={tone}
         className={`relative overflow-hidden bg-stone shadow-soft ${className}`}
         style={{
           borderRadius: "50% 50% 0 0 / 38% 38% 0 0",
-          border: "1px solid var(--stone)",
-          boxShadow:
-            "0 30px 80px -40px color-mix(in oklab, var(--ink) 45%, transparent), inset 0 0 0 1px color-mix(in oklab, var(--ivory) 60%, transparent)",
+          border: `1px solid ${accent}`,
+          boxShadow: shadow,
           aspectRatio: "3 / 4",
         }}
       >
