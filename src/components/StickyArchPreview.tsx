@@ -19,11 +19,11 @@ export function StickyArchPreview({ dish, categoryLabel }: StickyArchPreviewProp
       <motion.div
         className="relative overflow-hidden bg-stone shadow-soft"
         style={{
-          borderRadius: "50% 50% 0 0 / 38% 38% 0 0",
+          borderRadius: "10px",
           border: "1px solid var(--stone)",
           boxShadow:
             "0 30px 80px -40px color-mix(in oklab, var(--ink) 45%, transparent), inset 0 0 0 1px color-mix(in oklab, var(--ivory) 60%, transparent)",
-          aspectRatio: "3 / 4",
+          aspectRatio: "4 / 5",
         }}
         animate={{ scale: [1, 1.012, 1] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
