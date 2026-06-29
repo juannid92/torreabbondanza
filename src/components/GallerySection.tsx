@@ -8,7 +8,7 @@ import {
 } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { X, ChevronLeft, ChevronRight, Expand } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { MagneticButton } from "./MagneticButton";
 
 import heroImg from "@/assets/hero-masseria.jpg";
@@ -29,332 +29,61 @@ import eventsWedding from "@/assets/events-wedding.jpg";
 import eventsPrivate from "@/assets/events-private.jpg";
 import eventsKitchen from "@/assets/events-kitchen.jpg";
 import seasonEquestrian from "@/assets/season-equestrian.jpg";
+import horseApparition from "@/assets/horse-apparition.jpg";
+import horseGallop from "@/assets/horse-gallop.jpg";
+import horsesTradition from "@/assets/horses-tradition.jpg";
+import storyCavalli from "@/assets/story-cavalli-murgesi.jpg";
+import heroCavallo from "@/assets/hero-cavallo-murgese.jpg";
+import seasonAttacchi from "@/assets/season-exp-summer-attacchi.jpg";
+import seasonWinterHorses from "@/assets/season-exp-winter-horses.jpg";
 
-type Category =
-  | "all"
-  | "masseria"
-  | "interni"
-  | "cucina"
-  | "eventi"
-  | "murgia";
-
-type Shape = "arch" | "rect";
-type Span = { col: number; row: number };
+type Soul = "warm" | "dark";
 
 interface GalleryImage {
   id: string;
   src: string;
   alt: string;
   caption: string;
-  category: Exclude<Category, "all">;
-  shape: Shape;
-  span: Span; // desktop span (cols su 12, rows su track 220px)
-  speed: number; // parallax: -1 (lento), 1 (veloce)
+  soul: Soul;
+  // posizione nello spazio 3D (normalizzata)
+  x: number; // -1 .. 1 (relativa alla viewport)
+  y: number; // -1 .. 1
+  z: number; // 0 (vicina) .. 1 (lontana)
+  w: number; // larghezza in vmin
+  ratio: number; // aspect ratio (w/h)
 }
 
-const FILTERS: { id: Category; label: string }[] = [
-  { id: "all", label: "Tutto" },
-  { id: "masseria", label: "La Masseria" },
-  { id: "interni", label: "Gli Interni" },
-  { id: "cucina", label: "La Cucina" },
-  { id: "eventi", label: "Eventi & Matrimoni" },
-  { id: "murgia", label: "La Murgia" },
-];
-
-// Placeholder editoriale — le immagini reali saranno fornite dal cliente.
-// {/* IMMAGINE DA FORNIRE */}
+// Set bilanciato 50/50 (caldo ↔ nero Murgese), alternato lungo Z
+// {/* DA CONFERMARE: foto reali del cliente */}
 const IMAGES: GalleryImage[] = [
-  {
-    id: "g01",
-    src: heroImg,
-    alt: "Facciata della Masseria Torre Abbondanza al tramonto",
-    caption: "La facciata · ora dorata",
-    category: "masseria",
-    shape: "arch",
-    span: { col: 5, row: 3 },
-    speed: -0.4,
-  },
-  {
-    id: "g02",
-    src: storyPietra,
-    alt: "Dettaglio del muro a secco in pietra calcarea",
-    caption: "Pietra · dettaglio",
-    category: "masseria",
-    shape: "rect",
-    span: { col: 4, row: 2 },
-    speed: 0.3,
-  },
-  {
-    id: "g03",
-    src: kitchenPrimi,
-    alt: "Orecchiette fatte a mano impiattate",
-    caption: "Orecchiette · cucina",
-    category: "cucina",
-    shape: "rect",
-    span: { col: 3, row: 2 },
-    speed: 0.6,
-  },
-  {
-    id: "g04",
-    src: eventsHall,
-    alt: "Sala interna con volte storiche apparecchiata per un evento",
-    caption: "La sala · volte del '700",
-    category: "interni",
-    shape: "arch",
-    span: { col: 4, row: 3 },
-    speed: -0.2,
-  },
-  {
-    id: "g05",
-    src: placeOlives,
-    alt: "Ulivi secolari nella campagna della masseria",
-    caption: "Ulivi secolari",
-    category: "murgia",
-    shape: "rect",
-    span: { col: 5, row: 2 },
-    speed: 0.5,
-  },
-  {
-    id: "g06",
-    src: eventsWedding,
-    alt: "Sposi sotto un arco fiorito al tramonto",
-    caption: "Matrimonio · al tramonto",
-    category: "eventi",
-    shape: "rect",
-    span: { col: 3, row: 3 },
-    speed: -0.3,
-  },
-  {
-    id: "g07",
-    src: storyOrigini,
-    alt: "Vista d'epoca della masseria, archivio storico",
-    caption: "Origini · archivio",
-    category: "masseria",
-    shape: "rect",
-    span: { col: 4, row: 2 },
-    speed: 0.4,
-  },
-  {
-    id: "g08",
-    src: kitchenAntipasti,
-    alt: "Tavolo apparecchiato con antipasti della tradizione",
-    caption: "Antipasti · tradizione",
-    category: "cucina",
-    shape: "arch",
-    span: { col: 3, row: 3 },
-    speed: 0.2,
-  },
-  {
-    id: "g09",
-    src: storyFamiglia,
-    alt: "Ritratto familiare nella corte della masseria",
-    caption: "La famiglia",
-    category: "interni",
-    shape: "rect",
-    span: { col: 5, row: 2 },
-    speed: -0.5,
-  },
-  {
-    id: "g10",
-    src: seasonEquestrian,
-    alt: "Cavalli Murgesi al galoppo nella campagna",
-    caption: "Cavalli Murgesi",
-    category: "murgia",
-    shape: "rect",
-    span: { col: 7, row: 3 },
-    speed: 0.3,
-  },
-  {
-    id: "g11",
-    src: kitchenWine,
-    alt: "Calice di vino Primitivo controluce",
-    caption: "Primitivo · calice",
-    category: "cucina",
-    shape: "rect",
-    span: { col: 3, row: 2 },
-    speed: 0.6,
-  },
-  {
-    id: "g12",
-    src: eventsGarden,
-    alt: "Giardino della masseria con ulivi al tramonto",
-    caption: "Giardino · tramonto",
-    category: "eventi",
-    shape: "arch",
-    span: { col: 4, row: 3 },
-    speed: -0.4,
-  },
-  {
-    id: "g13",
-    src: placeMasseria,
-    alt: "La masseria vista dalla campagna",
-    caption: "Veduta · campagna",
-    category: "masseria",
-    shape: "rect",
-    span: { col: 5, row: 2 },
-    speed: 0.4,
-  },
-  {
-    id: "g14",
-    src: kitchenSecondi,
-    alt: "Secondo di carne impiattato con verdure",
-    caption: "Secondi",
-    category: "cucina",
-    shape: "rect",
-    span: { col: 4, row: 2 },
-    speed: -0.3,
-  },
-  {
-    id: "g15",
-    src: storyOggi,
-    alt: "Dettaglio contemporaneo degli interni della masseria",
-    caption: "Oggi · dettaglio",
-    category: "interni",
-    shape: "rect",
-    span: { col: 3, row: 2 },
-    speed: 0.5,
-  },
-  {
-    id: "g16",
-    src: eventsPrivate,
-    alt: "Tavolata privata di sera sotto luci sospese",
-    caption: "Evento privato",
-    category: "eventi",
-    shape: "rect",
-    span: { col: 5, row: 3 },
-    speed: 0.2,
-  },
-  {
-    id: "g17",
-    src: kitchenDolci,
-    alt: "Dolce della tradizione con mandorle e miele",
-    caption: "Dolci",
-    category: "cucina",
-    shape: "arch",
-    span: { col: 3, row: 2 },
-    speed: -0.5,
-  },
-  {
-    id: "g18",
-    src: eventsKitchen,
-    alt: "Chef impiatta nella cucina della masseria",
-    caption: "Cucina su misura",
-    category: "eventi",
-    shape: "rect",
-    span: { col: 4, row: 2 },
-    speed: 0.4,
-  },
+  // Z lontano → vicino, alternato W/D/W/D...
+  { id: "g01", src: heroImg, alt: "Facciata della masseria al tramonto", caption: "La facciata · ora dorata", soul: "warm", x: -0.55, y: -0.25, z: 0.98, w: 34, ratio: 16 / 10 },
+  { id: "g02", src: horseApparition, alt: "Cavallo Murgese in luce radente", caption: "Apparizione · Murgese", soul: "dark", x: 0.5, y: 0.22, z: 0.92, w: 30, ratio: 4 / 5 },
+  { id: "g03", src: storyOrigini, alt: "Vista d'epoca della masseria", caption: "Origini · archivio", soul: "warm", x: 0.35, y: -0.38, z: 0.84, w: 26, ratio: 3 / 2 },
+  { id: "g04", src: horseGallop, alt: "Cavallo Murgese al galoppo nella prateria", caption: "Galoppo · prateria", soul: "dark", x: -0.45, y: 0.35, z: 0.78, w: 32, ratio: 16 / 9 },
+  { id: "g05", src: eventsWedding, alt: "Sposi al tramonto tra gli ulivi", caption: "Matrimonio · ulivi", soul: "warm", x: 0.6, y: -0.05, z: 0.7, w: 24, ratio: 3 / 4 },
+  { id: "g06", src: storyCavalli, alt: "Cavalli Murgesi nella corte storica", caption: "Stirpe · corte", soul: "dark", x: -0.62, y: 0.05, z: 0.62, w: 28, ratio: 4 / 3 },
+  { id: "g07", src: kitchenPrimi, alt: "Orecchiette fatte a mano", caption: "Orecchiette · tradizione", soul: "warm", x: 0.1, y: 0.42, z: 0.55, w: 22, ratio: 1 },
+  { id: "g08", src: horsesTradition, alt: "Attacchi d'epoca con cavalli Murgesi", caption: "Attacchi d'epoca", soul: "dark", x: 0.55, y: -0.45, z: 0.48, w: 30, ratio: 16 / 10 },
+  { id: "g09", src: eventsHall, alt: "Sala storica apparecchiata", caption: "La sala · volte del '700", soul: "warm", x: -0.5, y: -0.4, z: 0.4, w: 28, ratio: 3 / 2 },
+  { id: "g10", src: seasonEquestrian, alt: "Cavalli al pascolo nella Murgia", caption: "Pascolo · Murgia", soul: "dark", x: -0.15, y: 0.45, z: 0.34, w: 34, ratio: 16 / 9 },
+  { id: "g11", src: kitchenAntipasti, alt: "Antipasti della tradizione pugliese", caption: "Antipasti · convivio", soul: "warm", x: 0.5, y: 0.3, z: 0.28, w: 22, ratio: 4 / 5 },
+  { id: "g12", src: heroCavallo, alt: "Ritratto di un cavallo Murgese", caption: "Ritratto · Murgese", soul: "dark", x: -0.55, y: -0.15, z: 0.22, w: 26, ratio: 3 / 4 },
+  { id: "g13", src: eventsGarden, alt: "Giardino della masseria al tramonto", caption: "Giardino · tramonto", soul: "warm", x: 0.35, y: -0.35, z: 0.16, w: 30, ratio: 16 / 10 },
+  { id: "g14", src: seasonAttacchi, alt: "Sfilata di attacchi d'epoca in estate", caption: "Sfilata · estate", soul: "dark", x: -0.4, y: 0.4, z: 0.12, w: 28, ratio: 16 / 9 },
+  { id: "g15", src: kitchenWine, alt: "Calice di Primitivo controluce", caption: "Primitivo · calice", soul: "warm", x: 0.62, y: 0.08, z: 0.07, w: 20, ratio: 4 / 5 },
+  { id: "g16", src: seasonWinterHorses, alt: "Cavalli Murgesi nel paesaggio invernale", caption: "Inverno · stirpe", soul: "dark", x: -0.55, y: -0.05, z: 0.03, w: 26, ratio: 4 / 3 },
+  // Sfondo distante: secondaria larga
+  { id: "g17", src: placeOlives, alt: "Ulivi secolari nella campagna", caption: "Ulivi secolari", soul: "warm", x: 0.0, y: 0.05, z: 1.0, w: 60, ratio: 16 / 9 },
+  { id: "g18", src: placeMasseria, alt: "La masseria vista dalla campagna", caption: "Veduta · campagna", soul: "warm", x: -0.2, y: -0.5, z: 0.45, w: 24, ratio: 3 / 2 },
+  { id: "g19", src: storyPietra, alt: "Muro a secco in pietra calcarea", caption: "Pietra · muro a secco", soul: "warm", x: 0.0, y: -0.45, z: 0.25, w: 22, ratio: 1 },
+  { id: "g20", src: kitchenSecondi, alt: "Secondo della tradizione murgiana", caption: "Secondi", soul: "warm", x: 0.18, y: 0.0, z: 0.5, w: 20, ratio: 4 / 5 },
+  { id: "g21", src: storyFamiglia, alt: "Ritratto familiare nella corte", caption: "La famiglia", soul: "warm", x: -0.25, y: 0.25, z: 0.18, w: 22, ratio: 3 / 4 },
+  { id: "g22", src: eventsPrivate, alt: "Tavolata privata sotto luci sospese", caption: "Festa · luci", soul: "warm", x: 0.42, y: 0.45, z: 0.4, w: 26, ratio: 16 / 10 },
+  { id: "g23", src: kitchenDolci, alt: "Dolce della tradizione con mandorle", caption: "Dolci · mandorle", soul: "warm", x: -0.15, y: -0.1, z: 0.6, w: 18, ratio: 1 },
+  { id: "g24", src: eventsKitchen, alt: "Chef impiatta in cucina", caption: "Cucina su misura", soul: "warm", x: 0.0, y: 0.35, z: 0.88, w: 22, ratio: 3 / 2 },
+  { id: "g25", src: storyOggi, alt: "Dettaglio contemporaneo degli interni", caption: "Oggi · dettaglio", soul: "warm", x: -0.35, y: -0.05, z: 0.5, w: 22, ratio: 4 / 5 },
 ];
-
-const ARCH_RADIUS = "50% 50% 0 0 / 38% 38% 0 0";
-
-function GalleryFilter({
-  active,
-  onChange,
-}: {
-  active: Category;
-  onChange: (c: Category) => void;
-}) {
-  return (
-    <div
-      role="tablist"
-      aria-label="Filtra galleria per tema"
-      className="-mx-6 flex gap-2 overflow-x-auto px-6 pb-2 md:mx-0 md:flex-wrap md:overflow-visible md:px-0"
-    >
-      {FILTERS.map((f) => {
-        const isActive = f.id === active;
-        return (
-          <button
-            key={f.id}
-            role="tab"
-            aria-selected={isActive}
-            onClick={() => onChange(f.id)}
-            className="text-eyebrow shrink-0 rounded-full border px-4 py-2 transition-colors"
-            style={{
-              borderColor: isActive
-                ? "var(--terracotta)"
-                : "color-mix(in oklab, var(--ink) 18%, transparent)",
-              background: isActive ? "var(--terracotta)" : "transparent",
-              color: isActive ? "var(--ivory)" : "var(--ink)",
-            }}
-          >
-            {f.label}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-function GalleryItem({
-  image,
-  index,
-  total,
-  onOpen,
-}: {
-  image: GalleryImage;
-  index: number;
-  total: number;
-  onOpen: (id: string) => void;
-}) {
-  const isArch = image.shape === "arch";
-  return (
-    <button
-      data-gallery-item
-      data-id={image.id}
-      data-speed={image.speed}
-      onClick={() => onOpen(image.id)}
-      className="group relative block w-full overflow-hidden text-left"
-      style={{
-        gridColumn: `span ${image.span.col}`,
-        gridRow: `span ${image.span.row}`,
-        borderRadius: isArch ? ARCH_RADIUS : "2px",
-        border: "1px solid color-mix(in oklab, var(--ink) 12%, transparent)",
-        background: "var(--stone)",
-        willChange: "transform",
-      }}
-      aria-label={`Apri immagine ${index + 1} di ${total}: ${image.caption}`}
-    >
-      <div
-        data-gallery-clip
-        className="absolute inset-0 overflow-hidden"
-        style={{
-          borderRadius: isArch ? ARCH_RADIUS : "2px",
-          clipPath: "inset(100% 0 0 0)",
-          willChange: "clip-path",
-        }}
-      >
-        <img
-          data-gallery-img
-          src={image.src}
-          alt={image.alt}
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 h-[115%] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-          style={{ top: "-7.5%" }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        />
-        <div
-          aria-hidden
-          className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-ivory/90 text-ink opacity-0 shadow-soft transition-opacity duration-300 group-hover:opacity-100"
-        >
-          <Expand className="h-4 w-4" />
-        </div>
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-          <span className="font-display text-base italic text-ivory drop-shadow">
-            {image.caption}
-          </span>
-          <span className="text-eyebrow text-ivory/85">
-            {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-          </span>
-        </div>
-      </div>
-    </button>
-  );
-}
 
 function ImmersiveLightbox({
   images,
