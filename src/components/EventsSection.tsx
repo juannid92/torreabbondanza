@@ -83,6 +83,19 @@ export function EventsSection() {
         });
       });
 
+      /* ---------- Opener title: mask-reveal manuale (rispetta l'accento) ---------- */
+      const openerWords = root.querySelectorAll<HTMLElement>("[data-opener-word]");
+      if (openerWords.length) {
+        gsap.set(openerWords, { yPercent: 110 });
+        gsap.to(openerWords, {
+          yPercent: 0,
+          duration: reduced ? 0.2 : 1.1,
+          ease: "power3.out",
+          stagger: reduced ? 0 : 0.08,
+          delay: 0.2,
+        });
+      }
+
       /* ---------- Blocchi in dissolvenza ---------- */
       const fades = root.querySelectorAll<HTMLElement>("[data-fade]");
       gsap.set(fades, { opacity: 0, y: 20 });
