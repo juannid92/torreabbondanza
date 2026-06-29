@@ -5,6 +5,7 @@ import { StorySection } from "@/components/StorySection";
 import { PlaceSection } from "@/components/PlaceSection";
 import { KitchenSection } from "@/components/KitchenSection";
 import { MenuSection } from "@/components/MenuSection";
+import { HorsesSection } from "@/components/HorsesSection";
 import { EventsSection } from "@/components/EventsSection";
 import { SeasonsSection } from "@/components/SeasonsSection";
 import { GallerySection } from "@/components/GallerySection";
@@ -44,6 +45,7 @@ function Index() {
       <PlaceSection />
       <KitchenSection />
       <MenuSection />
+      <HorsesSection />
       <EventsSection />
       <SeasonsSection />
       <GallerySection />
