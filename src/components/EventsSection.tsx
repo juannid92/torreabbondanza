@@ -597,7 +597,7 @@ export function EventsSection() {
           data-scene-c-bg
           className="absolute inset-y-0 left-0 -z-10"
           style={{
-            width: "200%",
+            width: "800%",
             backgroundImage: `url(${tablePanoImg})`,
             backgroundSize: "auto 110%",
             backgroundRepeat: "repeat-x",
@@ -619,10 +619,10 @@ export function EventsSection() {
         <div
           data-scene-c-mid
           className="absolute inset-y-0 left-0 -z-10"
-          style={{ width: "180%", willChange: "transform" }}
+          style={{ width: "800%", willChange: "transform" }}
         >
-          {Array.from({ length: 40 }).map((_, i) => {
-            const x = (i / 39) * 100;
+          {Array.from({ length: 120 }).map((_, i) => {
+            const x = (i / 119) * 100;
             const y = 15 + ((i * 13) % 7) * 2;
             return (
               <span
