@@ -43,6 +43,7 @@
   --color-olive: var(--olive);
   --color-gold: var(--gold);
   --color-ink: var(--ink);
+  --color-murgese: var(--murgese);
 
   --font-display: "Fraunces", "Cormorant Garamond", serif;
   --font-sans: "Inter", system-ui, sans-serif;
@@ -61,6 +62,7 @@
   --olive: oklch(0.495 0.045 115);         /* #6B7250 */
   --gold: oklch(0.625 0.115 75);           /* #A9802E */
   --ink: oklch(0.235 0.015 55);            /* #2A2622 */
+  --murgese: oklch(0.155 0.008 50);        /* #15110F — nero Murgese */
 
   /* Mapping shadcn → brand */
   --background: var(--ivory);
