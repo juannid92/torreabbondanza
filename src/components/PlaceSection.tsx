@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ParallaxLayer } from "./ParallaxLayer";
 import { FloatingDatum } from "./FloatingDatum";
 import { StylizedMap } from "./StylizedMap";
+import { observeRevealElements } from "@/lib/scroll-ready";
 import skyImg from "@/assets/place-sky.jpg";
 import hillsImg from "@/assets/place-hills.png";
 import olivesImg from "@/assets/place-olives.png";
@@ -24,9 +25,10 @@ export function PlaceSection() {
     if (typeof window === "undefined") return;
     const scene = sceneRef.current;
     if (!scene) return;
+    const cleanupReveal = observeRevealElements(scene.closest("section") ?? scene);
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    if (reduced) return () => cleanupReveal();
 
     const ctx = gsap.context(() => {
       const layers = gsap.utils.toArray<HTMLElement>("[data-parallax]", scene);
@@ -48,6 +50,7 @@ export function PlaceSection() {
               start: "top bottom",
               end: "bottom top",
               scrub: true,
+              invalidateOnRefresh: true,
             },
           },
         );
@@ -57,25 +60,32 @@ export function PlaceSection() {
       const title = titleRef.current;
       if (title) {
         const words = title.querySelectorAll<HTMLElement>("[data-word-inner]");
-        gsap.fromTo(
-          words,
-          { yPercent: 110 },
-          {
-            yPercent: 0,
-            ease: "power3.out",
-            duration: 1,
-            stagger: 0.08,
-            scrollTrigger: {
-              trigger: title,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
+          ScrollTrigger.create({
+            trigger: title,
+            start: "top 80%",
+            once: true,
+            invalidateOnRefresh: true,
+            onEnter: () => {
+              gsap.fromTo(
+                words,
+                { yPercent: 110 },
+                {
+                  yPercent: 0,
+                  ease: "power3.out",
+                  duration: 1,
+                  stagger: 0.08,
+                  overwrite: true,
+                },
+              );
             },
-          },
-        );
+          });
       }
     }, scene);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      cleanupReveal();
+    };
   }, []);
 
   return (
@@ -247,6 +257,7 @@ export function PlaceSection() {
               </span>
             </h2>
             <p
+              data-reveal="soft"
               className="mt-6 max-w-[44ch] font-display text-ink/80"
               style={{ fontSize: "clamp(1.05rem, 1.4vw, 1.4rem)", lineHeight: 1.5 }}
             >
@@ -255,6 +266,7 @@ export function PlaceSection() {
             </p>
             {/* Lista compatta — visibile inline solo su mobile, NON in overlay */}
             <ul
+              data-reveal="soft"
               aria-label="Coordinate e contesto"
               className="mt-8 grid grid-cols-1 gap-2 md:hidden"
             >
@@ -325,6 +337,7 @@ export function PlaceSection() {
           {/* Mappa */}
           <div className="relative">
             <div
+              data-reveal="soft"
               className="relative rounded-sm bg-ivory p-4 md:p-6"
               style={{
                 boxShadow:
@@ -340,8 +353,9 @@ export function PlaceSection() {
 
           {/* Info reali */}
           <div className="flex flex-col gap-6">
-            <span className="text-eyebrow text-terracotta">Come raggiungerci</span>
+            <span data-reveal className="text-eyebrow text-terracotta">Come raggiungerci</span>
             <h3
+              data-reveal="soft"
               className="font-display text-ink"
               style={{
                 fontSize: "clamp(1.8rem, 3.2vw, 2.8rem)",

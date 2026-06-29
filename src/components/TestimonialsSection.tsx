@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { observeRevealElements } from "@/lib/scroll-ready";
 
 interface GuestNote {
   text: string;
@@ -110,41 +111,44 @@ function GuestPage({ note, index }: { note: GuestNote; index: number }) {
       return;
     }
 
-    // start hidden via clip-path (right to left "writing" reveal)
-    gsap.set(quote, {
-      opacity: 1,
-      clipPath: "inset(0 100% 0 0)",
-    });
-    gsap.set(sign, { opacity: 0, y: 6 });
-    if (stroke) {
-      const len = stroke.getTotalLength();
-      stroke.style.strokeDasharray = `${len}`;
-      stroke.style.strokeDashoffset = `${len}`;
-    }
+    let played = false;
+    const trigger = ScrollTrigger.create({
+      trigger: root,
+      start: "top 80%",
+      once: true,
+      invalidateOnRefresh: true,
+      onEnter: () => {
+        if (played) return;
+        played = true;
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: root,
-        start: "top 80%",
-        once: true,
-        invalidateOnRefresh: true,
+        if (stroke) {
+          const len = stroke.getTotalLength();
+          stroke.style.strokeDasharray = `${len}`;
+          stroke.style.strokeDashoffset = `${len}`;
+        }
+
+        const tl = gsap.timeline();
+        tl.fromTo(
+          quote,
+          { clipPath: "inset(0 100% 0 0)" },
+          {
+            clipPath: "inset(0 0% 0 0)",
+            duration: 1.6,
+            ease: "power1.inOut",
+            overwrite: true,
+          },
+        ).fromTo(
+          sign,
+          { y: 6 },
+          { y: 0, duration: 0.5, ease: "power2.out", overwrite: true, immediateRender: false },
+          "-=0.25",
+        );
+
+        if (stroke) {
+          tl.to(stroke, { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" }, "-=0.35");
+        }
       },
     });
-
-    tl.to(quote, {
-      clipPath: "inset(0 0% 0 0)",
-      duration: 1.6,
-      ease: "power1.inOut",
-    })
-      .to(sign, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, "-=0.25");
-
-    if (stroke) {
-      tl.to(
-        stroke,
-        { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" },
-        "-=0.35",
-      );
-    }
 
     // parallax leggero
     const pTween = gsap.to(root, {
@@ -155,12 +159,12 @@ function GuestPage({ note, index }: { note: GuestNote; index: number }) {
         start: "top bottom",
         end: "bottom top",
         scrub: true,
+          invalidateOnRefresh: true,
       },
     });
 
     return () => {
-      tl.scrollTrigger?.kill();
-      tl.kill();
+      trigger.kill();
       pTween.scrollTrigger?.kill();
       pTween.kill();
     };
@@ -174,6 +178,7 @@ function GuestPage({ note, index }: { note: GuestNote; index: number }) {
   return (
     <figure
       ref={ref}
+      data-reveal="soft"
       className={`relative ${note.width} mx-auto md:mx-0`}
       style={{
         transform: `rotate(${note.rotate}deg) translateX(${note.offsetX}%)`,
@@ -244,6 +249,9 @@ export function TestimonialsSection() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    const root = rootRef.current;
+    if (!root) return;
+    return observeRevealElements(root);
   }, []);
 
   return (

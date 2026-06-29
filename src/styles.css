@@ -142,8 +142,35 @@
 
 @utility word-inner {
   display: inline-block;
-  transform: translateY(110%);
   will-change: transform;
+}
+
+/* Reveal fail-safe: di default tutto è visibile. Solo JS pronto + observer attivo
+   può applicare lo stato iniziale, e il fallback JS forza comunque .in-view. */
+html.js-ready [data-reveal][data-reveal-pending]:not(.in-view) {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+}
+
+[data-reveal] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 760ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal="soft"] {
+  transition-duration: 980ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js-ready [data-reveal][data-reveal-pending]:not(.in-view),
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

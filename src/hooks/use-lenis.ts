@@ -38,6 +38,7 @@ export function useLenis() {
 
     const onScroll = () => ScrollTrigger.update();
     lenis.on("scroll", onScroll);
+    ScrollTrigger.refresh(true);
 
     const tick = (time: number) => {
       lenis.raf(time * 1000);

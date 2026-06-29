@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { StoryPanel, type StoryPanelData } from "./StoryPanel";
+import { observeRevealElements } from "@/lib/scroll-ready";
 import storyOrigini from "@/assets/story-origini.jpg";
 import storyPietra from "@/assets/story-pietra.jpg";
 import storyCavalli from "@/assets/story-cavalli-murgesi.jpg";
@@ -155,12 +156,13 @@ export function StorySection() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const cleanupReveal = observeRevealElements(section);
 
     if (reduced || isMobile) {
       // Layout verticale statico: niente pin orizzontale.
       gsap.set(track, { x: 0 });
 
-      if (reduced) return;
+      if (reduced) return () => cleanupReveal();
 
       const ctxMobile = gsap.context(() => {
         const panels = gsap.utils.toArray<HTMLElement>("[data-panel]", track);
@@ -180,6 +182,7 @@ export function StorySection() {
                 clipPath: "inset(0% 0% 0% 0%)",
                 ease: "power3.out",
                 duration: 1.1,
+                immediateRender: false,
                 scrollTrigger: {
                   trigger: panel,
                   start: "top 80%",
@@ -201,6 +204,7 @@ export function StorySection() {
                   start: "top bottom",
                   end: "bottom top",
                   scrub: true,
+                  invalidateOnRefresh: true,
                 },
               },
             );
@@ -217,10 +221,13 @@ export function StorySection() {
                 duration: 0.7,
                 ease: "power2.out",
                 stagger: 0.08,
+                immediateRender: false,
                 scrollTrigger: {
                   trigger: panel,
                   start: "top 75%",
-                  toggleActions: "play none none reverse",
+                  toggleActions: "play none none none",
+                  once: true,
+                  invalidateOnRefresh: true,
                 },
               },
             );
@@ -244,7 +251,10 @@ export function StorySection() {
         return () => window.removeEventListener("load", refresh);
       }, section);
 
-      return () => ctxMobile.revert();
+      return () => {
+        ctxMobile.revert();
+        cleanupReveal();
+      };
     }
 
     const ctx = gsap.context(() => {
@@ -303,11 +313,13 @@ export function StorySection() {
               clipPath: "inset(0% 0% 0% 0%)",
               ease: "power3.out",
               duration: 1.1,
+              immediateRender: false,
               scrollTrigger: {
                 trigger: panel,
                 containerAnimation: tl,
                 start: "left 75%",
-                toggleActions: "play none none reverse",
+                toggleActions: "play none none none",
+                once: true,
               },
             },
           );
@@ -359,11 +371,13 @@ export function StorySection() {
               duration: 0.7,
               ease: "power2.out",
               stagger: 0.08,
+              immediateRender: false,
               scrollTrigger: {
                 trigger: panel,
                 containerAnimation: tl,
                 start: "left 65%",
-                toggleActions: "play none none reverse",
+                toggleActions: "play none none none",
+                once: true,
               },
             },
           );
@@ -371,7 +385,10 @@ export function StorySection() {
       });
     }, section);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      cleanupReveal();
+    };
   }, []);
 
   return (

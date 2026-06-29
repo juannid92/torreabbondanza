@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
+import { observeRevealElements } from "@/lib/scroll-ready";
 import winterBg from "@/assets/season-winter.jpg";
 import springBg from "@/assets/season-spring.jpg";
 import summerBg from "@/assets/season-may.jpg";
@@ -171,7 +172,7 @@ function StageBackground({ stage }: { stage: SeasonStage }) {
       data-stage-bg
       data-stage={stage.key}
       className="absolute inset-0"
-      style={{ opacity: 0, willChange: "opacity" }}
+      style={{ opacity: stage.index === 0 ? 1 : 0, willChange: "opacity" }}
       aria-hidden
     >
       <img
@@ -199,7 +200,7 @@ function StageContent({ stage }: { stage: SeasonStage }) {
       data-stage-content
       data-stage={stage.key}
       className="pointer-events-none absolute inset-0 flex items-center justify-center"
-      style={{ opacity: 0, willChange: "opacity, transform" }}
+      style={{ opacity: stage.index === 0 ? 1 : 0, willChange: "opacity, transform" }}
       aria-hidden={false}
     >
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-10 px-6 py-16 md:grid-cols-12 md:gap-12 md:px-12 md:py-20">
@@ -243,7 +244,7 @@ function StageContent({ stage }: { stage: SeasonStage }) {
               key={exp.title}
               data-stage-exp
               className="flex flex-col gap-4"
-              style={{ transform: "translateY(20px)", opacity: 0 }}
+              style={{ transform: "translateY(0)", opacity: 1 }}
             >
               <div
                 className="relative overflow-hidden"
@@ -344,6 +345,7 @@ function StaticFallback() {
       {STAGES.map((s) => (
         <article
           key={s.key}
+          data-reveal="soft"
           className="relative overflow-hidden rounded-[14px]"
           style={{ background: s.palette.bg, color: s.palette.fg }}
         >
@@ -379,7 +381,7 @@ function StaticFallback() {
             </div>
             <div className="grid grid-cols-1 gap-6 md:col-span-7 md:grid-cols-2">
               {s.experiences.map((exp) => (
-                <figure key={exp.title} className="flex flex-col gap-3">
+                <figure key={exp.title} data-reveal className="flex flex-col gap-3">
                   <img
                     src={exp.image}
                     alt={exp.alt}
@@ -425,9 +427,11 @@ export function SeasonsSection() {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
+    const cleanupReveal = observeRevealElements(root);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (reduced) return () => cleanupReveal();
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+    if (isMobile) return () => cleanupReveal();
 
     const ctx = gsap.context(() => {
       const stage = root.querySelector<HTMLElement>("[data-pin-stage]");
@@ -513,21 +517,17 @@ export function SeasonsSection() {
         const kicker = c.querySelector<HTMLElement>("[data-stage-kicker]");
         const exps = c.querySelectorAll<HTMLElement>("[data-stage-exp]");
 
-        gsap.set(titleWords, { yPercent: 110 });
-        if (kicker) gsap.set(kicker, { opacity: 0, y: 14 });
-        gsap.set(exps, { y: 30, opacity: 0 });
-
         const tl = gsap.timeline({ paused: true });
-        tl.to(titleWords, {
+        tl.fromTo(titleWords, { yPercent: 110 }, {
           yPercent: 0,
           duration: 0.9,
           ease: "power3.out",
           stagger: 0.08,
         });
         if (kicker) {
-          tl.to(kicker, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.3);
+          tl.fromTo(kicker, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.3);
         }
-        tl.to(exps, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.12 }, 0.4);
+        tl.fromTo(exps, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.12 }, 0.4);
 
         const enterT = idx / (STAGES.length - 1);
         ScrollTrigger.create({
@@ -537,11 +537,15 @@ export function SeasonsSection() {
           onEnter: () => tl.play(),
           onEnterBack: () => tl.play(),
           once: true,
+          invalidateOnRefresh: true,
         });
       });
     }, root);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      cleanupReveal();
+    };
   }, []);
 
   return (
@@ -583,7 +587,7 @@ export function SeasonsSection() {
       {/* Ciclo pinnato — desktop */}
       <div
         data-pin-stage
-        className="relative block h-[100svh] w-full overflow-hidden"
+        className="relative hidden h-[100svh] w-full overflow-hidden lg:block motion-reduce:hidden"
       >
         {STAGES.map((s) => (
           <StageBackground key={`bg-${s.key}`} stage={s} />
@@ -594,8 +598,8 @@ export function SeasonsSection() {
         ))}
       </div>
 
-      {/* Fallback statico solo per reduced-motion */}
-      <div className="hidden motion-reduce:block">
+      {/* Fallback verticale: sempre su mobile, e per reduced-motion */}
+      <div className="block lg:hidden motion-reduce:block">
         <StaticFallback />
       </div>
 
