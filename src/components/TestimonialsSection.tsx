@@ -126,7 +126,8 @@ function GuestPage({ note, index }: { note: GuestNote; index: number }) {
       scrollTrigger: {
         trigger: root,
         start: "top 80%",
-        toggleActions: "play none none reverse",
+        once: true,
+        invalidateOnRefresh: true,
       },
     });
 
