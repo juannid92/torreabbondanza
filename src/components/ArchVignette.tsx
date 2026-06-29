@@ -9,8 +9,9 @@ interface ArchVignetteProps {
 }
 
 /**
- * Vignetta dentro finestra ad arco a tutto sesto — callback all'hero.
+ * Cornice editoriale rettangolare a bordi leggermente morbidi.
  * L'immagine interna è esposta via data-arch-image per parallax esterno.
+ * (Nome storico mantenuto per compatibilità; il motivo arco è stato sfoltito.)
  */
 export const ArchVignette = forwardRef<HTMLDivElement, ArchVignetteProps>(
   function ArchVignette({ src, alt, eager = false, className = "", tone = "warm" }, ref) {
@@ -26,10 +27,10 @@ export const ArchVignette = forwardRef<HTMLDivElement, ArchVignetteProps>(
         data-arch-tone={tone}
         className={`relative overflow-hidden bg-stone shadow-soft ${className}`}
         style={{
-          borderRadius: "50% 50% 0 0 / 38% 38% 0 0",
+          borderRadius: "10px",
           border: `1px solid ${accent}`,
           boxShadow: shadow,
-          aspectRatio: "3 / 4",
+          aspectRatio: "4 / 5",
         }}
       >
         <div
