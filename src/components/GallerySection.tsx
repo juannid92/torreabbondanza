@@ -281,90 +281,170 @@ function ImmersiveLightbox({
 
 export function GallerySection() {
   const rootRef = useRef<HTMLElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-  const [filter, setFilter] = useState<Category>("all");
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const cameraRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const fallbackRef = useRef<HTMLDivElement>(null);
   const [openId, setOpenId] = useState<string | null>(null);
   const originRef = useRef<HTMLElement | null>(null);
+  const [isReduced, setIsReduced] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const visible = useMemo(
-    () => (filter === "all" ? IMAGES : IMAGES.filter((i) => i.category === filter)),
-    [filter],
-  );
-
-  // Mount animations + parallax
   useEffect(() => {
-    const grid = gridRef.current;
-    if (!grid) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mqMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mqMobile = window.matchMedia("(max-width: 767px)");
+    const sync = () => {
+      setIsReduced(mqMotion.matches);
+      setIsMobile(mqMobile.matches);
+    };
+    sync();
+    mqMotion.addEventListener("change", sync);
+    mqMobile.addEventListener("change", sync);
+    return () => {
+      mqMotion.removeEventListener("change", sync);
+      mqMobile.removeEventListener("change", sync);
+    };
+  }, []);
+
+  // 3D camera dolly: avanza Z dell'intera scena durante lo scroll pinnato.
+  useEffect(() => {
+    if (isReduced || isMobile) return;
+    const scene = sceneRef.current;
+    const camera = cameraRef.current;
+    const sticky = stickyRef.current;
+    if (!scene || !camera || !sticky) return;
 
     const ctx = gsap.context(() => {
-      const items = grid.querySelectorAll<HTMLElement>("[data-gallery-item]");
-      items.forEach((item, i) => {
-        const clip = item.querySelector<HTMLElement>("[data-gallery-clip]");
-        const img = item.querySelector<HTMLElement>("[data-gallery-img]");
-        const speed = parseFloat(item.dataset.speed || "0");
+      // Range di dolly: la scena traslerà in Z da Zstart (lontana) a Zend (vicina).
+      // Il valore positivo "avanza" la camera dentro la scena (le foto crescono).
+      const Zstart = 0;
+      const Zend = 2600; // unità: px (compatibili con perspective)
 
-        if (reduced) {
-          gsap.set(clip, { clipPath: "inset(0% 0 0 0)" });
-          return;
-        }
+      gsap.set(camera, { z: Zstart });
 
-        gsap.to(clip, {
-          clipPath: "inset(0% 0 0 0)",
-          duration: 0.9,
-          ease: "power3.out",
-          delay: (i % 6) * 0.06,
-          scrollTrigger: { trigger: item, start: "top 88%", once: true },
-        });
-
-        if (img) {
-          gsap.fromTo(
-            img,
-            { yPercent: speed * 8 },
-            {
-              yPercent: speed * -8,
-              ease: "none",
-              scrollTrigger: {
-                trigger: item,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: true,
-              },
-            },
-          );
-        }
+      gsap.to(camera, {
+        z: Zend,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sticky,
+          start: "top top",
+          end: "+=350%",
+          scrub: 0.6,
+          pin: true,
+          invalidateOnRefresh: true,
+        },
       });
-    }, grid);
+
+      // Per ciascuna foto: didascalia in fade quando il piano è vicino alla camera.
+      const items = scene.querySelectorAll<HTMLElement>("[data-plane]");
+      items.forEach((plane) => {
+        const caption = plane.querySelector<HTMLElement>("[data-caption]");
+        const img = plane.querySelector<HTMLElement>("[data-img]");
+        const baseZ = parseFloat(plane.dataset.basez || "0"); // negativa: lontana
+        if (caption) gsap.set(caption, { opacity: 0, y: 8 });
+
+        ScrollTrigger.create({
+          trigger: sticky,
+          start: "top top",
+          end: "+=350%",
+          scrub: true,
+          onUpdate: (self) => {
+            // Z effettiva = baseZ + cameraZ (cameraZ è positivo e cresce)
+            const cameraZ = Zstart + (Zend - Zstart) * self.progress;
+            const effective = baseZ + cameraZ;
+            // "Distanza" dalla camera (focal plane a 0)
+            const dist = -effective; // positivo se ancora davanti, negativo se passata
+            const absDist = Math.abs(dist);
+            // Fuoco: nitida fra -200 e 400, sfocata oltre
+            const blur =
+              dist > 400
+                ? Math.min(8, (dist - 400) / 180)
+                : dist < -200
+                  ? Math.min(10, (-dist - 200) / 120)
+                  : 0;
+            if (img) img.style.filter = blur ? `blur(${blur.toFixed(2)}px)` : "none";
+            // Opacità: appare arrivando e svanisce passando oltre
+            const opacity =
+              dist > 1800
+                ? Math.max(0, 1 - (dist - 1800) / 600)
+                : dist < -400
+                  ? Math.max(0, 1 + (dist + 400) / 300)
+                  : 1;
+            plane.style.opacity = opacity.toFixed(3);
+            // Didascalia visibile solo in primo piano (focus window)
+            if (caption) {
+              const inFocus = absDist < 250 ? 1 : 0;
+              caption.style.opacity = inFocus.toString();
+              caption.style.transform = `translateY(${inFocus ? 0 : 8}px)`;
+            }
+          },
+        });
+      });
+    }, sceneRef);
 
     return () => ctx.revert();
-  }, [filter]);
+  }, [isReduced, isMobile]);
 
-  // FLIP on filter change
-  const prevFilter = useRef<Category>(filter);
+  // Hover tilt 3D (desktop, non-reduced)
   useEffect(() => {
-    if (prevFilter.current === filter) return;
-    prevFilter.current = filter;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-    const grid = gridRef.current;
-    if (!grid) return;
-    const items = grid.querySelectorAll<HTMLElement>("[data-gallery-item]");
-    gsap.fromTo(
-      items,
-      { opacity: 0, y: 20, scale: 0.96 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.55,
-        ease: "power3.out",
-        stagger: { amount: 0.4, from: "start" },
-      },
-    );
-  }, [filter]);
+    if (isReduced || isMobile) return;
+    const scene = sceneRef.current;
+    if (!scene) return;
+    const planes = scene.querySelectorAll<HTMLElement>("[data-plane]");
+    const handlers: Array<() => void> = [];
+    planes.forEach((plane) => {
+      const card = plane.querySelector<HTMLElement>("[data-card]");
+      if (!card) return;
+      const onMove = (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const dx = (e.clientX - rect.left) / rect.width - 0.5;
+        const dy = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `rotateX(${(-dy * 8).toFixed(2)}deg) rotateY(${(dx * 10).toFixed(2)}deg) scale(1.04)`;
+      };
+      const onLeave = () => {
+        card.style.transform = "rotateX(0) rotateY(0) scale(1)";
+      };
+      card.addEventListener("mousemove", onMove);
+      card.addEventListener("mouseleave", onLeave);
+      handlers.push(() => {
+        card.removeEventListener("mousemove", onMove);
+        card.removeEventListener("mouseleave", onLeave);
+      });
+    });
+    return () => handlers.forEach((fn) => fn());
+  }, [isReduced, isMobile]);
+
+  // Fallback fade-in (mobile / reduced)
+  useEffect(() => {
+    if (!isReduced && !isMobile) return;
+    const root = fallbackRef.current;
+    if (!root) return;
+    const items = root.querySelectorAll<HTMLElement>("[data-fallback-item]");
+    if (isReduced) {
+      gsap.set(items, { opacity: 1, y: 0 });
+      return;
+    }
+    const ctx = gsap.context(() => {
+      items.forEach((item, i) => {
+        gsap.fromTo(
+          item,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power3.out",
+            delay: (i % 4) * 0.05,
+            scrollTrigger: { trigger: item, start: "top 88%", once: true },
+          },
+        );
+      });
+    }, root);
+    return () => ctx.revert();
+  }, [isReduced, isMobile]);
 
   const handleOpen = (id: string) => {
-    const el = document.querySelector<HTMLElement>(`[data-gallery-item][data-id="${id}"]`);
+    const el = document.querySelector<HTMLElement>(`[data-plane][data-id="${id}"], [data-fallback-item][data-id="${id}"]`);
     originRef.current = el;
     setOpenId(id);
   };
@@ -376,68 +456,239 @@ export function GallerySection() {
     });
   };
 
+  const useImmersive = !isReduced && !isMobile;
+
   return (
     <section
       ref={rootRef}
       id="galleria"
       aria-labelledby="gallery-title"
-      className="relative overflow-hidden bg-ivory"
+      className="relative overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(180deg, color-mix(in oklab, #15110F 18%, var(--ivory)) 0%, var(--ivory) 28%, var(--ivory) 72%, color-mix(in oklab, #15110F 10%, var(--ivory)) 100%)",
+      }}
     >
-      {/* Continuità con sez.08 */}
+      {/* Continuità con sez.08 (inverno scuro → spazio profondo) */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-32"
         style={{
           background:
-            "linear-gradient(180deg, color-mix(in oklab, #C97A3F 12%, transparent), transparent)",
+            "linear-gradient(180deg, color-mix(in oklab, #15110F 35%, transparent), transparent)",
         }}
       />
 
       <div className="mx-auto max-w-7xl px-6 pt-24 pb-12 md:px-12 md:pt-40 md:pb-16">
-        <p className="text-eyebrow text-ink/65">08 — Galleria</p>
+        <p className="text-eyebrow text-ink/65">09 — Galleria</p>
         <h2
           id="gallery-title"
           className="font-display mt-6 max-w-4xl font-medium leading-[0.95] text-ink"
           style={{ fontSize: "clamp(2.6rem, 7vw, 6.5rem)" }}
         >
-          Il muro delle <em className="text-terracotta">immagini</em>
+          Le due <em className="text-terracotta">anime</em>{" "}
+          <span style={{ color: "var(--murgese, #15110F)" }}>in profondità</span>
         </h2>
         <p className="font-display mt-6 max-w-xl text-lg italic text-ink/75 md:text-xl">
-          Pietra, luce, tavola e festa: la masseria nei suoi dettagli.
+          Pietra calda e stirpe nera, tavola e galoppo: scorri per entrare nella scena.
         </p>
-
-        <div className="mt-12 flex items-center justify-between gap-6">
-          <GalleryFilter active={filter} onChange={setFilter} />
-          <span className="text-eyebrow hidden text-ink/55 md:inline">
-            {String(visible.length).padStart(2, "0")} immagini
-          </span>
-        </div>
       </div>
 
-      {/* Il muro */}
-      <div className="mx-auto max-w-7xl px-6 pb-32 md:px-12 md:pb-48">
+      {/* Spazio immersivo 3D */}
+      {useImmersive ? (
         <div
-          ref={gridRef}
-          className="grid auto-rows-[clamp(110px,18vw,220px)] grid-cols-2 gap-3 md:grid-cols-12 md:gap-5"
+          ref={stickyRef}
+          className="relative h-screen w-full overflow-hidden"
+          style={{
+            background:
+              "radial-gradient(60% 60% at 50% 50%, color-mix(in oklab, var(--ivory) 92%, #15110F) 0%, color-mix(in oklab, var(--ivory) 60%, #15110F) 70%, color-mix(in oklab, #15110F 85%, var(--ivory)) 100%)",
+            perspective: "1300px",
+            perspectiveOrigin: "50% 50%",
+          }}
+          aria-label="Galleria immersiva — scorri per avanzare nello spazio"
         >
-          {visible.map((img, i) => (
-            <GalleryItem
-              key={img.id}
-              image={img}
-              index={i}
-              total={visible.length}
-              onOpen={handleOpen}
-            />
-          ))}
-        </div>
+          {/* Bagliore caldo centrale (light bloom) */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(40% 30% at 50% 55%, color-mix(in oklab, #C97A3F 22%, transparent), transparent 70%)",
+              mixBlendMode: "soft-light",
+            }}
+          />
+          {/* Grain */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.06]"
+            style={{
+              backgroundImage:
+                "radial-gradient(rgba(0,0,0,0.6) 1px, transparent 1px)",
+              backgroundSize: "3px 3px",
+              mixBlendMode: "multiply",
+            }}
+          />
 
-        {/* Chiusura */}
-        <div className="mt-20 flex flex-col items-start gap-6 border-t border-ink/15 pt-12 md:flex-row md:items-end md:justify-between md:gap-12">
+          <div
+            ref={sceneRef}
+            className="absolute inset-0"
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            <div
+              ref={cameraRef}
+              className="absolute left-1/2 top-1/2"
+              style={{ transformStyle: "preserve-3d", willChange: "transform" }}
+            >
+              {IMAGES.map((img) => {
+                // baseZ: lontane = molto negative; vicine = ~ -100..-300
+                const baseZ = -(300 + img.z * 2400);
+                // offset X/Y in vmin → px reali
+                const xPx = `calc(${img.x * 42}vmin)`;
+                const yPx = `calc(${img.y * 30}vmin)`;
+                const wVmin = img.w;
+                const hVmin = img.w / img.ratio;
+                const isDark = img.soul === "dark";
+                return (
+                  <div
+                    key={img.id}
+                    data-plane
+                    data-id={img.id}
+                    data-basez={baseZ}
+                    className="absolute"
+                    style={{
+                      left: 0,
+                      top: 0,
+                      transform: `translate3d(${xPx}, ${yPx}, ${baseZ}px) translate(-50%, -50%)`,
+                      transformStyle: "preserve-3d",
+                      willChange: "transform, opacity",
+                    }}
+                  >
+                    <button
+                      data-card
+                      onClick={() => handleOpen(img.id)}
+                      aria-label={`Apri immagine: ${img.caption}`}
+                      className="group relative block cursor-pointer overflow-hidden text-left transition-transform duration-200 ease-out"
+                      style={{
+                        width: `${wVmin}vmin`,
+                        height: `${hVmin}vmin`,
+                        borderRadius: "10px",
+                        border: isDark
+                          ? "1px solid color-mix(in oklab, #15110F 60%, transparent)"
+                          : "1px solid color-mix(in oklab, var(--ivory) 60%, transparent)",
+                        boxShadow: isDark
+                          ? "0 30px 80px -30px rgba(0,0,0,0.7)"
+                          : "0 30px 80px -30px rgba(181,103,58,0.45)",
+                        background: isDark ? "#15110F" : "var(--stone, #E7DDCF)",
+                        transformOrigin: "center",
+                      }}
+                    >
+                      <img
+                        data-img
+                        src={img.src}
+                        alt={img.alt}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover"
+                        style={{ display: "block" }}
+                      />
+                      {isDark && (
+                        <div
+                          aria-hidden
+                          className="pointer-events-none absolute inset-0"
+                          style={{
+                            background:
+                              "linear-gradient(180deg, transparent 55%, rgba(21,17,15,0.55) 100%)",
+                          }}
+                        />
+                      )}
+                    </button>
+                    <div
+                      data-caption
+                      className="pointer-events-none absolute left-0 right-0 -bottom-7 text-center"
+                      style={{
+                        transition: "opacity .25s ease, transform .25s ease",
+                      }}
+                    >
+                      <span
+                        className="text-eyebrow rounded-full px-3 py-1"
+                        style={{
+                          background: isDark
+                            ? "color-mix(in oklab, #15110F 80%, transparent)"
+                            : "color-mix(in oklab, var(--ivory) 90%, transparent)",
+                          color: isDark ? "var(--ivory)" : "var(--ink)",
+                          letterSpacing: "0.14em",
+                        }}
+                      >
+                        {img.caption}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Hint scroll */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-6 flex justify-center">
+            <span className="text-eyebrow text-ink/55">Scorri per avanzare ↓</span>
+          </div>
+        </div>
+      ) : (
+        <div
+          ref={fallbackRef}
+          className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-6 pb-24 md:grid-cols-3 md:gap-5 md:px-12"
+        >
+          {IMAGES.map((img) => {
+            const isDark = img.soul === "dark";
+            return (
+              <button
+                key={img.id}
+                data-fallback-item
+                data-id={img.id}
+                onClick={() => handleOpen(img.id)}
+                className="group relative overflow-hidden text-left"
+                style={{
+                  borderRadius: "10px",
+                  aspectRatio: `${img.ratio}`,
+                  background: isDark ? "#15110F" : "var(--stone, #E7DDCF)",
+                  border: isDark
+                    ? "1px solid color-mix(in oklab, #15110F 60%, transparent)"
+                    : "1px solid color-mix(in oklab, var(--ink) 12%, transparent)",
+                }}
+                aria-label={`Apri immagine: ${img.caption}`}
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+                <span
+                  className="text-eyebrow absolute left-2 bottom-2 rounded-full px-2 py-1"
+                  style={{
+                    background: isDark
+                      ? "color-mix(in oklab, #15110F 80%, transparent)"
+                      : "color-mix(in oklab, var(--ivory) 90%, transparent)",
+                    color: isDark ? "var(--ivory)" : "var(--ink)",
+                  }}
+                >
+                  {img.caption}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Chiusura — uscita verso Recensioni */}
+      <div className="mx-auto max-w-7xl px-6 pt-16 pb-28 md:px-12 md:pt-24 md:pb-40">
+        <div className="flex flex-col items-start gap-6 border-t border-ink/15 pt-12 md:flex-row md:items-end md:justify-between md:gap-12">
           <p
             className="font-display max-w-xl leading-tight text-ink"
             style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.9rem)" }}
           >
-            Altri scorci, ogni giorno, sul nostro profilo Instagram.
+            Due anime, uno sguardo solo. Altri scorci sul nostro Instagram.
           </p>
           <MagneticButton
             href="https://instagram.com/masseria_torre_abbondanza"
@@ -449,7 +700,7 @@ export function GallerySection() {
       </div>
 
       <ImmersiveLightbox
-        images={visible}
+        images={IMAGES}
         openId={openId}
         onClose={handleClose}
         onNavigate={setOpenId}
