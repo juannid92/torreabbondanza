@@ -426,8 +426,8 @@ export function SeasonsSection() {
     const root = rootRef.current;
     if (!root) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const desktop = window.matchMedia("(min-width: 768px)").matches;
-    if (reduced || !desktop) return;
+    if (reduced) return;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
     const ctx = gsap.context(() => {
       const stage = root.querySelector<HTMLElement>("[data-pin-stage]");
@@ -454,7 +454,7 @@ export function SeasonsSection() {
       ScrollTrigger.create({
         trigger: stage,
         start: "top top",
-        end: () => `+=${window.innerHeight * 4}`,
+        end: () => `+=${window.innerHeight * (isMobile ? 2.5 : 4)}`,
         pin: true,
         scrub: 0.5,
         invalidateOnRefresh: true,
@@ -532,7 +532,8 @@ export function SeasonsSection() {
         const enterT = idx / (STAGES.length - 1);
         ScrollTrigger.create({
           trigger: stage,
-          start: () => `top+=${Math.max(0, enterT * window.innerHeight * 4 - 100)} top`,
+          start: () =>
+            `top+=${Math.max(0, enterT * window.innerHeight * (isMobile ? 2.5 : 4) - 100)} top`,
           onEnter: () => tl.play(),
           onEnterBack: () => tl.play(),
           once: true,
@@ -582,7 +583,7 @@ export function SeasonsSection() {
       {/* Ciclo pinnato — desktop */}
       <div
         data-pin-stage
-        className="relative hidden h-[100svh] w-full overflow-hidden md:block"
+        className="relative block h-[100svh] w-full overflow-hidden"
       >
         {STAGES.map((s) => (
           <StageBackground key={`bg-${s.key}`} stage={s} />
@@ -593,8 +594,8 @@ export function SeasonsSection() {
         ))}
       </div>
 
-      {/* Mobile / reduced fallback */}
-      <div className="md:hidden">
+      {/* Fallback statico solo per reduced-motion */}
+      <div className="hidden motion-reduce:block">
         <StaticFallback />
       </div>
 
