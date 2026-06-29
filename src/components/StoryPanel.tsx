@@ -11,6 +11,7 @@ export interface StoryPanelData {
   isOpening?: boolean;
   cta?: ReactNode;
   note?: ReactNode;
+  tone?: "warm" | "deep";
 }
 
 interface StoryPanelProps {
@@ -25,7 +26,8 @@ interface StoryPanelProps {
  * - mobile: layout verticale (vedi container parent)
  */
 export function StoryPanel({ data, index }: StoryPanelProps) {
-  const { eyebrow, ghost, title, body, image, isOpening, cta, note } = data;
+  const { eyebrow, ghost, title, body, image, isOpening, cta, note, tone = "warm" } = data;
+  const eyebrowColor = tone === "deep" ? "text-ink/70" : "text-terracotta";
 
   return (
     <article
@@ -38,7 +40,7 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
         className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
         aria-hidden
       >
-        <GhostYear>{ghost}</GhostYear>
+        <GhostYear tone={tone}>{ghost}</GhostYear>
       </div>
 
       <div className="relative z-10 mx-auto flex h-full w-full max-w-[1400px] flex-col items-center gap-10 px-6 py-[10vh] md:flex-row md:items-center md:justify-between md:gap-16 md:px-12 lg:px-20">
@@ -74,14 +76,14 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
             {/* Vignetta arco */}
             {image ? (
               <div className="w-full max-w-[360px] md:max-w-[420px] lg:max-w-[480px]">
-                <ArchVignette src={image.src} alt={image.alt} eager={index <= 1} />
+                <ArchVignette src={image.src} alt={image.alt} eager={index <= 1} tone={tone} />
               </div>
             ) : null}
 
             {/* Colonna testo */}
             <div className="flex w-full max-w-[520px] flex-col gap-5">
               {eyebrow ? (
-                <span data-panel-eyebrow className="text-eyebrow text-terracotta">
+                <span data-panel-eyebrow className={`text-eyebrow ${eyebrowColor}`} style={tone === "deep" ? { color: "var(--murgese)" } : undefined}>
                   {eyebrow}
                 </span>
               ) : null}
