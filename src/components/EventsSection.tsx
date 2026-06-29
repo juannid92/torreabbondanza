@@ -69,7 +69,6 @@ export function EventsSection() {
     const root = rootRef.current;
     if (!root) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
     root.querySelectorAll<HTMLElement>("[data-fade]").forEach((el) => {
       el.setAttribute("data-reveal", "soft");
     });
@@ -126,73 +125,14 @@ export function EventsSection() {
         );
       }
 
-      /* ---------- MOMENTO B — Si accende (pinned scrub) ---------- */
-      const bScene = root.querySelector<HTMLElement>("[data-scene-b]");
-      const bSticky = root.querySelector<HTMLElement>("[data-scene-b-sticky]");
+      /* ---------- MOMENTI B + C — switch desktop/mobile via matchMedia ---------- */
       const nightLayer = root.querySelector<HTMLElement>("[data-night-layer]");
       const skyLayer = root.querySelector<HTMLElement>("[data-sky-layer]");
       const lightEls = root.querySelectorAll<HTMLElement>("[data-light]");
       const candleEls = root.querySelectorAll<HTMLElement>("[data-candle]");
       const bokehLayer = root.querySelector<HTMLElement>("[data-bokeh-layer]");
       const kineticB = root.querySelector<HTMLElement>("[data-kinetic-b]");
-
-      if (isMobile) {
-        gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), { opacity: 1 });
-        gsap.set(lightEls, { opacity: 1, scale: 1 });
-        gsap.set(candleEls, { opacity: 1 });
-        if (kineticB) gsap.set(kineticB, { yPercent: 0, opacity: 0.7 });
-      }
-
-      if (!isMobile && bScene && bSticky && nightLayer && skyLayer) {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: bScene,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.6,
-            invalidateOnRefresh: true,
-          },
-        });
-        // Cielo: giorno → crepuscolo → notte profonda
-        tl.fromTo(
-          skyLayer,
-          { opacity: 0 },
-          { opacity: 1, ease: "none", duration: 1 },
-          0,
-        );
-        // Night image crossfade
-        tl.fromTo(
-          nightLayer,
-          { opacity: 0 },
-          { opacity: 1, ease: "none", duration: 1 },
-          0.15,
-        );
-        // Lucine: stagger lungo l'arco (0.25 .. 0.85)
-        lightEls.forEach((el) => {
-          const delay = parseFloat(el.dataset.delay ?? "0");
-          const at = 0.25 + delay * 0.6;
-          tl.to(el, { opacity: 1, scale: 1, duration: 0.04, ease: "power2.out" }, at);
-        });
-        // Candele: ultime ad accendersi (0.7 .. 0.95)
-        candleEls.forEach((el, i) => {
-          tl.to(el, { opacity: 1, duration: 0.04, ease: "power2.out" }, 0.7 + (i / candleEls.length) * 0.25);
-        });
-        // Bokeh che cresce
-        if (bokehLayer) {
-          tl.fromTo(bokehLayer, { opacity: 0 }, { opacity: 0.9, duration: 1, ease: "none" }, 0.35);
-        }
-        // Kinetic word parallax verticale
-        if (kineticB) {
-          tl.fromTo(
-            kineticB,
-            { yPercent: 30, opacity: 0 },
-            { yPercent: -30, opacity: 0.95, ease: "none", duration: 1 },
-            0,
-          );
-        }
-      }
-
-      /* ---------- MOMENTO C — Dolly orizzontale ---------- */
+      const bScene = root.querySelector<HTMLElement>("[data-scene-b]");
       const cScene = root.querySelector<HTMLElement>("[data-scene-c]");
       const cTrack = root.querySelector<HTMLElement>("[data-scene-c-track]");
       const cBg = root.querySelector<HTMLElement>("[data-scene-c-bg]");
@@ -200,7 +140,129 @@ export function EventsSection() {
       const cFg = root.querySelector<HTMLElement>("[data-scene-c-fg]");
       const cOccs = root.querySelectorAll<HTMLElement>("[data-occasion]");
 
-      if (isMobile) {
+      const mm = gsap.matchMedia();
+
+      // DESKTOP / TABLET (≥ 768px) — scena B pinned scrub + scena C dolly orizzontale
+      mm.add("(min-width: 768px)", () => {
+        if (bScene && nightLayer && skyLayer) {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: bScene,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: 0.6,
+              invalidateOnRefresh: true,
+            },
+          });
+          tl.fromTo(skyLayer, { opacity: 0 }, { opacity: 1, ease: "none", duration: 1 }, 0);
+          tl.fromTo(nightLayer, { opacity: 0 }, { opacity: 1, ease: "none", duration: 1 }, 0.15);
+          lightEls.forEach((el) => {
+            const delay = parseFloat(el.dataset.delay ?? "0");
+            const at = 0.25 + delay * 0.6;
+            tl.to(el, { opacity: 1, scale: 1, duration: 0.04, ease: "power2.out" }, at);
+          });
+          candleEls.forEach((el, i) => {
+            tl.to(el, { opacity: 1, duration: 0.04, ease: "power2.out" }, 0.7 + (i / candleEls.length) * 0.25);
+          });
+          if (bokehLayer) {
+            tl.fromTo(bokehLayer, { opacity: 0 }, { opacity: 0.9, duration: 1, ease: "none" }, 0.35);
+          }
+          if (kineticB) {
+            tl.fromTo(
+              kineticB,
+              { yPercent: 30, opacity: 0 },
+              { yPercent: -30, opacity: 0.95, ease: "none", duration: 1 },
+              0,
+            );
+          }
+        }
+
+        if (cScene && cTrack) {
+          const getDistance = () => Math.max(0, cTrack.scrollWidth - window.innerWidth);
+
+          const trackTween = gsap.to(cTrack, {
+            x: () => -getDistance(),
+            ease: "none",
+            scrollTrigger: {
+              trigger: cScene,
+              start: "top top",
+              end: () => `+=${getDistance()}`,
+              scrub: 0.4,
+              pin: true,
+              invalidateOnRefresh: true,
+            },
+          });
+          if (cBg) {
+            gsap.to(cBg, {
+              x: () => -getDistance() * 0.3,
+              ease: "none",
+              scrollTrigger: {
+                trigger: cScene,
+                start: "top top",
+                end: () => `+=${getDistance()}`,
+                scrub: 0.4,
+                invalidateOnRefresh: true,
+              },
+            });
+          }
+          if (cMid) {
+            gsap.to(cMid, {
+              x: () => -getDistance() * 0.6,
+              ease: "none",
+              scrollTrigger: {
+                trigger: cScene,
+                start: "top top",
+                end: () => `+=${getDistance()}`,
+                scrub: 0.4,
+                invalidateOnRefresh: true,
+              },
+            });
+          }
+          if (cFg) {
+            gsap.to(cFg, {
+              x: () => -getDistance() * 1.15,
+              ease: "none",
+              scrollTrigger: {
+                trigger: cScene,
+                start: "top top",
+                end: () => `+=${getDistance()}`,
+                scrub: 0.4,
+                invalidateOnRefresh: true,
+              },
+            });
+          }
+          cOccs.forEach((occ) => {
+            const word = occ.querySelector<HTMLElement>("[data-occ-word]");
+            const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
+            if (!word || !phrase) return;
+            const wordChars = splitWords(word);
+            ScrollTrigger.create({
+              trigger: occ,
+              containerAnimation: trackTween,
+              start: "left center",
+              end: "right center",
+              onEnter: () => {
+                gsap.fromTo(wordChars, { yPercent: 110 }, { yPercent: 0, duration: 0.9, ease: "power3.out", stagger: 0.05, overwrite: true });
+                gsap.fromTo(phrase, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 0.15, overwrite: true });
+              },
+              once: true,
+              horizontal: true,
+            });
+          });
+        }
+      });
+
+      // MOBILE (< 768px) — scena B/C statiche e verticali, fail-safe sempre visibile
+      mm.add("(max-width: 767px)", () => {
+        gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), { opacity: 1, clearProps: "transform" });
+        gsap.set(lightEls, { opacity: 1, scale: 1, clearProps: "transform" });
+        gsap.set(candleEls, { opacity: 1 });
+        if (kineticB) gsap.set(kineticB, { yPercent: 0, opacity: 0.7 });
+        if (cTrack) gsap.set(cTrack, { clearProps: "transform,x" });
+        [cBg, cMid, cFg].forEach((el) => {
+          if (el) gsap.set(el, { clearProps: "transform,x" });
+        });
+
         cOccs.forEach((occ) => {
           const word = occ.querySelector<HTMLElement>("[data-occ-word]");
           const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
@@ -216,84 +278,7 @@ export function EventsSection() {
             },
           });
         });
-      }
-
-      if (!isMobile && cScene && cTrack) {
-        const trackWidth = cTrack.scrollWidth;
-        const distance = trackWidth - window.innerWidth;
-
-        const trackTween = gsap.to(cTrack, {
-          x: () => -distance,
-          ease: "none",
-          scrollTrigger: {
-            trigger: cScene,
-            start: "top top",
-            end: () => `+=${distance}`,
-            scrub: 0.4,
-            pin: true,
-            invalidateOnRefresh: true,
-          },
-        });
-        // Parallax inverso sui layer
-        if (cBg) {
-          gsap.to(cBg, {
-            x: () => -distance * 0.3,
-            ease: "none",
-            scrollTrigger: {
-              trigger: cScene,
-              start: "top top",
-              end: () => `+=${distance}`,
-              scrub: 0.4,
-              invalidateOnRefresh: true,
-            },
-          });
-        }
-        if (cMid) {
-          gsap.to(cMid, {
-            x: () => -distance * 0.6,
-            ease: "none",
-            scrollTrigger: {
-              trigger: cScene,
-              start: "top top",
-              end: () => `+=${distance}`,
-              scrub: 0.4,
-              invalidateOnRefresh: true,
-            },
-          });
-        }
-        if (cFg) {
-          gsap.to(cFg, {
-            x: () => -distance * 1.15,
-            ease: "none",
-            scrollTrigger: {
-              trigger: cScene,
-              start: "top top",
-              end: () => `+=${distance}`,
-              scrub: 0.4,
-              invalidateOnRefresh: true,
-            },
-          });
-        }
-        // Reveal kinetic delle occasioni
-        cOccs.forEach((occ) => {
-          const word = occ.querySelector<HTMLElement>("[data-occ-word]");
-          const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
-          if (!word || !phrase) return;
-          const wordChars = splitWords(word);
-          ScrollTrigger.create({
-            trigger: occ,
-            containerAnimation: trackTween,
-            start: "left center",
-            end: "right center",
-            onEnter: () => {
-              gsap.fromTo(wordChars, { yPercent: 110 }, { yPercent: 0, duration: 0.9, ease: "power3.out", stagger: 0.05, overwrite: true });
-              gsap.fromTo(phrase, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 0.15, overwrite: true });
-            },
-            once: true,
-            horizontal: true,
-          });
-        });
-      }
+      });
 
       /* ---------- MOMENTO D — parallax carrozza ---------- */
       const carriage = root.querySelector<HTMLElement>("[data-carriage-img]");
