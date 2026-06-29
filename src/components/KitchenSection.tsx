@@ -95,6 +95,16 @@ export function KitchenSection() {
               su misura: dall'incontro intimo alla grande festa.
             </p>
 
+            {/* Fil rouge d'equità — ponte testuale verso l'anima equestre */}
+            <p
+              data-intro
+              className="font-display text-lg italic leading-snug text-ink/70 md:text-xl"
+            >
+              La stessa Murgia che alleva i{" "}
+              <span style={{ color: "var(--murgese)" }}>cavalli</span> e piega
+              gli ulivi arriva, ogni giorno, nel piatto.
+            </p>
+
             <ul
               data-intro
               className="flex flex-wrap gap-2"
@@ -171,7 +181,7 @@ export function KitchenSection() {
           >
             La carta cambia con le stagioni e con la materia disponibile.
           </p>
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap items-center gap-6">
             <MagneticButton
               href="#"
               variant="link"
@@ -182,6 +192,16 @@ export function KitchenSection() {
             </MagneticButton>
             <MagneticButton href="#contatti" variant="pill">
               Prenota un tavolo →
+            </MagneticButton>
+            {/* Ponte verso il pilastro equestre */}
+            <MagneticButton
+              href="#cavalli"
+              variant="link"
+              ariaLabel="L'altra anima: i cavalli Murgesi"
+            >
+              <span style={{ color: "var(--murgese)" }}>
+                L'altra anima: i cavalli Murgesi →
+              </span>
             </MagneticButton>
           </div>
         </div>
