@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { StoryPanel, type StoryPanelData } from "./StoryPanel";
 import storyOrigini from "@/assets/story-origini.jpg";
 import storyPietra from "@/assets/story-pietra.jpg";
+import storyCavalli from "@/assets/story-cavalli-murgesi.jpg";
 import storyFamiglia from "@/assets/story-famiglia.jpg";
 import storyOggi from "@/assets/story-oggi.jpg";
 
@@ -14,16 +15,20 @@ if (typeof window !== "undefined") {
 const PANELS: StoryPanelData[] = [
   {
     eyebrow: "03 — La Storia",
-    ghost: "MCMXVIII",
+    ghost: "MMXXIV",
     title: (
       <>
         Tre secoli di <em className="font-display italic text-terracotta">pietra</em>
       </>
     ),
     body: (
-      <>Dove ogni muro a calce custodisce una memoria.</>
+      <>
+        Una storia a due voci: la masseria che accoglie
+        e i cavalli Murgesi che corrono questa terra da sempre.
+      </>
     ),
     isOpening: true,
+    tone: "warm",
     cta: (
       <span className="text-eyebrow text-ink/60">scorri →</span>
     ),
@@ -36,11 +41,13 @@ const PANELS: StoryPanelData[] = [
       <>
         Nel cuore del XVIII secolo, tra gli ulivi e il bianco di Noci,
         la masseria nasce come presidio rurale: pietra su pietra, alzata
-        per custodire raccolti, bestie e famiglie sotto un unico tetto.
+        per custodire raccolti, bestie e famiglie sotto un unico tetto —
+        in una terra già abitata dai cavalli, la Murgia, culla del cavallo Murgese.
       </>
     ),
     image: { src: storyOrigini, alt: "Facciata in pietra della masseria settecentesca al tramonto" },
-    note: <>Data esatta da confermare</>,
+    note: <>Data esatta e legame masseria–allevamento da confermare</>,
+    tone: "warm",
   },
   {
     eyebrow: "Capitolo II — La materia",
@@ -55,41 +62,78 @@ const PANELS: StoryPanelData[] = [
       </>
     ),
     image: { src: storyPietra, alt: "Dettaglio di arco in pietra e tetto in terracotta su muro a calce" },
+    tone: "warm",
   },
   {
-    eyebrow: "Capitolo III — La famiglia",
+    eyebrow: "Capitolo III — La stirpe",
+    ghost: "MURGESI",
+    title: (
+      <>
+        Il <em className="font-display italic" style={{ color: "var(--murgese)" }}>cavallo</em> della Murgia
+      </>
+    ),
+    body: (
+      <>
+        Manto corvino, antica razza nata proprio in questa terra:
+        il cavallo Murgese è la voce equestre di questa storia.
+        La masseria ne custodisce la tradizione — Sfilata di Attacchi d'Epoca,
+        cavalli Murgesi e muli Martinesi.
+      </>
+    ),
+    image: {
+      src: storyCavalli,
+      alt: "Cavallo Murgese dal manto nero nella campagna della Murgia all'ora dorata, muretto a secco e ulivi sullo sfondo",
+    },
+    note: <>Origine della razza e ruolo della masseria nell'allevamento da confermare</>,
+    tone: "deep",
+  },
+  {
+    eyebrow: "Capitolo IV — La famiglia",
     ghost: "FAMIGLIA",
     title: <>L'accoglienza come gesto antico</>,
     body: (
       <>
-        Da generazioni la conduzione è familiare: entusiasmo, ricerca e
-        gusto si tramandano insieme al pane sulla tavola. L'ospite non è
-        cliente — è invitato a una festa che dura da sempre.
+        Da generazioni la conduzione è familiare: si custodiscono
+        insieme <em>la tavola e la stalla</em>, l'ospitalità e i cavalli
+        come un unico gesto di cura. L'ospite non è cliente — è invitato
+        a una festa che dura da sempre.
       </>
     ),
     image: { src: storyFamiglia, alt: "Tavola conviviale sotto un arco in pietra, candele accese" },
     note: <>Nomi e generazioni da confermare</>,
+    tone: "warm",
   },
   {
-    eyebrow: "Capitolo IV — Oggi",
+    eyebrow: "Capitolo V — Oggi",
     ghost: "OGGI",
-    title: <>Una tavola che continua</>,
+    title: <>Due anime in equilibrio</>,
     body: (
       <>
-        Oggi la masseria è ristorante, sala ricevimenti e luogo di
-        matrimoni: la stessa pietra di tre secoli fa accoglie esperienze
-        nuove, nel cuore della Murgia.
+        Oggi la masseria vive di due anime: ristorante, sala
+        ricevimenti e matrimoni da un lato; allevamento e tradizione
+        equestre Murgese dall'altro, nel cuore della Murgia.
       </>
     ),
     image: { src: storyOggi, alt: "Sala ristorante a volte in pietra della masseria oggi" },
+    tone: "warm",
     cta: (
-      <a
-        href="#next-04"
-        className="group inline-flex items-center gap-2 text-eyebrow text-terracotta transition-opacity hover:opacity-70"
-      >
-        Scopri la cucina
-        <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
-      </a>
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+        <a
+          href="#eventi"
+          className="group inline-flex items-center gap-2 text-eyebrow text-terracotta transition-opacity hover:opacity-70"
+        >
+          Scopri la cucina
+          <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+        </a>
+        <a
+          href="#cavalli"
+          className="group inline-flex items-center gap-2 text-eyebrow transition-opacity hover:opacity-70"
+          style={{ color: "var(--murgese)" }}
+        >
+          Scopri i cavalli
+          <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+        </a>
+      </div>
     ),
   },
 ];
@@ -292,6 +336,8 @@ export function StorySection() {
           {PANELS.map((_, i) => {
             const cx = (1000 / (total - 1)) * i;
             const active = i <= activeIndex;
+            const isDeep = PANELS[i].tone === "deep";
+            const activeFill = isDeep ? "var(--murgese)" : "var(--terracotta)";
             return (
               <circle
                 key={i}
@@ -301,7 +347,7 @@ export function StorySection() {
                 cx={cx}
                 cy={10}
                 r={active ? 5 : 3}
-                fill={active ? "var(--terracotta)" : "var(--ivory)"}
+                fill={active ? activeFill : "var(--ivory)"}
                 stroke="var(--ink)"
                 strokeWidth="1"
                 style={{ transition: "r 0.3s ease, fill 0.3s ease" }}
