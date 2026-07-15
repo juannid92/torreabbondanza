@@ -139,6 +139,7 @@ export function EventsSection() {
       const cMid = root.querySelector<HTMLElement>("[data-scene-c-mid]");
       const cFg = root.querySelector<HTMLElement>("[data-scene-c-fg]");
       const cOccs = root.querySelectorAll<HTMLElement>("[data-occasion]");
+      const openerOverlay = root.querySelector<HTMLElement>("[data-scene-b-opener]");
 
       const mm = gsap.matchMedia();
 
@@ -154,6 +155,14 @@ export function EventsSection() {
               invalidateOnRefresh: true,
             },
           });
+          if (openerOverlay) {
+            tl.fromTo(
+              openerOverlay,
+              { opacity: 1, yPercent: 0 },
+              { opacity: 0, yPercent: -8, ease: "power2.in", duration: 0.35 },
+              0,
+            );
+          }
           tl.fromTo(skyLayer, { opacity: 0 }, { opacity: 1, ease: "none", duration: 1 }, 0);
           tl.fromTo(nightLayer, { opacity: 0 }, { opacity: 1, ease: "none", duration: 1 }, 0.15);
           lightEls.forEach((el) => {
