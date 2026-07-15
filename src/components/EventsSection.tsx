@@ -139,6 +139,7 @@ export function EventsSection() {
       const cMid = root.querySelector<HTMLElement>("[data-scene-c-mid]");
       const cFg = root.querySelector<HTMLElement>("[data-scene-c-fg]");
       const cOccs = root.querySelectorAll<HTMLElement>("[data-occasion]");
+      const openerOverlay = root.querySelector<HTMLElement>("[data-scene-b-opener]");
 
       const mm = gsap.matchMedia();
 
@@ -154,6 +155,14 @@ export function EventsSection() {
               invalidateOnRefresh: true,
             },
           });
+          if (openerOverlay) {
+            tl.fromTo(
+              openerOverlay,
+              { opacity: 1, yPercent: 0 },
+              { opacity: 0, yPercent: -8, ease: "power2.in", duration: 0.35 },
+              0,
+            );
+          }
           tl.fromTo(skyLayer, { opacity: 0 }, { opacity: 1, ease: "none", duration: 1 }, 0);
           tl.fromTo(nightLayer, { opacity: 0 }, { opacity: 1, ease: "none", duration: 1 }, 0.15);
           lightEls.forEach((el) => {
@@ -319,92 +328,6 @@ export function EventsSection() {
       </h2>
 
       {/* ====================================================================
-          MOMENTO A — "Lo spazio che attende"
-          alba che sale dal nero del pilastro Cavalli
-      ==================================================================== */}
-      <div className="relative isolate h-[100svh] min-h-[640px] w-full overflow-hidden">
-        {/* Risalita dal nero Murgese: gradient in alto */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-56"
-          style={{
-            background:
-              "linear-gradient(180deg, var(--murgese) 0%, color-mix(in oklab, var(--murgese) 50%, transparent) 35%, transparent 100%)",
-          }}
-        />
-        <img
-          data-opener-img
-          src={dayImg}
-          alt="Cortile della masseria all'ora dorata, lunga tavola di legno in attesa sotto gli ulivi"
-          width={1920}
-          height={1280}
-          loading="eager"
-          decoding="async"
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
-          style={{ willChange: "transform" }}
-        />
-        {/* Velatura per leggibilità */}
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10"
-          style={{
-            background:
-              "linear-gradient(180deg, transparent 25%, color-mix(in oklab, var(--ink) 30%, transparent) 65%, color-mix(in oklab, var(--ink) 70%, transparent) 100%)",
-          }}
-        />
-
-        <div className="relative mx-auto flex h-full w-full max-w-7xl flex-col justify-end px-6 pb-20 md:px-12 md:pb-28">
-          <p data-fade className="text-eyebrow text-ivory/85">
-            07 — Eventi & Matrimoni
-          </p>
-          <h3
-            aria-label="Quando la masseria si accende"
-            className="mt-6 font-display font-semibold leading-[1.02] text-ivory"
-            style={{
-              fontSize: "clamp(2.4rem, 7vw, 6.4rem)",
-              letterSpacing: "-0.025em",
-              maxWidth: "18ch",
-            }}
-          >
-            {["Quando", "la", "masseria", "si", "accende"].map((w, i, arr) => {
-              const isAccent = w === "accende";
-              return (
-                <span
-                  key={i}
-                  aria-hidden
-                  className="inline-block overflow-hidden align-top"
-                  style={{ paddingBottom: "0.16em" }}
-                >
-                  <span
-                    data-opener-word
-                    className={`inline-block ${isAccent ? "italic" : ""}`}
-                    style={{
-                      willChange: "transform",
-                      color: isAccent ? "var(--gold)" : undefined,
-                    }}
-                  >
-                    {w}
-                    {i < arr.length - 1 ? "\u00A0" : ""}
-                  </span>
-                </span>
-              );
-            })}
-          </h3>
-          <p
-            data-fade
-            className="mt-8 max-w-2xl font-display text-lg italic leading-snug text-ivory/85 md:text-2xl"
-          >
-            Cerimonie, matrimoni e feste private in una masseria del Settecento:
-            spazi che vivono solo per le grandi occasioni.
-          </p>
-          <div data-fade className="mt-10 flex items-center gap-3 text-eyebrow text-ivory/65">
-            <span aria-hidden className="block h-px w-10 bg-ivory/50" />
-            continua a scorrere
-          </div>
-        </div>
-      </div>
-
-      {/* ====================================================================
           MOMENTO B — "Si accende" (pinned scrub)
       ==================================================================== */}
       <div data-scene-b className="relative h-[100svh] md:h-[320vh]">
@@ -412,15 +335,26 @@ export function EventsSection() {
           data-scene-b-sticky
           className="relative top-0 isolate h-[100svh] w-full overflow-hidden bg-murgese md:sticky md:h-screen"
         >
+          {/* Risalita dal nero Murgese (transizione dalla sezione Cavalli) */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 z-30 h-56"
+            style={{
+              background:
+                "linear-gradient(180deg, var(--murgese) 0%, color-mix(in oklab, var(--murgese) 50%, transparent) 35%, transparent 100%)",
+            }}
+          />
           {/* Layer giorno (base) */}
           <img
+            data-opener-img
             src={dayImg}
-            alt=""
-            aria-hidden
-            loading="lazy"
+            alt="Cortile della masseria all'ora dorata, lunga tavola di legno in attesa sotto gli ulivi"
+            loading="eager"
+            decoding="async"
             width={1920}
             height={1280}
             className="absolute inset-0 h-full w-full object-cover"
+            style={{ willChange: "transform" }}
           />
           {/* Layer notte (crossfade) */}
           <img
@@ -586,6 +520,67 @@ export function EventsSection() {
             >
               giorno → notte
             </span>
+          </div>
+
+          {/* Opener editoriale della sezione — vive dentro il pin, fade-out sullo scrub */}
+          <div
+            data-scene-b-opener
+            className="pointer-events-none absolute inset-0 z-40"
+            style={{ willChange: "opacity, transform" }}
+          >
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(180deg, transparent 25%, color-mix(in oklab, var(--ink) 30%, transparent) 65%, color-mix(in oklab, var(--ink) 70%, transparent) 100%)",
+              }}
+            />
+            <div className="relative mx-auto flex h-full w-full max-w-7xl flex-col justify-end px-6 pb-20 md:px-12 md:pb-28">
+              <p data-fade className="text-eyebrow text-ivory/85">
+                07 — Eventi & Matrimoni
+              </p>
+              <h3
+                aria-label="Quando la masseria si accende"
+                className="mt-6 font-display font-semibold leading-[1.02] text-ivory"
+                style={{
+                  fontSize: "clamp(2.4rem, 7vw, 6.4rem)",
+                  letterSpacing: "-0.025em",
+                  maxWidth: "18ch",
+                }}
+              >
+                {["Quando", "la", "masseria", "si", "accende"].map((w, i, arr) => {
+                  const isAccent = w === "accende";
+                  return (
+                    <span
+                      key={i}
+                      aria-hidden
+                      className="inline-block overflow-hidden align-top"
+                      style={{ paddingBottom: "0.16em" }}
+                    >
+                      <span
+                        data-opener-word
+                        className={`inline-block ${isAccent ? "italic" : ""}`}
+                        style={{
+                          willChange: "transform",
+                          color: isAccent ? "var(--gold)" : undefined,
+                        }}
+                      >
+                        {w}
+                        {i < arr.length - 1 ? "\u00A0" : ""}
+                      </span>
+                    </span>
+                  );
+                })}
+              </h3>
+              <p
+                data-fade
+                className="mt-8 max-w-2xl font-display text-lg italic leading-snug text-ivory/85 md:text-2xl"
+              >
+                Cerimonie, matrimoni e feste private in una masseria del Settecento:
+                spazi che vivono solo per le grandi occasioni.
+              </p>
+            </div>
           </div>
         </div>
       </div>
