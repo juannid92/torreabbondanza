@@ -456,7 +456,192 @@ export function EventsSection() {
           className="relative z-10 flex min-h-[100svh] flex-col items-start justify-center gap-10 px-6 py-20 md:absolute md:inset-y-0 md:left-0 md:flex-row md:items-center md:justify-start md:gap-0 md:px-0 md:py-0"
           style={{ willChange: "transform" }}
         >
-          {/* Padding iniziale */}
+          {/* Primo pannello: giorno → notte integrato nella timeline pinned */}
+          <div
+            data-events-first-panel
+            className="relative h-[100svh] w-full shrink-0 overflow-hidden md:w-screen"
+          >
+            <img
+              data-day-layer
+              src={dayImg}
+              alt=""
+              loading="eager"
+              decoding="async"
+              width={1920}
+              height={1280}
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ willChange: "opacity" }}
+            />
+            <img
+              data-night-layer
+              src={nightImg}
+              alt=""
+              loading="lazy"
+              width={1920}
+              height={1280}
+              className="absolute inset-0 h-full w-full object-cover opacity-0"
+              style={{ willChange: "opacity" }}
+            />
+            <div
+              data-sky-layer
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                opacity: 0,
+                background:
+                  "linear-gradient(180deg, color-mix(in oklab, var(--murgese) 75%, #0b1a3a) 0%, color-mix(in oklab, var(--murgese) 35%, transparent) 55%, transparent 100%)",
+                willChange: "opacity",
+              }}
+            />
+
+            <svg
+              aria-hidden
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              className="pointer-events-none absolute inset-0 h-full w-full"
+            >
+              <defs>
+                <radialGradient id="events-bulb-glow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#FFE7B0" stopOpacity="1" />
+                  <stop offset="40%" stopColor="#F2B95C" stopOpacity="0.55" />
+                  <stop offset="100%" stopColor="#A9802E" stopOpacity="0" />
+                </radialGradient>
+                <radialGradient id="events-bulb-core" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#FFF6D8" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#F2B95C" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+              {[
+                "M 4 26 Q 50 16 96 26",
+                "M 4 36 Q 50 28 96 36",
+                "M 4 48 Q 50 42 96 48",
+              ].map((d, i) => (
+                <path
+                  key={i}
+                  d={d}
+                  fill="none"
+                  stroke="rgba(247,243,236,0.18)"
+                  strokeWidth="0.12"
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
+              {lights.map((l, i) => (
+                <g
+                  key={i}
+                  data-light
+                  data-delay={l.delay}
+                  className={i >= 36 ? "max-md:hidden" : undefined}
+                  style={{
+                    opacity: 0,
+                    transform: "scale(0.6)",
+                    transformOrigin: `${l.x}% ${l.y}%`,
+                    transformBox: "fill-box",
+                    willChange: "opacity, transform",
+                  }}
+                >
+                  <circle cx={l.x} cy={l.y} r={l.r * 3} fill="url(#events-bulb-glow)" />
+                  <circle cx={l.x} cy={l.y} r={l.r * 1.4} fill="url(#events-bulb-core)" />
+                  <circle cx={l.x} cy={l.y} r={l.r * 0.45} fill="#FFFBE6" />
+                </g>
+              ))}
+            </svg>
+
+            <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-[16%] z-10">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <span
+                  key={i}
+                  data-candle
+                  className="absolute block"
+                  style={{
+                    left: `${6 + (i / 11) * 88}%`,
+                    width: 14,
+                    height: 14,
+                    borderRadius: "50%",
+                    background:
+                      "radial-gradient(circle at 50% 45%, #FFF3BE 0%, #F2B95C 35%, rgba(169,128,46,0) 75%)",
+                    filter: "blur(1px)",
+                    opacity: 0,
+                    animation: `candle-flicker ${1.8 + (i % 5) * 0.3}s ease-in-out ${i * 0.1}s infinite`,
+                    willChange: "opacity, transform",
+                  }}
+                />
+              ))}
+            </div>
+
+            <div
+              data-bokeh-layer
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{ opacity: 0, willChange: "opacity" }}
+            >
+              {Array.from({ length: 14 }).map((_, i) => {
+                const seed = (i * 37) % 100;
+                const x = (seed * 1.7) % 100;
+                const y = 10 + (seed * 0.6) % 65;
+                const size = 80 + (seed % 5) * 24;
+                const opacity = 0.18 + (seed % 7) * 0.05;
+                return (
+                  <span
+                    key={i}
+                    className="absolute block rounded-full"
+                    style={{
+                      left: `${x}%`,
+                      top: `${y}%`,
+                      width: size,
+                      height: size,
+                      background:
+                        "radial-gradient(circle at 50% 50%, rgba(255,213,138,0.9) 0%, rgba(255,213,138,0) 70%)",
+                      opacity,
+                      transform: "translate(-50%, -50%)",
+                      animation: `bokeh-drift ${10 + (i % 5) * 3}s ease-in-out ${i * 0.4}s infinite`,
+                    }}
+                  />
+                );
+              })}
+            </div>
+
+            <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
+              <span
+                data-kinetic-b
+                className="select-none font-display font-semibold tracking-[-0.05em] text-ivory/0"
+                style={{
+                  fontSize: "clamp(7rem, 22vw, 22rem)",
+                  lineHeight: 0.85,
+                  color: "color-mix(in oklab, var(--ivory) 18%, transparent)",
+                  mixBlendMode: "soft-light",
+                  willChange: "transform, opacity",
+                }}
+              >
+                FESTA
+              </span>
+            </div>
+
+            <div
+              data-events-first-copy
+              className="absolute inset-x-0 bottom-10 z-30 mx-auto flex max-w-7xl items-end justify-between gap-6 px-6 md:bottom-16 md:px-12"
+              style={{ willChange: "opacity, transform" }}
+            >
+              <p
+                className="font-display italic text-ivory"
+                style={{
+                  fontSize: "clamp(1.1rem, 1.6vw, 1.6rem)",
+                  textShadow: "0 4px 24px rgba(0,0,0,0.45)",
+                  maxWidth: "32ch",
+                }}
+              >
+                Scorri: la luce arriva, le candele si accendono, la tavola si
+                apparecchia.
+              </p>
+              <span
+                className="hidden text-eyebrow text-ivory/70 md:inline-flex"
+                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}
+              >
+                giorno → notte
+              </span>
+            </div>
+          </div>
+
+          {/* Padding tra trasformazione e percorso nella tavola */}
           <div className="hidden w-[20vw] flex-shrink-0 md:block" />
 
           {/* Eyebrow di apertura del momento C */}
