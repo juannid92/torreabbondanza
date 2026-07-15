@@ -125,121 +125,100 @@ export function EventsSection() {
         );
       }
 
-      /* ---------- MOMENTI B + C — switch desktop/mobile via matchMedia ---------- */
+      /* ---------- MOMENTO C — switch desktop/mobile via matchMedia ---------- */
+      const dayLayer = root.querySelector<HTMLElement>("[data-day-layer]");
       const nightLayer = root.querySelector<HTMLElement>("[data-night-layer]");
       const skyLayer = root.querySelector<HTMLElement>("[data-sky-layer]");
       const lightEls = root.querySelectorAll<HTMLElement>("[data-light]");
       const candleEls = root.querySelectorAll<HTMLElement>("[data-candle]");
       const bokehLayer = root.querySelector<HTMLElement>("[data-bokeh-layer]");
       const kineticB = root.querySelector<HTMLElement>("[data-kinetic-b]");
-      const bScene = root.querySelector<HTMLElement>("[data-scene-b]");
       const cScene = root.querySelector<HTMLElement>("[data-scene-c]");
       const cTrack = root.querySelector<HTMLElement>("[data-scene-c-track]");
       const cBg = root.querySelector<HTMLElement>("[data-scene-c-bg]");
       const cMid = root.querySelector<HTMLElement>("[data-scene-c-mid]");
       const cFg = root.querySelector<HTMLElement>("[data-scene-c-fg]");
       const cOccs = root.querySelectorAll<HTMLElement>("[data-occasion]");
-      const openerOverlay = root.querySelector<HTMLElement>("[data-scene-b-opener]");
+      const firstCopy = root.querySelector<HTMLElement>("[data-events-first-copy]");
 
       const mm = gsap.matchMedia();
 
-      // DESKTOP / TABLET (≥ 768px) — scena B pinned scrub + scena C dolly orizzontale
+      // DESKTOP / TABLET (≥ 768px) — unica timeline pinned: giorno/notte + dolly orizzontale
       mm.add("(min-width: 768px)", () => {
-        if (bScene && nightLayer && skyLayer) {
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: bScene,
-              start: "top top",
-              end: "bottom bottom",
-              scrub: 0.6,
-              invalidateOnRefresh: true,
-            },
-          });
-          if (openerOverlay) {
-            tl.fromTo(
-              openerOverlay,
-              { opacity: 1, yPercent: 0 },
-              { opacity: 0, yPercent: -8, ease: "power2.in", duration: 0.35 },
-              0,
-            );
-          }
-          tl.fromTo(skyLayer, { opacity: 0 }, { opacity: 1, ease: "none", duration: 1 }, 0);
-          tl.fromTo(nightLayer, { opacity: 0 }, { opacity: 1, ease: "none", duration: 1 }, 0.15);
-          lightEls.forEach((el) => {
-            const delay = parseFloat(el.dataset.delay ?? "0");
-            const at = 0.25 + delay * 0.6;
-            tl.to(el, { opacity: 1, scale: 1, duration: 0.04, ease: "power2.out" }, at);
-          });
-          candleEls.forEach((el, i) => {
-            tl.to(el, { opacity: 1, duration: 0.04, ease: "power2.out" }, 0.7 + (i / candleEls.length) * 0.25);
-          });
-          if (bokehLayer) {
-            tl.fromTo(bokehLayer, { opacity: 0 }, { opacity: 0.9, duration: 1, ease: "none" }, 0.35);
-          }
-          if (kineticB) {
-            tl.fromTo(
-              kineticB,
-              { yPercent: 30, opacity: 0 },
-              { yPercent: -30, opacity: 0.95, ease: "none", duration: 1 },
-              0,
-            );
-          }
-        }
-
         if (cScene && cTrack) {
           const getDistance = () => Math.max(0, cTrack.scrollWidth - window.innerWidth);
+          const getDuration = () => Math.max(getDistance(), window.innerHeight * 2.2);
 
-          const trackTween = gsap.to(cTrack, {
-            x: () => -getDistance(),
-            ease: "none",
+          gsap.set(dayLayer, { autoAlpha: 1 });
+          gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), { autoAlpha: 0 });
+          gsap.set(lightEls, { opacity: 0, scale: 0.6 });
+          gsap.set(candleEls, { opacity: 0 });
+          if (kineticB) gsap.set(kineticB, { yPercent: 30, opacity: 0 });
+
+          const masterTimeline = gsap.timeline({
             scrollTrigger: {
+              id: "events-main-dolly",
               trigger: cScene,
               start: "top top",
-              end: () => `+=${getDistance()}`,
-              scrub: 0.4,
+              end: () => `+=${getDuration()}`,
               pin: true,
+              pinSpacing: true,
+              scrub: 1,
+              anticipatePin: 1,
               invalidateOnRefresh: true,
             },
           });
+
+          if (dayLayer) {
+            masterTimeline.to(dayLayer, { autoAlpha: 0.25, ease: "none", duration: 0.18 }, 0);
+          }
+          if (nightLayer) {
+            masterTimeline.to(nightLayer, { autoAlpha: 1, ease: "none", duration: 0.18 }, 0);
+          }
+          if (skyLayer) {
+            masterTimeline.to(skyLayer, { autoAlpha: 1, ease: "none", duration: 0.18 }, 0);
+          }
+          if (firstCopy) {
+            masterTimeline.to(firstCopy, { autoAlpha: 0, y: -24, ease: "none", duration: 0.12 }, 0.06);
+          }
+          lightEls.forEach((el) => {
+            const delay = parseFloat(el.dataset.delay ?? "0");
+            const at = 0.03 + delay * 0.13;
+            masterTimeline.to(el, { opacity: 1, scale: 1, duration: 0.02, ease: "power2.out" }, at);
+          });
+          candleEls.forEach((el, i) => {
+            masterTimeline.to(el, { opacity: 1, duration: 0.02, ease: "power2.out" }, 0.1 + (i / candleEls.length) * 0.08);
+          });
+          if (bokehLayer) {
+            masterTimeline.to(bokehLayer, { autoAlpha: 0.9, duration: 0.18, ease: "none" }, 0.04);
+          }
+          if (kineticB) {
+            masterTimeline.to(kineticB, { yPercent: -30, opacity: 0.95, ease: "none", duration: 0.18 }, 0);
+          }
+
           if (cBg) {
-            gsap.to(cBg, {
+            masterTimeline.to(cBg, {
               x: () => -getDistance() * 0.3,
               ease: "none",
-              scrollTrigger: {
-                trigger: cScene,
-                start: "top top",
-                end: () => `+=${getDistance()}`,
-                scrub: 0.4,
-                invalidateOnRefresh: true,
-              },
-            });
+              duration: 0.82,
+            }, 0.18);
           }
           if (cMid) {
-            gsap.to(cMid, {
+            masterTimeline.to(cMid, {
               x: () => -getDistance() * 0.6,
               ease: "none",
-              scrollTrigger: {
-                trigger: cScene,
-                start: "top top",
-                end: () => `+=${getDistance()}`,
-                scrub: 0.4,
-                invalidateOnRefresh: true,
-              },
-            });
+              duration: 0.82,
+            }, 0.18);
           }
           if (cFg) {
-            gsap.to(cFg, {
+            masterTimeline.to(cFg, {
               x: () => -getDistance() * 1.15,
               ease: "none",
-              scrollTrigger: {
-                trigger: cScene,
-                start: "top top",
-                end: () => `+=${getDistance()}`,
-                scrub: 0.4,
-                invalidateOnRefresh: true,
-              },
-            });
+              duration: 0.82,
+            }, 0.18);
           }
+          masterTimeline.to(cTrack, { x: () => -getDistance(), ease: "none", duration: 0.82 }, 0.18);
+
           cOccs.forEach((occ) => {
             const word = occ.querySelector<HTMLElement>("[data-occ-word]");
             const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
@@ -247,7 +226,7 @@ export function EventsSection() {
             const wordChars = splitWords(word);
             ScrollTrigger.create({
               trigger: occ,
-              containerAnimation: trackTween,
+              containerAnimation: masterTimeline,
               start: "left center",
               end: "right center",
               onEnter: () => {
@@ -263,7 +242,8 @@ export function EventsSection() {
 
       // MOBILE (< 768px) — scena B/C statiche e verticali, fail-safe sempre visibile
       mm.add("(max-width: 767px)", () => {
-        gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), { opacity: 1, clearProps: "transform" });
+        gsap.set(dayLayer, { autoAlpha: 0.25, clearProps: "transform" });
+        gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), { autoAlpha: 1, clearProps: "transform" });
         gsap.set(lightEls, { opacity: 1, scale: 1, clearProps: "transform" });
         gsap.set(candleEls, { opacity: 1 });
         if (kineticB) gsap.set(kineticB, { yPercent: 0, opacity: 0.7 });
