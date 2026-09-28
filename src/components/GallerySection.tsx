@@ -468,7 +468,7 @@ export function GallerySection() {
           "linear-gradient(180deg, color-mix(in oklab, #15110F 18%, var(--ivory)) 0%, var(--ivory) 28%, var(--ivory) 72%, color-mix(in oklab, #15110F 10%, var(--ivory)) 100%)",
       }}
     >
-      {/* Continuità con sez.08 (inverno scuro → spazio profondo) */}
+      {/* Continuità con sez.07 (inverno scuro → spazio profondo) */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-32"
@@ -479,7 +479,7 @@ export function GallerySection() {
       />
 
       <div className="mx-auto max-w-7xl px-6 pt-24 pb-12 md:px-12 md:pt-40 md:pb-16">
-        <p className="text-eyebrow text-ink/65">09 — Galleria</p>
+        <p className="text-eyebrow text-ink/65">08 — Galleria</p>
         <h2
           id="gallery-title"
           className="font-display mt-6 max-w-4xl font-medium leading-[0.95] text-ink"

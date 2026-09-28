@@ -460,7 +460,7 @@ export function VisitSection() {
         {/* Testata */}
         <header className="max-w-3xl">
           <p data-field className="text-[11px] tracking-[0.28em] uppercase text-ink/55 mb-6">
-            11 — Contatti
+            10 — Contatti
           </p>
           <h2
             ref={titleRef}

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MagneticButton } from "./MagneticButton";
 import { observeRevealElements } from "@/lib/scroll-ready";
 import winterBg from "@/assets/season-winter.jpg";
 import springBg from "@/assets/season-spring.jpg";
@@ -15,6 +14,17 @@ import expSummerNight from "@/assets/events-space-night.jpg";
 import expAutumnTable from "@/assets/kitchen-antipasti.jpg";
 import expWinterCamino from "@/assets/kitchen-primi.jpg";
 import expSpringPicnic from "@/assets/events-carriage.jpg";
+
+/**
+ * Fascia "L'anno alla masseria".
+ *
+ * Era la sezione 08 autonoma; ora e' il terzo movimento della sezione
+ * Eventi, quindi usa un <div> e un <h3>: la gerarchia dei titoli resta
+ * corretta sotto l'<h2> di Eventi.
+ */
+
+/** Altezze schermo di scorrimento per ogni cambio di stagione. */
+const SCROLL_PER_TRANSITION = 0.9;
 
 type SeasonKey = "spring" | "summer" | "autumn" | "winter";
 type Soul = "equestre" | "tavola";
@@ -212,7 +222,7 @@ function StageContent({ stage }: { stage: SeasonStage }) {
           >
             {String(stage.index + 1).padStart(2, "0")} / 04 · La stagione {stage.label.toLowerCase()}
           </p>
-          <h3
+          <h4
             data-stage-title
             className="font-display font-medium leading-[0.9]"
             style={{
@@ -228,7 +238,7 @@ function StageContent({ stage }: { stage: SeasonStage }) {
             >
               {stage.italic}
             </em>
-          </h3>
+          </h4>
           <p
             data-stage-kicker
             className="font-display mt-6 max-w-2xl text-lg italic leading-relaxed md:text-xl"
@@ -277,12 +287,12 @@ function StageContent({ stage }: { stage: SeasonStage }) {
                 </span>
               </div>
               <figcaption className="flex flex-col gap-2">
-                <h4
+                <h5
                   className="font-display font-medium leading-tight"
                   style={{ fontSize: "clamp(1.2rem, 1.8vw, 1.55rem)", color: stage.palette.fg }}
                 >
                   {exp.title}
-                </h4>
+                </h5>
                 <p
                   className="max-w-md text-sm leading-relaxed md:text-base"
                   style={{ color: `color-mix(in oklab, ${stage.palette.fg} 78%, transparent)` }}
@@ -365,13 +375,13 @@ function StaticFallback() {
               >
                 {String(s.index + 1).padStart(2, "0")} · {s.label}
               </p>
-              <h3
+              <h4
                 className="font-display font-medium leading-[0.95]"
                 style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)" }}
               >
                 {s.label}{" "}
                 <em style={{ color: s.palette.accent, fontStyle: "italic" }}>{s.italic}</em>
-              </h3>
+              </h4>
               <p
                 className="font-display mt-4 italic"
                 style={{ color: `color-mix(in oklab, ${s.palette.fg} 80%, transparent)` }}
@@ -398,12 +408,12 @@ function StaticFallback() {
                     >
                       {SOUL_LABEL[exp.soul]}
                     </p>
-                    <h4
+                    <h5
                       className="font-display font-medium"
                       style={{ fontSize: "1.2rem" }}
                     >
                       {exp.title}
-                    </h4>
+                    </h5>
                     <p
                       className="mt-2 text-sm"
                       style={{ color: `color-mix(in oklab, ${s.palette.fg} 75%, transparent)` }}
@@ -421,8 +431,8 @@ function StaticFallback() {
   );
 }
 
-export function SeasonsSection() {
-  const rootRef = useRef<HTMLElement>(null);
+export function SeasonsBand() {
+  const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -430,8 +440,9 @@ export function SeasonsSection() {
     const cleanupReveal = observeRevealElements(root);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return () => cleanupReveal();
-    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
-    if (isMobile) return () => cleanupReveal();
+    // Il ciclo pinnato esiste solo da 1024px in su: sotto si usa il fallback
+    // verticale, quindi qui non serve alcun ramo mobile.
+    if (window.matchMedia("(max-width: 1023px)").matches) return () => cleanupReveal();
 
     const ctx = gsap.context(() => {
       const stage = root.querySelector<HTMLElement>("[data-pin-stage]");
@@ -441,6 +452,11 @@ export function SeasonsSection() {
       const contents = gsap.utils.toArray<HTMLElement>("[data-stage-content]", stage);
       const dots = gsap.utils.toArray<HTMLElement>("[data-prog-dot]", root);
       const labels = gsap.utils.toArray<HTMLElement>("[data-prog-label]", root);
+
+      // Durata totale del pin: una frazione di schermata per ogni passaggio
+      // di stagione. Con quattro stagioni sono tre transizioni.
+      const totalScroll = () =>
+        window.innerHeight * (STAGES.length - 1) * SCROLL_PER_TRANSITION;
 
       if (bgs[0]) gsap.set(bgs[0], { opacity: 1 });
       if (contents[0]) gsap.set(contents[0], { opacity: 1 });
@@ -458,7 +474,7 @@ export function SeasonsSection() {
       ScrollTrigger.create({
         trigger: stage,
         start: "top top",
-        end: () => `+=${window.innerHeight * (isMobile ? 2.5 : 4)}`,
+        end: () => `+=${totalScroll()}`,
         pin: true,
         scrub: 0.5,
         invalidateOnRefresh: true,
@@ -532,11 +548,11 @@ export function SeasonsSection() {
         const enterT = idx / (STAGES.length - 1);
         ScrollTrigger.create({
           trigger: stage,
-          start: () =>
-            `top+=${Math.max(0, enterT * window.innerHeight * (isMobile ? 2.5 : 4) - 100)} top`,
-          onEnter: () => tl.play(),
-          onEnterBack: () => tl.play(),
+          start: () => `top+=${Math.max(0, enterT * totalScroll() - 100)} top`,
+          // once: il trigger si autodistrugge dopo il primo ingresso, quindi
+          // onEnterBack non avrebbe mai potuto scattare.
           once: true,
+          onEnter: () => tl.play(),
           invalidateOnRefresh: true,
         });
       });
@@ -549,10 +565,9 @@ export function SeasonsSection() {
   }, []);
 
   return (
-    <section
+    <div
       id="esperienze"
       ref={rootRef}
-      aria-labelledby="seasons-title"
       className="relative"
       style={{
         background: "var(--season-bg, #EFE9DC)",
@@ -565,16 +580,16 @@ export function SeasonsSection() {
           className="text-eyebrow mb-6"
           style={{ color: "color-mix(in oklab, var(--season-fg) 60%, transparent)" }}
         >
-          08 — Esperienze & stagioni
+          III · L'anno alla masseria
         </p>
-        <h2
+        <h3
           id="seasons-title"
           className="font-display max-w-5xl font-medium leading-[0.95]"
           style={{ fontSize: "clamp(2.8rem, 8vw, 7rem)" }}
         >
           Le <em style={{ color: "var(--season-accent)", fontStyle: "italic" }}>stagioni</em>{" "}
           della Murgia
-        </h2>
+        </h3>
         <p
           className="font-display mt-8 max-w-2xl text-lg italic md:text-xl"
           style={{ color: "color-mix(in oklab, var(--season-fg) 80%, transparent)" }}
@@ -603,15 +618,12 @@ export function SeasonsSection() {
         <StaticFallback />
       </div>
 
-      {/* Chiusura — transizione morbida verso Galleria */}
+      {/* Chiusura: dall'inverno all'avorio, per agganciare la CTA di Eventi */}
       <div
         className="relative"
-        style={{
-          background: STAGES[3].palette.bg,
-          color: STAGES[3].palette.fg,
-        }}
+        style={{ background: STAGES[3].palette.bg, color: STAGES[3].palette.fg }}
       >
-        <div className="mx-auto flex max-w-7xl flex-col items-start gap-8 px-6 py-24 md:flex-row md:items-end md:justify-between md:px-12 md:py-32">
+        <div className="mx-auto max-w-7xl px-6 py-24 md:px-12 md:py-32">
           <p
             className="font-display max-w-2xl leading-tight"
             style={{ fontSize: "clamp(1.4rem, 2.4vw, 2.2rem)" }}
@@ -619,16 +631,15 @@ export function SeasonsSection() {
             L'anno alla masseria gira sempre: c'è una stagione che ti aspetta,
             con la sua festa e il suo passo.
           </p>
-          <div className="flex flex-wrap gap-4">
-            <MagneticButton href="#eventi" variant="pill">
-              Vedi gli eventi →
-            </MagneticButton>
-            <MagneticButton href="#contatti" variant="link">
-              Scrivici →
-            </MagneticButton>
-          </div>
         </div>
+        <div
+          aria-hidden
+          className="pointer-events-none h-32"
+          style={{
+            background: `linear-gradient(180deg, ${STAGES[3].palette.bg} 0%, color-mix(in oklab, ${STAGES[3].palette.bg} 45%, var(--ivory)) 55%, var(--ivory) 100%)`,
+          }}
+        />
       </div>
-    </section>
+    </div>
   );
 }
