@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
-import { SeasonsBand } from "./SeasonsBand";
 import { splitWords } from "@/lib/split-text";
 import { observeRevealElements } from "@/lib/scroll-ready";
 import dayImg from "@/assets/events-space-day.jpg";
@@ -305,7 +304,7 @@ export function EventsSection() {
       className="relative bg-ivory"
     >
       <h2 id="events-title" className="sr-only">
-        Eventi, matrimoni ed esperienze alla Masseria Torre Abbondanza
+        Eventi e matrimoni alla Masseria Torre Abbondanza
       </h2>
 
       {/* ====================================================================
@@ -347,7 +346,7 @@ export function EventsSection() {
           />
           <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-end px-6 pb-20 md:px-12 md:pb-28">
             <p data-fade className="text-eyebrow text-ivory/85">
-              07 — Eventi ed esperienze
+              07 — Eventi & Matrimoni
             </p>
             <h3
               aria-label="Quando la masseria si accende"
@@ -826,12 +825,6 @@ export function EventsSection() {
       </aside>
 
       {/* ====================================================================
-          MOVIMENTO III — L'anno alla masseria (ex sezione 08)
-          Le stagioni e le esperienze vivono qui, dentro Eventi.
-      ==================================================================== */}
-      <SeasonsBand />
-
-      {/* ====================================================================
           CTA — chiusura calda
       ==================================================================== */}
       <div className="relative bg-ivory">
@@ -853,7 +846,7 @@ export function EventsSection() {
           </div>
         </div>
 
-        {/* Uscita morbida verso la Galleria */}
+        {/* Uscita morbida verso Sez. 08 */}
         <div
           aria-hidden
           className="pointer-events-none h-32"

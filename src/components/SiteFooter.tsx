@@ -28,10 +28,11 @@ const NAV: { label: string; href: string }[] = [
   { label: "Cucina", href: "#cucina" },
   { label: "I Sapori", href: "#menu" },
   { label: "I Cavalli", href: "#cavalli" },
-  { label: "Eventi ed esperienze", href: "#eventi" },
+  { label: "Eventi", href: "#eventi" },
+  { label: "Esperienze", href: "#stagioni" },
   { label: "Galleria", href: "#galleria" },
   { label: "Recensioni", href: "#recensioni" },
-  { label: "Contatti", href: "#contatti" },
+  { label: "Contatti", href: "#visita" },
 ];
 
 function smoothScrollTo(href: string) {
@@ -114,7 +115,7 @@ function ClosingClaim() {
   return (
     <div ref={ref} className="max-w-5xl">
       <p className="text-[11px] tracking-[0.28em] uppercase text-ivory/55 mb-6">
-        11 — Chiusura
+        12 — Chiusura
       </p>
       <h2
         className="font-display font-medium leading-[0.98] tracking-tight"
@@ -215,7 +216,7 @@ export function SiteFooter() {
             <div className="mt-10">
               <MagneticButton
                 variant="pill-solid"
-                onClick={() => smoothScrollTo("#contatti")}
+                onClick={() => smoothScrollTo("#visita")}
                 ariaLabel="Richiedi la tua occasione — vai ai contatti"
               >
                 Richiedi la tua occasione
@@ -349,7 +350,7 @@ export function SiteFooter() {
 
               <button
                 type="button"
-                onClick={() => smoothScrollTo("#contatti")}
+                onClick={() => smoothScrollTo("#visita")}
                 className="group mt-8 inline-flex items-center gap-2 text-sm tracking-[0.14em] uppercase text-ivory hover:text-gold transition-colors"
               >
                 Richiedi la tua occasione

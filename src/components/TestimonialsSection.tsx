@@ -298,7 +298,7 @@ export function TestimonialsSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-28 md:px-12 md:py-44">
         {/* Eyebrow + titolo */}
-        <p className="text-eyebrow mb-6 text-ink/70">09 — Il libro degli ospiti</p>
+        <p className="text-eyebrow mb-6 text-ink/70">10 — Il libro degli ospiti</p>
         <h2
           id="guestbook-title"
           className="mb-20 max-w-[18ch]"
