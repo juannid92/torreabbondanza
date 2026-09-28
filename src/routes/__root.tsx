@@ -10,23 +10,28 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import ogImage from "../assets/hero-masseria.jpg";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { BUSINESS, SITE_URL, absoluteUrl } from "../lib/site";
+
+const PAGE_TITLE = `${BUSINESS.name} — Noci, Puglia`;
+const OG_IMAGE = absoluteUrl(ogImage);
 
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Pagina non trovata</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          La pagina che cerchi non esiste o è stata spostata.
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            Torna alla home
           </Link>
         </div>
       </div>
@@ -45,10 +50,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          Questa pagina non si è caricata
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          Si è verificato un problema. Puoi riprovare o tornare alla home.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -58,13 +63,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            Riprova
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            Torna alla home
           </a>
         </div>
       </div>
@@ -77,25 +82,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Masseria Torre Abbondanza — Noci, Puglia" },
-      {
-        name: "description",
-        content:
-          "Masseria del XVIII secolo nel cuore della Murgia: ristorante, eventi e matrimoni a Noci, Puglia.",
-      },
-      { name: "author", content: "Masseria Torre Abbondanza" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:title", content: "Masseria Torre Abbondanza — Noci, Puglia" },
-      { name: "twitter:title", content: "Masseria Torre Abbondanza — Noci, Puglia" },
-      { name: "description", content: "Your Command Center is a developer tool that executes instructions precisely as provided." },
-      { property: "og:description", content: "Your Command Center is a developer tool that executes instructions precisely as provided." },
-      { name: "twitter:description", content: "Your Command Center is a developer tool that executes instructions precisely as provided." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/28a94ed2-487e-49f2-94ee-4f910d3020ab" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/28a94ed2-487e-49f2-94ee-4f910d3020ab" },
+      { title: PAGE_TITLE },
+      { name: "description", content: BUSINESS.description },
+      { name: "author", content: BUSINESS.name },
+      { name: "robots", content: "index, follow" },
+
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: BUSINESS.name },
+      { property: "og:locale", content: "it_IT" },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:title", content: PAGE_TITLE },
+      { property: "og:description", content: BUSINESS.description },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:alt", content: `${BUSINESS.name}, Noci (BA)` },
+
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: PAGE_TITLE },
+      { name: "twitter:description", content: BUSINESS.description },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "canonical", href: SITE_URL },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "preconnect",
@@ -116,7 +124,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="it">
       <head>
         <HeadContent />
       </head>
