@@ -7,7 +7,6 @@ import { KitchenSection } from "@/components/KitchenSection";
 import { MenuSection } from "@/components/MenuSection";
 import { HorsesSection } from "@/components/HorsesSection";
 import { EventsSection } from "@/components/EventsSection";
-import { SeasonsSection } from "@/components/SeasonsSection";
 import { GallerySection } from "@/components/GallerySection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { VisitSection } from "@/components/VisitSection";
@@ -41,8 +40,9 @@ function Index() {
       <KitchenSection />
       <MenuSection />
       <HorsesSection />
+      {/* Eventi monta al suo interno la fascia "L'anno alla masseria"
+          (ex sezione 08): le stagioni vivono dentro EventsSection. */}
       <EventsSection />
-      <SeasonsSection />
       <GallerySection />
       <TestimonialsSection />
       <VisitSection />
