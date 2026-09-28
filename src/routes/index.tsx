@@ -13,23 +13,18 @@ import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
+import heroImage from "@/assets/hero-masseria.jpg";
+import { absoluteUrl, buildRestaurantJsonLd } from "@/lib/site";
 
+// I meta tag comuni sono definiti una sola volta in __root.tsx.
+// Qui resta solo ciò che è specifico della home: i dati strutturati.
 export const Route = createFileRoute("/")({
   head: () => ({
-    meta: [
-      { title: "Masseria Torre Abbondanza — Noci, Puglia" },
+    scripts: [
       {
-        name: "description",
-        content:
-          "Masseria del XVIII secolo nel cuore della Murgia: ristorante, eventi e matrimoni a Noci, Puglia.",
+        type: "application/ld+json",
+        children: JSON.stringify(buildRestaurantJsonLd(absoluteUrl(heroImage))),
       },
-      { property: "og:title", content: "Masseria Torre Abbondanza" },
-      {
-        property: "og:description",
-        content:
-          "Nel cuore della Murgia, dove la pietra racconta tre secoli e ogni tavola diventa una festa.",
-      },
-      { property: "og:type", content: "website" },
     ],
   }),
   component: Index,
