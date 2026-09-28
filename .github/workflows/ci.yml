@@ -22,7 +22,7 @@ jobs:
       - name: Installa le dipendenze
         run: bun install
 
-         - name: Lint
+      - name: Lint
         run: bun run lint
         continue-on-error: true
 
