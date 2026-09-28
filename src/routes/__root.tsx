@@ -101,19 +101,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: BUSINESS.description },
       { name: "twitter:image", content: OG_IMAGE },
     ],
+    // I font sono self-hosted e importati in styles.css: nessuna richiesta
+    // verso fonts.googleapis.com, quindi nessun trasferimento di IP a Google.
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "canonical", href: SITE_URL },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous",
-      },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Inter:wght@300;400;500;600&display=swap",
-      },
     ],
   }),
   shellComponent: RootShell,

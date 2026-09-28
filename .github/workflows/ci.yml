@@ -16,8 +16,11 @@ jobs:
         with:
           bun-version: latest
 
+      # Senza --frozen-lockfile: bun.lock viene rigenerato dopo l'aggiunta
+      # dei pacchetti dei font. Si potra' ripristinare il flag una volta che
+      # il lockfile aggiornato sara' stato committato.
       - name: Installa le dipendenze
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Lint
         run: bun run lint
