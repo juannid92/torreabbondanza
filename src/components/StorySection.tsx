@@ -5,7 +5,7 @@ import { StoryPanel, type StoryPanelData } from "./StoryPanel";
 import { observeRevealElements } from "@/lib/scroll-ready";
 import storyOrigini from "@/assets/story-origini.jpg";
 import storyPietra from "@/assets/story-pietra.jpg";
-import storyCavalli from "@/assets/story-cavalli-murgesi.jpg";
+import storyCavalli from "@/assets/primavera-alessio/alessio-cura.svg";
 import storyFamiglia from "@/assets/story-famiglia.jpg";
 import storyOggi from "@/assets/story-oggi.jpg";
 
@@ -83,7 +83,7 @@ const PANELS: StoryPanelData[] = [
     ),
     image: {
       src: storyCavalli,
-      alt: "Cavallo Murgese dal manto nero nella campagna della Murgia all'ora dorata, muretto a secco e ulivi sullo sfondo",
+      alt: "Alessio accompagna un cavallo dal manto nero nel prato della masseria, fotografia in bianco e nero",
     },
     note: <>Origine della razza e ruolo della masseria nell'allevamento da confermare</>,
     tone: "deep",

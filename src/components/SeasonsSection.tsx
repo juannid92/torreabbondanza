@@ -7,7 +7,7 @@ import winterBg from "@/assets/season-winter.jpg";
 import springBg from "@/assets/season-spring.jpg";
 import summerBg from "@/assets/season-may.jpg";
 import autumnBg from "@/assets/season-autumn.jpg";
-import expSpringRide from "@/assets/season-exp-spring-ride.jpg";
+import expSpringRide from "@/assets/primavera-alessio/primavera-esperienza.svg";
 import expSummerAttacchi from "@/assets/season-exp-summer-attacchi.jpg";
 import expAutumnOlives from "@/assets/season-exp-autumn-olives.jpg";
 import expWinterHorses from "@/assets/season-exp-winter-horses.jpg";
@@ -55,7 +55,7 @@ const STAGES: SeasonStage[] = [
         text:
           "Passeggiate nei sentieri della masseria con i Murgesi: il passo lento dei cavalli e il bianco delle fioriture lungo i filari.",
         image: expSpringRide,
-        alt: "Cavalieri al passo tra ulivi in fiore della Murgia",
+        alt: "Alessio in sella a un cavallo dal manto nero nel prato della masseria, con alberi e muretti a secco sullo sfondo",
       },
       {
         soul: "tavola",
