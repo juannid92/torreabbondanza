@@ -27,7 +27,7 @@ import eventsGarden from "@/assets/events-garden.jpg";
 import eventsWedding from "@/assets/events-wedding.jpg";
 import eventsPrivate from "@/assets/events-private.jpg";
 import eventsKitchen from "@/assets/events-kitchen.jpg";
-import seasonEquestrian from "@/assets/season-equestrian.jpg";
+import seasonEquestrian from "@/assets/primavera-alessio/primavera-campagna.svg";
 import horseApparition from "@/assets/fiocco-quinta/cavallo-ritratto.svg";
 import horseGallop from "@/assets/horse-gallop.jpg";
 import horsesTradition from "@/assets/horses-tradition.jpg";
@@ -65,7 +65,7 @@ const IMAGES: GalleryImage[] = [
   { id: "g07", src: kitchenPrimi, alt: "Orecchiette fatte a mano", caption: "Orecchiette · tradizione", soul: "warm", x: 0.1, y: 0.42, z: 0.55, w: 22, ratio: 1 },
   { id: "g08", src: horsesTradition, alt: "Attacchi d'epoca con cavalli Murgesi", caption: "Attacchi d'epoca", soul: "dark", x: 0.55, y: -0.45, z: 0.48, w: 30, ratio: 16 / 10 },
   { id: "g09", src: eventsHall, alt: "Sala storica apparecchiata", caption: "La sala · volte del '700", soul: "warm", x: -0.5, y: -0.4, z: 0.4, w: 28, ratio: 3 / 2 },
-  { id: "g10", src: seasonEquestrian, alt: "Cavalli al pascolo nella Murgia", caption: "Pascolo · Murgia", soul: "dark", x: -0.15, y: 0.45, z: 0.34, w: 34, ratio: 16 / 9 },
+  { id: "g10", src: seasonEquestrian, alt: "Alessio a cavallo nel verde della masseria, tra alberi e muretti a secco", caption: "A cavallo · campagna", soul: "dark", x: -0.15, y: 0.45, z: 0.34, w: 34, ratio: 16 / 9 },
   { id: "g11", src: kitchenAntipasti, alt: "Antipasti della tradizione pugliese", caption: "Antipasti · convivio", soul: "warm", x: 0.5, y: 0.3, z: 0.28, w: 22, ratio: 4 / 5 },
   { id: "g12", src: heroCavallo, alt: "Primo piano di un cavallo dal manto nero con la criniera intrecciata", caption: "Ritratto · criniera intrecciata", soul: "dark", x: -0.55, y: -0.15, z: 0.22, w: 26, ratio: 3 / 4 },
   { id: "g13", src: eventsGarden, alt: "Giardino della masseria al tramonto", caption: "Giardino · tramonto", soul: "warm", x: 0.35, y: -0.35, z: 0.16, w: 30, ratio: 16 / 10 },
