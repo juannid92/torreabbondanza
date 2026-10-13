@@ -4,7 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useReducedMotion } from "framer-motion";
 import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
-import apparitionImg from "@/assets/horse-apparition.jpg";
+import apparitionImg from "@/assets/fiocco-quinta/cavallo-ritratto.svg";
 import gallopImg from "@/assets/horse-gallop.jpg";
 import skyImg from "@/assets/horses-sky.jpg";
 import hillsImg from "@/assets/horses-hills.png";
@@ -240,9 +240,9 @@ export function HorsesSection() {
             >
               <img
                 src={apparitionImg}
-                alt="Silhouette di un cavallo Murgese dal manto nero che emerge dalla penombra, criniera e collo illuminati da una luce calda radente"
+                alt="Cavallo dal manto nero accanto alla sua accompagnatrice, con la criniera lunga illuminata dalla luce naturale"
                 loading="lazy"
-                width={1600}
+                width={1198}
                 height={1800}
                 className="absolute inset-0 h-full w-full object-cover"
               />

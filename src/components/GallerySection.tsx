@@ -28,11 +28,11 @@ import eventsWedding from "@/assets/events-wedding.jpg";
 import eventsPrivate from "@/assets/events-private.jpg";
 import eventsKitchen from "@/assets/events-kitchen.jpg";
 import seasonEquestrian from "@/assets/season-equestrian.jpg";
-import horseApparition from "@/assets/horse-apparition.jpg";
+import horseApparition from "@/assets/fiocco-quinta/cavallo-ritratto.svg";
 import horseGallop from "@/assets/horse-gallop.jpg";
 import horsesTradition from "@/assets/horses-tradition.jpg";
-import storyCavalli from "@/assets/story-cavalli-murgesi.jpg";
-import heroCavallo from "@/assets/hero-cavallo-murgese.jpg";
+import storyCavalli from "@/assets/fiocco-quinta/cavallo-corte.svg";
+import heroCavallo from "@/assets/fiocco-quinta/cavallo-dettaglio.svg";
 import seasonAttacchi from "@/assets/season-exp-summer-attacchi.jpg";
 import seasonWinterHorses from "@/assets/season-exp-winter-horses.jpg";
 
@@ -57,17 +57,17 @@ interface GalleryImage {
 const IMAGES: GalleryImage[] = [
   // Z lontano → vicino, alternato W/D/W/D...
   { id: "g01", src: heroImg, alt: "Facciata della masseria al tramonto", caption: "La facciata · ora dorata", soul: "warm", x: -0.55, y: -0.25, z: 0.98, w: 34, ratio: 16 / 10 },
-  { id: "g02", src: horseApparition, alt: "Cavallo Murgese in luce radente", caption: "Apparizione · Murgese", soul: "dark", x: 0.5, y: 0.22, z: 0.92, w: 30, ratio: 4 / 5 },
+  { id: "g02", src: horseApparition, alt: "Cavallo dal manto nero accanto alla sua accompagnatrice", caption: "Incontro · criniera nera", soul: "dark", x: 0.5, y: 0.22, z: 0.92, w: 30, ratio: 4 / 5 },
   { id: "g03", src: storyOrigini, alt: "Vista d'epoca della masseria", caption: "Origini · archivio", soul: "warm", x: 0.35, y: -0.38, z: 0.84, w: 26, ratio: 3 / 2 },
   { id: "g04", src: horseGallop, alt: "Cavallo Murgese al galoppo nella prateria", caption: "Galoppo · prateria", soul: "dark", x: -0.45, y: 0.35, z: 0.78, w: 32, ratio: 16 / 9 },
   { id: "g05", src: eventsWedding, alt: "Sposi al tramonto tra gli ulivi", caption: "Matrimonio · ulivi", soul: "warm", x: 0.6, y: -0.05, z: 0.7, w: 24, ratio: 3 / 4 },
-  { id: "g06", src: storyCavalli, alt: "Cavalli Murgesi nella corte storica", caption: "Stirpe · corte", soul: "dark", x: -0.62, y: 0.05, z: 0.62, w: 28, ratio: 4 / 3 },
+  { id: "g06", src: storyCavalli, alt: "Cavallo dal manto nero con la sua accompagnatrice davanti alla facciata della masseria", caption: "Cavallo · corte", soul: "dark", x: -0.62, y: 0.05, z: 0.62, w: 28, ratio: 4 / 3 },
   { id: "g07", src: kitchenPrimi, alt: "Orecchiette fatte a mano", caption: "Orecchiette · tradizione", soul: "warm", x: 0.1, y: 0.42, z: 0.55, w: 22, ratio: 1 },
   { id: "g08", src: horsesTradition, alt: "Attacchi d'epoca con cavalli Murgesi", caption: "Attacchi d'epoca", soul: "dark", x: 0.55, y: -0.45, z: 0.48, w: 30, ratio: 16 / 10 },
   { id: "g09", src: eventsHall, alt: "Sala storica apparecchiata", caption: "La sala · volte del '700", soul: "warm", x: -0.5, y: -0.4, z: 0.4, w: 28, ratio: 3 / 2 },
   { id: "g10", src: seasonEquestrian, alt: "Cavalli al pascolo nella Murgia", caption: "Pascolo · Murgia", soul: "dark", x: -0.15, y: 0.45, z: 0.34, w: 34, ratio: 16 / 9 },
   { id: "g11", src: kitchenAntipasti, alt: "Antipasti della tradizione pugliese", caption: "Antipasti · convivio", soul: "warm", x: 0.5, y: 0.3, z: 0.28, w: 22, ratio: 4 / 5 },
-  { id: "g12", src: heroCavallo, alt: "Ritratto di un cavallo Murgese", caption: "Ritratto · Murgese", soul: "dark", x: -0.55, y: -0.15, z: 0.22, w: 26, ratio: 3 / 4 },
+  { id: "g12", src: heroCavallo, alt: "Primo piano di un cavallo dal manto nero con la criniera intrecciata", caption: "Ritratto · criniera intrecciata", soul: "dark", x: -0.55, y: -0.15, z: 0.22, w: 26, ratio: 3 / 4 },
   { id: "g13", src: eventsGarden, alt: "Giardino della masseria al tramonto", caption: "Giardino · tramonto", soul: "warm", x: 0.35, y: -0.35, z: 0.16, w: 30, ratio: 16 / 10 },
   { id: "g14", src: seasonAttacchi, alt: "Sfilata di attacchi d'epoca in estate", caption: "Sfilata · estate", soul: "dark", x: -0.4, y: 0.4, z: 0.12, w: 28, ratio: 16 / 9 },
   { id: "g15", src: kitchenWine, alt: "Calice di Primitivo controluce", caption: "Primitivo · calice", soul: "warm", x: 0.62, y: 0.08, z: 0.07, w: 20, ratio: 4 / 5 },
