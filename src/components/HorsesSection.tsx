@@ -4,7 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useReducedMotion } from "framer-motion";
 import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
-import apparitionImg from "@/assets/fiocco-quinta/cavallo-ritratto.svg";
+import apparitionImg from "@/assets/puledri-fattrici/cavallo-penombra.svg";
 import gallopImg from "@/assets/horse-gallop.jpg";
 import skyImg from "@/assets/horses-sky.jpg";
 import hillsImg from "@/assets/horses-hills.png";
@@ -240,10 +240,10 @@ export function HorsesSection() {
             >
               <img
                 src={apparitionImg}
-                alt="Cavallo dal manto nero accanto alla sua accompagnatrice, con la criniera lunga illuminata dalla luce naturale"
+                alt="Ritratto di un cavallo dal manto nero nella penombra, con l’occhio e la criniera appena illuminati dietro un altro cavallo"
                 loading="lazy"
-                width={1198}
-                height={1800}
+                width={1600}
+                height={1070}
                 className="absolute inset-0 h-full w-full object-cover"
               />
               {/* Alone caldo */}
