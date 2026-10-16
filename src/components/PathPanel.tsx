@@ -109,6 +109,8 @@ export function PathPanel({
           width={1024}
           height={1366}
           className="absolute inset-0 h-full w-full object-cover"
+          // Pannello attivo = più vicino (1.04); dimmed = scala base (1.0)
+          // per restare visivamente "più lontano" rispetto ai vicini.
           animate={{ scale: isDimmed ? 1 : 1.04 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         />
