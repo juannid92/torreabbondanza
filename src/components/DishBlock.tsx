@@ -120,9 +120,7 @@ export function DishBlock({
       <div
         data-dish-frame
         className={`relative overflow-hidden rounded-sm shadow-soft md:row-start-1 ${
-          isLeft
-            ? "md:col-start-1 md:col-end-8"
-            : "md:col-start-6 md:col-end-13"
+          isLeft ? "md:col-start-1 md:col-end-8" : "md:col-start-6 md:col-end-13"
         }`}
         style={{ aspectRatio: "4 / 3", willChange: "clip-path" }}
       >
@@ -188,10 +186,7 @@ export function DishBlock({
           {description}
         </p>
 
-        <p
-          data-meta
-          className="font-display text-sm italic text-ink/55"
-        >
+        <p data-meta className="font-display text-sm italic text-ink/55">
           {caption}
         </p>
       </div>

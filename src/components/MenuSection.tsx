@@ -81,7 +81,7 @@ export function MenuSection() {
               end: "bottom top",
               scrub: 1,
             },
-          }
+          },
         );
       }
 
@@ -121,7 +121,7 @@ export function MenuSection() {
                 end: "bottom top",
                 scrub: 1,
               },
-            }
+            },
           );
         }
       });
@@ -190,8 +190,8 @@ export function MenuSection() {
               data-menu-intro
               className="font-display text-lg italic leading-snug text-ink/75 md:text-xl"
             >
-              Niente carta da sfogliare: una cucina pugliese della tradizione
-              che si compone insieme, su misura per la tua occasione.
+              Niente carta da sfogliare: una cucina pugliese della tradizione che si compone
+              insieme, su misura per la tua occasione.
             </p>
           </div>
         </div>
@@ -234,15 +234,9 @@ export function MenuSection() {
           </div>
 
           {/* Parole kinetic in layering — desktop: alcune sovrapposte alla foto, altre fuori */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 hidden md:block"
-          >
+          <div aria-hidden className="pointer-events-none absolute inset-0 hidden md:block">
             {/* convivio — sovrapposto in basso a sinistra */}
-            <div
-              className="absolute"
-              style={{ left: "4%", bottom: "8%" }}
-            >
+            <div className="absolute" style={{ left: "4%", bottom: "8%" }}>
               <div className="overflow-hidden">
                 <span
                   data-kinetic
@@ -262,10 +256,7 @@ export function MenuSection() {
             </div>
 
             {/* su misura — sovrapposto a metà destra */}
-            <div
-              className="absolute"
-              style={{ right: "5%", top: "12%" }}
-            >
+            <div className="absolute" style={{ right: "5%", top: "12%" }}>
               <div className="overflow-hidden text-right">
                 <span
                   data-kinetic
@@ -344,10 +335,7 @@ export function MenuSection() {
 
       {/* Racconto editoriale del modello — prosa, non numeri */}
       <div className="mx-auto max-w-5xl px-6 pt-12 md:px-12 md:pt-20">
-        <div
-          data-prose
-          className="flex flex-col gap-8 md:gap-10"
-        >
+        <div data-prose className="flex flex-col gap-8 md:gap-10">
           <p
             className="font-display text-ink"
             style={{
@@ -357,8 +345,8 @@ export function MenuSection() {
             }}
           >
             La masseria apre la sua cucina per le{" "}
-            <em className="text-terracotta">grandi occasioni</em> — cerimonie,
-            battesimi, compleanni, matrimoni.
+            <em className="text-terracotta">grandi occasioni</em> — cerimonie, battesimi,
+            compleanni, matrimoni.
           </p>
           <p
             className="font-sans text-ink/80"
@@ -367,19 +355,15 @@ export function MenuSection() {
               lineHeight: 1.6,
             }}
           >
-            Ogni menù nasce da un accordo, pensato insieme. Per sedervi alla
-            nostra tavola bastano una compagnia di almeno{" "}
+            Ogni menù nasce da un accordo, pensato insieme. Per sedervi alla nostra tavola bastano
+            una compagnia di almeno{" "}
             <em className="font-display italic text-terracotta">venti persone</em>,{" "}
-            <em className="font-display italic text-terracotta">due giorni</em>{" "}
-            di anticipo e una proposta che parte da{" "}
-            <em className="font-display italic text-terracotta">cinquanta euro</em>{" "}
-            a persona. Il resto — i sapori, il ritmo, i dettagli — lo
-            scegliamo con voi.
+            <em className="font-display italic text-terracotta">due giorni</em> di anticipo e una
+            proposta che parte da{" "}
+            <em className="font-display italic text-terracotta">cinquanta euro</em> a persona. Il
+            resto — i sapori, il ritmo, i dettagli — lo scegliamo con voi.
           </p>
-          <p
-            className="text-eyebrow text-ink/55"
-            style={{ letterSpacing: "0.18em" }}
-          >
+          <p className="text-eyebrow text-ink/55" style={{ letterSpacing: "0.18em" }}>
             Veg · Vegan · Gluten-free · Menù bambini — su richiesta
           </p>
         </div>

@@ -60,25 +60,25 @@ export function PlaceSection() {
       const title = titleRef.current;
       if (title) {
         const words = title.querySelectorAll<HTMLElement>("[data-word-inner]");
-          ScrollTrigger.create({
-            trigger: title,
-            start: "top 80%",
-            once: true,
-            invalidateOnRefresh: true,
-            onEnter: () => {
-              gsap.fromTo(
-                words,
-                { yPercent: 110 },
-                {
-                  yPercent: 0,
-                  ease: "power3.out",
-                  duration: 1,
-                  stagger: 0.08,
-                  overwrite: true,
-                },
-              );
-            },
-          });
+        ScrollTrigger.create({
+          trigger: title,
+          start: "top 80%",
+          once: true,
+          invalidateOnRefresh: true,
+          onEnter: () => {
+            gsap.fromTo(
+              words,
+              { yPercent: 110 },
+              {
+                yPercent: 0,
+                ease: "power3.out",
+                duration: 1,
+                stagger: 0.08,
+                overwrite: true,
+              },
+            );
+          },
+        });
       }
     }, scene);
 
@@ -89,11 +89,7 @@ export function PlaceSection() {
   }, []);
 
   return (
-    <section
-      id="luogo"
-      aria-labelledby="place-title"
-      className="relative w-full bg-ivory text-ink"
-    >
+    <section id="luogo" aria-labelledby="place-title" className="relative w-full bg-ivory text-ink">
       {/* Continuità cromatica dalla Sez.03 (pietra/olive) verso natura */}
       <div
         aria-hidden
@@ -174,7 +170,9 @@ export function PlaceSection() {
             width={1920}
             height={768}
             className="absolute inset-x-0 bottom-[14%] h-[28%] w-full object-contain object-bottom opacity-90 md:left-[2%] md:w-[62%]"
-            style={{ filter: "drop-shadow(0 18px 20px color-mix(in oklab, var(--ink) 25%, transparent))" }}
+            style={{
+              filter: "drop-shadow(0 18px 20px color-mix(in oklab, var(--ink) 25%, transparent))",
+            }}
           />
         </ParallaxLayer>
 
@@ -210,7 +208,7 @@ export function PlaceSection() {
             preserveAspectRatio="none"
           >
             {Array.from({ length: 60 }).map((_, i) => {
-              const x = (i % 20) * 60 + ((Math.floor(i / 20) % 2) * 30);
+              const x = (i % 20) * 60 + (Math.floor(i / 20) % 2) * 30;
               const y = 30 + Math.floor(i / 20) * 28;
               return (
                 <rect
@@ -244,16 +242,24 @@ export function PlaceSection() {
               }}
             >
               <span className="word-mask">
-                <span data-word-inner className="word-inner">Nel&nbsp;</span>
+                <span data-word-inner className="word-inner">
+                  Nel&nbsp;
+                </span>
               </span>
               <span className="word-mask">
-                <span data-word-inner className="word-inner">respiro&nbsp;</span>
+                <span data-word-inner className="word-inner">
+                  respiro&nbsp;
+                </span>
               </span>
               <span className="word-mask">
-                <span data-word-inner className="word-inner">della&nbsp;</span>
+                <span data-word-inner className="word-inner">
+                  della&nbsp;
+                </span>
               </span>
               <span className="word-mask">
-                <span data-word-inner className="word-inner italic text-terracotta">Murgia</span>
+                <span data-word-inner className="word-inner italic text-terracotta">
+                  Murgia
+                </span>
               </span>
             </h2>
             <p
@@ -261,8 +267,8 @@ export function PlaceSection() {
               className="mt-6 max-w-[44ch] font-display text-ink/80"
               style={{ fontSize: "clamp(1.05rem, 1.4vw, 1.4rem)", lineHeight: 1.5 }}
             >
-              Un punto di quiete tra ulivi secolari e muretti a secco,
-              dove pascolano i cavalli Murgesi e il paesaggio diventa silenzio.
+              Un punto di quiete tra ulivi secolari e muretti a secco, dove pascolano i cavalli
+              Murgesi e il paesaggio diventa silenzio.
             </p>
             {/* Lista compatta — visibile inline solo su mobile, NON in overlay */}
             <ul
@@ -280,7 +286,11 @@ export function PlaceSection() {
                 <li
                   key={t}
                   className="text-eyebrow"
-                  style={{ color: deep ? "var(--color-murgese, #15110F)" : "color-mix(in oklab, var(--ink) 75%, transparent)" }}
+                  style={{
+                    color: deep
+                      ? "var(--color-murgese, #15110F)"
+                      : "color-mix(in oklab, var(--ink) 75%, transparent)",
+                  }}
                 >
                   {t}
                 </li>
@@ -325,8 +335,7 @@ export function PlaceSection() {
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0 z-15 h-24"
           style={{
-            background:
-              "linear-gradient(to bottom, transparent, var(--ivory))",
+            background: "linear-gradient(to bottom, transparent, var(--ivory))",
           }}
         />
       </div>
@@ -353,7 +362,9 @@ export function PlaceSection() {
 
           {/* Info reali */}
           <div className="flex flex-col gap-6">
-            <span data-reveal className="text-eyebrow text-terracotta">Come raggiungerci</span>
+            <span data-reveal className="text-eyebrow text-terracotta">
+              Come raggiungerci
+            </span>
             <h3
               data-reveal="soft"
               className="font-display text-ink"
@@ -374,8 +385,7 @@ export function PlaceSection() {
             </address>
             <p className="font-sans text-ink/65" style={{ fontSize: "0.95rem", lineHeight: 1.65 }}>
               Nel cuore della Murgia, terra di masserie e di cavalli.
-              <br />
-              A breve distanza da Noci, Alberobello e dalla Valle d'Itria.
+              <br />A breve distanza da Noci, Alberobello e dalla Valle d'Itria.
               {/* Distanze esatte DA CONFERMARE */}
             </p>
             <a
@@ -386,7 +396,9 @@ export function PlaceSection() {
               className="group inline-flex w-fit items-center gap-3 border-b border-ink/30 pb-1 text-eyebrow text-ink transition-colors hover:border-terracotta hover:text-terracotta"
             >
               Apri in mappa
-              <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+              <span aria-hidden className="transition-transform group-hover:translate-x-1">
+                →
+              </span>
             </a>
           </div>
         </div>

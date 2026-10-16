@@ -116,9 +116,7 @@ function ClosingClaim() {
 
   return (
     <div ref={ref} className="max-w-5xl">
-      <p className="text-[11px] tracking-[0.28em] uppercase text-ivory/55 mb-6">
-        12 — Chiusura
-      </p>
+      <p className="text-[11px] tracking-[0.28em] uppercase text-ivory/55 mb-6">12 — Chiusura</p>
       <h2
         className="font-display font-medium leading-[0.98] tracking-tight"
         style={{ fontSize: "clamp(2.4rem, 7vw, 6rem)" }}
@@ -236,16 +234,14 @@ export function SiteFooter() {
                 <span className="italic text-gold">Torre Abbondanza</span>
               </p>
               <p className="mt-5 text-sm leading-relaxed text-ivory/70">
-                Masseria del Settecento immersa nella Murgia di Noci.
-                Tavola su prenotazione, cavalli Murgesi e occasioni rare.
+                Masseria del Settecento immersa nella Murgia di Noci. Tavola su prenotazione,
+                cavalli Murgesi e occasioni rare.
               </p>
             </div>
 
             {/* Naviga */}
             <nav data-foot-col aria-label="Footer">
-              <h3 className="text-[11px] tracking-[0.22em] uppercase text-ivory/55 mb-5">
-                Naviga
-              </h3>
+              <h3 className="text-[11px] tracking-[0.22em] uppercase text-ivory/55 mb-5">Naviga</h3>
               <ul className="grid grid-cols-2 gap-x-4 gap-y-3">
                 {NAV.map((n) => (
                   <li key={n.href}>

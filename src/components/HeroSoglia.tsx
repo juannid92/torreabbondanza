@@ -49,10 +49,11 @@ export function HeroSoglia() {
       const video = videoRef.current;
 
       if (reduced) {
-        gsap.set(
-          [back, front, torre, ...meta, subtitle, ...ctas, scrollCue],
-          { opacity: 1, y: 0, clipPath: "inset(0%)" },
-        );
+        gsap.set([back, front, torre, ...meta, subtitle, ...ctas, scrollCue], {
+          opacity: 1,
+          y: 0,
+          clipPath: "inset(0%)",
+        });
         if (poster) gsap.set(poster, { opacity: 1, scale: 1 });
         if (video) gsap.set(video, { opacity: 0 });
         return;
@@ -60,11 +61,7 @@ export function HeroSoglia() {
 
       // === Media full-bleed: foto (poster) → video con crossfade ===
       if (poster) {
-        gsap.fromTo(
-          poster,
-          { scale: 1.04 },
-          { scale: 1.0, duration: 1.5, ease: "power3.out" },
-        );
+        gsap.fromTo(poster, { scale: 1.04 }, { scale: 1.0, duration: 1.5, ease: "power3.out" });
       }
       if (video) {
         gsap.set(video, { opacity: 0, scale: 1.02, transformOrigin: "center center" });
@@ -103,17 +100,12 @@ export function HeroSoglia() {
         );
 
       tl.fromTo(
-          meta,
-          { opacity: 0, y: 12 },
-          { opacity: 1, y: 0, duration: 0.7, stagger: 0.08 },
-          1.2,
-        )
-        .fromTo(
-          subtitle,
-          { opacity: 0, y: 16 },
-          { opacity: 1, y: 0, duration: 0.8 },
-          1.4,
-        )
+        meta,
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.7, stagger: 0.08 },
+        1.2,
+      )
+        .fromTo(subtitle, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8 }, 1.4)
         // t=1.6 CTA — quasi simultanee per non gerarchizzare (equità)
         .fromTo(
           ctas,
@@ -121,12 +113,7 @@ export function HeroSoglia() {
           { opacity: 1, y: 0, duration: 0.7, stagger: 0.06, ease: "back.out(1.4)" },
           1.6,
         )
-        .fromTo(
-          scrollCue,
-          { opacity: 0, y: 8 },
-          { opacity: 1, y: 0, duration: 0.6 },
-          1.9,
-        );
+        .fromTo(scrollCue, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.6 }, 1.9);
 
       ScrollTrigger.create({
         trigger: root.current,
@@ -234,7 +221,8 @@ export function HeroSoglia() {
       <div className="grain-overlay z-[2]" />
 
       <h1 className="sr-only">
-        Torre Abbondanza — Masseria del XVIII secolo a Noci, Puglia: ristorante, cerimonie e allevamento di cavalli Murgesi
+        Torre Abbondanza — Masseria del XVIII secolo a Noci, Puglia: ristorante, cerimonie e
+        allevamento di cavalli Murgesi
       </h1>
 
       {/* === Metadati editoriali === */}
@@ -255,9 +243,7 @@ export function HeroSoglia() {
       </div>
 
       {/* === Layer 10: ABBONDANZA back — watermark sopra il video === */}
-      <div
-        className="pointer-events-none absolute inset-x-0 z-10 flex justify-center px-3 md:bottom-[18%] bottom-[6%]"
-      >
+      <div className="pointer-events-none absolute inset-x-0 z-10 flex justify-center px-3 md:bottom-[18%] bottom-[6%]">
         <span
           data-abbondanza-back
           className="block max-w-full font-display font-bold leading-[0.85] text-ink/20 whitespace-nowrap select-none text-center"
@@ -271,9 +257,7 @@ export function HeroSoglia() {
       </div>
 
       {/* === Layer 30: ABBONDANZA accento terracotta — sopra il watermark === */}
-      <div
-        className="pointer-events-none absolute inset-x-0 z-30 flex justify-center px-3 md:bottom-[18%] bottom-[6%]"
-      >
+      <div className="pointer-events-none absolute inset-x-0 z-30 flex justify-center px-3 md:bottom-[18%] bottom-[6%]">
         <span
           data-abbondanza-front
           aria-hidden
@@ -294,10 +278,7 @@ export function HeroSoglia() {
         className="absolute left-6 z-30 hidden md:block"
         style={{ top: "14%", height: "62%" }}
       >
-        <VerticalWord
-          className=""
-          children="TORRE"
-        />
+        <VerticalWord className="" children="TORRE" />
       </div>
 
       {/* Etichette luogo · epoca · allevamento: in alto, sopra il dittico */}
@@ -314,10 +295,7 @@ export function HeroSoglia() {
       </div>
 
       {/* TORRE kicker + meta su mobile */}
-      <div
-        className="absolute left-6 right-6 z-30 md:hidden"
-        style={{ top: "7%" }}
-      >
+      <div className="absolute left-6 right-6 z-30 md:hidden" style={{ top: "7%" }}>
         <span
           data-torre
           className="block font-display font-semibold text-ink"
@@ -335,15 +313,10 @@ export function HeroSoglia() {
       </div>
 
       {/* === Sottotitolo + CTA (equità: due pill di pari peso + link terziario) === */}
-      <div
-        className="absolute left-6 right-6 z-40 flex flex-col gap-5 md:gap-6 md:left-24 md:right-auto md:max-w-[560px] bottom-[14%] md:bottom-[8%]"
-      >
-        <p
-          data-subtitle
-          className="font-sans text-base md:text-lg leading-relaxed text-ink/85"
-        >
-          Due anime, una masseria del Settecento: la cucina di Puglia per eventi
-          e cerimonie e l'antica arte dei cavalli Murgesi, nel cuore della Murgia.
+      <div className="absolute left-6 right-6 z-40 flex flex-col gap-5 md:gap-6 md:left-24 md:right-auto md:max-w-[560px] bottom-[14%] md:bottom-[8%]">
+        <p data-subtitle className="font-sans text-base md:text-lg leading-relaxed text-ink/85">
+          Due anime, una masseria del Settecento: la cucina di Puglia per eventi e cerimonie e
+          l'antica arte dei cavalli Murgesi, nel cuore della Murgia.
         </p>
         <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">
           <div data-cta className="w-full sm:w-auto">

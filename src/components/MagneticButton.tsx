@@ -97,11 +97,7 @@ export function MagneticButton({
       )}
       <span className="relative z-10 inline-flex items-center gap-2">
         {children}
-        <motion.span
-          aria-hidden
-          className="inline-block"
-          initial={false}
-        >
+        <motion.span aria-hidden className="inline-block" initial={false}>
           <svg
             width="18"
             height="10"

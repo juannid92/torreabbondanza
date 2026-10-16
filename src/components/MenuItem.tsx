@@ -40,9 +40,7 @@ export function MenuItem({ dish, isActive, onActivate }: MenuItemProps) {
           >
             {dish.name}
             {dish.signature && (
-              <span className="ml-3 align-middle text-eyebrow text-gold">
-                ★ signature
-              </span>
+              <span className="ml-3 align-middle text-eyebrow text-gold">★ signature</span>
             )}
           </h4>
 

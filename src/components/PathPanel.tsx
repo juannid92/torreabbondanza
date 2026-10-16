@@ -96,8 +96,7 @@ export function PathPanel({
         style={{
           borderRadius: "50% 50% 0 0 / 38% 38% 0 0",
           border: "1px solid var(--stone)",
-          boxShadow:
-            "0 30px 80px -40px color-mix(in oklab, var(--ink) 45%, transparent)",
+          boxShadow: "0 30px 80px -40px color-mix(in oklab, var(--ink) 45%, transparent)",
           aspectRatio: "3 / 4",
           willChange: "clip-path",
         }}

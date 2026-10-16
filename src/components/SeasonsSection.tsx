@@ -52,16 +52,14 @@ const STAGES: SeasonStage[] = [
       {
         soul: "equestre",
         title: "A cavallo tra gli ulivi in fiore",
-        text:
-          "Passeggiate nei sentieri della masseria con i Murgesi: il passo lento dei cavalli e il bianco delle fioriture lungo i filari.",
+        text: "Passeggiate nei sentieri della masseria con i Murgesi: il passo lento dei cavalli e il bianco delle fioriture lungo i filari.",
         image: expSpringRide,
         alt: "Alessio in sella a un cavallo dal manto nero nel prato della masseria, con alberi e muretti a secco sullo sfondo",
       },
       {
         soul: "tavola",
         title: "Risveglio nel verde",
-        text:
-          "Pranzi e picnic all'aperto fra ulivi e prato nuovo: pane, erbe selvatiche, formaggi della tradizione pugliese.",
+        text: "Pranzi e picnic all'aperto fra ulivi e prato nuovo: pane, erbe selvatiche, formaggi della tradizione pugliese.",
         image: expSpringPicnic,
         alt: "Tavola apparecchiata nel giardino della masseria in primavera",
       },
@@ -81,16 +79,14 @@ const STAGES: SeasonStage[] = [
       {
         soul: "tavola",
         title: "Cene ed eventi sotto le stelle",
-        text:
-          "Lucine, candele e tavole lunghe negli spazi aperti: matrimoni, cene private e cerimonie nella corte settecentesca.",
+        text: "Lucine, candele e tavole lunghe negli spazi aperti: matrimoni, cene private e cerimonie nella corte settecentesca.",
         image: expSummerNight,
         alt: "Tavola illuminata da lucine e candele nella corte di notte",
       },
       {
         soul: "equestre",
         title: "Sfilata di Attacchi d'Epoca",
-        text:
-          "I Murgesi e i muli Martinesi in parata con le carrozze d'epoca: una scenografia viva che attraversa la campagna.",
+        text: "I Murgesi e i muli Martinesi in parata con le carrozze d'epoca: una scenografia viva che attraversa la campagna.",
         image: expSummerAttacchi,
         alt: "Sfilata di attacchi d'epoca con cavalli Murgesi al tramonto",
       },
@@ -110,16 +106,14 @@ const STAGES: SeasonStage[] = [
       {
         soul: "tavola",
         title: "Raccolta delle olive e frantoio",
-        text:
-          "Si scende fra gli ulivi a raccogliere, poi al frantoio per assaggiare l'olio nuovo: la liturgia della terra di Puglia.",
+        text: "Si scende fra gli ulivi a raccogliere, poi al frantoio per assaggiare l'olio nuovo: la liturgia della terra di Puglia.",
         image: expAutumnOlives,
         alt: "Raccolta delle olive in autunno con cesto in vimini",
       },
       {
         soul: "tavola",
         title: "Degustazioni della tradizione",
-        text:
-          "Verdure di campo, paste fatte a mano, formaggi e vini del territorio: un racconto del raccolto, intorno alla tavola.",
+        text: "Verdure di campo, paste fatte a mano, formaggi e vini del territorio: un racconto del raccolto, intorno alla tavola.",
         image: expAutumnTable,
         alt: "Antipasti pugliesi della tradizione su tavola di legno",
       },
@@ -139,16 +133,14 @@ const STAGES: SeasonStage[] = [
       {
         soul: "tavola",
         title: "Il camino e la cucina della tradizione",
-        text:
-          "Sere lente sotto le volte in pietra, piatti di stagione cucinati lentamente: orecchiette, legumi, carni al fuoco.",
+        text: "Sere lente sotto le volte in pietra, piatti di stagione cucinati lentamente: orecchiette, legumi, carni al fuoco.",
         image: expWinterCamino,
         alt: "Piatti caldi della tradizione invernale pugliese serviti accanto al camino",
       },
       {
         soul: "equestre",
         title: "I cavalli nella Murgia spoglia",
-        text:
-          "I Murgesi nei pascoli d'inverno fra muretti a secco e nebbia bassa: la Murgia nella sua forma più nuda e nera.",
+        text: "I Murgesi nei pascoli d'inverno fra muretti a secco e nebbia bassa: la Murgia nella sua forma più nuda e nera.",
         image: expWinterHorses,
         alt: "Cavalli Murgesi neri in un pascolo invernale della Murgia",
       },
@@ -210,7 +202,8 @@ function StageContent({ stage }: { stage: SeasonStage }) {
             className="text-eyebrow mb-3"
             style={{ color: `color-mix(in oklab, ${stage.palette.fg} 65%, transparent)` }}
           >
-            {String(stage.index + 1).padStart(2, "0")} / 04 · La stagione {stage.label.toLowerCase()}
+            {String(stage.index + 1).padStart(2, "0")} / 04 · La stagione{" "}
+            {stage.label.toLowerCase()}
           </p>
           <h3
             data-stage-title
@@ -221,7 +214,9 @@ function StageContent({ stage }: { stage: SeasonStage }) {
               letterSpacing: "-0.02em",
             }}
           >
-            <span data-title-word style={{ display: "inline-block" }}>{stage.label}</span>{" "}
+            <span data-title-word style={{ display: "inline-block" }}>
+              {stage.label}
+            </span>{" "}
             <em
               data-title-word
               style={{ display: "inline-block", color: stage.palette.accent, fontStyle: "italic" }}
@@ -397,10 +392,7 @@ function StaticFallback() {
                     >
                       {SOUL_LABEL[exp.soul]}
                     </p>
-                    <h4
-                      className="font-display font-medium"
-                      style={{ fontSize: "1.2rem" }}
-                    >
+                    <h4 className="font-display font-medium" style={{ fontSize: "1.2rem" }}>
                       {exp.title}
                     </h4>
                     <p
@@ -517,16 +509,30 @@ export function SeasonsSection() {
         const exps = c.querySelectorAll<HTMLElement>("[data-stage-exp]");
 
         const tl = gsap.timeline({ paused: true });
-        tl.fromTo(titleWords, { yPercent: 110 }, {
-          yPercent: 0,
-          duration: 0.9,
-          ease: "power3.out",
-          stagger: 0.08,
-        });
+        tl.fromTo(
+          titleWords,
+          { yPercent: 110 },
+          {
+            yPercent: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            stagger: 0.08,
+          },
+        );
         if (kicker) {
-          tl.fromTo(kicker, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.3);
+          tl.fromTo(
+            kicker,
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+            0.3,
+          );
         }
-        tl.fromTo(exps, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.12 }, 0.4);
+        tl.fromTo(
+          exps,
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.12 },
+          0.4,
+        );
 
         const enterT = idx / (STAGES.length - 1);
         ScrollTrigger.create({
@@ -571,15 +577,15 @@ export function SeasonsSection() {
           className="font-display max-w-5xl font-medium leading-[0.95]"
           style={{ fontSize: "clamp(2.8rem, 8vw, 7rem)" }}
         >
-          Le <em style={{ color: "var(--season-accent)", fontStyle: "italic" }}>stagioni</em>{" "}
-          della Murgia
+          Le <em style={{ color: "var(--season-accent)", fontStyle: "italic" }}>stagioni</em> della
+          Murgia
         </h2>
         <p
           className="font-display mt-8 max-w-2xl text-lg italic md:text-xl"
           style={{ color: "color-mix(in oklab, var(--season-fg) 80%, transparent)" }}
         >
-          Ogni stagione ha il suo gesto: a cavallo tra gli ulivi, intorno alla
-          tavola, nel ritmo lento della Murgia.
+          Ogni stagione ha il suo gesto: a cavallo tra gli ulivi, intorno alla tavola, nel ritmo
+          lento della Murgia.
         </p>
       </div>
 
@@ -615,8 +621,8 @@ export function SeasonsSection() {
             className="font-display max-w-2xl leading-tight"
             style={{ fontSize: "clamp(1.4rem, 2.4vw, 2.2rem)" }}
           >
-            L'anno alla masseria gira sempre: c'è una stagione che ti aspetta,
-            con la sua festa e il suo passo.
+            L'anno alla masseria gira sempre: c'è una stagione che ti aspetta, con la sua festa e il
+            suo passo.
           </p>
           <div className="flex flex-wrap gap-4">
             <MagneticButton href="#eventi" variant="pill">

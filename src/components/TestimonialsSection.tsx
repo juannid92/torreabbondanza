@@ -99,7 +99,7 @@ function GuestPage({ note, index }: { note: GuestNote; index: number }) {
         start: "top bottom",
         end: "bottom top",
         scrub: true,
-          invalidateOnRefresh: true,
+        invalidateOnRefresh: true,
       },
     });
 
@@ -110,10 +110,7 @@ function GuestPage({ note, index }: { note: GuestNote; index: number }) {
     };
   }, [index]);
 
-  const accent =
-    note.soul === "tavola"
-      ? "var(--terracotta, #b65a3c)"
-      : "var(--murgese, #15110F)";
+  const accent = note.soul === "tavola" ? "var(--terracotta, #b65a3c)" : "var(--murgese, #15110F)";
 
   return (
     <figure
@@ -141,11 +138,7 @@ function GuestPage({ note, index }: { note: GuestNote; index: number }) {
           {note.text}
         </p>
       </blockquote>
-      <figcaption
-        data-signature
-        className="mt-3 flex items-end gap-3"
-        style={{ color: accent }}
-      >
+      <figcaption data-signature className="mt-3 flex items-end gap-3" style={{ color: accent }}>
         <span
           style={{
             fontFamily: '"Pinyon Script", "Caveat", cursive',
@@ -201,8 +194,7 @@ export function TestimonialsSection() {
       aria-labelledby="guestbook-title"
       className="relative overflow-hidden"
       style={{
-        background:
-          "radial-gradient(120% 80% at 50% 0%, #f3e8d6 0%, #ecdcc3 45%, #e2cda9 100%)",
+        background: "radial-gradient(120% 80% at 50% 0%, #f3e8d6 0%, #ecdcc3 45%, #e2cda9 100%)",
         color: "var(--ink, #1a1410)",
       }}
     >
@@ -288,8 +280,8 @@ export function TestimonialsSection() {
               Il libro degli ospiti
             </p>
             <p className="mt-4 font-sans text-sm leading-relaxed text-ink/65">
-              [DA CONFERMARE: recensioni reali dei clienti autorizzate alla
-              pubblicazione — Codice del Consumo, art. 21-23]
+              [DA CONFERMARE: recensioni reali dei clienti autorizzate alla pubblicazione — Codice
+              del Consumo, art. 21-23]
             </p>
             <p className="mt-6 font-sans text-xs uppercase tracking-[0.22em] text-ink/45">
               In arrivo

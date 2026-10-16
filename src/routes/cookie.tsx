@@ -43,42 +43,41 @@ function CookiePage() {
 
           <Section title="Cosa sono i cookie">
             <p>
-              I cookie sono piccoli file di testo che i siti visitati inviano al
-              terminale dell'utente, dove vengono memorizzati per essere
-              ritrasmessi agli stessi siti alla successiva visita.
+              I cookie sono piccoli file di testo che i siti visitati inviano al terminale
+              dell'utente, dove vengono memorizzati per essere ritrasmessi agli stessi siti alla
+              successiva visita.
             </p>
           </Section>
 
           <Section title="Cookie utilizzati da questo sito">
             <p>
-              Questo sito <strong>non utilizza cookie di profilazione, tracciamento o marketing</strong>.
-              I caratteri tipografici sono serviti direttamente dal sito
-              (self-hosted) e non generano cookie. Non sono presenti embed di
-              terze parti che richiedano consenso.
+              Questo sito{" "}
+              <strong>non utilizza cookie di profilazione, tracciamento o marketing</strong>. I
+              caratteri tipografici sono serviti direttamente dal sito (self-hosted) e non generano
+              cookie. Non sono presenti embed di terze parti che richiedano consenso.
             </p>
             <p>
-              <strong>[DA CONFERMARE]</strong>: se in futuro verranno aggiunti
-              strumenti come Google Analytics, YouTube embed o widget social, sarà
-              necessario aggiornare questa pagina con il relativo elenco e
-              implementare un banner di consenso (Cookiebot / Iubenda / custom).
+              <strong>[DA CONFERMARE]</strong>: se in futuro verranno aggiunti strumenti come Google
+              Analytics, YouTube embed o widget social, sarà necessario aggiornare questa pagina con
+              il relativo elenco e implementare un banner di consenso (Cookiebot / Iubenda /
+              custom).
             </p>
           </Section>
 
           <Section title="Cookie tecnici del provider">
             <p>
-              Il sito è distribuito tramite Cloudflare, che può impostare
-              cookie strettamente tecnici necessari al funzionamento della rete
-              di distribuzione (es. <code>__cf_bm</code> per il bot management). Tali
-              cookie non sono controllati dal Titolare e sono descritti nella
-              documentazione del provider.
+              Il sito è distribuito tramite Cloudflare, che può impostare cookie strettamente
+              tecnici necessari al funzionamento della rete di distribuzione (es.{" "}
+              <code>__cf_bm</code> per il bot management). Tali cookie non sono controllati dal
+              Titolare e sono descritti nella documentazione del provider.
             </p>
           </Section>
 
           <Section title="Come gestire i cookie">
             <p>
-              Puoi configurare il tuo browser per rifiutare tutti i cookie o per
-              avvisarti quando ne viene inviato uno. La disabilitazione dei cookie
-              tecnici può compromettere il corretto funzionamento del sito.
+              Puoi configurare il tuo browser per rifiutare tutti i cookie o per avvisarti quando ne
+              viene inviato uno. La disabilitazione dei cookie tecnici può compromettere il corretto
+              funzionamento del sito.
             </p>
           </Section>
 
@@ -114,9 +113,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <section className="mt-10">
       <h2 className="font-display text-2xl font-semibold tracking-tight">{title}</h2>
-      <div className="mt-3 space-y-3 text-base leading-relaxed text-foreground/85">
-        {children}
-      </div>
+      <div className="mt-3 space-y-3 text-base leading-relaxed text-foreground/85">{children}</div>
     </section>
   );
 }

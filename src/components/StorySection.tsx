@@ -24,15 +24,13 @@ const PANELS: StoryPanelData[] = [
     ),
     body: (
       <>
-        Una storia a due voci: la masseria che accoglie
-        e i cavalli Murgesi che corrono questa terra da sempre.
+        Una storia a due voci: la masseria che accoglie e i cavalli Murgesi che corrono questa terra
+        da sempre.
       </>
     ),
     isOpening: true,
     tone: "warm",
-    cta: (
-      <span className="text-eyebrow text-ink/60">scorri →</span>
-    ),
+    cta: <span className="text-eyebrow text-ink/60">scorri →</span>,
   },
   {
     eyebrow: "Capitolo I — Le origini",
@@ -40,13 +38,15 @@ const PANELS: StoryPanelData[] = [
     title: <>Un presidio nella Murgia</>,
     body: (
       <>
-        Nel cuore del XVIII secolo, tra gli ulivi e il bianco di Noci,
-        la masseria nasce come presidio rurale: pietra su pietra, alzata
-        per custodire raccolti, bestie e famiglie sotto un unico tetto —
-        in una terra già abitata dai cavalli, la Murgia, culla del cavallo Murgese.
+        Nel cuore del XVIII secolo, tra gli ulivi e il bianco di Noci, la masseria nasce come
+        presidio rurale: pietra su pietra, alzata per custodire raccolti, bestie e famiglie sotto un
+        unico tetto — in una terra già abitata dai cavalli, la Murgia, culla del cavallo Murgese.
       </>
     ),
-    image: { src: storyOrigini, alt: "Facciata in pietra della masseria settecentesca al tramonto" },
+    image: {
+      src: storyOrigini,
+      alt: "Facciata in pietra della masseria settecentesca al tramonto",
+    },
     note: <>Data esatta e legame masseria–allevamento da confermare</>,
     tone: "warm",
   },
@@ -56,13 +56,15 @@ const PANELS: StoryPanelData[] = [
     title: <>La calce, la pietra, la luce</>,
     body: (
       <>
-        Archi a tutto sesto, muri a calce che respirano, tetti in
-        terracotta che si scaldano nel pomeriggio: l'architettura rurale
-        pugliese non è decoro, è clima. Il bianco riflette la luce, la
-        pietra trattiene il fresco.
+        Archi a tutto sesto, muri a calce che respirano, tetti in terracotta che si scaldano nel
+        pomeriggio: l'architettura rurale pugliese non è decoro, è clima. Il bianco riflette la
+        luce, la pietra trattiene il fresco.
       </>
     ),
-    image: { src: storyPietra, alt: "Dettaglio di arco in pietra e tetto in terracotta su muro a calce" },
+    image: {
+      src: storyPietra,
+      alt: "Dettaglio di arco in pietra e tetto in terracotta su muro a calce",
+    },
     tone: "warm",
   },
   {
@@ -70,15 +72,18 @@ const PANELS: StoryPanelData[] = [
     ghost: "MURGESI",
     title: (
       <>
-        Il <em className="font-display italic" style={{ color: "var(--murgese)" }}>cavallo</em> della Murgia
+        Il{" "}
+        <em className="font-display italic" style={{ color: "var(--murgese)" }}>
+          cavallo
+        </em>{" "}
+        della Murgia
       </>
     ),
     body: (
       <>
-        Manto corvino, antica razza nata proprio in questa terra:
-        il cavallo Murgese è la voce equestre di questa storia.
-        La masseria ne custodisce la tradizione — Sfilata di Attacchi d'Epoca,
-        cavalli Murgesi e muli Martinesi.
+        Manto corvino, antica razza nata proprio in questa terra: il cavallo Murgese è la voce
+        equestre di questa storia. La masseria ne custodisce la tradizione — Sfilata di Attacchi
+        d'Epoca, cavalli Murgesi e muli Martinesi.
       </>
     ),
     image: {
@@ -94,10 +99,9 @@ const PANELS: StoryPanelData[] = [
     title: <>L'accoglienza come gesto antico</>,
     body: (
       <>
-        Da generazioni la conduzione è familiare: si custodiscono
-        insieme <em>la tavola e la stalla</em>, l'ospitalità e i cavalli
-        come un unico gesto di cura. L'ospite non è cliente — è invitato
-        a una festa che dura da sempre.
+        Da generazioni la conduzione è familiare: si custodiscono insieme{" "}
+        <em>la tavola e la stalla</em>, l'ospitalità e i cavalli come un unico gesto di cura.
+        L'ospite non è cliente — è invitato a una festa che dura da sempre.
       </>
     ),
     image: { src: storyFamiglia, alt: "Tavola conviviale sotto un arco in pietra, candele accese" },
@@ -110,9 +114,8 @@ const PANELS: StoryPanelData[] = [
     title: <>Due anime in equilibrio</>,
     body: (
       <>
-        Oggi la masseria vive di due anime: ristorante, sala
-        ricevimenti e matrimoni da un lato; allevamento e tradizione
-        equestre Murgese dall'altro, nel cuore della Murgia.
+        Oggi la masseria vive di due anime: ristorante, sala ricevimenti e matrimoni da un lato;
+        allevamento e tradizione equestre Murgese dall'altro, nel cuore della Murgia.
       </>
     ),
     image: { src: storyOggi, alt: "Sala ristorante a volte in pietra della masseria oggi" },
@@ -124,7 +127,9 @@ const PANELS: StoryPanelData[] = [
           className="group inline-flex items-center gap-2 text-eyebrow text-terracotta transition-opacity hover:opacity-70"
         >
           Scopri la cucina
-          <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+          <span aria-hidden className="transition-transform group-hover:translate-x-1">
+            →
+          </span>
         </a>
         <a
           href="#cavalli"
@@ -132,7 +137,9 @@ const PANELS: StoryPanelData[] = [
           style={{ color: "var(--murgese)" }}
         >
           Scopri i cavalli
-          <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+          <span aria-hidden className="transition-transform group-hover:translate-x-1">
+            →
+          </span>
         </a>
       </div>
     ),
@@ -401,7 +408,9 @@ export function StorySection() {
     >
       <div className="grain-overlay" aria-hidden />
 
-      <h2 id="story-title" className="sr-only">La storia — Tre secoli di pietra</h2>
+      <h2 id="story-title" className="sr-only">
+        La storia — Tre secoli di pietra
+      </h2>
 
       {/* Indicatore mobile sticky */}
       <div className="pointer-events-none sticky top-3 z-30 mx-auto mb-[-2rem] flex w-[calc(100%-1.5rem)] max-w-[420px] items-center gap-3 rounded-full border border-ink/10 bg-ivory/85 px-4 py-2 backdrop-blur md:hidden">
@@ -413,7 +422,8 @@ export function StorySection() {
             className="absolute inset-y-0 left-0 rounded-full transition-[width,background-color] duration-500 ease-out"
             style={{
               width: `${((activeIndex + 1) / total) * 100}%`,
-              backgroundColor: PANELS[activeIndex]?.tone === "deep" ? "var(--murgese)" : "var(--terracotta)",
+              backgroundColor:
+                PANELS[activeIndex]?.tone === "deep" ? "var(--murgese)" : "var(--terracotta)",
             }}
           />
         </div>
@@ -432,12 +442,7 @@ export function StorySection() {
 
       {/* Linea-timeline + marker (desktop only) */}
       <div className="pointer-events-none absolute inset-x-0 bottom-16 z-20 hidden px-12 md:block lg:px-20">
-        <svg
-          viewBox="0 0 1000 20"
-          preserveAspectRatio="none"
-          className="h-5 w-full"
-          aria-hidden
-        >
+        <svg viewBox="0 0 1000 20" preserveAspectRatio="none" className="h-5 w-full" aria-hidden>
           <path
             d="M 0 10 L 1000 10"
             stroke="color-mix(in oklab, var(--ink) 18%, transparent)"
