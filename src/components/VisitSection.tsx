@@ -47,8 +47,19 @@ interface FieldProps {
 }
 
 function Field({
-  label, name, type = "text", required, textarea, rows = 3, min,
-  autoComplete, error, children, value, onChange, hint,
+  label,
+  name,
+  type = "text",
+  required,
+  textarea,
+  rows = 3,
+  min,
+  autoComplete,
+  error,
+  children,
+  value,
+  onChange,
+  hint,
 }: FieldProps) {
   const [focused, setFocused] = useState(false);
   const id = `f-${name}`;
@@ -70,7 +81,12 @@ function Field({
           float ? "top-0 text-[11px] tracking-[0.18em] uppercase text-ink/70" : "top-6 text-base",
         )}
       >
-        {label}{required && <span aria-hidden className="text-terracotta">*</span>}
+        {label}
+        {required && (
+          <span aria-hidden className="text-terracotta">
+            *
+          </span>
+        )}
       </label>
 
       {children ? (
@@ -79,7 +95,10 @@ function Field({
         </div>
       ) : textarea ? (
         <textarea
-          id={id} name={name} rows={rows} required={required}
+          id={id}
+          name={name}
+          rows={rows}
+          required={required}
           autoComplete={autoComplete}
           aria-invalid={!!error}
           aria-describedby={error ? errId : undefined}
@@ -92,7 +111,11 @@ function Field({
         />
       ) : (
         <input
-          id={id} name={name} type={type} required={required} min={min}
+          id={id}
+          name={name}
+          type={type}
+          required={required}
+          min={min}
           autoComplete={autoComplete}
           aria-invalid={!!error}
           aria-describedby={error ? errId : undefined}
@@ -112,9 +135,7 @@ function Field({
           focused ? "w-full" : "w-0",
         )}
       />
-      {hint && !error && (
-        <p className="mt-2 text-xs text-ink/55">{hint}</p>
-      )}
+      {hint && !error && <p className="mt-2 text-xs text-ink/55">{hint}</p>}
       {error && (
         <p id={errId} className="mt-2 text-xs text-[color:var(--destructive)]">
           {error}
@@ -210,8 +231,15 @@ const OCCASIONS: { value: string; label: string; horse?: boolean }[] = [
 
 function OccasionForm() {
   const [v, setV] = useState({
-    name: "", email: "", phone: "", kind: "", date: "", guests: "",
-    message: "", consent: "", website: "",
+    name: "",
+    email: "",
+    phone: "",
+    kind: "",
+    date: "",
+    guests: "",
+    message: "",
+    consent: "",
+    website: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -235,13 +263,20 @@ function OccasionForm() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     const payload: ContactFormData = {
-      name: v.name, email: v.email, phone: v.phone, kind: v.kind,
-      date: v.date, guests: v.guests, message: v.message, website: v.website,
+      name: v.name,
+      email: v.email,
+      phone: v.phone,
+      kind: v.kind,
+      date: v.date,
+      guests: v.guests,
+      message: v.message,
+      website: v.website,
     };
     if (v.website) {
       // Honeypot trip: silently persist (best-effort), do not open WhatsApp,
-      // do not send email. UI shows a generic success so bots learn nothing.
-      void submitContact({ data: { data: payload, ip: "", userAgent: navigator.userAgent } });
+      // do not send email. UI shows the same generic success as a real
+      // submission so bots cannot distinguish the two paths.
+      void submitContact({ data: { data: payload, userAgent: navigator.userAgent } });
       setStatus("success");
       setMsg("Grazie. Ti rispondiamo a breve.");
       return;
@@ -253,17 +288,33 @@ function OccasionForm() {
     const waUrl = buildWhatsAppUrl(WHATSAPP_NUMBER, payload);
     const wa = window.open(waUrl, "_blank", "noopener,noreferrer");
 
-    // 2. Fire-and-forget the server function: persist + auto-reply.
-    //    We do not await; the user is moving to WhatsApp.
-    void submitContact({ data: { data: payload, ip: "", userAgent: navigator.userAgent } });
+    // 2. Fire the server function. The user is moving to WhatsApp; we do
+    //    not block on the result. We still await the *return* so we can
+    //    surface a rate-limit error to the user (the 4th submission from
+    //    a NAT'd IP would otherwise look like a success).
+    let rateLimited = false;
+    try {
+      const r = await submitContact({ data: { data: payload, userAgent: navigator.userAgent } });
+      if (r && !r.ok && r.rateLimited) rateLimited = true;
+    } catch {
+      // Network or server error: still show success if WhatsApp opened.
+    }
 
-    // 3. UI state. The success copy must cover the popup-blocked case.
-    setStatus("success");
-    setMsg(
-      wa
-        ? "Abbiamo aperto WhatsApp con il tuo messaggio. Premi invio per inviarci la richiesta."
-        : "Se WhatsApp non si è aperto, scrivici a +39 338 483 4318 — abbiamo salvato la tua richiesta.",
-    );
+    // 3. UI state. The success copy must cover the popup-blocked case
+    //    and the rate-limited case.
+    if (rateLimited) {
+      setStatus("error");
+      setMsg(
+        "Troppe richieste in poco tempo. Riprova più tardi o scrivici a +39 338 483 4318.",
+      );
+    } else {
+      setStatus("success");
+      setMsg(
+        wa
+          ? "Abbiamo aperto WhatsApp con il tuo messaggio. Premi invio per inviarci la richiesta."
+          : "Se WhatsApp non si è aperto, scrivici a +39 338 483 4318 — abbiamo salvato la tua richiesta.",
+      );
+    }
   }
 
   const today = new Date().toISOString().split("T")[0];
@@ -272,24 +323,56 @@ function OccasionForm() {
     <form onSubmit={onSubmit} noValidate className="grid gap-7">
       {/* honeypot */}
       <input
-        type="text" name="website" tabIndex={-1} autoComplete="off"
-        value={v.website} onChange={(e) => set("website")(e.target.value)}
-        className="hidden" aria-hidden
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        value={v.website}
+        onChange={(e) => set("website")(e.target.value)}
+        className="hidden"
+        aria-hidden
       />
 
       <div data-field className="grid gap-7 md:grid-cols-2">
-        <Field label="Nome e cognome" name="name" required autoComplete="name"
-          value={v.name} onChange={set("name")} error={errors.name} />
-        <Field label="Email" name="email" type="email" required autoComplete="email"
-          value={v.email} onChange={set("email")} error={errors.email} />
+        <Field
+          label="Nome e cognome"
+          name="name"
+          required
+          autoComplete="name"
+          value={v.name}
+          onChange={set("name")}
+          error={errors.name}
+        />
+        <Field
+          label="Email"
+          name="email"
+          type="email"
+          required
+          autoComplete="email"
+          value={v.email}
+          onChange={set("email")}
+          error={errors.email}
+        />
       </div>
 
       <div data-field className="grid gap-7 md:grid-cols-2">
-        <Field label="Telefono" name="phone" type="tel" required autoComplete="tel"
-          value={v.phone} onChange={set("phone")} error={errors.phone} />
         <Field
-          label="Tipo di occasione" name="kind" required
-          value={v.kind} onChange={set("kind")} error={errors.kind}
+          label="Telefono"
+          name="phone"
+          type="tel"
+          required
+          autoComplete="tel"
+          value={v.phone}
+          onChange={set("phone")}
+          error={errors.phone}
+        />
+        <Field
+          label="Tipo di occasione"
+          name="kind"
+          required
+          value={v.kind}
+          onChange={set("kind")}
+          error={errors.kind}
         >
           <select
             id="f-kind"
@@ -302,23 +385,45 @@ function OccasionForm() {
           >
             <option value="" disabled hidden />
             {OCCASIONS.map((o) => (
-              <option key={o.value} value={o.value}>{o.label}</option>
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
             ))}
           </select>
         </Field>
       </div>
 
       <div data-field className="grid gap-7 md:grid-cols-2">
-        <Field label="Data indicativa" name="date" type="date" min={today}
-          value={v.date} onChange={set("date")} />
-        <Field label="Numero ospiti" name="guests" type="number" min="1"
-          value={v.guests} onChange={set("guests")} />
+        <Field
+          label="Data indicativa"
+          name="date"
+          type="date"
+          min={today}
+          value={v.date}
+          onChange={set("date")}
+        />
+        <Field
+          label="Numero ospiti"
+          name="guests"
+          type="number"
+          min="1"
+          value={v.guests}
+          onChange={set("guests")}
+        />
       </div>
 
       <div data-field>
-        <Field label="Messaggio" name="message" textarea rows={4} required
-          value={v.message} onChange={set("message")} error={errors.message}
-          hint="Allergie, menù dedicati, esigenze particolari: scrivi tutto qui." />
+        <Field
+          label="Messaggio"
+          name="message"
+          textarea
+          rows={4}
+          required
+          value={v.message}
+          onChange={set("message")}
+          error={errors.message}
+          hint="Allergie, menù dedicati, esigenze particolari: scrivi tutto qui."
+        />
       </div>
 
       <p data-field className="text-[11px] tracking-[0.18em] uppercase text-ink/55">
@@ -338,7 +443,8 @@ function OccasionForm() {
           <a href="#" className="underline underline-offset-4 hover:text-terracotta">
             privacy policy
           </a>
-          .{errors.consent && (
+          .
+          {errors.consent && (
             <span className="block mt-1 text-xs text-[color:var(--destructive)]">
               {errors.consent}
             </span>
@@ -362,14 +468,15 @@ interface ContactRowProps {
 }
 function ContactRow({ label, icon, children }: ContactRowProps) {
   return (
-    <li data-field className="group grid grid-cols-[auto_1fr] items-start gap-5 py-5 border-b border-stone/40 last:border-b-0">
+    <li
+      data-field
+      className="group grid grid-cols-[auto_1fr] items-start gap-5 py-5 border-b border-stone/40 last:border-b-0"
+    >
       <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full border border-stone/60 text-terracotta transition-colors group-hover:bg-terracotta group-hover:text-ivory group-hover:border-terracotta">
         {icon}
       </span>
       <div>
-        <p className="text-[11px] tracking-[0.22em] uppercase text-ink/55 mb-1.5">
-          {label}
-        </p>
+        <p className="text-[11px] tracking-[0.22em] uppercase text-ink/55 mb-1.5">{label}</p>
         <div className="font-display text-[clamp(1.05rem,1.4vw,1.35rem)] leading-snug text-ink">
           {children}
         </div>
@@ -397,7 +504,11 @@ export function VisitSection() {
           words,
           { yPercent: 110, opacity: 0 },
           {
-            yPercent: 0, opacity: 1, duration: 0.95, ease: "power3.out", stagger: 0.08,
+            yPercent: 0,
+            opacity: 1,
+            duration: 0.95,
+            ease: "power3.out",
+            stagger: 0.08,
             scrollTrigger: { trigger: titleRef.current, start: "top 85%" },
           },
         );
@@ -408,7 +519,10 @@ export function VisitSection() {
           el,
           { y: 22, opacity: 0 },
           {
-            y: 0, opacity: 1, duration: 0.7, ease: "power2.out",
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            ease: "power2.out",
             delay: Math.min(i * 0.04, 0.4),
             scrollTrigger: { trigger: el, start: "top 90%" },
           },
@@ -436,11 +550,19 @@ export function VisitSection() {
           markerRef.current,
           { y: -36, opacity: 0, scale: 0.6 },
           {
-            y: 0, opacity: 1, scale: 1, duration: 0.9, ease: "back.out(2)",
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.9,
+            ease: "back.out(2)",
             scrollTrigger: { trigger: mapRef.current, start: "top 80%" },
             onComplete: () => {
               gsap.to(markerRef.current, {
-                scale: 1.08, duration: 1.2, repeat: -1, yoyo: true, ease: "sine.inOut",
+                scale: 1.08,
+                duration: 1.2,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut",
               });
             },
           },
@@ -489,18 +611,24 @@ export function VisitSection() {
             className="font-display text-[clamp(2.6rem,7.2vw,5.8rem)] leading-[0.95] tracking-tight"
           >
             <span className="inline-block overflow-hidden align-bottom">
-              <span data-word className="inline-block">Vieni&nbsp;</span>
+              <span data-word className="inline-block">
+                Vieni&nbsp;
+              </span>
             </span>
             <span className="inline-block overflow-hidden align-bottom">
-              <span data-word className="inline-block">a&nbsp;</span>
+              <span data-word className="inline-block">
+                a&nbsp;
+              </span>
             </span>
             <span className="inline-block overflow-hidden align-bottom">
-              <span data-word className="inline-block italic text-terracotta">trovarci.</span>
+              <span data-word className="inline-block italic text-terracotta">
+                trovarci.
+              </span>
             </span>
           </h2>
           <p data-field className="mt-6 max-w-xl text-lg text-ink/75 leading-relaxed">
-            Nel cuore della Murgia, tra ulivi secolari e l'eco del galoppo dei nostri Murgesi.
-            Ti aspettiamo per la tavola, per una festa, per un'esperienza che resta.
+            Nel cuore della Murgia, tra ulivi secolari e l'eco del galoppo dei nostri Murgesi. Ti
+            aspettiamo per la tavola, per una festa, per un'esperienza che resta.
           </p>
         </header>
 
@@ -516,7 +644,8 @@ export function VisitSection() {
                 <ContactRow label="Indirizzo" icon={<MapPin className="h-4 w-4" />}>
                   <a
                     href={MAPS_URL}
-                    target="_blank" rel="noopener noreferrer"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-terracotta transition-colors"
                   >
                     {ADDRESS_LINE_1}
@@ -538,7 +667,8 @@ export function VisitSection() {
                 <ContactRow label="Sito" icon={<Globe className="h-4 w-4" />}>
                   <a
                     href={SITE_URL}
-                    target="_blank" rel="noopener noreferrer"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-terracotta transition-colors"
                   >
                     {SITE}
@@ -547,7 +677,8 @@ export function VisitSection() {
                 <ContactRow label="Instagram" icon={<Instagram className="h-4 w-4" />}>
                   <a
                     href={IG_URL}
-                    target="_blank" rel="noopener noreferrer"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-terracotta transition-colors"
                   >
                     {IG_HANDLE}
@@ -582,7 +713,8 @@ export function VisitSection() {
               <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
                 <a
                   href={MAPS_URL}
-                  target="_blank" rel="noopener noreferrer"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 tracking-[0.14em] uppercase text-ink hover:text-terracotta transition-colors"
                 >
                   Indicazioni · Google Maps
@@ -590,7 +722,8 @@ export function VisitSection() {
                 </a>
                 <a
                   href={APPLE_MAPS_URL}
-                  target="_blank" rel="noopener noreferrer"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 tracking-[0.14em] uppercase text-ink/70 hover:text-terracotta transition-colors"
                 >
                   Apple Maps
@@ -604,8 +737,8 @@ export function VisitSection() {
               data-field
               className="font-display italic text-[clamp(1.05rem,1.4vw,1.3rem)] leading-relaxed text-ink/80 border-l-2 border-terracotta pl-5"
             >
-              La cucina apre su prenotazione, per le grandi occasioni. Scrivici e
-              componiamo insieme la tua.
+              La cucina apre su prenotazione, per le grandi occasioni. Scrivici e componiamo insieme
+              la tua.
             </p>
           </aside>
 
@@ -618,7 +751,8 @@ export function VisitSection() {
               data-field
               className="font-display text-[clamp(1.6rem,2.8vw,2.4rem)] leading-tight tracking-tight text-ink mb-10"
             >
-              Raccontaci la tua festa, <span className="italic text-terracotta">la costruiamo insieme</span>.
+              Raccontaci la tua festa,{" "}
+              <span className="italic text-terracotta">la costruiamo insieme</span>.
             </h3>
             <OccasionForm />
           </div>

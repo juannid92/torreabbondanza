@@ -1,5 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 
+// `server-only` is a build-time guard that throws in non-server environments.
+// In tests we don't need its protection, so stub it out.
+vi.mock("server-only", () => ({}));
+
 // Mock the supabase admin and the KV before importing the module under test.
 vi.mock("@/integrations/supabase/client.server", () => ({
   supabaseAdmin: {

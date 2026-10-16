@@ -1,11 +1,18 @@
+import "server-only";
+
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import type { ContactFormData } from "@/lib/contact-message";
 
 const VALID_KINDS = new Set([
-  "matrimonio", "cerimonia", "battesimo", "compleanno",
-  "festa-privata", "esperienza-equestre", "altro",
+  "matrimonio",
+  "cerimonia",
+  "battesimo",
+  "compleanno",
+  "festa-privata",
+  "esperienza-equestre",
+  "altro",
 ]);
 
 export type ValidatedInput = Omit<ContactFormData, "website" | "guests" | "date"> & {
@@ -15,17 +22,14 @@ export type ValidatedInput = Omit<ContactFormData, "website" | "guests" | "date"
 
 /** Pure validation. Exported for tests. */
 export function validateContactInput(
-  raw: Partial<ContactFormData>
+  raw: Partial<ContactFormData>,
 ): { ok: true; value: ValidatedInput } | { ok: false; reason: string } {
   if (!raw.name || raw.name.trim().length < 2) return { ok: false, reason: "name" };
   if (!raw.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(raw.email))
     return { ok: false, reason: "email" };
-  if (!raw.phone || raw.phone.replace(/\D/g, "").length < 6)
-    return { ok: false, reason: "phone" };
-  if (!raw.kind || !VALID_KINDS.has(raw.kind))
-    return { ok: false, reason: "kind" };
-  if (!raw.message || raw.message.trim().length < 5)
-    return { ok: false, reason: "message" };
+  if (!raw.phone || raw.phone.replace(/\D/g, "").length < 6) return { ok: false, reason: "phone" };
+  if (!raw.kind || !VALID_KINDS.has(raw.kind)) return { ok: false, reason: "kind" };
+  if (!raw.message || raw.message.trim().length < 5) return { ok: false, reason: "message" };
   return {
     ok: true,
     value: {
@@ -44,7 +48,7 @@ export function validateContactInput(
 async function bumpRateLimit(
   kv: KVNamespace | undefined,
   ip: string,
-  envTag: string
+  envTag: string,
 ): Promise<{ allowed: boolean; remaining: number }> {
   if (!kv) return { allowed: true, remaining: 999 };
   const key = `kl:contact:${envTag}:${ip}`;
@@ -58,7 +62,7 @@ async function bumpRateLimit(
 
 async function sendAutoReply(
   env: Record<string, string | undefined>,
-  data: ValidatedInput
+  data: ValidatedInput,
 ): Promise<{ ok: boolean; error?: string }> {
   const apiKey = env["RESEND_API_KEY"];
   const from = env["MAIL_FROM"] ?? "Masseria Torre Abbondanza <info@torreabbondanza.com>";
@@ -111,7 +115,8 @@ const inputSchema = z.object({
     message: z.string(),
     website: z.string().optional().default(""),
   }),
-  ip: z.string().optional().default(""),
+  // IP and User-Agent are taken from the request, never from the client
+  // (a non-browser caller could spoof either to bypass the rate limit).
   userAgent: z.string().optional().default(""),
 });
 
@@ -125,7 +130,13 @@ export const submitContact = createServerFn({ method: "POST" })
     const kv: KVNamespace | undefined = env["RATE_LIMIT"];
 
     const envTag = env["ENV_TAG"] ?? "prod";
-    const ip = data.ip || (request?.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "0.0.0.0";
+    // IP is taken from the request headers only — never from the client
+    // payload. A non-browser caller could otherwise spoof the rate-limit
+    // counter and poison the Supabase ip column.
+    const ip =
+      (request?.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "0.0.0.0";
+    const userAgent =
+      data.userAgent || request?.headers.get("user-agent") || "";
 
     // 1. Rate limit FIRST so honeypot traffic can't burn Supabase writes.
     const rl = await bumpRateLimit(kv, ip, envTag);
@@ -133,50 +144,72 @@ export const submitContact = createServerFn({ method: "POST" })
       return { ok: false as const, rateLimited: true as const };
     }
 
-    // 2. Validate
+    const honeypot = Boolean(data.data.website);
+
+    // 2. Honeypot short-circuit: persist the raw lead, skip validation,
+    //    skip email, skip WhatsApp. Bots that fill garbage fields + the
+    //    honeypot must still be logged for review.
+    if (honeypot) {
+      const { error: sbError } = await supabaseAdmin
+        .from("contact_submissions")
+        .insert({
+          name: data.data.name,
+          email: data.data.email,
+          phone: data.data.phone,
+          kind: data.data.kind,
+          date: data.data.date || null,
+          guests: data.data.guests ? Number(data.data.guests) : null,
+          message: data.data.message,
+          ip: ip || null,
+          user_agent: userAgent || null,
+          honeypot: true,
+          source: "web",
+        });
+      if (sbError) {
+        return { ok: false as const, rateLimited: false as const, error: "persist" };
+      }
+      return { ok: true as const, rateLimited: false as const, honeypot: true };
+    }
+
+    // 3. Validate (only for real submissions).
     const v = validateContactInput(data.data);
     if (!v.ok) return { ok: false as const, rateLimited: false as const, error: v.reason };
 
-    const honeypot = Boolean(data.data.website);
-
-    // 3. Persist (always — honeypot traffic is logged for review)
-    const { error: sbError } = await supabaseAdmin.from("contact_submissions").insert({
-      name: v.value.name,
-      email: v.value.email,
-      phone: v.value.phone,
-      kind: v.value.kind,
-      date: v.value.date,
-      guests: v.value.guests,
-      message: v.value.message,
-      ip: ip || null,
-      user_agent: data.userAgent || null,
-      honeypot,
-      source: "web",
-    });
-    if (sbError) {
+    // 4. Persist the real lead.
+    const insertResult = await supabaseAdmin
+      .from("contact_submissions")
+      .insert({
+        name: v.value.name,
+        email: v.value.email,
+        phone: v.value.phone,
+        kind: v.value.kind,
+        date: v.value.date,
+        guests: v.value.guests,
+        message: v.value.message,
+        ip: ip || null,
+        user_agent: userAgent || null,
+        honeypot: false,
+        source: "web",
+      })
+      .select("id")
+      .single();
+    if (insertResult.error || !insertResult.data) {
       return { ok: false as const, rateLimited: false as const, error: "persist" };
     }
+    const rowId = insertResult.data.id;
 
-    // 4. Auto-reply (only if not honeypot). We do NOT await the WhatsApp open
-    //    — that happens client-side in Task 5.
-    let emailError: string | null = null;
-    let emailSent = false;
-    if (!honeypot) {
-      const r = await sendAutoReply(env, v.value);
-      emailSent = r.ok;
-      emailError = r.error ?? null;
-    }
-    // Update the row to reflect email outcome (best-effort, ignore errors)
+    // 5. Auto-reply (only for real submissions).
+    const r = await sendAutoReply(env, v.value);
+
+    // 6. Update the just-inserted row with the email outcome.
     await supabaseAdmin
       .from("contact_submissions")
-      .update({ email_sent: emailSent, email_error: emailError })
-      .eq("ip", ip)
-      .order("created_at", { ascending: false })
-      .limit(1);
+      .update({ email_sent: r.ok, email_error: r.error ?? null })
+      .eq("id", rowId);
 
     return {
       ok: true as const,
       rateLimited: false as const,
-      honeypot,
+      honeypot: false,
     };
   });
