@@ -4,6 +4,12 @@
 @import "@fontsource-variable/inter/wght.css";
 @import "@fontsource-variable/fraunces/wght.css";
 @import "@fontsource-variable/fraunces/wght-italic.css";
+/* [K5] Caveat + Pinyon Script (SIL OFL 1.1) per il "libro degli ospiti".
+   Caricate come static font, non variable, perché Pinyon Script non ha
+   assi variabili e Caveat qui serve solo ai 400/600 del copy. */
+@import "@fontsource/caveat/400.css";
+@import "@fontsource/caveat/600.css";
+@import "@fontsource/pinyon-script/400.css";
 
 @import "tailwindcss" source(none);
 @source "../src";
