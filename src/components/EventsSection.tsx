@@ -713,9 +713,6 @@ export function EventsSection() {
                 del Settecento e il <span className="text-gold">giardino</span> di
                 ulivi: due cornici, una sola accoglienza.
               </p>
-              <p className="text-eyebrow text-ivory/55">
-                {/* DA CONFERMARE: capienze e dettagli tecnici */}
-              </p>
             </div>
           </div>
 
