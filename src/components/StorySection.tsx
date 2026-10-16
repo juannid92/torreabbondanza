@@ -83,7 +83,7 @@ const PANELS: StoryPanelData[] = [
     ),
     image: {
       src: storyCavalli,
-      alt: "Alessio accompagna un cavallo dal manto nero nel prato della masseria, fotografia in bianco e nero",
+      alt: "Illustrazione vettoriale di Alessio che accompagna un cavallo dal manto nero nel prato della masseria",
     },
     note: <>Origine della razza e ruolo della masseria nell'allevamento da confermare</>,
     tone: "deep",
