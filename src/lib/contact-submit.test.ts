@@ -16,7 +16,7 @@ vi.mock("@/lib/contact-message", () => ({
   buildWhatsAppUrl: vi.fn(() => "https://wa.me/393384834318?text=ok"),
 }));
 
-import { validateContactInput } from "./contact-submit.functions";
+import { validateContactInput } from "./contact-submit.functions.server";
 
 describe("validateContactInput", () => {
   const ok = {

@@ -7,7 +7,7 @@ import { Instagram, Phone, Mail, MapPin, Globe, Check, ArrowRight } from "lucide
 import { StylizedMap } from "@/components/StylizedMap";
 import { cn } from "@/lib/utils";
 import { buildWhatsAppUrl, type ContactFormData } from "@/lib/contact-message";
-import { submitContact } from "@/lib/contact-submit.functions";
+import { submitContact } from "@/lib/contact-submit.functions.server";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -185,7 +185,15 @@ function SubmitButton({ status, label }: { status: FormStatus; label: string }) 
 }
 
 /* ---------------- Feedback ---------------- */
-function Feedback({ status, message, waUrl }: { status: FormStatus; message: string; waUrl?: string }) {
+function Feedback({
+  status,
+  message,
+  waUrl,
+}: {
+  status: FormStatus;
+  message: string;
+  waUrl?: string;
+}) {
   return (
     <div aria-live="polite" className="min-h-[1.5rem]">
       <AnimatePresence mode="wait">
@@ -345,7 +353,9 @@ function OccasionForm() {
       );
     } else {
       setStatus("success");
-      setMsg("Non siamo riusciti a salvare l'invio. Clicca il link WhatsApp qui sotto per scriverci direttamente.");
+      setMsg(
+        "Non siamo riusciti a salvare l'invio. Clicca il link WhatsApp qui sotto per scriverci direttamente.",
+      );
     }
   }
 

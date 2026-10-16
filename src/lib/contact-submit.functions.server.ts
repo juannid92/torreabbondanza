@@ -1,5 +1,3 @@
-import "server-only";
-
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
@@ -133,10 +131,8 @@ export const submitContact = createServerFn({ method: "POST" })
     // IP is taken from the request headers only — never from the client
     // payload. A non-browser caller could otherwise spoof the rate-limit
     // counter and poison the Supabase ip column.
-    const ip =
-      (request?.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "0.0.0.0";
-    const userAgent =
-      data.userAgent || request?.headers.get("user-agent") || "";
+    const ip = (request?.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "0.0.0.0";
+    const userAgent = data.userAgent || request?.headers.get("user-agent") || "";
 
     // 1. Rate limit FIRST so honeypot traffic can't burn Supabase writes.
     const rl = await bumpRateLimit(kv, ip, envTag);
@@ -150,21 +146,19 @@ export const submitContact = createServerFn({ method: "POST" })
     //    skip email, skip WhatsApp. Bots that fill garbage fields + the
     //    honeypot must still be logged for review.
     if (honeypot) {
-      const { error: sbError } = await supabaseAdmin
-        .from("contact_submissions")
-        .insert({
-          name: data.data.name,
-          email: data.data.email,
-          phone: data.data.phone,
-          kind: data.data.kind,
-          date: data.data.date || null,
-          guests: data.data.guests ? Number(data.data.guests) : null,
-          message: data.data.message,
-          ip: ip || null,
-          user_agent: userAgent || null,
-          honeypot: true,
-          source: "web",
-        });
+      const { error: sbError } = await supabaseAdmin.from("contact_submissions").insert({
+        name: data.data.name,
+        email: data.data.email,
+        phone: data.data.phone,
+        kind: data.data.kind,
+        date: data.data.date || null,
+        guests: data.data.guests ? Number(data.data.guests) : null,
+        message: data.data.message,
+        ip: ip || null,
+        user_agent: userAgent || null,
+        honeypot: true,
+        source: "web",
+      });
       if (sbError) {
         return { ok: false as const, rateLimited: false as const, error: "persist" };
       }
