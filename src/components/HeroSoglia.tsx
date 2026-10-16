@@ -369,7 +369,8 @@ export function HeroSoglia() {
         </div>
         <div className="-mt-1">
           <div data-cta>
-            <MagneticButton variant="link" href="#prenota" ariaLabel="Prenota un tavolo">
+            {/* [K1] #prenota non esiste; il bottone porta al form di contatto (#contatti) */}
+            <MagneticButton variant="link" href="#contatti" ariaLabel="Prenota un tavolo">
               Prenota un tavolo
             </MagneticButton>
           </div>

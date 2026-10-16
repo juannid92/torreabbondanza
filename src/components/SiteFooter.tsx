@@ -21,18 +21,19 @@ const IG_URL = "https://www.instagram.com/masseria_torre_abbondanza/";
 const IG_HANDLE = "@masseria_torre_abbondanza";
 const FB_URL = "https://www.facebook.com/MasseriaTorreAbbondanza";
 
+// [K1] Rimosso "Manifesto": nessuna sezione con id="manifesto" in tutto il sito.
+// Le altre voci sono state riallacciate: #stagioni → #esperienze, #visita → #contatti.
 const NAV: { label: string; href: string }[] = [
-  { label: "Manifesto", href: "#manifesto" },
   { label: "Storia", href: "#storia" },
   { label: "Il Luogo", href: "#luogo" },
   { label: "Cucina", href: "#cucina" },
   { label: "I Sapori", href: "#menu" },
   { label: "I Cavalli", href: "#cavalli" },
   { label: "Eventi", href: "#eventi" },
-  { label: "Esperienze", href: "#stagioni" },
+  { label: "Esperienze", href: "#esperienze" },
   { label: "Galleria", href: "#galleria" },
   { label: "Recensioni", href: "#recensioni" },
-  { label: "Contatti", href: "#visita" },
+  { label: "Contatti", href: "#contatti" },
 ];
 
 function smoothScrollTo(href: string) {
@@ -216,7 +217,7 @@ export function SiteFooter() {
             <div className="mt-10">
               <MagneticButton
                 variant="pill-solid"
-                onClick={() => smoothScrollTo("#visita")}
+                onClick={() => smoothScrollTo("#contatti")}
                 ariaLabel="Richiedi la tua occasione — vai ai contatti"
               >
                 Richiedi la tua occasione
@@ -350,7 +351,7 @@ export function SiteFooter() {
 
               <button
                 type="button"
-                onClick={() => smoothScrollTo("#visita")}
+                onClick={() => smoothScrollTo("#contatti")}
                 className="group mt-8 inline-flex items-center gap-2 text-sm tracking-[0.14em] uppercase text-ivory hover:text-gold transition-colors"
               >
                 Richiedi la tua occasione
