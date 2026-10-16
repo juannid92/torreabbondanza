@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -304,9 +305,7 @@ function OccasionForm() {
     //    and the rate-limited case.
     if (rateLimited) {
       setStatus("error");
-      setMsg(
-        "Troppe richieste in poco tempo. Riprova più tardi o scrivici a +39 338 483 4318.",
-      );
+      setMsg("Troppe richieste in poco tempo. Riprova più tardi o scrivici a +39 338 483 4318.");
     } else {
       setStatus("success");
       setMsg(
@@ -440,9 +439,15 @@ function OccasionForm() {
         />
         <span>
           Acconsento al trattamento dei dati secondo la{" "}
-          <a href="#" className="underline underline-offset-4 hover:text-terracotta">
+          {/* [K7] href="#" → /privacy (route TanStack Start) */}
+          <Link
+            to="/privacy"
+            target="_blank"
+            rel="noopener"
+            className="underline underline-offset-4 hover:text-terracotta"
+          >
             privacy policy
-          </a>
+          </Link>
           .
           {errors.consent && (
             <span className="block mt-1 text-xs text-[color:var(--destructive)]">

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -370,23 +371,22 @@ export function SiteFooter() {
             </p>
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
               <li>
-                <a href="#" className="hover:text-ivory transition-colors">
+                {/* [K2] href="#" → /privacy (route TanStack Start) */}
+                <Link to="/privacy" className="hover:text-ivory transition-colors">
                   Privacy Policy
-                </a>
-                {/* pagina DA CREARE/COLLEGARE */}
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-ivory transition-colors">
+                {/* [K2] href="#" → /cookie */}
+                <Link to="/cookie" className="hover:text-ivory transition-colors">
                   Cookie Policy
-                </a>
-                {/* pagina DA CREARE/COLLEGARE */}
+                </Link>
               </li>
             </ul>
             <p className="text-ivory/55">
+              {/* [K2] Rimosso link morto "Samantha"; placeholder in attesa di URL/credito reale */}
               Design &amp; sviluppo —{" "}
-              <a href="#" className="text-ivory/70 hover:text-gold transition-colors">
-                Samantha
-              </a>
+              <span className="text-ivory/40">[DA CONFERMARE: credit designer]</span>
             </p>
           </div>
         </div>
