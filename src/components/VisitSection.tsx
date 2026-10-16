@@ -185,23 +185,42 @@ function SubmitButton({ status, label }: { status: FormStatus; label: string }) 
 }
 
 /* ---------------- Feedback ---------------- */
-function Feedback({ status, message }: { status: FormStatus; message: string }) {
+function Feedback({ status, message, waUrl }: { status: FormStatus; message: string; waUrl?: string }) {
   return (
     <div aria-live="polite" className="min-h-[1.5rem]">
       <AnimatePresence mode="wait">
         {status === "success" && (
-          <motion.p
+          <motion.div
             key="ok"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="mt-4 inline-flex items-center gap-2 text-sm text-olive"
+            className="mt-4 space-y-3"
           >
-            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-olive">
-              <Check className="h-3 w-3" />
-            </span>
-            {message}
-          </motion.p>
+            <p className="inline-flex items-center gap-2 text-sm text-olive">
+              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-olive">
+                <Check className="h-3 w-3" />
+              </span>
+              {message}
+            </p>
+            {/* [K6] Link wa.me reale (target=_blank) come fallback se window.open
+                è stato bloccato dal browser. L'utente può cliccarlo per aprire
+                WhatsApp con il messaggio preimpostato. */}
+            {waUrl && (
+              <p className="text-sm text-ink/80">
+                Apri direttamente WhatsApp:{" "}
+                <a
+                  href={waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-medium text-[color:var(--olive,#5a6a3a)] underline underline-offset-4 hover:text-terracotta"
+                >
+                  {waUrl}
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </a>
+              </p>
+            )}
+          </motion.div>
         )}
         {status === "error" && (
           <motion.p
@@ -245,6 +264,9 @@ function OccasionForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<FormStatus>("idle");
   const [msg, setMsg] = useState("");
+  // [K6] Conserva il link wa.me dopo l'invio per mostrarlo come fallback
+  // visibile nel feedback (alcuni browser bloccano window.open).
+  const [waUrl, setWaUrl] = useState<string | null>(null);
   const set = (k: keyof typeof v) => (val: string) => setV((p) => ({ ...p, [k]: val }));
 
   const horseSelected = v.kind === "esperienza-equestre";
@@ -284,35 +306,46 @@ function OccasionForm() {
     }
     if (!validate()) return;
     setStatus("loading");
+    setWaUrl(null);
 
-    // 1. Open WhatsApp first — this is the user's primary action.
-    const waUrl = buildWhatsAppUrl(WHATSAPP_NUMBER, payload);
-    const wa = window.open(waUrl, "_blank", "noopener,noreferrer");
+    // 1. Server PRIMA: salvataggio su Supabase, auto-reply email, rate limit.
+    //    Il bottone "Invia" è una submit di form, non un click su link wa.me:
+    //    nessuna window.open coinvolta.
+    const result = await submitContact({
+      data: { data: payload, userAgent: navigator.userAgent },
+    }).catch(() => null);
 
-    // 2. Fire the server function. The user is moving to WhatsApp; we do
-    //    not block on the result. We still await the *return* so we can
-    //    surface a rate-limit error to the user (the 4th submission from
-    //    a NAT'd IP would otherwise look like a success).
-    let rateLimited = false;
-    try {
-      const r = await submitContact({ data: { data: payload, userAgent: navigator.userAgent } });
-      if (r && !r.ok && r.rateLimited) rateLimited = true;
-    } catch {
-      // Network or server error: still show success if WhatsApp opened.
+    const rateLimited = !!(result && !result.ok && result.rateLimited);
+    const honeypotTripped = !!(result && result.ok && result.honeypot);
+    const serverOk = !!(result && result.ok);
+
+    // 2. Costruisci il link wa.me; lo mostriamo come <a> reale nel feedback
+    //    così l'utente può cliccarlo anche se il browser blocca i popup.
+    const wa = buildWhatsAppUrl(WHATSAPP_NUMBER, payload);
+    setWaUrl(wa);
+
+    // 3. Prova ad aprire WhatsApp subito come best-effort (la maggior parte
+    //    dei browser lo permette da click handler, ma non tutti).
+    if (serverOk) {
+      window.open(wa, "_blank", "noopener,noreferrer");
     }
 
-    // 3. UI state. The success copy must cover the popup-blocked case
-    //    and the rate-limited case.
+    // 4. UI state. Il link wa.me visibile copre sia il caso popup bloccato
+    //    sia un errore di rete.
     if (rateLimited) {
       setStatus("error");
       setMsg("Troppe richieste in poco tempo. Riprova più tardi o scrivici a +39 338 483 4318.");
-    } else {
+    } else if (honeypotTripped) {
+      setStatus("success");
+      setMsg("Grazie. Ti rispondiamo a breve.");
+    } else if (serverOk) {
       setStatus("success");
       setMsg(
-        wa
-          ? "Abbiamo aperto WhatsApp con il tuo messaggio. Premi invio per inviarci la richiesta."
-          : "Se WhatsApp non si è aperto, scrivici a +39 338 483 4318 — abbiamo salvato la tua richiesta.",
+        "Abbiamo salvato la tua richiesta. Clicca il link qui sotto per aprire WhatsApp con il messaggio già pronto.",
       );
+    } else {
+      setStatus("success");
+      setMsg("Non siamo riusciti a salvare l'invio. Clicca il link WhatsApp qui sotto per scriverci direttamente.");
     }
   }
 
@@ -460,7 +493,7 @@ function OccasionForm() {
       <div data-field>
         <SubmitButton status={status} label="Invia su WhatsApp" />
       </div>
-      <Feedback status={status} message={msg} />
+      <Feedback status={status} message={msg} waUrl={waUrl ?? undefined} />
     </form>
   );
 }
