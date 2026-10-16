@@ -369,10 +369,10 @@ export function MenuSection() {
           >
             Ogni menù nasce da un accordo, pensato insieme. Per sedervi alla
             nostra tavola bastano una compagnia di almeno{" "}
-            <em className="not-italic font-display italic text-terracotta">venti persone</em>,{" "}
-            <em className="not-italic font-display italic text-terracotta">due giorni</em>{" "}
+            <em className="font-display italic text-terracotta">venti persone</em>,{" "}
+            <em className="font-display italic text-terracotta">due giorni</em>{" "}
             di anticipo e una proposta che parte da{" "}
-            <em className="not-italic font-display italic text-terracotta">cinquanta euro</em>{" "}
+            <em className="font-display italic text-terracotta">cinquanta euro</em>{" "}
             a persona. Il resto — i sapori, il ritmo, i dettagli — lo
             scegliamo con voi.
           </p>
