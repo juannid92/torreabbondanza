@@ -289,7 +289,6 @@ function StageContent({ stage }: { stage: SeasonStage }) {
                 >
                   {exp.text}
                 </p>
-                <span className="sr-only">{/* DA CONFERMARE col cliente: formula, periodi, prezzi */}</span>
               </figcaption>
             </figure>
           ))}
