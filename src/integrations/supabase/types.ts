@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contact_submissions: {
+        Row: {
+          id: string;
+          created_at: string;
+          name: string;
+          email: string;
+          phone: string;
+          kind: string;
+          date: string | null;
+          guests: number | null;
+          message: string;
+          ip: string | null;
+          user_agent: string | null;
+          honeypot: boolean;
+          source: string;
+          whatsapp_opened: boolean;
+          email_sent: boolean;
+          email_error: string | null;
+        };
+        Insert: {
+          id?: string;
+          created_at?: string;
+          name: string;
+          email: string;
+          phone: string;
+          kind: string;
+          date?: string | null;
+          guests?: number | null;
+          message: string;
+          ip?: string | null;
+          user_agent?: string | null;
+          honeypot?: boolean;
+          source?: string;
+          whatsapp_opened?: boolean;
+          email_sent?: boolean;
+          email_error?: string | null;
+        };
+        Update: {
+          id?: string;
+          created_at?: string;
+          name?: string;
+          email?: string;
+          phone?: string;
+          kind?: string;
+          date?: string | null;
+          guests?: number | null;
+          message?: string;
+          ip?: string | null;
+          user_agent?: string | null;
+          honeypot?: boolean;
+          source?: string;
+          whatsapp_opened?: boolean;
+          email_sent?: boolean;
+          email_error?: string | null;
+        };
+        Relationships: [];
+      };
     }
     Views: {
       [_ in never]: never
