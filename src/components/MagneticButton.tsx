@@ -101,7 +101,6 @@ export function MagneticButton({
           aria-hidden
           className="inline-block"
           initial={false}
-          whileHover={{}}
         >
           <svg
             width="18"
