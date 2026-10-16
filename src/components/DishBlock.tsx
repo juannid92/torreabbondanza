@@ -12,6 +12,8 @@ interface DishBlockProps {
   imageSrc: string;
   imageAlt: string;
   align: "left" | "right";
+  // Permette al genitore di aggiungere classi (es. "group" per hover locale).
+  className?: string;
 }
 
 /**
@@ -27,6 +29,7 @@ export function DishBlock({
   imageSrc,
   imageAlt,
   align,
+  className = "",
 }: DishBlockProps) {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -114,7 +117,7 @@ export function DishBlock({
   return (
     <div
       ref={rootRef}
-      className="relative grid grid-cols-1 gap-10 py-20 md:grid-cols-12 md:gap-8 md:py-32"
+      className={`group relative grid grid-cols-1 gap-10 py-10 md:grid-cols-12 md:gap-8 md:py-16 ${className}`}
     >
       {/* Image */}
       <div
@@ -156,7 +159,7 @@ export function DishBlock({
           data-oversized
           className="font-display font-semibold leading-[0.9] text-ink"
           style={{
-            fontSize: "clamp(3rem, 9vw, 7rem)",
+            fontSize: "clamp(2.2rem, 6vw, 4.5rem)",
             letterSpacing: "-0.03em",
           }}
         >
@@ -184,10 +187,6 @@ export function DishBlock({
           className="max-w-md font-sans text-base leading-relaxed text-ink/80 md:text-lg"
         >
           {description}
-        </p>
-
-        <p data-meta className="font-display text-sm italic text-ink/55">
-          {caption}
         </p>
       </div>
     </div>

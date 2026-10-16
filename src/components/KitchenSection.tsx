@@ -125,8 +125,8 @@ export function KitchenSection() {
         {/* Filetto */}
         <div aria-hidden className="mt-16 h-px w-full bg-ink/15 md:mt-24" />
 
-        {/* Portate */}
-        <div className="group">
+        {/* Portate — 'group' è su ogni DishBlock, hover localizzato */}
+        <div>
           <DishBlock
             numeral="I"
             course="Antipasti di terra"
