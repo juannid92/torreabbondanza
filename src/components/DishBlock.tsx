@@ -156,13 +156,15 @@ export function DishBlock({
 
         <h3
           data-oversized
-          aria-label={oversizedWord}
           className="font-display font-semibold leading-[0.9] text-ink"
           style={{
             fontSize: "clamp(3rem, 9vw, 7rem)",
             letterSpacing: "-0.03em",
           }}
         >
+          {/* [M3] sr-only perché le lettere sono aria-hidden; senza questo
+              lo screen reader legge un'intestazione vuota. */}
+          <span className="sr-only">{oversizedWord}</span>
           <span data-inner className="inline-block">
             {letters.map((ch, i) => (
               <span
