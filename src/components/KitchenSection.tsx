@@ -85,14 +85,10 @@ export function KitchenSection() {
           </div>
 
           <div className="flex flex-col gap-6 md:col-span-5 md:pt-6">
-            <p
-              data-intro
-              className="font-sans text-base leading-relaxed text-ink/80 md:text-lg"
-            >
-              Tradizione pugliese e materie prime fresche del territorio,
-              attraversate da un tocco creativo. La nostra cucina apre su
-              prenotazione: ogni menù viene composto su misura, pensato per
-              cerimonie, eventi e grandi occasioni.
+            <p data-intro className="font-sans text-base leading-relaxed text-ink/80 md:text-lg">
+              Tradizione pugliese e materie prime fresche del territorio, attraversate da un tocco
+              creativo. La nostra cucina apre su prenotazione: ogni menù viene composto su misura,
+              pensato per cerimonie, eventi e grandi occasioni.
             </p>
 
             {/* Fil rouge d'equità — ponte testuale verso l'anima equestre */}
@@ -100,16 +96,11 @@ export function KitchenSection() {
               data-intro
               className="font-display text-lg italic leading-snug text-ink/70 md:text-xl"
             >
-              La stessa Murgia che alleva i{" "}
-              <span style={{ color: "var(--murgese)" }}>cavalli</span> e piega
-              gli ulivi arriva, ogni giorno, nel piatto.
+              La stessa Murgia che alleva i <span style={{ color: "var(--murgese)" }}>cavalli</span>{" "}
+              e piega gli ulivi arriva, ogni giorno, nel piatto.
             </p>
 
-            <ul
-              data-intro
-              className="flex flex-wrap gap-2"
-              aria-label="Servizi della cucina"
-            >
+            <ul data-intro className="flex flex-wrap gap-2" aria-label="Servizi della cucina">
               {SERVICE_TAGS.map((tag) => (
                 <li
                   key={tag}
@@ -173,9 +164,7 @@ export function KitchenSection() {
       {/* Chiusura / CTA */}
       <div className="mx-auto max-w-7xl px-6 pb-32 md:px-12 md:pb-40">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-          <p
-            className="font-display text-xl italic leading-snug text-ink/70 md:max-w-md md:text-2xl"
-          >
+          <p className="font-display text-xl italic leading-snug text-ink/70 md:max-w-md md:text-2xl">
             La carta cambia con le stagioni e con la materia disponibile.
           </p>
           <div className="flex flex-wrap items-center gap-6">
@@ -196,9 +185,7 @@ export function KitchenSection() {
               variant="link"
               ariaLabel="L'altra anima: i cavalli Murgesi"
             >
-              <span style={{ color: "var(--murgese)" }}>
-                L'altra anima: i cavalli Murgesi →
-              </span>
+              <span style={{ color: "var(--murgese)" }}>L'altra anima: i cavalli Murgesi →</span>
             </MagneticButton>
           </div>
         </div>

@@ -3,9 +3,14 @@ import { HeadContent } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { BUSINESS } from "@/lib/site";
 
-// [K2] Pagina Cookie Policy — il sito non usa cookie di tracciamento.
-// Le voci in [DA CONFERMARE: ...] vanno aggiornate se si aggiungono strumenti
-// di analisi o embed di terze parti (YouTube, Maps widget, ecc.).
+/** Ultimo aggiornamento dell'informativa (formato IT gg/mm/aaaa). */
+const LAST_UPDATED = "16 ottobre 2026";
+
+/**
+ * Cookie Policy — il sito non installa cookie opzionali.
+ * Solo cookie tecnici del provider di hosting (Cloudflare) per i quali non è
+ * richiesto consenso ai sensi del Provv. Garante 10 giugno 2021.
+ */
 export const Route = createFileRoute("/cookie")({
   head: () => ({
     meta: [
@@ -38,45 +43,53 @@ function CookiePage() {
             Cookie Policy
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Ultimo aggiornamento: [DA CONFERMARE: data ultima revisione]
+            Ultimo aggiornamento: {LAST_UPDATED}
           </p>
 
           <Section title="Cosa sono i cookie">
             <p>
               I cookie sono piccoli file di testo che i siti visitati inviano al terminale
               dell'utente, dove vengono memorizzati per essere ritrasmessi agli stessi siti alla
-              successiva visita.
+              successiva visita. Possono essere installati dal sito che si sta visitando
+              (cookie di prima parte) o da siti diversi (cookie di terze parti).
             </p>
           </Section>
 
           <Section title="Cookie utilizzati da questo sito">
             <p>
-              Questo sito{" "}
-              <strong>non utilizza cookie di profilazione, tracciamento o marketing</strong>. I
-              caratteri tipografici sono serviti direttamente dal sito (self-hosted) e non generano
-              cookie. Non sono presenti embed di terze parti che richiedano consenso.
-            </p>
-            <p>
-              <strong>[DA CONFERMARE]</strong>: se in futuro verranno aggiunti strumenti come Google
-              Analytics, YouTube embed o widget social, sarà necessario aggiornare questa pagina con
-              il relativo elenco e implementare un banner di consenso (Cookiebot / Iubenda /
-              custom).
+              Questo sito <strong>non utilizza cookie di profilazione, tracciamento o marketing</strong>
+              . Non sono presenti strumenti di analisi delle visite (Google Analytics o equivalenti),
+              né embed di terze parti (YouTube, Facebook, Instagram widget) né pixel di
+              tracciamento. I caratteri tipografici sono serviti direttamente dal sito (self-hosted)
+              e non generano cookie né trasferimenti verso terzi.
             </p>
           </Section>
 
           <Section title="Cookie tecnici del provider">
             <p>
               Il sito è distribuito tramite Cloudflare, che può impostare cookie strettamente
-              tecnici necessari al funzionamento della rete di distribuzione (es.{" "}
-              <code>__cf_bm</code> per il bot management). Tali cookie non sono controllati dal
-              Titolare e sono descritti nella documentazione del provider.
+              tecnici necessari al funzionamento della rete di distribuzione dei contenuti (es.{" "}
+              <code>__cf_bm</code> per il bot management, <code>__cflb</code> per il bilanciamento).
+              Tali cookie sono installati dal provider e non dal Titolare del sito: non
+              richiedono consenso preventivo ai sensi del Provvedimento del Garante per la
+              protezione dei dati personali del 10 giugno 2021. Per i dettagli si rimanda alla{" "}
+              <a
+                className="underline"
+                href="https://www.cloudflare.com/privacypolicy/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Privacy Policy di Cloudflare
+              </a>
+              .
             </p>
           </Section>
 
           <Section title="Come gestire i cookie">
             <p>
               Puoi configurare il tuo browser per rifiutare tutti i cookie o per avvisarti quando ne
-              viene inviato uno. La disabilitazione dei cookie tecnici può compromettere il corretto
+              viene inviato uno. Le istruzioni si trovano nella sezione di aiuto del browser
+              utilizzato. La disabilitazione dei cookie tecnici può compromettere il corretto
               funzionamento del sito.
             </p>
           </Section>

@@ -7,12 +7,12 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import ogImage from "../assets/hero-masseria.jpg";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { BUSINESS, SITE_URL, absoluteUrl } from "../lib/site";
+import { CookieBanner } from "../components/CookieBanner";
 
 const PAGE_TITLE = `${BUSINESS.name} — Noci, Puglia`;
 const OG_IMAGE = absoluteUrl(ogImage);
@@ -40,11 +40,9 @@ function NotFoundComponent() {
 }
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
+  // Errore di rendering lato root: log in console, lasciamo che l'utente ricarichi.
+  console.error("[root-error]", error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -135,6 +133,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <CookieBanner />
     </QueryClientProvider>
   );
 }

@@ -3,10 +3,15 @@ import { HeadContent } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { BUSINESS } from "@/lib/site";
 
-// [K2] Pagina Privacy Policy — placeholder GDPR-ready.
-// Le voci in [DA CONFERMARE: ...] vanno compilate con i dati reali del titolare
-// (ragione sociale, P.IVA, sede legale, contatto DPO se presente, finalità di
-// trattamento specifiche del form contatti).
+/** Ultimo aggiornamento dell'informativa (formato IT gg/mm/aaaa). */
+const LAST_UPDATED = "16 ottobre 2026";
+
+/**
+ * Informativa sul trattamento dei dati personali ai sensi degli artt. 13 e 14
+ * del Reg. UE 2016/679 (GDPR). Le voci "[DA CONFERMARE: ...]" relative a
+ * ragione sociale, sede legale e P.IVA vanno compilate con i dati reali del
+ * Titolare prima della pubblicazione definitiva.
+ */
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
@@ -39,15 +44,15 @@ function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Ultimo aggiornamento: [DA CONFERMARE: data ultima revisione]
+            Ultimo aggiornamento: {LAST_UPDATED}
           </p>
 
           <Section title="1. Titolare del trattamento">
             <p>
               Il Titolare del trattamento dei dati personali è{" "}
               <strong>[DA CONFERMARE: ragione sociale completa]</strong>, con sede legale in{" "}
-              <strong>[DA CONFERMARE: indirizzo sede legale]</strong>, P.IVA{" "}
-              <strong>[DA CONFERMARE: P.IVA]</strong>, contatto e-mail{" "}
+              <strong>[DA CONFERMARE: indirizzo sede legale]</strong>, codice fiscale / P.IVA{" "}
+              <strong>[DA CONFERMARE: P.IVA / CF]</strong>, contatto e-mail{" "}
               <a className="underline" href="mailto:info@torreabbondanza.com">
                 info@torreabbondanza.com
               </a>
@@ -57,67 +62,96 @@ function PrivacyPage() {
 
           <Section title="2. Tipologie di dati raccolti">
             <p>
-              Tramite il modulo di contatto del sito raccogliamo: nome, indirizzo e-mail, numero di
-              telefono, tipo di occasione, data indicativa dell'evento, numero di ospiti e messaggio
-              libero. Altre categorie di dati (es. log di accesso) sono raccolte automaticamente dai
-              sistemi del provider di hosting.
+              Tramite il modulo di contatto del sito raccogliamo i dati che l'utente inserisce
+              direttamente: nome e cognome, indirizzo e-mail, numero di telefono, tipo di occasione,
+              data indicativa dell'evento, numero di ospiti e un messaggio libero. L'indirizzo IP
+              e l'user agent del browser sono raccolti automaticamente dal provider di hosting
+              (Cloudflare) per finalità di sicurezza e prevenzione abusi.
             </p>
           </Section>
 
-          <Section title="3. Finalità del trattamento">
-            <p>
-              I dati sono trattati per rispondere alle richieste inviate tramite il modulo di
-              contatto, gestire la prenotazione dell'occasione e inviare una risposta automatica di
-              conferma via e-mail.{" "}
-              <strong>
-                [DA CONFERMARE: eventuali altre finalità, es. newsletter, profilazione]
-              </strong>
-            </p>
+          <Section title="3. Finalità e basi giuridiche del trattamento">
+            <p>I dati personali sono trattati per le seguenti finalità:</p>
+            <ul className="list-disc pl-6 space-y-1.5">
+              <li>
+                <strong>Risposta alle richieste</strong> inviate tramite il modulo di contatto,
+                composizione del menù, organizzazione dell'occasione. Base giuridica: art. 6,
+                par. 1, lett. b) GDPR — esecuzione di misure precontrattuali su richiesta
+                dell'interessato.
+              </li>
+              <li>
+                <strong>Invio di un'e-mail automatica di conferma</strong> al mittente, a
+                riscontro dell'avvenuta ricezione. Base giuridica: art. 6, par. 1, lett. f) GDPR —
+                legittimo interesse del Titolare a dare riscontro alle richieste.
+              </li>
+              <li>
+                <strong>Conservazione per finalità amministrative e contabili</strong> e tutela
+                dei diritti in sede giudiziaria. Base giuridica: art. 6, par. 1, lett. f) GDPR —
+                legittimo interesse del Titolare.
+              </li>
+              <li>
+                <strong>Adempimento di obblighi di legge</strong> (es. fiscali, antiriciclaggio).
+                Base giuridica: art. 6, par. 1, lett. c) GDPR — obbligo legale.
+              </li>
+            </ul>
           </Section>
 
-          <Section title="4. Base giuridica">
-            <p>
-              Il trattamento si fonda sull'art. 6, par. 1, lett. b) del Reg. UE 2016/679 (esecuzione
-              di misure precontrattuali su richiesta dell'interessato) e, per la sola e-mail di
-              conferma automatica, sull'art. 6, par. 1, lett. f) (legittimo interesse del Titolare a
-              dare riscontro).
-            </p>
-          </Section>
-
-          <Section title="5. Conservazione dei dati">
+          <Section title="4. Conservazione dei dati">
             <p>
               I dati del modulo di contatto sono conservati per il tempo necessario a evadere la
-              richiesta e, successivamente, per{" "}
-              <strong>[DA CONFERMARE: periodo di conservazione, es. 24 mesi]</strong> ai fini di
-              reportistica interna e obblighi contabili.
+              richiesta e, successivamente, per un periodo massimo di <strong>24 mesi</strong> ai
+              fini di reportistica interna e di eventuale tutela in sede giudiziaria. I dati
+              necessari per adempiere ad obblighi contabili e fiscali sono conservati per 10 anni
+              dalla cessazione del rapporto, come previsto dalla normativa italiana. Trascorsi
+              tali termini i dati sono cancellati o resi anonimi in modo permanente.
+            </p>
+          </Section>
+
+          <Section title="5. Modalità del trattamento">
+            <p>
+              I dati sono trattati con strumenti elettronici e cartacei, da personale autorizzato
+              del Titolare, con logiche strettamente correlate alle finalità indicate e
+              adottando misure tecniche e organizzative adeguate a garantirne la sicurezza e la
+              riservatezza (art. 32 GDPR). Il sito è distribuito su Cloudflare con connessione
+              HTTPS; l'accesso al database è limitato al personale autorizzato.
             </p>
           </Section>
 
           <Section title="6. Destinatari dei dati">
             <p>
-              I dati sono trattati dal Titolare e dai fornitori di servizi strettamente necessari:
-              provider di hosting (Cloudflare), servizio di invio e-mail transazionali (Resend) e
-              database gestito (Supabase). L'elenco aggiornato dei responsabili del trattamento è
-              disponibile su richiesta.
+              I dati possono essere comunicati ai seguenti soggetti esterni, in qualità di
+              Responsabili del trattamento (art. 28 GDPR):
+            </p>
+            <ul className="list-disc pl-6 space-y-1.5">
+              <li>
+                <strong>Cloudflare Inc.</strong> — provider di hosting e CDN (sede: Stati Uniti,
+                trasferimento basato su decisione di adeguatezza EU-US Data Privacy Framework).
+              </li>
+              <li>
+                <strong>Supabase Inc.</strong> — gestione database (sede: Stati Uniti, trasferimento
+                basato su decisione di adeguatezza EU-US Data Privacy Framework).
+              </li>
+              <li>
+                <strong>Resend Inc.</strong> — servizio di invio e-mail transazionali (sede: Stati
+                Uniti, trasferimento basato su Clausole Contrattuali Standard).
+              </li>
+            </ul>
+            <p>
+              L'elenco aggiornato dei Responsabili del trattamento è disponibile su richiesta
+              scrivendo a <a className="underline" href="mailto:info@torreabbondanza.com">
+                info@torreabbondanza.com
+              </a>
+              .
             </p>
           </Section>
 
-          <Section title="7. Trasferimenti extra-UE">
+          <Section title="7. Trasferimenti verso paesi terzi">
             <p>
-              Alcuni dei fornitori sopra indicati (es. Resend) possono effettuare trasferimenti di
-              dati verso paesi terzi. Tali trasferimenti avvengono sulla base di decisioni di
-              adeguatezza, clausole contrattuali standard o altre basi legittime previste dal Capo V
-              del GDPR.{" "}
-              <strong>[DA CONFERMARE: elenco paesi terzi e basi giuridiche specifiche]</strong>
-            </p>
-          </Section>
-
-          <Section title="8. Diritti dell'interessato">
-            <p>
-              In qualità di interessato, hai il diritto di accedere ai tuoi dati, chiederne la
-              rettifica o la cancellazione, opporti al loro trattamento, richiederne la portabilità
-              e proporre reclamo all'Autorità di controllo (Garante per la Protezione dei Dati
-              Personali, www.garanteprivacy.it). Per esercitare questi diritti scrivi a{" "}
+              Alcuni dei fornitori sopra indicati hanno sede negli Stati Uniti d'America. I
+              trasferimenti avvengono sulla base delle decisioni di adeguatezza rilasciate dalla
+              Commissione europea (EU-US Data Privacy Framework) ovvero, in subordine, tramite
+              Clausole Contrattuali Standard e misure tecniche supplementari. Per ottenere copia
+              delle garanzie applicabili scrivi a{" "}
               <a className="underline" href="mailto:info@torreabbondanza.com">
                 info@torreabbondanza.com
               </a>
@@ -125,10 +159,33 @@ function PrivacyPage() {
             </p>
           </Section>
 
+          <Section title="8. Diritti dell'interessato">
+            <p>
+              In qualità di interessato, hai il diritto di accedere ai tuoi dati personali
+              (art. 15 GDPR), chiederne la rettifica (art. 16) o la cancellazione (art. 17),
+              opporti al loro trattamento (art. 21), richiederne la limitazione (art. 18) o la
+              portabilità (art. 20). Per esercitare questi diritti scrivi a{" "}
+              <a className="underline" href="mailto:info@torreabbondanza.com">
+                info@torreabbondanza.com
+              </a>
+              . Hai inoltre il diritto di proporre reclamo all'Autorità di controllo
+              (Garante per la Protezione dei Dati Personali,{" "}
+              <a
+                className="underline"
+                href="https://www.garanteprivacy.it"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                www.garanteprivacy.it
+              </a>
+              ).
+            </p>
+          </Section>
+
           <Section title="9. Cookie">
             <p>
               Questo sito non utilizza cookie di profilazione né di tracciamento. Per i dettagli
-              tecnici consulta la{" "}
+              tecnici sui cookie impiegati consulta la{" "}
               <Link to="/cookie" className="underline">
                 Cookie Policy
               </Link>
@@ -138,8 +195,9 @@ function PrivacyPage() {
 
           <Section title="10. Modifiche">
             <p>
-              Eventuali aggiornamenti di questa informativa saranno pubblicati in questa pagina. Si
-              invita a consultarla periodicamente.
+              Eventuali aggiornamenti di questa informativa saranno pubblicati in questa pagina
+              con l'indicazione della data di ultimo aggiornamento. Si invita a consultarla
+              periodicamente, in particolare prima di conferire nuovi dati personali.
             </p>
           </Section>
         </div>
