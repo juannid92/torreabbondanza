@@ -14,82 +14,22 @@ interface GuestNote {
   confirmed: boolean;
 }
 
-// {/* recensioni reali DA CONFERMARE col cliente */}
-const NOTES: GuestNote[] = [
-  {
-    text: "Location spettacolare nel bel mezzo delle campagne pugliesi. Tornerò di sicuro.",
-    signature: "Marta",
-    origin: "Milano",
-    soul: "tavola",
-    rotate: -1.6,
-    offsetX: -2,
-    width: "max-w-[36ch]",
-    confirmed: false,
-  },
-  {
-    text: "All'alba, tra gli ulivi, i Murgesi al pascolo. Non avevo mai visto cavalli così neri e così quieti.",
-    signature: "Étienne",
-    origin: "Lione",
-    soul: "cavalli",
-    rotate: 1.4,
-    offsetX: 6,
-    width: "max-w-[38ch]",
-    confirmed: false,
-  },
-  {
-    text: "Il Primitivo della masseria, le orecchiette tirate a mano, una serata che non si dimentica.",
-    signature: "Giorgia & Luca",
-    origin: "Bologna",
-    soul: "tavola",
-    rotate: -0.8,
-    offsetX: -6,
-    width: "max-w-[40ch]",
-    confirmed: false,
-  },
-  {
-    text: "Ci siamo sposati qui. Le luci nel cortile, la pietra calda, la nostra tavola sotto il cielo della Murgia.",
-    signature: "Chiara e Davide",
-    origin: "Bari",
-    soul: "tavola",
-    rotate: 1.1,
-    offsetX: 4,
-    width: "max-w-[42ch]",
-    confirmed: false,
-  },
-  {
-    text: "Una passeggiata a cavallo tra muretti a secco e trulli: la Puglia che cercavamo, senza filtri.",
-    signature: "The Hendersons",
-    origin: "London",
-    soul: "cavalli",
-    rotate: -1.2,
-    offsetX: -4,
-    width: "max-w-[40ch]",
-    confirmed: false,
-  },
-  {
-    text: "Accoglienza vera, di famiglia. Ti senti ospite, non cliente.",
-    signature: "Federica",
-    origin: "Roma",
-    soul: "tavola",
-    rotate: 0.9,
-    offsetX: 8,
-    width: "max-w-[32ch]",
-    confirmed: false,
-  },
-  {
-    text: "Gli attacchi d'epoca, i muli Martinesi, i racconti di tre secoli di pietra. Un viaggio nel tempo.",
-    signature: "Andrea",
-    origin: "Torino",
-    soul: "cavalli",
-    rotate: -0.6,
-    offsetX: -8,
-    width: "max-w-[40ch]",
-    confirmed: false,
-  },
-];
+// [K4] Recensioni fittizie rimosse per rischio pratiche commerciali
+// ingannevoli (Codice del Consumo, art. 21-23). Tutte le 7 voci avevano
+// `confirmed: false` e nomi/città inventati. Riempire SOLO con recensioni
+// reali autorizzate dai titolari, oppure nascondere l'intera sezione.
+//
+// Schema per il cliente (da compilare in seguito):
+//   const NOTES: GuestNote[] = [
+//     { text: "...", signature: "...", origin: "...",
+//       soul: "tavola" | "cavalli", rotate: -1.6, offsetX: -2,
+//       width: "max-w-[36ch]", confirmed: true },
+//   ];
+const NOTES: GuestNote[] = [];
 
-// {/* presenza piattaforme DA CONFERMARE */}
-const PLATFORMS = ["TheFork", "Tripadvisor", "ViaMichelin", "Facebook"];
+// [K4] Piattaforme dichiarate senza verifica. Mantenute solo quelle
+// effettivamente presenti. Compilare solo dopo aver confermato i profili.
+const PLATFORMS: string[] = [];
 
 function GuestPage({ note, index }: { note: GuestNote; index: number }) {
   const ref = useRef<HTMLElement>(null);
@@ -313,26 +253,49 @@ export function TestimonialsSection() {
           Le voci di chi è stato qui
         </h2>
 
-        {/* Flusso pagine - layout asimmetrico */}
-        <div className="relative grid grid-cols-1 gap-y-20 md:grid-cols-12 md:gap-y-28">
-          {NOTES.map((n, i) => {
-            // distribuzione asimmetrica desktop
-            const layout = [
-              "md:col-start-1 md:col-span-6",
-              "md:col-start-8 md:col-span-5",
-              "md:col-start-2 md:col-span-6",
-              "md:col-start-7 md:col-span-6",
-              "md:col-start-1 md:col-span-5",
-              "md:col-start-8 md:col-span-4",
-              "md:col-start-3 md:col-span-7",
-            ];
-            return (
-              <div key={i} className={layout[i] ?? "md:col-span-6"}>
-                <GuestPage note={n} index={i} />
-              </div>
-            );
-          })}
-        </div>
+        {/* [K4] Flusso pagine: nascosto finché NONTS è vuoto.
+            Quando avremo recensioni reali autorizzate, ripristinare il layout
+            asimmetrico a 7 colonne. Lo schema GuestNote è già pronto. */}
+        {NOTES.length > 0 ? (
+          <div className="relative grid grid-cols-1 gap-y-20 md:grid-cols-12 md:gap-y-28">
+            {NOTES.map((n, i) => {
+              const layout = [
+                "md:col-start-1 md:col-span-6",
+                "md:col-start-8 md:col-span-5",
+                "md:col-start-2 md:col-span-6",
+                "md:col-start-7 md:col-span-6",
+                "md:col-start-1 md:col-span-5",
+                "md:col-start-8 md:col-span-4",
+                "md:col-start-3 md:col-span-7",
+              ];
+              return (
+                <div key={i} className={layout[i] ?? "md:col-span-6"}>
+                  <GuestPage note={n} index={i} />
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="relative mx-auto max-w-2xl rounded-sm border border-ink/15 bg-ivory/40 px-8 py-12 text-center md:px-12 md:py-16">
+            <p
+              className="text-ink/75"
+              style={{
+                fontFamily: '"Caveat", "Segoe Script", cursive',
+                fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)",
+                lineHeight: 1.2,
+              }}
+            >
+              Il libro degli ospiti
+            </p>
+            <p className="mt-4 font-sans text-sm leading-relaxed text-ink/65">
+              [DA CONFERMARE: recensioni reali dei clienti autorizzate alla
+              pubblicazione — Codice del Consumo, art. 21-23]
+            </p>
+            <p className="mt-6 font-sans text-xs uppercase tracking-[0.22em] text-ink/45">
+              In arrivo
+            </p>
+          </div>
+        )}
 
         {/* Sigillo qualitativo + piattaforme (zero numeri) */}
         <div className="mt-32 border-t border-ink/15 pt-12 text-center">
@@ -346,20 +309,22 @@ export function TestimonialsSection() {
           >
             Tra le mete più amate della Murgia.
           </p>
-          <ul
-            className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-4"
-            aria-label="Presenza sulle piattaforme di recensione"
-          >
-            {PLATFORMS.map((p) => (
-              <li
-                key={p}
-                className="text-eyebrow text-ink/60"
-                style={{ letterSpacing: "0.22em" }}
-              >
-                {p}
-              </li>
-            ))}
-          </ul>
+          {PLATFORMS.length > 0 && (
+            <ul
+              className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-4"
+              aria-label="Presenza sulle piattaforme di recensione"
+            >
+              {PLATFORMS.map((p) => (
+                <li
+                  key={p}
+                  className="text-eyebrow text-ink/60"
+                  style={{ letterSpacing: "0.22em" }}
+                >
+                  {p}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 
