@@ -40,10 +40,7 @@ export function MenuItem({ dish, isActive, onActivate }: MenuItemProps) {
           >
             {dish.name}
             {dish.signature && (
-              <span
-                className="ml-3 align-middle text-eyebrow text-gold"
-                aria-label="Consigliato dallo chef"
-              >
+              <span className="ml-3 align-middle text-eyebrow text-gold">
                 ★ signature
               </span>
             )}
@@ -61,7 +58,7 @@ export function MenuItem({ dish, isActive, onActivate }: MenuItemProps) {
               className="text-eyebrow whitespace-nowrap text-ink/70"
               aria-label={`Prezzo indicativo ${dish.price} euro`}
             >
-              {dish.price} €{/* DA CONFERMARE */}
+              {dish.price} €
             </span>
           )}
         </div>
