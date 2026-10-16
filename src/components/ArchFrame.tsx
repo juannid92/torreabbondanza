@@ -40,7 +40,9 @@ export function ArchFrame({ src, alt, videoSrc }: ArchFrameProps) {
         return;
       }
 
-      // Intro: la soglia si disegna dal basso verso l'alto
+      // [I3] ScrollTrigger sul reveal: l'arco si apre quando la soglia entra
+      // in viewport. immediateRender:false evita che GSAP esegua il fromTo
+      // al mount prima che lo ScrollTrigger si attivi.
       gsap.fromTo(
         revealRef.current,
         { clipPath: "inset(100% 0% 0% 0%)" },
@@ -49,13 +51,30 @@ export function ArchFrame({ src, alt, videoSrc }: ArchFrameProps) {
           duration: 1.1,
           ease: "power3.inOut",
           delay: 0.1,
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: revealRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
         },
       );
 
       gsap.fromTo(
         innerRef.current,
         { scale: 1.12 },
-        { scale: 1, duration: 1.6, ease: "power3.out", delay: 0.1 },
+        {
+          scale: 1,
+          duration: 1.6,
+          ease: "power3.out",
+          delay: 0.1,
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: innerRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        },
       );
 
       // Ken Burns loop sulla foto (poster) — leggero
@@ -73,8 +92,10 @@ export function ArchFrame({ src, alt, videoSrc }: ArchFrameProps) {
         const v = videoRef.current;
         gsap.set(v, { opacity: 0, scale: 1.02, transformOrigin: "center center" });
         const play = () => {
-          v.play().catch(() => {
-            /* autoplay potrebbe essere bloccato: resta la foto */
+          v.play().catch((e) => {
+            // [I4] In dev logga il motivo del fallimento; in prod resta
+            // silenzioso (la foto fa da fallback visivo).
+            if (import.meta.env.DEV) console.warn("[ArchFrame] video autoplay failed:", e);
           });
         };
         gsap.delayedCall(1.5, play);
