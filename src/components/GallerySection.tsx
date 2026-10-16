@@ -50,6 +50,9 @@ interface GalleryImage {
   z: number; // 0 (vicina) .. 1 (lontana)
   w: number; // larghezza in vmin
   ratio: number; // aspect ratio (w/h)
+  // [I15] override per immagini con sfondo trasparente (SVG, illustrazioni):
+  // "contain" evita che vengano croppate/zoommate nel lightbox. Default "cover".
+  objectFit?: "cover" | "contain";
 }
 
 // Set bilanciato 50/50 (caldo ↔ nero Murgese), alternato lungo Z
@@ -59,7 +62,7 @@ const IMAGES: GalleryImage[] = [
   { id: "g01", src: heroImg, alt: "Facciata della masseria al tramonto", caption: "La facciata · ora dorata", soul: "warm", x: -0.55, y: -0.25, z: 0.98, w: 34, ratio: 16 / 10 },
   { id: "g02", src: horseApparition, alt: "Cavallo dal manto nero accanto alla sua accompagnatrice", caption: "Incontro · criniera nera", soul: "dark", x: 0.5, y: 0.22, z: 0.92, w: 30, ratio: 4 / 5 },
   { id: "g03", src: storyOrigini, alt: "Vista d'epoca della masseria", caption: "Origini · archivio", soul: "warm", x: 0.35, y: -0.38, z: 0.84, w: 26, ratio: 3 / 2 },
-  { id: "g04", src: horseGallop, alt: "Gruppo di puledri e fattrici dal manto scuro nel recinto dell’allevamento, accanto ai muretti a secco", caption: "Puledri e fattrici · allevamento", soul: "dark", x: -0.45, y: 0.35, z: 0.78, w: 32, ratio: 16 / 9 },
+  { id: "g04", src: horseGallop, alt: "Gruppo di puledri e fattrici dal manto scuro nel recinto dell’allevamento, accanto ai muretti a secco", caption: "Puledri e fattrici · allevamento", soul: "dark", x: -0.45, y: 0.35, z: 0.78, w: 32, ratio: 16 / 9, objectFit: "contain" },
   { id: "g05", src: eventsWedding, alt: "Sposi al tramonto tra gli ulivi", caption: "Matrimonio · ulivi", soul: "warm", x: 0.6, y: -0.05, z: 0.7, w: 24, ratio: 3 / 4 },
   { id: "g06", src: storyCavalli, alt: "Cavallo dal manto nero con la sua accompagnatrice davanti alla facciata della masseria", caption: "Cavallo · corte", soul: "dark", x: -0.62, y: 0.05, z: 0.62, w: 28, ratio: 4 / 3 },
   { id: "g07", src: kitchenPrimi, alt: "Orecchiette fatte a mano", caption: "Orecchiette · tradizione", soul: "warm", x: 0.1, y: 0.42, z: 0.55, w: 22, ratio: 1 },
@@ -148,7 +151,10 @@ function ImmersiveLightbox({
     });
   }, [current, index, images]);
 
-  // Arch reveal on open / change
+  // [I16] Arch reveal: solo alla prima apertura della lightbox, non ad ogni
+  // cambio immagine (altrimenti l'arco si "riapre" su ogni navigazione e
+  // distrae). L'opacità resta aggiornata ad ogni cambio per il fade-in.
+  const firstOpenRef = useRef(false);
   useEffect(() => {
     if (!current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -156,13 +162,19 @@ function ImmersiveLightbox({
     if (!el) return;
     if (reduced) {
       gsap.set(el, { clipPath: "inset(0% 0 0 0)", opacity: 1 });
+      firstOpenRef.current = true;
       return;
     }
-    gsap.fromTo(
-      el,
-      { clipPath: "inset(100% 0 0 0)", opacity: 0.6 },
-      { clipPath: "inset(0% 0 0 0)", opacity: 1, duration: 0.7, ease: "power3.out" },
-    );
+    if (!firstOpenRef.current) {
+      gsap.fromTo(
+        el,
+        { clipPath: "inset(100% 0 0 0)", opacity: 0.6 },
+        { clipPath: "inset(0% 0 0 0)", opacity: 1, duration: 0.7, ease: "power3.out" },
+      );
+      firstOpenRef.current = true;
+    } else {
+      gsap.set(el, { clipPath: "inset(0% 0 0 0)", opacity: 1 });
+    }
   }, [current?.id]);
 
   // Focus trap
@@ -257,7 +269,7 @@ function ImmersiveLightbox({
             src={current.src}
             alt={current.alt}
             className="absolute inset-0 h-full w-full object-cover animate-in fade-in duration-300"
-            style={current.id === "g04" ? { objectFit: "contain" } : undefined}
+            style={current.objectFit ? { objectFit: current.objectFit } : undefined}
           />
         </div>
         <figcaption className="flex w-full items-center justify-center gap-3 text-center">
