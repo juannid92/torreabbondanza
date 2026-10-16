@@ -15,7 +15,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const MAP_URL = "https://www.google.com/maps?q=40.728664,17.132612";
+const MAP_URL = "https://www.google.com/maps/search/?api=1&query=40.728664,17.132612";
 
 export function PlaceSection() {
   const sceneRef = useRef<HTMLDivElement | null>(null);
