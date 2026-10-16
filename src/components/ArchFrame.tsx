@@ -22,8 +22,9 @@ export function ArchFrame({ src, alt, videoSrc }: ArchFrameProps) {
   const revealRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // border-radius: orizzontale 50% (semicerchio sui lati),
-  // verticale 38% (≈ width/2 di un box 3:4) → arco a tutto sesto coerente.
+  // Arco ribassato (NON a tutto sesto): l'arco copre il 38% dei lati
+  // verticali. Un arco a tutto sesto richiederebbe 50%, ma ribassato
+  // rende meglio su schermi stretti. Il valore è scelto esteticamente.
   const archRadius = "50% 50% 0 0 / 38% 38% 0 0";
 
   useEffect(() => {
