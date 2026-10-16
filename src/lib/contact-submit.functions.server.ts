@@ -123,9 +123,11 @@ export const submitContact = createServerFn({ method: "POST" })
   .handler(async ({ data, request }: { data: z.infer<typeof inputSchema>; request?: Request }) => {
     // Pull the platform env (Workers binding + secrets)
     // cloudflare-specific: globalThis.env cast, process.env fallback is intentional for dual runtime
-    const env = (globalThis as any).env ?? process.env;
+    const env: Record<string, string | undefined> =
+      ((globalThis as { env?: Record<string, string | undefined> }).env ??
+        process.env) as Record<string, string | undefined>;
     // cloudflare-specific KV binding
-    const kv: KVNamespace | undefined = env["RATE_LIMIT"];
+    const kv: KVNamespace | undefined = env["RATE_LIMIT"] as KVNamespace | undefined;
 
     const envTag = env["ENV_TAG"] ?? "prod";
     // IP is taken from the request headers only — never from the client
