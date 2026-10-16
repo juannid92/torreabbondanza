@@ -1,1 +1,4 @@
 project_id = "erjcjemicnyfezgzfoxq"
+
+[db]
+migrations_path = "./migrations"
