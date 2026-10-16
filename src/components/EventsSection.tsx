@@ -55,15 +55,8 @@ function buildLightStrings(): Light[] {
 // classiche, in coda le 5 voci canoniche del form. Niente cambi estetici:
 // stesso layout, stesse animazioni, stesse classi CSS.
 const OCCASIONS = [
-  {
-    word: "ESPERIENZA EQUESTRE",
-    phrase: "Cavalli Murgesi al pascolo, passeggiate e attacchi d'epoca tra i muretti a secco.",
-  },
-  {
-    word: "LA MASSERIA",
-    phrase:
-      "La cornice: pietra, ulivi, cortile, lunga tavola. Scegliete il momento, noi facciamo il resto.",
-  },
+  { word: "ESPERIENZA EQUESTRE", phrase: "Cavalli Murgesi al pascolo, passeggiate e attacchi d'epoca tra i muretti a secco." },
+  { word: "LA MASSERIA", phrase: "La cornice: pietra, ulivi, cortile, lunga tavola. Scegliete il momento, noi facciamo il resto." },
   { word: "MATRIMONI", phrase: "Il sì sotto gli ulivi, la festa che non finisce." },
   { word: "CERIMONIE", phrase: "Civili, simboliche: i riti che vi somigliano." },
   { word: "BATTESIMI", phrase: "Le prime feste di famiglia, al riparo della pietra." },
@@ -192,11 +185,7 @@ export function EventsSection() {
             masterTimeline.to(skyLayer, { autoAlpha: 1, ease: "none", duration: 0.18 }, 0);
           }
           if (firstCopy) {
-            masterTimeline.to(
-              firstCopy,
-              { autoAlpha: 0, y: -24, ease: "none", duration: 0.12 },
-              0.06,
-            );
+            masterTimeline.to(firstCopy, { autoAlpha: 0, y: -24, ease: "none", duration: 0.12 }, 0.06);
           }
           lightEls.forEach((el) => {
             const delay = parseFloat(el.dataset.delay ?? "0");
@@ -204,61 +193,37 @@ export function EventsSection() {
             masterTimeline.to(el, { opacity: 1, scale: 1, duration: 0.02, ease: "power2.out" }, at);
           });
           candleEls.forEach((el, i) => {
-            masterTimeline.to(
-              el,
-              { opacity: 1, duration: 0.02, ease: "power2.out" },
-              0.1 + (i / candleEls.length) * 0.08,
-            );
+            masterTimeline.to(el, { opacity: 1, duration: 0.02, ease: "power2.out" }, 0.1 + (i / candleEls.length) * 0.08);
           });
           if (bokehLayer) {
             masterTimeline.to(bokehLayer, { autoAlpha: 0.9, duration: 0.18, ease: "none" }, 0.04);
           }
           if (kineticB) {
-            masterTimeline.to(
-              kineticB,
-              { yPercent: -30, opacity: 0.95, ease: "none", duration: 0.18 },
-              0,
-            );
+            masterTimeline.to(kineticB, { yPercent: -30, opacity: 0.95, ease: "none", duration: 0.18 }, 0);
           }
 
           if (cBg) {
-            masterTimeline.to(
-              cBg,
-              {
-                x: () => -getDistance() * 0.3,
-                ease: "none",
-                duration: 0.82,
-              },
-              0.18,
-            );
+            masterTimeline.to(cBg, {
+              x: () => -getDistance() * 0.3,
+              ease: "none",
+              duration: 0.82,
+            }, 0.18);
           }
           if (cMid) {
-            masterTimeline.to(
-              cMid,
-              {
-                x: () => -getDistance() * 0.6,
-                ease: "none",
-                duration: 0.82,
-              },
-              0.18,
-            );
+            masterTimeline.to(cMid, {
+              x: () => -getDistance() * 0.6,
+              ease: "none",
+              duration: 0.82,
+            }, 0.18);
           }
           if (cFg) {
-            masterTimeline.to(
-              cFg,
-              {
-                x: () => -getDistance() * 1.15,
-                ease: "none",
-                duration: 0.82,
-              },
-              0.18,
-            );
+            masterTimeline.to(cFg, {
+              x: () => -getDistance() * 1.15,
+              ease: "none",
+              duration: 0.82,
+            }, 0.18);
           }
-          masterTimeline.to(
-            cTrack,
-            { x: () => -getDistance(), ease: "none", duration: 0.82 },
-            0.18,
-          );
+          masterTimeline.to(cTrack, { x: () => -getDistance(), ease: "none", duration: 0.82 }, 0.18);
 
           cOccs.forEach((occ) => {
             const word = occ.querySelector<HTMLElement>("[data-occ-word]");
@@ -271,29 +236,8 @@ export function EventsSection() {
               start: "left center",
               end: "right center",
               onEnter: () => {
-                gsap.fromTo(
-                  wordChars,
-                  { yPercent: 110 },
-                  {
-                    yPercent: 0,
-                    duration: 0.9,
-                    ease: "power3.out",
-                    stagger: 0.05,
-                    overwrite: true,
-                  },
-                );
-                gsap.fromTo(
-                  phrase,
-                  { opacity: 0, y: 20 },
-                  {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.7,
-                    ease: "power3.out",
-                    delay: 0.15,
-                    overwrite: true,
-                  },
-                );
+                gsap.fromTo(wordChars, { yPercent: 110 }, { yPercent: 0, duration: 0.9, ease: "power3.out", stagger: 0.05, overwrite: true });
+                gsap.fromTo(phrase, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", delay: 0.15, overwrite: true });
               },
               once: true,
               horizontal: true,
@@ -305,10 +249,7 @@ export function EventsSection() {
       // MOBILE (< 768px) — scena B/C statiche e verticali, fail-safe sempre visibile
       mm.add("(max-width: 767px)", () => {
         gsap.set(dayLayer, { autoAlpha: 0.25, clearProps: "transform" });
-        gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), {
-          autoAlpha: 1,
-          clearProps: "transform",
-        });
+        gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), { autoAlpha: 1, clearProps: "transform" });
         gsap.set(lightEls, { opacity: 1, scale: 1, clearProps: "transform" });
         gsap.set(candleEls, { opacity: 1 });
         if (kineticB) gsap.set(kineticB, { yPercent: 0, opacity: 0.7 });
@@ -327,16 +268,8 @@ export function EventsSection() {
             once: true,
             invalidateOnRefresh: true,
             onEnter: () => {
-              gsap.fromTo(
-                word,
-                { y: 18 },
-                { y: 0, duration: 0.75, ease: "power3.out", overwrite: true },
-              );
-              gsap.fromTo(
-                phrase,
-                { y: 14 },
-                { y: 0, duration: 0.65, ease: "power3.out", delay: 0.08, overwrite: true },
-              );
+              gsap.fromTo(word, { y: 18 }, { y: 0, duration: 0.75, ease: "power3.out", overwrite: true });
+              gsap.fromTo(phrase, { y: 14 }, { y: 0, duration: 0.65, ease: "power3.out", delay: 0.08, overwrite: true });
             },
           });
         });
@@ -370,7 +303,12 @@ export function EventsSection() {
   }, []);
 
   return (
-    <section id="eventi" ref={rootRef} aria-labelledby="events-title" className="relative bg-ivory">
+    <section
+      id="eventi"
+      ref={rootRef}
+      aria-labelledby="events-title"
+      className="relative bg-ivory"
+    >
       <h2 id="events-title" className="sr-only">
         Eventi e matrimoni alla Masseria Torre Abbondanza
       </h2>
@@ -453,8 +391,8 @@ export function EventsSection() {
               data-fade
               className="mt-8 max-w-2xl font-display text-lg italic leading-snug text-ivory/85 md:text-2xl"
             >
-              Cerimonie, matrimoni e feste private in una masseria del Settecento: spazi che vivono
-              solo per le grandi occasioni.
+              Cerimonie, matrimoni e feste private in una masseria del Settecento:
+              spazi che vivono solo per le grandi occasioni.
             </p>
           </div>
         </div>
@@ -579,18 +517,20 @@ export function EventsSection() {
                   <stop offset="100%" stopColor="#F2B95C" stopOpacity="0" />
                 </radialGradient>
               </defs>
-              {["M 4 26 Q 50 16 96 26", "M 4 36 Q 50 28 96 36", "M 4 48 Q 50 42 96 48"].map(
-                (d, i) => (
-                  <path
-                    key={i}
-                    d={d}
-                    fill="none"
-                    stroke="rgba(247,243,236,0.18)"
-                    strokeWidth="0.12"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                ),
-              )}
+              {[
+                "M 4 26 Q 50 16 96 26",
+                "M 4 36 Q 50 28 96 36",
+                "M 4 48 Q 50 42 96 48",
+              ].map((d, i) => (
+                <path
+                  key={i}
+                  d={d}
+                  fill="none"
+                  stroke="rgba(247,243,236,0.18)"
+                  strokeWidth="0.12"
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
               {lights.map((l, i) => (
                 <g
                   key={i}
@@ -643,7 +583,7 @@ export function EventsSection() {
               {Array.from({ length: 14 }).map((_, i) => {
                 const seed = (i * 37) % 100;
                 const x = (seed * 1.7) % 100;
-                const y = 10 + ((seed * 0.6) % 65);
+                const y = 10 + (seed * 0.6) % 65;
                 const size = 80 + (seed % 5) * 24;
                 const opacity = 0.18 + (seed % 7) * 0.05;
                 return (
@@ -695,7 +635,8 @@ export function EventsSection() {
                   maxWidth: "32ch",
                 }}
               >
-                Scorri: la luce arriva, le candele si accendono, la tavola si apparecchia.
+                Scorri: la luce arriva, le candele si accendono, la tavola si
+                apparecchia.
               </p>
               <span
                 className="hidden text-eyebrow text-ivory/70 md:inline-flex"
@@ -710,10 +651,7 @@ export function EventsSection() {
           <div className="hidden w-[20vw] flex-shrink-0 md:block" />
 
           {/* Eyebrow di apertura del momento C */}
-          <div
-            data-reveal="soft"
-            className="w-full max-w-[28rem] flex-shrink-0 md:w-[50vw] md:pr-12"
-          >
+          <div data-reveal="soft" className="w-full max-w-[28rem] flex-shrink-0 md:w-[50vw] md:pr-12">
             <p className="text-eyebrow text-ivory/65">II · Dentro la festa</p>
             <p
               className="mt-6 font-display font-medium italic text-ivory"
@@ -742,7 +680,8 @@ export function EventsSection() {
                   className="font-display font-semibold leading-[0.95] tracking-[-0.04em] text-ivory"
                   style={{
                     fontSize: "clamp(3rem, 9vw, 9rem)",
-                    textShadow: "0 6px 30px rgba(0,0,0,0.55), 0 0 60px rgba(242,185,92,0.25)",
+                    textShadow:
+                      "0 6px 30px rgba(0,0,0,0.55), 0 0 60px rgba(242,185,92,0.25)",
                   }}
                 >
                   {occ.word}
@@ -759,10 +698,7 @@ export function EventsSection() {
           ))}
 
           {/* Chiusura: spazi */}
-          <div
-            data-reveal="soft"
-            className="flex w-full flex-shrink-0 items-center md:w-[80vw] md:px-[8vw]"
-          >
+          <div data-reveal="soft" className="flex w-full flex-shrink-0 items-center md:w-[80vw] md:px-[8vw]">
             <div className="flex max-w-md flex-col gap-5">
               <p className="text-eyebrow text-gold">Gli spazi</p>
               <p
@@ -773,9 +709,12 @@ export function EventsSection() {
                   textShadow: "0 4px 24px rgba(0,0,0,0.5)",
                 }}
               >
-                La <span className="text-gold">sala storica</span> sotto le volte del Settecento e
-                il <span className="text-gold">giardino</span> di ulivi: due cornici, una sola
-                accoglienza.
+                La <span className="text-gold">sala storica</span> sotto le volte
+                del Settecento e il <span className="text-gold">giardino</span> di
+                ulivi: due cornici, una sola accoglienza.
+              </p>
+              <p className="text-eyebrow text-ivory/55">
+                {/* DA CONFERMARE: capienze e dettagli tecnici */}
               </p>
             </div>
           </div>
@@ -877,10 +816,10 @@ export function EventsSection() {
                 L'arrivo con gli attacchi d'epoca
               </h3>
               <p className="max-w-md font-display text-base italic leading-relaxed text-ivory/80 md:text-lg">
-                Per chi lo desidera, la cerimonia può aprirsi con un arrivo d'eccezione: una
-                carrozza d'epoca trainata dai nostri cavalli{" "}
-                <span style={{ color: "var(--gold)" }}>Murgesi</span>. Una scenografia rara, sobria,
-                profondamente del territorio.
+                Per chi lo desidera, la cerimonia può aprirsi con un arrivo
+                d'eccezione: una carrozza d'epoca trainata dai nostri cavalli{" "}
+                <span style={{ color: "var(--gold)" }}>Murgesi</span>. Una
+                scenografia rara, sobria, profondamente del territorio.
               </p>
               <p className="text-eyebrow text-ivory/55">
                 {/* DA CONFERMARE: servizio attacchi su richiesta */}
@@ -901,8 +840,9 @@ export function EventsSection() {
               className="font-display font-medium leading-[1.1] text-ink"
               style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}
             >
-              Raccontateci la vostra occasione. <em className="text-terracotta">Accenderemo</em> la
-              masseria per voi.
+              Raccontateci la vostra occasione.{" "}
+              <em className="text-terracotta">Accenderemo</em> la masseria per
+              voi.
             </p>
           </div>
           <div data-fade className="flex w-full flex-shrink-0 md:w-auto">
