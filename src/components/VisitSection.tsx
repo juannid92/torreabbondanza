@@ -5,6 +5,8 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Instagram, Phone, Mail, MapPin, Globe, Check, ArrowRight } from "lucide-react";
 import { StylizedMap } from "@/components/StylizedMap";
 import { cn } from "@/lib/utils";
+import { buildWhatsAppUrl, type ContactFormData } from "@/lib/contact-message";
+import { submitContact } from "@/lib/contact-submit.functions";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -15,6 +17,7 @@ const ADDRESS_LINE_2 = "Zona E n. 49 — 70015 Noci (BA)";
 const ADDRESS_FULL = `${ADDRESS_LINE_1}, ${ADDRESS_LINE_2}`;
 const PHONE = "+39 338 483 4318";
 const PHONE_TEL = "+393384834318";
+const WHATSAPP_NUMBER = "393384834318"; // for wa.me; no +, no spaces
 const EMAIL = "info@torreabbondanza.com";
 const SITE = "torreabbondanza.com";
 const SITE_URL = "https://torreabbondanza.com";
@@ -231,18 +234,36 @@ function OccasionForm() {
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    if (v.website) return; // honeypot
+    const payload: ContactFormData = {
+      name: v.name, email: v.email, phone: v.phone, kind: v.kind,
+      date: v.date, guests: v.guests, message: v.message, website: v.website,
+    };
+    if (v.website) {
+      // Honeypot trip: silently persist (best-effort), do not open WhatsApp,
+      // do not send email. UI shows a generic success so bots learn nothing.
+      void submitContact({ data: { data: payload, ip: "", userAgent: navigator.userAgent } });
+      setStatus("success");
+      setMsg("Grazie. Ti rispondiamo a breve.");
+      return;
+    }
     if (!validate()) return;
     setStatus("loading");
-    try {
-      /* INTEGRARE backend/email/CRM */
-      await new Promise((r) => setTimeout(r, 900));
-      setStatus("success");
-      setMsg("Grazie. Ti rispondiamo a breve per comporre insieme la tua occasione.");
-    } catch {
-      setStatus("error");
-      setMsg("Qualcosa è andato storto. Riprova o scrivici a info@torreabbondanza.com.");
-    }
+
+    // 1. Open WhatsApp first — this is the user's primary action.
+    const waUrl = buildWhatsAppUrl(WHATSAPP_NUMBER, payload);
+    const wa = window.open(waUrl, "_blank", "noopener,noreferrer");
+
+    // 2. Fire-and-forget the server function: persist + auto-reply.
+    //    We do not await; the user is moving to WhatsApp.
+    void submitContact({ data: { data: payload, ip: "", userAgent: navigator.userAgent } });
+
+    // 3. UI state. The success copy must cover the popup-blocked case.
+    setStatus("success");
+    setMsg(
+      wa
+        ? "Abbiamo aperto WhatsApp con il tuo messaggio. Premi invio per inviarci la richiesta."
+        : "Se WhatsApp non si è aperto, scrivici a +39 338 483 4318 — abbiamo salvato la tua richiesta.",
+    );
   }
 
   const today = new Date().toISOString().split("T")[0];
@@ -326,7 +347,7 @@ function OccasionForm() {
       </label>
 
       <div data-field>
-        <SubmitButton status={status} label="Richiedi informazioni" />
+        <SubmitButton status={status} label="Invia su WhatsApp" />
       </div>
       <Feedback status={status} message={msg} />
     </form>
