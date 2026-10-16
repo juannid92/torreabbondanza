@@ -50,7 +50,13 @@ function buildLightStrings(): Light[] {
 /* -------------------------------------------------------------------------- */
 /* Occasioni — Momento C                                                       */
 /* -------------------------------------------------------------------------- */
+// [K8] L'array è ordinato: prima l'esperienza equestre (anima distinta del
+// brand — vedi HorsesSection), poi la masseria come cornice delle occasioni
+// classiche, in coda le 5 voci canoniche del form. Niente cambi estetici:
+// stesso layout, stesse animazioni, stesse classi CSS.
 const OCCASIONS = [
+  { word: "ESPERIENZA EQUESTRE", phrase: "Cavalli Murgesi al pascolo, passeggiate e attacchi d'epoca tra i muretti a secco." },
+  { word: "LA MASSERIA", phrase: "La cornice: pietra, ulivi, cortile, lunga tavola. Scegliete il momento, noi facciamo il resto." },
   { word: "MATRIMONI", phrase: "Il sì sotto gli ulivi, la festa che non finisce." },
   { word: "CERIMONIE", phrase: "Civili, simboliche: i riti che vi somigliano." },
   { word: "BATTESIMI", phrase: "Le prime feste di famiglia, al riparo della pietra." },
