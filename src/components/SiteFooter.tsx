@@ -362,12 +362,23 @@ export function SiteFooter() {
           </div>
 
           {/* C) Sottofooter legale */}
-          <div className="relative z-10 mt-16 border-t border-ivory/10 pt-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between text-xs text-ivory/55">
+          <div className="relative z-10 mt-16 border-t border-ivory/10 pt-6 flex flex-col gap-2 md:flex-row md:items-center md:justify-between text-xs text-ivory/55">
             <p>
               © {year} Masseria Torre Abbondanza — Tutti i diritti riservati.
               <span className="mx-2 text-ivory/25">·</span>
-              P.IVA <span className="text-ivory/40">XXXXXXXXXXX</span>
-              {/* DA CONFERMARE P.IVA e ragione sociale */}
+              {/* [K3] Dati legali placeholder. Obbligo art. 2250 c.c. + D.Lgs. 70/2003. */}
+              <span className="text-ivory/40" title="DA CONFERMARE: ragione sociale completa">
+                [DA CONFERMARE: ragione sociale]
+              </span>
+              <span className="mx-2 text-ivory/25">·</span>
+              P.IVA{" "}
+              <span className="text-ivory/40" title="DA CONFERMARE: P.IVA">
+                XXXXXXXXXXX
+              </span>
+              <span className="mx-2 text-ivory/25">·</span>
+              <span className="text-ivory/40" title="DA CONFERMARE: sede legale">
+                [DA CONFERMARE: sede legale]
+              </span>
             </p>
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
               <li>
