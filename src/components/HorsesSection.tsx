@@ -30,9 +30,7 @@ export function HorsesSection() {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    const isReduced =
-      reduced ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isReduced = reduced || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const ctx = gsap.context(() => {
       // Mask-reveal titoli per parola
@@ -121,12 +119,7 @@ export function HorsesSection() {
           0,
         );
         if (gallopWord) {
-          tl.fromTo(
-            gallopWord,
-            { xPercent: 30 },
-            { xPercent: -35, ease: "none" },
-            0,
-          );
+          tl.fromTo(gallopWord, { xPercent: 30 }, { xPercent: -35, ease: "none" }, 0);
         }
         if (dust) {
           tl.fromTo(
@@ -222,8 +215,8 @@ export function HorsesSection() {
                 maxWidth: "34ch",
               }}
             >
-              Nera come la notte di Puglia, antica come questa terra: la
-              stirpe del cavallo Murgese vive nella Murgia da secoli.
+              Nera come la notte di Puglia, antica come questa terra: la stirpe del cavallo Murgese
+              vive nella Murgia da secoli.
             </p>
           </div>
 
@@ -377,10 +370,7 @@ export function HorsesSection() {
       </div>
 
       {/* ────────── MOMENTO C — LA PRATERIA ────────── */}
-      <div
-        ref={prairieSceneRef}
-        className="relative mt-0 h-[110vh] w-full overflow-hidden"
-      >
+      <div ref={prairieSceneRef} className="relative mt-0 h-[110vh] w-full overflow-hidden">
         {/* Cielo */}
         <div
           data-p-layer
@@ -523,8 +513,7 @@ export function HorsesSection() {
               style={{
                 borderRadius: "12px",
                 aspectRatio: "7 / 8",
-                boxShadow:
-                  "0 50px 120px -40px color-mix(in oklab, black 70%, transparent)",
+                boxShadow: "0 50px 120px -40px color-mix(in oklab, black 70%, transparent)",
               }}
             >
               <img
@@ -575,20 +564,18 @@ export function HorsesSection() {
                 color: "color-mix(in oklab, var(--ivory) 82%, transparent)",
               }}
             >
-              Sfilata di Attacchi d&apos;Epoca, cavalli Murgesi e muli
-              Martinesi: a Torre Abbondanza la tradizione equestre della
-              Murgia non è memoria, è gesto vivo.
+              Sfilata di Attacchi d&apos;Epoca, cavalli Murgesi e muli Martinesi: a Torre Abbondanza
+              la tradizione equestre della Murgia non è memoria, è gesto vivo.
             </p>
             <p
               data-h-fade
               className="mt-6 text-sm leading-relaxed"
               style={{ color: "color-mix(in oklab, var(--ivory) 65%, transparent)" }}
             >
-              I cavalli sono della famiglia Giunta, che alleva Murgesi in
-              masseria — con soggetti iscritti al Registro Anagrafico
-              (suffisso T.A.) e a volte presenti in fiera. Esperienze
-              equestri tra scuderia, pascolo e attacchi storici, su
-              richiesta, in occasione di eventi e visite guidate.
+              I cavalli sono della famiglia Giunta, che alleva Murgesi in masseria — con soggetti
+              iscritti al Registro Anagrafico (suffisso T.A.) e a volte presenti in fiera.
+              Esperienze equestri tra scuderia, pascolo e attacchi storici, su richiesta, in
+              occasione di eventi e visite guidate.
             </p>
 
             <div className="mt-12">

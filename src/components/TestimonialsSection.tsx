@@ -328,7 +328,11 @@ export function TestimonialsSection() {
                       ? "https://www.thefork.it/ristorante/masseria-torre-abbondanza-r201438"
                       : undefined;
                 return (
-                  <li key={p} className="text-eyebrow text-ink/60" style={{ letterSpacing: "0.22em" }}>
+                  <li
+                    key={p}
+                    className="text-eyebrow text-ink/60"
+                    style={{ letterSpacing: "0.22em" }}
+                  >
                     {href ? (
                       <a
                         href={href}

@@ -411,12 +411,12 @@ export function PlaceSection() {
                 <span className="text-ink/45">·</span> 29 km / 28 min
               </li>
               <li>
-                <span className="text-ink/55">Ostuni</span>{" "}
-                <span className="text-ink/45">·</span> 46 km / 40 min
+                <span className="text-ink/55">Ostuni</span> <span className="text-ink/45">·</span>{" "}
+                46 km / 40 min
               </li>
               <li>
-                <span className="text-ink/55">Bari</span>{" "}
-                <span className="text-ink/45">·</span> 48 km / 50 min
+                <span className="text-ink/55">Bari</span> <span className="text-ink/45">·</span> 48
+                km / 50 min
               </li>
             </ul>
             <a
