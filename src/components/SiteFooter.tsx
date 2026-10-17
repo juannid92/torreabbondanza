@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -153,6 +153,12 @@ function ClosingClaim() {
 export function SiteFooter() {
   const footerRef = useRef<HTMLElement | null>(null);
   const year = new Date().getFullYear();
+
+  // [GDPR] Hook per riaprire il pannello preferenze cookie da qualsiasi punto.
+  const openCookiePreferences = useCallback(() => {
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(new CustomEvent("open-cookie-preferences"));
+  }, []);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -388,6 +394,16 @@ export function SiteFooter() {
                 <Link to="/cookie" className="hover:text-ivory transition-colors">
                   Cookie Policy
                 </Link>
+              </li>
+              <li>
+                {/* [GDPR] Diritto di revoca del consenso: apre il pannello preferenze. */}
+                <button
+                  type="button"
+                  onClick={openCookiePreferences}
+                  className="hover:text-ivory transition-colors"
+                >
+                  Preferenze cookie
+                </button>
               </li>
             </ul>
             <p className="text-ivory/55">

@@ -43,9 +43,7 @@ function PrivacyPage() {
           <h1 className="mt-8 font-display text-4xl font-semibold tracking-tight md:text-5xl">
             Privacy Policy
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Ultimo aggiornamento: {LAST_UPDATED}
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground">Ultimo aggiornamento: {LAST_UPDATED}</p>
 
           <Section title="1. Titolare del trattamento">
             <p>
@@ -64,8 +62,8 @@ function PrivacyPage() {
             <p>
               Tramite il modulo di contatto del sito raccogliamo i dati che l'utente inserisce
               direttamente: nome e cognome, indirizzo e-mail, numero di telefono, tipo di occasione,
-              data indicativa dell'evento, numero di ospiti e un messaggio libero. L'indirizzo IP
-              e l'user agent del browser sono raccolti automaticamente dal provider di hosting
+              data indicativa dell'evento, numero di ospiti e un messaggio libero. L'indirizzo IP e
+              l'user agent del browser sono raccolti automaticamente dal provider di hosting
               (Cloudflare) per finalità di sicurezza e prevenzione abusi.
             </p>
           </Section>
@@ -75,18 +73,18 @@ function PrivacyPage() {
             <ul className="list-disc pl-6 space-y-1.5">
               <li>
                 <strong>Risposta alle richieste</strong> inviate tramite il modulo di contatto,
-                composizione del menù, organizzazione dell'occasione. Base giuridica: art. 6,
-                par. 1, lett. b) GDPR — esecuzione di misure precontrattuali su richiesta
+                composizione del menù, organizzazione dell'occasione. Base giuridica: art. 6, par.
+                1, lett. b) GDPR — esecuzione di misure precontrattuali su richiesta
                 dell'interessato.
               </li>
               <li>
-                <strong>Invio di un'e-mail automatica di conferma</strong> al mittente, a
-                riscontro dell'avvenuta ricezione. Base giuridica: art. 6, par. 1, lett. f) GDPR —
-                legittimo interesse del Titolare a dare riscontro alle richieste.
+                <strong>Invio di un'e-mail automatica di conferma</strong> al mittente, a riscontro
+                dell'avvenuta ricezione. Base giuridica: art. 6, par. 1, lett. f) GDPR — legittimo
+                interesse del Titolare a dare riscontro alle richieste.
               </li>
               <li>
-                <strong>Conservazione per finalità amministrative e contabili</strong> e tutela
-                dei diritti in sede giudiziaria. Base giuridica: art. 6, par. 1, lett. f) GDPR —
+                <strong>Conservazione per finalità amministrative e contabili</strong> e tutela dei
+                diritti in sede giudiziaria. Base giuridica: art. 6, par. 1, lett. f) GDPR —
                 legittimo interesse del Titolare.
               </li>
               <li>
@@ -102,18 +100,18 @@ function PrivacyPage() {
               richiesta e, successivamente, per un periodo massimo di <strong>24 mesi</strong> ai
               fini di reportistica interna e di eventuale tutela in sede giudiziaria. I dati
               necessari per adempiere ad obblighi contabili e fiscali sono conservati per 10 anni
-              dalla cessazione del rapporto, come previsto dalla normativa italiana. Trascorsi
-              tali termini i dati sono cancellati o resi anonimi in modo permanente.
+              dalla cessazione del rapporto, come previsto dalla normativa italiana. Trascorsi tali
+              termini i dati sono cancellati o resi anonimi in modo permanente.
             </p>
           </Section>
 
           <Section title="5. Modalità del trattamento">
             <p>
               I dati sono trattati con strumenti elettronici e cartacei, da personale autorizzato
-              del Titolare, con logiche strettamente correlate alle finalità indicate e
-              adottando misure tecniche e organizzative adeguate a garantirne la sicurezza e la
-              riservatezza (art. 32 GDPR). Il sito è distribuito su Cloudflare con connessione
-              HTTPS; l'accesso al database è limitato al personale autorizzato.
+              del Titolare, con logiche strettamente correlate alle finalità indicate e adottando
+              misure tecniche e organizzative adeguate a garantirne la sicurezza e la riservatezza
+              (art. 32 GDPR). Il sito è distribuito su Cloudflare con connessione HTTPS; l'accesso
+              al database è limitato al personale autorizzato.
             </p>
           </Section>
 
@@ -138,7 +136,8 @@ function PrivacyPage() {
             </ul>
             <p>
               L'elenco aggiornato dei Responsabili del trattamento è disponibile su richiesta
-              scrivendo a <a className="underline" href="mailto:info@torreabbondanza.com">
+              scrivendo a{" "}
+              <a className="underline" href="mailto:info@torreabbondanza.com">
                 info@torreabbondanza.com
               </a>
               .
@@ -161,15 +160,15 @@ function PrivacyPage() {
 
           <Section title="8. Diritti dell'interessato">
             <p>
-              In qualità di interessato, hai il diritto di accedere ai tuoi dati personali
-              (art. 15 GDPR), chiederne la rettifica (art. 16) o la cancellazione (art. 17),
-              opporti al loro trattamento (art. 21), richiederne la limitazione (art. 18) o la
-              portabilità (art. 20). Per esercitare questi diritti scrivi a{" "}
+              In qualità di interessato, hai il diritto di accedere ai tuoi dati personali (art. 15
+              GDPR), chiederne la rettifica (art. 16) o la cancellazione (art. 17), opporti al loro
+              trattamento (art. 21), richiederne la limitazione (art. 18) o la portabilità (art.
+              20). Per esercitare questi diritti scrivi a{" "}
               <a className="underline" href="mailto:info@torreabbondanza.com">
                 info@torreabbondanza.com
               </a>
-              . Hai inoltre il diritto di proporre reclamo all'Autorità di controllo
-              (Garante per la Protezione dei Dati Personali,{" "}
+              . Hai inoltre il diritto di proporre reclamo all'Autorità di controllo (Garante per la
+              Protezione dei Dati Personali,{" "}
               <a
                 className="underline"
                 href="https://www.garanteprivacy.it"
@@ -195,8 +194,8 @@ function PrivacyPage() {
 
           <Section title="10. Modifiche">
             <p>
-              Eventuali aggiornamenti di questa informativa saranno pubblicati in questa pagina
-              con l'indicazione della data di ultimo aggiornamento. Si invita a consultarla
+              Eventuali aggiornamenti di questa informativa saranno pubblicati in questa pagina con
+              l'indicazione della data di ultimo aggiornamento. Si invita a consultarla
               periodicamente, in particolare prima di conferire nuovi dati personali.
             </p>
           </Section>
