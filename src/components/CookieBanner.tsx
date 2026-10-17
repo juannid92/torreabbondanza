@@ -70,7 +70,9 @@ function writeConsent(categories: Categories) {
     /* localStorage disabilitato: il banner ricomparirà, accettabile */
   }
   // Notifica eventuali listener (es. blocco analytics)
-  window.dispatchEvent(new CustomEvent<Categories>("cookie-consent-change", { detail: categories }));
+  window.dispatchEvent(
+    new CustomEvent<Categories>("cookie-consent-change", { detail: categories }),
+  );
 }
 
 export type CookieBannerHandle = {
@@ -130,8 +132,7 @@ export function CookieBanner() {
     setOpen(false);
   };
 
-  const toggle = (k: "analytics" | "marketing") =>
-    setCategories((p) => ({ ...p, [k]: !p[k] }));
+  const toggle = (k: "analytics" | "marketing") => setCategories((p) => ({ ...p, [k]: !p[k] }));
 
   return (
     <AnimatePresence>
@@ -215,8 +216,8 @@ function BannerView({
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-ink/80 md:text-[15px]">
             Non utilizziamo cookie di profilazione, tracciamento o marketing, ma il provider di
-            hosting (Cloudflare) può installare cookie tecnici necessari al funzionamento del
-            sito. Per maggiori informazioni leggi la{" "}
+            hosting (Cloudflare) può installare cookie tecnici necessari al funzionamento del sito.
+            Per maggiori informazioni leggi la{" "}
             <Link
               to="/cookie"
               className="font-medium text-ink underline underline-offset-4 hover:text-terracotta"
@@ -308,8 +309,8 @@ function PrefsView({
         Preferenze cookie
       </h2>
       <p className="mt-2 text-sm text-ink/80">
-        Gestisci le categorie di cookie. I cookie tecnici sono necessari al funzionamento del
-        sito e non possono essere disattivati. Le altre categorie sono opzionali.
+        Gestisci le categorie di cookie. I cookie tecnici sono necessari al funzionamento del sito e
+        non possono essere disattivati. Le altre categorie sono opzionali.
       </p>
 
       <ul className="mt-5 grid gap-3">

@@ -64,8 +64,7 @@ export function WineHighlight() {
     return () => ctx.revert();
   }, []);
 
-  const quote =
-    "Primitivo dolce prodotto dalla masseria, davvero eccezionale.".split(" ");
+  const quote = "Primitivo dolce prodotto dalla masseria, davvero eccezionale.".split(" ");
 
   return (
     <section
@@ -76,10 +75,7 @@ export function WineHighlight() {
     >
       <div className="grid grid-cols-1 md:grid-cols-12">
         {/* Image */}
-        <div
-          className="relative overflow-hidden md:col-span-6"
-          style={{ minHeight: "60vh" }}
-        >
+        <div className="relative overflow-hidden md:col-span-6" style={{ minHeight: "60vh" }}>
           <img
             data-wine-image
             src={wineImg}
@@ -101,9 +97,7 @@ export function WineHighlight() {
         </div>
 
         {/* Text */}
-        <div
-          className="relative flex flex-col justify-center gap-8 px-6 py-16 text-ivory md:col-span-6 md:px-16 md:py-24"
-        >
+        <div className="relative flex flex-col justify-center gap-8 px-6 py-16 text-ivory md:col-span-6 md:px-16 md:py-24">
           <span data-wine-meta className="text-eyebrow text-ivory/60">
             05 · La cantina
           </span>
@@ -121,8 +115,8 @@ export function WineHighlight() {
             data-wine-meta
             className="max-w-md font-sans text-base leading-relaxed text-ivory/80 md:text-lg"
           >
-            Un vino di produzione propria, nato dalle vigne della masseria.
-            Profondo, caldo, generoso come la terra che lo dona.
+            Un vino di produzione propria, nato dalle vigne della masseria. Profondo, caldo,
+            generoso come la terra che lo dona.
           </p>
 
           <blockquote

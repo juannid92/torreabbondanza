@@ -882,9 +882,7 @@ export function EventsSection() {
                 <span style={{ color: "var(--gold)" }}>Murgesi</span>. Una scenografia rara, sobria,
                 profondamente del territorio.
               </p>
-              <p className="text-eyebrow text-ivory/55">
-                Servizio su richiesta
-              </p>
+              <p className="text-eyebrow text-ivory/55">Servizio su richiesta</p>
             </div>
           </div>
         </div>
