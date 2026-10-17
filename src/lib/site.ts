@@ -15,8 +15,7 @@ export const SITE_URL = "https://torreabbondanza.com";
 
 export const BUSINESS = {
   name: "Masseria Torre Abbondanza",
-  legalName:
-    "Masseria Torre Abbondanza - Società Agricola Semplice dei Fratelli Giunta",
+  legalName: "Masseria Torre Abbondanza - Società Agricola Semplice dei Fratelli Giunta",
   vatId: "IT06351980724",
   fiscalCode: "06351980724",
   rea: "BA - 479911",
@@ -36,38 +35,24 @@ export const BUSINESS = {
     postalCode: "70015",
     country: "IT",
   },
-  // Coordinate GPS della sede operativa (fonte: PagineGialle; da verificare
-  // con il pin reale su Google Maps). Usate per JSON-LD `geo` e link mappa.
-  geo: { lat: 40.7951, lon: 17.1252 },
+  // Coordinate GPS della sede operativa. Fonte: nodo OpenStreetMap 5580359729
+  // (https://www.openstreetmap.org/node/5580359729), tag place=isolated_dwelling,
+  // name=Masseria Torre Abbondanza. Geocodificate via Nominatim il 2026-10-17.
+  // Usate per JSON-LD `geo` e link mappa.
+  geo: { lat: 40.730579, lon: 17.1307539 },
   // Orari di apertura del servizio ristorante, desunti da PagineGialle +
   // TripAdvisor (servizio pranzo e cena, tutti i giorni). Da confermare
   // con la struttura prima di campagne marketing che citino gli orari.
   openingHours: [
     {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ],
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
       opens: "13:00",
       closes: "15:00",
     },
     {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ],
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
       opens: "20:00",
       closes: "22:00",
     },
