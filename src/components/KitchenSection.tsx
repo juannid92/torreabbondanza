@@ -168,14 +168,8 @@ export function KitchenSection() {
             La carta cambia con le stagioni e con la materia disponibile.
           </p>
           <div className="flex flex-wrap items-center gap-6">
-            <MagneticButton
-              href="#"
-              variant="link"
-              ariaLabel="Scarica il menù (link da confermare)"
-            >
-              {/* DA CONFERMARE link menu */}
-              Scarica il menù →
-            </MagneticButton>
+            {/* Bottone "Scarica il menù" rimosso: href="#" era un link morto.
+                Verrà ripristinato quando il cliente fornirà il PDF della carta. */}
             <MagneticButton href="#contatti" variant="pill">
               Prenota un tavolo →
             </MagneticButton>

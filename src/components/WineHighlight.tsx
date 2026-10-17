@@ -151,7 +151,9 @@ export function WineHighlight() {
               ))}
             </p>
             <footer data-wine-meta className="mt-4 text-eyebrow text-ivory/55">
-              — Da una recensione {/* DA CONFERMARE attribuzione esatta */}
+              {/* Citazione attributiva rimossa: era fittizia. Aggiungere solo
+                  con recensione reale autorizzata (art. 21-23 Codice Consumo). */}
+              — La cantina della masseria
             </footer>
           </blockquote>
         </div>

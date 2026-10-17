@@ -883,7 +883,6 @@ export function EventsSection() {
                 profondamente del territorio.
               </p>
               <p className="text-eyebrow text-ivory/55">
-                {/* DA CONFERMARE: servizio attacchi su richiesta */}
                 Servizio su richiesta
               </p>
             </div>
