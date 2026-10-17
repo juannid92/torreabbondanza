@@ -1,22 +1,42 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { DishBlock } from "./DishBlock";
 import { MagneticButton } from "./MagneticButton";
+import { ParallaxLayer } from "./ParallaxLayer";
 import antipastiImg from "@/assets/kitchen-antipasti.jpg";
 import primiImg from "@/assets/kitchen-primi.jpg";
 import secondiImg from "@/assets/kitchen-secondi.jpg";
 import dolciImg from "@/assets/kitchen-dolci.jpg";
 
+const WA_PHONE = "393384834318";
+const WA_MSG = encodeURIComponent(
+  "Ciao, vorrei informazioni su menù e prezzi per un gruppo di ___ persone. Data orientativa: ___.",
+);
+const WA_HREF = `https://wa.me/${WA_PHONE}?text=${WA_MSG}`;
+
+// Foto evocative della tavola: riuso le 4 immagini di portata in un layout
+// "mood board" 2x2 invece di sequenza alternata. Niente prezzi, niente elenco
+// piatti, niente caption a hover. La sezione rimanda a wa.me.
+const MOOD: { src: string; alt: string }[] = [
+  {
+    src: antipastiImg,
+    alt: "Antipasti pugliesi: tagliere di focaccia, salumi, formaggi e olive",
+  },
+  { src: primiImg, alt: "Primo piatto: nido di linguine con ragù di carne e funghi" },
+  { src: secondiImg, alt: "Secondo: brasato di carne al vino su purè con timo fresco" },
+  { src: dolciImg, alt: "Dolce della casa: fetta di cheesecake all'amaretto" },
+];
+
 const SERVICE_TAGS = [
   "Solo su prenotazione",
   "Per cerimonie ed eventi",
   "Menù su misura",
-  "Veg / Vegan / Gluten-free · Menù bambini",
+  "Veg · Vegan · Gluten-free",
 ];
 
 export function KitchenSection() {
   const rootRef = useRef<HTMLElement>(null);
+  const moodRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -41,6 +61,27 @@ export function KitchenSection() {
           });
         },
       });
+
+      // Mood board: reveal + parallax leggero delle 4 foto
+      const tiles = moodRef.current?.querySelectorAll<HTMLElement>("[data-mood-tile]");
+      if (tiles && tiles.length) {
+        gsap.set(tiles, { opacity: 0, y: 60, scale: 0.96 });
+        ScrollTrigger.create({
+          trigger: moodRef.current,
+          start: "top 80%",
+          once: true,
+          onEnter: () => {
+            gsap.to(tiles, {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 1,
+              ease: "power3.out",
+              stagger: 0.12,
+            });
+          },
+        });
+      }
     }, root);
 
     return () => ctx.revert();
@@ -91,7 +132,6 @@ export function KitchenSection() {
               pensato per cerimonie, eventi e grandi occasioni.
             </p>
 
-            {/* Fil rouge d'equità — ponte testuale verso l'anima equestre */}
             <p
               data-intro
               className="font-display text-lg italic leading-snug text-ink/70 md:text-xl"
@@ -104,7 +144,7 @@ export function KitchenSection() {
               {SERVICE_TAGS.map((tag) => (
                 <li
                   key={tag}
-                  className="text-eyebrow rounded-full border border-ink/15 px-3 py-1.5 text-ink/70 transition-colors hover:border-terracotta/50 hover:text-terracotta"
+                  className="text-eyebrow rounded-full border border-ink/15 px-3 py-1.5 text-ink/70"
                 >
                   {tag}
                 </li>
@@ -116,72 +156,76 @@ export function KitchenSection() {
         {/* Filetto */}
         <div aria-hidden className="mt-16 h-px w-full bg-ink/15 md:mt-24" />
 
-        {/* Portate — 'group' è su ogni DishBlock, hover localizzato */}
-        <div>
-          <DishBlock
-            numeral="I"
-            course="Antipasti di terra"
-            oversizedWord="ANTIPASTI"
-            description="Olive fritte, salumi e formaggi locali, parmigiana, focaccia, purè di fave bianche, peperoni fritti. Una carrellata che apre il pasto come un racconto del territorio."
-            caption="Carrellata di antipasti — degustazione dello chef"
-            imageSrc={antipastiImg}
-            imageAlt="Tagliere di antipasti pugliesi: focaccia, salumi, formaggi, olive e purè di fave"
-            align="right"
-          />
-          <DishBlock
-            numeral="II"
-            course="Primi"
-            oversizedWord="PRIMI"
-            description="Primi di terra e di mare nella tradizione pugliese. Il signature: il nido di linguine con carne e funghi — un piatto che ferma il tempo."
-            caption="Nido di linguine, carne e funghi"
-            imageSrc={primiImg}
-            imageAlt="Nido di linguine con ragù di carne e funghi su piatto in ceramica rustica"
-            align="left"
-          />
-          <DishBlock
-            numeral="III"
-            course="Secondi"
-            oversizedWord="SECONDI"
-            description="Carni della tradizione, cotture lente, materie prime locali. Il brasato di carne è la firma: una memoria di campagna che torna in tavola."
-            caption="Brasato di carne al vino"
-            imageSrc={secondiImg}
-            imageAlt="Brasato di carne in salsa scura su purè, con rametto di timo"
-            align="right"
-          />
-          <DishBlock
-            numeral="IV"
-            course="Dolci"
-            oversizedWord="DOLCI"
-            description="Dolci della casa, fatti a mano. La cheesecake all'amaretto chiude il pasto con la dolcezza giusta — un'ultima carezza."
-            caption="Cheesecake all'amaretto"
-            imageSrc={dolciImg}
-            imageAlt="Fetta di cheesecake all'amaretto con caramello e briciole di amaretti"
-            align="left"
-          />
+        {/* Mood board 2x2: foto evocative della tavola, niente prezzi */}
+        <div
+          ref={moodRef}
+          className="mt-16 grid grid-cols-2 gap-3 md:mt-24 md:grid-cols-4 md:gap-4"
+          aria-label="La tavola della masseria"
+        >
+          {MOOD.map((m, i) => (
+            <ParallaxLayer key={i} speed={i % 2 === 0 ? -0.15 : 0.15} zIndex={1}>
+              <figure
+                data-mood-tile
+                className="relative overflow-hidden rounded-sm shadow-soft"
+                style={{ aspectRatio: "3 / 4" }}
+              >
+                <img
+                  src={m.src}
+                  alt={m.alt}
+                  loading="lazy"
+                  width={768}
+                  height={1024}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </figure>
+            </ParallaxLayer>
+          ))}
+        </div>
+
+        {/* Messaggio + CTA: menù e prezzi su richiesta per gruppi ≥20 */}
+        <div className="mt-16 grid grid-cols-1 gap-8 md:mt-24 md:grid-cols-12 md:gap-12">
+          <div className="md:col-span-7">
+            <p
+              data-intro
+              className="font-display text-2xl italic leading-snug text-ink md:text-3xl"
+            >
+              La carta cambia con le stagioni e con la materia disponibile.
+            </p>
+            <p
+              data-intro
+              className="mt-4 font-sans text-base leading-relaxed text-ink/75 md:text-lg"
+            >
+              Menù e prezzi si definiscono insieme, su richiesta, per{" "}
+              <strong className="text-ink">gruppi di almeno 20 ospiti</strong>: cerimonie, eventi
+              privati, cene aziendali, matrimoni. Scrivici su WhatsApp con la data e il numero di
+              persone: prepariamo una proposta su misura.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-start gap-4 md:col-span-5 md:items-end md:justify-end">
+            <MagneticButton href={WA_HREF} variant="pill" target="_blank" rel="noopener noreferrer">
+              Scrivici su WhatsApp →
+            </MagneticButton>
+            <p className="text-eyebrow text-ink/55">
+              Risposta in giornata · senza impegno
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Chiusura / CTA */}
+      {/* Ponte verso il pilastro equestre */}
       <div className="mx-auto max-w-7xl px-6 pb-32 md:px-12 md:pb-40">
-        <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-          <p className="font-display text-xl italic leading-snug text-ink/70 md:max-w-md md:text-2xl">
-            La carta cambia con le stagioni e con la materia disponibile.
+        <div className="flex flex-col items-start gap-6 border-t border-ink/15 pt-8 md:flex-row md:items-center md:justify-between">
+          <p className="font-display text-lg italic text-ink/65 md:text-xl">
+            L'altra anima della masseria.
           </p>
-          <div className="flex flex-wrap items-center gap-6">
-            {/* Bottone "Scarica il menù" rimosso: href="#" era un link morto.
-                Verrà ripristinato quando il cliente fornirà il PDF della carta. */}
-            <MagneticButton href="#contatti" variant="pill">
-              Prenota un tavolo →
-            </MagneticButton>
-            {/* Ponte verso il pilastro equestre */}
-            <MagneticButton
-              href="#cavalli"
-              variant="link"
-              ariaLabel="L'altra anima: i cavalli Murgesi"
-            >
-              <span style={{ color: "var(--murgese)" }}>L'altra anima: i cavalli Murgesi →</span>
-            </MagneticButton>
-          </div>
+          <MagneticButton
+            href="#cavalli"
+            variant="link"
+            ariaLabel="L'altra anima: i cavalli Murgesi"
+          >
+            <span style={{ color: "var(--murgese)" }}>I cavalli Murgesi →</span>
+          </MagneticButton>
         </div>
       </div>
 

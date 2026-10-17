@@ -11,6 +11,8 @@ interface MagneticButtonProps {
   onClick?: () => void;
   className?: string;
   ariaLabel?: string;
+  target?: string;
+  rel?: string;
 }
 
 /**
@@ -26,6 +28,8 @@ export function MagneticButton({
   onClick,
   className,
   ariaLabel,
+  target,
+  rel,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
@@ -74,6 +78,8 @@ export function MagneticButton({
       // @ts-expect-error polymorphic ref
       ref={ref}
       href={href}
+      target={target}
+      rel={rel}
       onClick={onClick}
       aria-label={ariaLabel}
       onMouseMove={handleMove}
