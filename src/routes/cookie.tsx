@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HeadContent } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { BUSINESS } from "@/lib/site";
+import { BUSINESS, SITE_URL } from "@/lib/site";
 
 /** Ultimo aggiornamento dell'informativa (formato IT gg/mm/aaaa). */
 const LAST_UPDATED = "16 ottobre 2026";
@@ -17,10 +17,13 @@ export const Route = createFileRoute("/cookie")({
       { title: `Cookie Policy — ${BUSINESS.name}` },
       {
         name: "description",
-        content: `Informativa sull'uso dei cookie su ${BUSINESS.name}.`,
+        content: `Informativa sull'uso dei cookie su ${BUSINESS.name}: solo cookie tecnici, nessun cookie di profilazione o tracciamento.`,
       },
-      { name: "robots", content: "index, follow" },
+      // Pagine legali: noindex per non sprecare crawl budget su contenuti
+      // che non portano traffico organico di valore.
+      { name: "robots", content: "noindex, follow" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/cookie` }],
   }),
   component: CookiePage,
 });
