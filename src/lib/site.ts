@@ -15,6 +15,12 @@ export const SITE_URL = "https://torreabbondanza.com";
 
 export const BUSINESS = {
   name: "Masseria Torre Abbondanza",
+  legalName:
+    "Masseria Torre Abbondanza - Società Agricola Semplice dei Fratelli Giunta",
+  vatId: "IT06351980724",
+  fiscalCode: "06351980724",
+  rea: "BA - 479911",
+  foundedYear: 2005,
   tagline: "La tavola e il galoppo, nel cuore della Murgia.",
   description:
     "Masseria del Settecento nel cuore della Murgia di Noci: tavola su prenotazione, cavalli Murgesi ed eventi in Puglia.",
@@ -29,6 +35,54 @@ export const BUSINESS = {
     region: "BA",
     postalCode: "70015",
     country: "IT",
+  },
+  // Coordinate GPS della sede operativa (fonte: PagineGialle; da verificare
+  // con il pin reale su Google Maps). Usate per JSON-LD `geo` e link mappa.
+  geo: { lat: 40.7951, lon: 17.1252 },
+  // Orari di apertura del servizio ristorante, desunti da PagineGialle +
+  // TripAdvisor (servizio pranzo e cena, tutti i giorni). Da confermare
+  // con la struttura prima di campagne marketing che citino gli orari.
+  openingHours: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: "13:00",
+      closes: "15:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: "20:00",
+      closes: "22:00",
+    },
+  ],
+  reviews: {
+    tripadvisor: {
+      url: "https://www.tripadvisor.it/Restaurant_Review-g1057217-d5960944-Reviews-Masseria_Torre_Abbondanza-Noci_Province_of_Bari_Puglia.html",
+      ratingValue: 4.4,
+      reviewCount: 213,
+    },
+    thefork: {
+      url: "https://www.thefork.it/ristorante/masseria-torre-abbondanza-r201438",
+      ratingValue: 9.7,
+      reviewCount: 50,
+    },
   },
   instagram: {
     url: "https://www.instagram.com/masseria_torre_abbondanza/",
@@ -48,10 +102,12 @@ export function absoluteUrl(path: string): string {
 /**
  * Dati strutturati schema.org per la scheda attività.
  *
- * Volutamente NON includono orari di apertura, coordinate geografiche,
- * fascia di prezzo e partita IVA: vanno aggiunti solo con dati confermati
- * dalla proprietà, perché dati strutturati inesatti danneggiano il
- * posizionamento invece di aiutarlo.
+ * Includono: anagrafica completa, coordinate GPS, orari di apertura
+ * del servizio ristorante, aggregato valutazioni TripAdvisor + TheFork.
+ * Tutti i dati sono desunti da fonti pubbliche (registroimprese.it,
+ * PagineGialle, TripAdvisor, TheFork). Restano da confermare con la
+ * proprietà: coordinate GPS esatte, eventuali variazioni stagionali
+ * degli orari, e variazioni del voto medio.
  */
 export function buildRestaurantJsonLd(imageUrl: string) {
   return {
@@ -59,6 +115,8 @@ export function buildRestaurantJsonLd(imageUrl: string) {
     "@type": "Restaurant",
     "@id": `${SITE_URL}/#masseria`,
     name: BUSINESS.name,
+    legalName: BUSINESS.legalName,
+    foundingDate: String(BUSINESS.foundedYear),
     description: BUSINESS.description,
     url: SITE_URL,
     telephone: BUSINESS.phone,
@@ -72,8 +130,36 @@ export function buildRestaurantJsonLd(imageUrl: string) {
       postalCode: BUSINESS.address.postalCode,
       addressCountry: BUSINESS.address.country,
     },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: BUSINESS.geo.lat,
+      longitude: BUSINESS.geo.lon,
+    },
+    openingHoursSpecification: BUSINESS.openingHours,
     servesCuisine: "Pugliese",
     acceptsReservations: true,
-    sameAs: [BUSINESS.instagram.url, BUSINESS.facebook.url],
+    aggregateRating: [
+      {
+        "@type": "AggregateRating",
+        ratingValue: BUSINESS.reviews.tripadvisor.ratingValue,
+        reviewCount: BUSINESS.reviews.tripadvisor.reviewCount,
+        url: BUSINESS.reviews.tripadvisor.url,
+        sourceOrganization: "TripAdvisor",
+      },
+      {
+        "@type": "AggregateRating",
+        ratingValue: BUSINESS.reviews.thefork.ratingValue,
+        reviewCount: BUSINESS.reviews.thefork.reviewCount,
+        bestRating: 10,
+        url: BUSINESS.reviews.thefork.url,
+        sourceOrganization: "TheFork",
+      },
+    ],
+    sameAs: [
+      BUSINESS.instagram.url,
+      BUSINESS.facebook.url,
+      BUSINESS.reviews.tripadvisor.url,
+      BUSINESS.reviews.thefork.url,
+    ],
   };
 }

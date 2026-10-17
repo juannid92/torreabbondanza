@@ -48,13 +48,15 @@ function PrivacyPage() {
           <Section title="1. Titolare del trattamento">
             <p>
               Il Titolare del trattamento dei dati personali è{" "}
-              <strong>[DA CONFERMARE: ragione sociale completa]</strong>, con sede legale in{" "}
-              <strong>[DA CONFERMARE: indirizzo sede legale]</strong>, codice fiscale / P.IVA{" "}
-              <strong>[DA CONFERMARE: P.IVA / CF]</strong>, contatto e-mail{" "}
+              <strong>
+                Masseria Torre Abbondanza - Società Agricola Semplice dei Fratelli Giunta
+              </strong>
+              , con sede legale in <strong>Zona E n. 49, 70015 Noci (BA)</strong>, P.IVA / C.F.{" "}
+              <strong>06351980724</strong>, REA <strong>BA - 479911</strong>, contatto e-mail{" "}
               <a className="underline" href="mailto:info@torreabbondanza.com">
                 info@torreabbondanza.com
               </a>
-              .
+              , telefono <a className="underline" href="tel:+393384834318">+39 338 483 4318</a>.
             </p>
           </Section>
 

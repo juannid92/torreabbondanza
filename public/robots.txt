@@ -1,0 +1,12 @@
+# robots.txt — Masseria Torre Abbondanza
+# https://torreabbondanza.com
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Crawl-delay soft: 1s tra richieste per non sovraccaricare il worker
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://torreabbondanza.com/sitemap.xml

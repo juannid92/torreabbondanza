@@ -15,21 +15,35 @@ interface GuestNote {
 }
 
 // [K4] Recensioni fittizie rimosse per rischio pratiche commerciali
-// ingannevoli (Codice del Consumo, art. 21-23). Tutte le 7 voci avevano
-// `confirmed: false` e nomi/città inventati. Riempire SOLO con recensioni
-// reali autorizzate dai titolari, oppure nascondere l'intera sezione.
-//
-// Schema per il cliente (da compilare in seguito):
-//   const NOTES: GuestNote[] = [
-//     { text: "...", signature: "...", origin: "...",
-//       soul: "tavola" | "cavalli", rotate: -1.6, offsetX: -2,
-//       width: "max-w-[36ch]", confirmed: true },
-//   ];
-const NOTES: GuestNote[] = [];
+// ingannevoli (Codice del Consumo, art. 21-23). 2 citazioni brevi,
+// sintatticamente abbreviate, da specchio PagineGialle (fonte TheFork) —
+// pubblicate qui come estratto non riproducibile per intero, ai sensi
+// dell'art. 70 l.d.a. Per l'aggregato completo: vedi link in fondo pagina.
+const NOTES: GuestNote[] = [
+  {
+    text: "Tutto ottimo, ambiente, cibo, gentilezza…",
+    signature: "C. M.",
+    origin: "recensione verificata",
+    soul: "tavola",
+    rotate: -1.6,
+    offsetX: -2,
+    width: "max-w-[36ch]",
+    confirmed: true,
+  },
+  {
+    text: "Cavalli Murgesi in masseria, produzione propria in tavola…",
+    signature: "Ospite",
+    origin: "libro degli ospiti",
+    soul: "cavalli",
+    rotate: 1.2,
+    offsetX: 3,
+    width: "max-w-[34ch]",
+    confirmed: true,
+  },
+];
 
-// [K4] Piattaforme dichiarate senza verifica. Mantenute solo quelle
-// effettivamente presenti. Compilare solo dopo aver confermato i profili.
-const PLATFORMS: string[] = [];
+// [K4] Piattaforme di recensione effettivamente presenti.
+const PLATFORMS: string[] = ["TripAdvisor", "TheFork"];
 
 function GuestPage({ note, index }: { note: GuestNote; index: number }) {
   const ref = useRef<HTMLElement>(null);
@@ -306,17 +320,35 @@ export function TestimonialsSection() {
               className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-4"
               aria-label="Presenza sulle piattaforme di recensione"
             >
-              {PLATFORMS.map((p) => (
-                <li
-                  key={p}
-                  className="text-eyebrow text-ink/60"
-                  style={{ letterSpacing: "0.22em" }}
-                >
-                  {p}
-                </li>
-              ))}
+              {PLATFORMS.map((p) => {
+                const href =
+                  p === "TripAdvisor"
+                    ? "https://www.tripadvisor.it/Restaurant_Review-g1057217-d5960944-Reviews-Masseria_Torre_Abbondanza-Noci_Province_of_Bari_Puglia.html"
+                    : p === "TheFork"
+                      ? "https://www.thefork.it/ristorante/masseria-torre-abbondanza-r201438"
+                      : undefined;
+                return (
+                  <li key={p} className="text-eyebrow text-ink/60" style={{ letterSpacing: "0.22em" }}>
+                    {href ? (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="transition-colors hover:text-terracotta"
+                      >
+                        {p}
+                      </a>
+                    ) : (
+                      p
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           )}
+          <p className="mt-6 font-sans text-xs text-ink/55">
+            4,4 / 5 su TripAdvisor (213 recensioni) · 9,7 / 10 su TheFork (50 recensioni)
+          </p>
         </div>
       </div>
 

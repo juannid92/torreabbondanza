@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Instagram, Facebook, ArrowUp, ArrowRight, Phone, Mail, MapPin, Globe } from "lucide-react";
 import { MagneticButton } from "@/components/MagneticButton";
 import { cn } from "@/lib/utils";
+import { BUSINESS } from "@/lib/site";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -366,21 +367,11 @@ export function SiteFooter() {
           {/* C) Sottofooter legale */}
           <div className="relative z-10 mt-16 border-t border-ivory/10 pt-6 flex flex-col gap-2 md:flex-row md:items-center md:justify-between text-xs text-ivory/55">
             <p>
-              © {year} Masseria Torre Abbondanza — Tutti i diritti riservati.
+              © {year} {BUSINESS.legalName ?? BUSINESS.name} — Tutti i diritti riservati.
               <span className="mx-2 text-ivory/25">·</span>
-              {/* [K3] Dati legali placeholder. Obbligo art. 2250 c.c. + D.Lgs. 70/2003. */}
-              <span className="text-ivory/40" title="DA CONFERMARE: ragione sociale completa">
-                [DA CONFERMARE: ragione sociale]
-              </span>
+              P.IVA {BUSINESS.vatId?.replace(/^IT/, "") ?? "06351980724"}
               <span className="mx-2 text-ivory/25">·</span>
-              P.IVA{" "}
-              <span className="text-ivory/40" title="DA CONFERMARE: P.IVA">
-                XXXXXXXXXXX
-              </span>
-              <span className="mx-2 text-ivory/25">·</span>
-              <span className="text-ivory/40" title="DA CONFERMARE: sede legale">
-                [DA CONFERMARE: sede legale]
-              </span>
+              REA {BUSINESS.rea ?? "BA - 479911"}
             </p>
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
               <li>

@@ -385,9 +385,40 @@ export function PlaceSection() {
             </address>
             <p className="font-sans text-ink/65" style={{ fontSize: "0.95rem", lineHeight: 1.65 }}>
               Nel cuore della Murgia, terra di masserie e di cavalli.
-              <br />A breve distanza da Noci, Alberobello e dalla Valle d'Itria.
-              {/* Distanze esatte DA CONFERMARE */}
             </p>
+            <ul
+              className="mt-3 grid grid-cols-2 gap-x-6 gap-y-1.5 font-sans text-ink/75"
+              style={{ fontSize: "0.92rem" }}
+            >
+              <li>
+                <span className="text-ink/55">Putignano</span>{" "}
+                <span className="text-ink/45">·</span> 9 km / 12 min
+              </li>
+              <li>
+                <span className="text-ink/55">Alberobello</span>{" "}
+                <span className="text-ink/45">·</span> 11 km / 12 min
+              </li>
+              <li>
+                <span className="text-ink/55">Locorotondo</span>{" "}
+                <span className="text-ink/45">·</span> 20 km / 22 min
+              </li>
+              <li>
+                <span className="text-ink/55">Martina Franca</span>{" "}
+                <span className="text-ink/45">·</span> 26 km / 30 min
+              </li>
+              <li>
+                <span className="text-ink/55">Cisternino</span>{" "}
+                <span className="text-ink/45">·</span> 29 km / 28 min
+              </li>
+              <li>
+                <span className="text-ink/55">Ostuni</span>{" "}
+                <span className="text-ink/45">·</span> 46 km / 40 min
+              </li>
+              <li>
+                <span className="text-ink/55">Bari</span>{" "}
+                <span className="text-ink/45">·</span> 48 km / 50 min
+              </li>
+            </ul>
             <a
               href={MAP_URL}
               target="_blank"

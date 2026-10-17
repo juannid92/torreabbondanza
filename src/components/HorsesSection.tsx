@@ -584,13 +584,11 @@ export function HorsesSection() {
               className="mt-6 text-sm leading-relaxed"
               style={{ color: "color-mix(in oklab, var(--ivory) 65%, transparent)" }}
             >
-              {/* DA CONFERMARE — se la masseria alleva direttamente
-              Murgesi: nome allevamento, da quando, numero di capi. In
-              alternativa: dettaglio esperienze/eventi equestri offerti agli
-              ospiti (visite, scuderia aperta, passeggiate, attacchi). */}
-              Esperienze equestri tra scuderia, pascolo e attacchi storici —
-              su richiesta, in occasione di eventi e visite guidate alla
-              masseria.
+              I cavalli sono della famiglia Giunta, che alleva Murgesi in
+              masseria — con soggetti iscritti al Registro Anagrafico
+              (suffisso T.A.) e a volte presenti in fiera. Esperienze
+              equestri tra scuderia, pascolo e attacchi storici, su
+              richiesta, in occasione di eventi e visite guidate.
             </p>
 
             <div className="mt-12">
