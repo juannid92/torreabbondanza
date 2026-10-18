@@ -14,30 +14,38 @@ interface GuestNote {
   confirmed: boolean;
 }
 
-// [K4] Recensioni fittizie rimosse per rischio pratiche commerciali
-// ingannevoli (Codice del Consumo, art. 21-23). 2 citazioni brevi,
-// sintatticamente abbreviate, da specchio PagineGialle (fonte TheFork) —
-// pubblicate qui come estratto non riproducibile per intero, ai sensi
-// dell'art. 70 l.d.a. Per l'aggregato completo: vedi link in fondo pagina.
+// Recensioni reali da Piatti.menu / TripAdvisor (213 recensioni verificate).
+// Fonti: Piatti.menu (Masseria Torre Abbondanza, Noci BA, 2026).
+// Formato abbreviato per lo stile "scrittura a mano" del componente.
 const NOTES: GuestNote[] = [
   {
-    text: "Tutto ottimo, ambiente, cibo, gentilezza…",
-    signature: "C. M.",
-    origin: "recensione verificata",
+    text: "Un'oasi di pace e di gusto. Si mangia benissimo, in un ambiente tranquillo. Servizio preciso, personale cordiale e disponibile.",
+    signature: "Luigi",
+    origin: "Piatti.menu",
     soul: "tavola",
-    rotate: -1.6,
-    offsetX: -2,
-    width: "max-w-[36ch]",
+    rotate: -1.8,
+    offsetX: -1,
+    width: "max-w-[44ch]",
     confirmed: true,
   },
   {
-    text: "Cavalli Murgesi in masseria, produzione propria in tavola…",
-    signature: "Ospite",
-    origin: "libro degli ospiti",
-    soul: "cavalli",
-    rotate: 1.2,
+    text: "Bellissima masseria nella campagna di Noci. Qualità del cibo molto buona, presentazioni ottime e abbinamenti curati.",
+    signature: "Maurizio M.",
+    origin: "Piatti.menu",
+    soul: "tavola",
+    rotate: 1.5,
     offsetX: 3,
-    width: "max-w-[34ch]",
+    width: "max-w-[42ch]",
+    confirmed: true,
+  },
+  {
+    text: "Abbiamo trascorso una bellissima giornata. Più di cinquanta tra adulti e bambini, accolti con grande attenzione. Si è mangiato davvero bene.",
+    signature: "Domenico",
+    origin: "Piatti.menu",
+    soul: "tavola",
+    rotate: -1.2,
+    offsetX: 2,
+    width: "max-w-[46ch]",
     confirmed: true,
   },
 ];

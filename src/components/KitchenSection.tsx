@@ -10,7 +10,7 @@ import dolciImg from "@/assets/kitchen-dolci.jpg";
 
 const WA_PHONE = "393384834318";
 const WA_MSG = encodeURIComponent(
-  "Ciao, vorrei informazioni su menù e prezzi per un gruppo di ___ persone. Data orientativa: ___.",
+  "Ciao, vorrei informazioni su menù e prezzi per un gruppo di almeno 20 persone. Data orientativa: ___.",
 );
 const WA_HREF = `https://wa.me/${WA_PHONE}?text=${WA_MSG}`;
 
@@ -206,9 +206,7 @@ export function KitchenSection() {
             <MagneticButton href={WA_HREF} variant="pill" target="_blank" rel="noopener noreferrer">
               Scrivici su WhatsApp →
             </MagneticButton>
-            <p className="text-eyebrow text-ink/55">
-              Risposta in giornata · senza impegno
-            </p>
+            <p className="text-eyebrow text-ink/55">Risposta in giornata · senza impegno</p>
           </div>
         </div>
       </div>
