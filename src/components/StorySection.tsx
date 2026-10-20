@@ -5,7 +5,7 @@ import { StoryPanel, type StoryPanelData } from "./StoryPanel";
 import { observeRevealElements } from "@/lib/scroll-ready";
 import storyOrigini from "@/assets/story-origini.jpg";
 import storyPietra from "@/assets/story-pietra.jpg";
-import storyCavalli from "@/assets/primavera-alessio/alessio-cura.svg";
+import storyCavalli from "@/assets/primavera-alessio/alessio-cura.webp";
 import storyFamiglia from "@/assets/story-famiglia.jpg";
 import storyOggi from "@/assets/story-oggi.jpg";
 
@@ -15,8 +15,8 @@ if (typeof window !== "undefined") {
 
 const PANELS: StoryPanelData[] = [
   {
-    eyebrow: "03 — La Storia",
-    ghost: "MMXXIV",
+    eyebrow: "02 — La Storia",
+    ghost: "MMXXVI",
     title: (
       <>
         Tre secoli di <em className="font-display italic text-terracotta">pietra</em>
@@ -24,8 +24,8 @@ const PANELS: StoryPanelData[] = [
     ),
     body: (
       <>
-        Una storia a due voci: la masseria che accoglie e i cavalli Murgesi che corrono questa terra
-        da sempre.
+        Una storia a due voci: la masseria settecentesca della famiglia Giunta e i cavalli Murgesi
+        che abitano questa terra da sempre.
       </>
     ),
     isOpening: true,
@@ -35,19 +35,20 @@ const PANELS: StoryPanelData[] = [
   {
     eyebrow: "Capitolo I — Le origini",
     ghost: "1700",
-    title: <>Un presidio nella Murgia</>,
+    title: <>La Torre nell&apos;agro di Noci</>,
     body: (
       <>
-        Nel cuore del XVIII secolo, tra gli ulivi e il bianco di Noci, la masseria nasce come
-        presidio rurale: pietra su pietra, alzata per custodire raccolti, bestie e famiglie sotto un
-        unico tetto — in una terra già abitata dai cavalli, la Murgia, culla del cavallo Murgese.
+        Nel cuore del Settecento, tra i boschi cedui, i muretti a secco e il bianco di Noci, la
+        masseria nasce attorno all&apos;antica torre rurale: pietra su pietra, alzata per custodire
+        i raccolti granari, i pascoli e il bestiame nella Murgia dei Trulli, culla storica del
+        cavallo Murgese.
       </>
     ),
     image: {
       src: storyOrigini,
       alt: "Facciata in pietra della masseria settecentesca al tramonto",
     },
-    note: <>Data esatta e legame masseria–allevamento da confermare</>,
+    note: <>XVIII secolo · Agro di Noci · Murgia dei Trulli</>,
     tone: "warm",
   },
   {
@@ -57,7 +58,7 @@ const PANELS: StoryPanelData[] = [
     body: (
       <>
         Archi a tutto sesto, muri a calce che respirano, tetti in terracotta che si scaldano nel
-        pomeriggio: l'architettura rurale pugliese non è decoro, è clima. Il bianco riflette la
+        pomeriggio: l&apos;architettura rurale pugliese non è decoro, è clima. Il bianco riflette la
         luce, la pietra trattiene il fresco.
       </>
     ),
@@ -81,31 +82,33 @@ const PANELS: StoryPanelData[] = [
     ),
     body: (
       <>
-        Manto corvino, antica razza nata proprio in questa terra: il cavallo Murgese è la voce
-        equestre di questa storia. La masseria ne custodisce la tradizione — Sfilata di Attacchi
-        d'Epoca, cavalli Murgesi e muli Martinesi.
+        Manto corvino, antica razza autoctona nata proprio in questa terra: il cavallo Murgese è la
+        voce equestre di questa storia. La famiglia Giunta ne custodisce l&apos;allevamento in
+        masseria e promuove raduni, Sfilate di Attacchi d&apos;Epoca, cavalli Murgesi e muli di
+        Martina Franca.
       </>
     ),
     image: {
       src: storyCavalli,
-      alt: "Illustrazione vettoriale di Alessio che accompagna un cavallo dal manto nero nel prato della masseria",
+      alt: "Fotografia di Alessio che accompagna un cavallo Murgese dal manto nero nel prato della masseria",
     },
-    note: <>Origine della razza e ruolo della masseria nell'allevamento da confermare</>,
+    note: <>Allevamento Fratelli Giunta · Registro Anagrafico (suffisso T.A.)</>,
     tone: "deep",
   },
   {
     eyebrow: "Capitolo IV — La famiglia",
     ghost: "FAMIGLIA",
-    title: <>L'accoglienza come gesto antico</>,
+    title: <>L&apos;accoglienza come gesto antico</>,
     body: (
       <>
-        Da generazioni la conduzione è familiare: si custodiscono insieme{" "}
-        <em>la tavola e la stalla</em>, l'ospitalità e i cavalli come un unico gesto di cura.
-        L'ospite non è cliente — è invitato a una festa che dura da sempre.
+        Guidata dalla famiglia Giunta — con Antonia e i fratelli impegnati tra l&apos;azienda
+        agricola, i pascoli e la cucina a chilometro zero — la masseria custodisce insieme{" "}
+        <em>la tavola e la stalla</em>. L&apos;ospite non è cliente: è invitato a una festa di
+        famiglia che dura da sempre.
       </>
     ),
     image: { src: storyFamiglia, alt: "Tavola conviviale sotto un arco in pietra, candele accese" },
-    note: <>Nomi e generazioni da confermare</>,
+    note: <>Famiglia Giunta · Società Agricola Semplice dei Fratelli Giunta</>,
     tone: "warm",
   },
   {

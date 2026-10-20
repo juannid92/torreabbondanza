@@ -11,14 +11,23 @@ export class SplitText {
     this.el = el;
     this.original = el.textContent ?? "";
     const text = this.original;
+    const isHidden =
+      el.getAttribute("aria-hidden") === "true" || Boolean(el.closest('[aria-hidden="true"]'));
     el.textContent = "";
-    el.setAttribute("aria-label", text);
+
+    if (!isHidden && text.trim()) {
+      const sr = document.createElement("span");
+      sr.className = "sr-only";
+      sr.textContent = text;
+      el.appendChild(sr);
+    }
 
     for (const ch of text) {
       if (ch === " ") {
         const space = document.createElement("span");
         space.textContent = "\u00A0";
         space.style.display = "inline-block";
+        space.setAttribute("aria-hidden", "true");
         el.appendChild(space);
         continue;
       }
@@ -45,27 +54,60 @@ export class SplitText {
 
 /**
  * Split per-parola: avvolge ogni parola in uno <span> inline-block per consentire
- * mask-reveal con `overflow: hidden` sul contenitore.
+ * mask-reveal con `overflow: hidden` sul contenitore, preservando eventuali tag
+ * inline figli (es. `<em class="text-terracotta">`).
  */
 export function splitWords(el: HTMLElement): HTMLSpanElement[] {
   const text = el.textContent ?? "";
-  el.setAttribute("aria-label", text);
+  const isHidden =
+    el.getAttribute("aria-hidden") === "true" || Boolean(el.closest('[aria-hidden="true"]'));
+  const childNodes = Array.from(el.childNodes);
   el.textContent = "";
-  const words: HTMLSpanElement[] = [];
-  const tokens = text.split(/(\s+)/);
-  for (const token of tokens) {
-    if (token === "") continue;
-    if (/^\s+$/.test(token)) {
-      el.appendChild(document.createTextNode(" "));
-      continue;
-    }
-    const span = document.createElement("span");
-    span.textContent = token;
-    span.style.display = "inline-block";
-    span.style.willChange = "transform";
-    span.setAttribute("aria-hidden", "true");
-    el.appendChild(span);
-    words.push(span);
+
+  if (!isHidden && text.trim()) {
+    const sr = document.createElement("span");
+    sr.className = "sr-only";
+    sr.textContent = text;
+    el.appendChild(sr);
   }
+
+  const words: HTMLSpanElement[] = [];
+
+  const appendTokens = (rawText: string, wrapperTemplate?: HTMLElement) => {
+    const tokens = rawText.split(/(\s+)/);
+    for (const token of tokens) {
+      if (token === "") continue;
+      if (/^\s+$/.test(token)) {
+        el.appendChild(document.createTextNode(" "));
+        continue;
+      }
+      const span = document.createElement("span");
+      span.textContent = token;
+      span.style.display = "inline-block";
+      span.style.willChange = "transform";
+      span.setAttribute("aria-hidden", "true");
+
+      if (wrapperTemplate) {
+        const wrapper = wrapperTemplate.cloneNode(false) as HTMLElement;
+        wrapper.setAttribute("aria-hidden", "true");
+        wrapper.appendChild(span);
+        el.appendChild(wrapper);
+      } else {
+        el.appendChild(span);
+      }
+      words.push(span);
+    }
+  };
+
+  for (const node of childNodes) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      appendTokens(node.textContent ?? "");
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      const childEl = node as HTMLElement;
+      if (childEl.classList.contains("sr-only")) continue;
+      appendTokens(childEl.textContent ?? "", childEl);
+    }
+  }
+
   return words;
 }

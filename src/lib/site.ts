@@ -25,7 +25,8 @@ export const BUSINESS = {
     "Masseria del Settecento nel cuore della Murgia di Noci: tavola su prenotazione, cavalli Murgesi ed eventi in Puglia.",
   phone: "+39 338 483 4318",
   phoneTel: "+393384834318",
-  email: "info@torreabbondanza.com",
+  whatsappNumber: "393384834318",
+  whatsappUrl: "https://wa.me/393384834318",
   address: {
     line1: "Strada Vicinale per Massafra / SP 211",
     line2: "Zona E n. 49 — 70015 Noci (BA)",
@@ -40,23 +41,6 @@ export const BUSINESS = {
   // name=Masseria Torre Abbondanza. Geocodificate via Nominatim il 2026-10-17.
   // Usate per JSON-LD `geo` e link mappa.
   geo: { lat: 40.730579, lon: 17.1307539 },
-  // Orari di apertura del servizio ristorante, desunti da PagineGialle +
-  // TripAdvisor (servizio pranzo e cena, tutti i giorni). Da confermare
-  // con la struttura prima di campagne marketing che citino gli orari.
-  openingHours: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      opens: "13:00",
-      closes: "15:00",
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      opens: "20:00",
-      closes: "22:00",
-    },
-  ],
   reviews: {
     tripadvisor: {
       url: "https://www.tripadvisor.it/Restaurant_Review-g1057217-d5960944-Reviews-Masseria_Torre_Abbondanza-Noci_Province_of_Bari_Puglia.html",
@@ -87,12 +71,8 @@ export function absoluteUrl(path: string): string {
 /**
  * Dati strutturati schema.org per la scheda attività.
  *
- * Includono: anagrafica completa, coordinate GPS, orari di apertura
- * del servizio ristorante, aggregato valutazioni TripAdvisor + TheFork.
- * Tutti i dati sono desunti da fonti pubbliche (registroimprese.it,
- * PagineGialle, TripAdvisor, TheFork). Restano da confermare con la
- * proprietà: coordinate GPS esatte, eventuali variazioni stagionali
- * degli orari, e variazioni del voto medio.
+ * Includono: anagrafica completa, coordinate GPS e valutazione aggregata.
+ * La cucina e le esperienze aprono su prenotazione (contatto telefonico e WhatsApp).
  */
 export function buildRestaurantJsonLd(imageUrl: string) {
   return {
@@ -105,7 +85,6 @@ export function buildRestaurantJsonLd(imageUrl: string) {
     description: BUSINESS.description,
     url: SITE_URL,
     telephone: BUSINESS.phone,
-    email: BUSINESS.email,
     image: [imageUrl],
     address: {
       "@type": "PostalAddress",
@@ -120,26 +99,14 @@ export function buildRestaurantJsonLd(imageUrl: string) {
       latitude: BUSINESS.geo.lat,
       longitude: BUSINESS.geo.lon,
     },
-    openingHoursSpecification: BUSINESS.openingHours,
     servesCuisine: "Pugliese",
     acceptsReservations: true,
-    aggregateRating: [
-      {
-        "@type": "AggregateRating",
-        ratingValue: BUSINESS.reviews.tripadvisor.ratingValue,
-        reviewCount: BUSINESS.reviews.tripadvisor.reviewCount,
-        url: BUSINESS.reviews.tripadvisor.url,
-        sourceOrganization: "TripAdvisor",
-      },
-      {
-        "@type": "AggregateRating",
-        ratingValue: BUSINESS.reviews.thefork.ratingValue,
-        reviewCount: BUSINESS.reviews.thefork.reviewCount,
-        bestRating: 10,
-        url: BUSINESS.reviews.thefork.url,
-        sourceOrganization: "TheFork",
-      },
-    ],
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: BUSINESS.reviews.tripadvisor.ratingValue,
+      reviewCount: BUSINESS.reviews.tripadvisor.reviewCount,
+      bestRating: 5,
+    },
     sameAs: [
       BUSINESS.instagram.url,
       BUSINESS.facebook.url,

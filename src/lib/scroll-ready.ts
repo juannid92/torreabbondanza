@@ -122,19 +122,20 @@ export function initScrollReady(): void {
       imgs.map((img) => {
         if (img.complete && img.naturalWidth > 0) return Promise.resolve();
         // prova decode() con fallback su onload
-        return img
-          .decode?.()
-          .catch(() => {
+        return (
+          img.decode?.().catch(() => {
             return new Promise<void>((res) => {
               const done = () => res();
               img.addEventListener("load", done, { once: true });
               img.addEventListener("error", done, { once: true });
             });
-          }) ?? new Promise<void>((res) => {
+          }) ??
+          new Promise<void>((res) => {
             const done = () => res();
             img.addEventListener("load", done, { once: true });
             img.addEventListener("error", done, { once: true });
-          });
+          })
+        );
       }),
     );
   };

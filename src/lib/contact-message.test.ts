@@ -3,7 +3,6 @@ import { buildWhatsAppUrl, type ContactFormData } from "./contact-message";
 
 const base: ContactFormData = {
   name: "Giulia Rossi",
-  email: "giulia@example.com",
   phone: "+39 333 1234567",
   kind: "matrimonio",
   date: "2026-06-15",
@@ -22,12 +21,12 @@ describe("buildWhatsAppUrl", () => {
     const url = buildWhatsAppUrl("+393384834318", base);
     const body = decodeURIComponent(url.split("text=")[1]);
     expect(body).toContain("Giulia Rossi");
-    expect(body).toContain("giulia@example.com");
     expect(body).toContain("+39 333 1234567");
     expect(body).toContain("Matrimonio");
     expect(body).toContain("2026-06-15");
     expect(body).toContain("80");
     expect(body).toContain("Vorremmo un menù a base di pesce.");
+    expect(body).not.toContain("Email:");
   });
 
   it("keeps the message under 2000 chars", () => {

@@ -8,18 +8,18 @@ import { MenuSection } from "@/components/MenuSection";
 import { HorsesSection } from "@/components/HorsesSection";
 import { EventsSection } from "@/components/EventsSection";
 import { SeasonsSection } from "@/components/SeasonsSection";
-import { GallerySection } from "@/components/GallerySection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 import heroImage from "@/assets/hero-masseria.jpg";
-import { absoluteUrl, buildRestaurantJsonLd } from "@/lib/site";
+import { SITE_URL, absoluteUrl, buildRestaurantJsonLd } from "@/lib/site";
 
 // I meta tag comuni sono definiti una sola volta in __root.tsx.
-// Qui resta solo ciò che è specifico della home: i dati strutturati.
+// Qui resta solo ciò che è specifico della home: canonical e dati strutturati.
 export const Route = createFileRoute("/")({
   head: () => ({
+    links: [{ rel: "canonical", href: SITE_URL }],
     scripts: [
       {
         type: "application/ld+json",
@@ -43,7 +43,6 @@ function Index() {
       <HorsesSection />
       <EventsSection />
       <SeasonsSection />
-      <GallerySection />
       <TestimonialsSection />
       <VisitSection />
       <SiteFooter />

@@ -76,14 +76,18 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
             {/* Vignetta arco */}
             {image ? (
               <div className="w-full max-w-[360px] md:max-w-[420px] lg:max-w-[480px]">
-                <ArchVignette src={image.src} alt={image.alt} eager={index <= 1} tone={tone} />
+                <ArchVignette src={image.src} alt={image.alt} eager={false} tone={tone} />
               </div>
             ) : null}
 
             {/* Colonna testo */}
             <div className="flex w-full max-w-[520px] flex-col gap-5">
               {eyebrow ? (
-                <span data-panel-eyebrow className={`text-eyebrow ${eyebrowColor}`} style={tone === "deep" ? { color: "var(--murgese)" } : undefined}>
+                <span
+                  data-panel-eyebrow
+                  className={`text-eyebrow ${eyebrowColor}`}
+                  style={tone === "deep" ? { color: "var(--murgese)" } : undefined}
+                >
                   {eyebrow}
                 </span>
               ) : null}
@@ -105,10 +109,12 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
               >
                 {body}
               </p>
-              {note ? (
-                <p className="text-eyebrow text-ink/50">{note}</p>
+              {note ? <p className="text-eyebrow text-ink/50">{note}</p> : null}
+              {cta ? (
+                <div data-panel-cta className="pt-2">
+                  {cta}
+                </div>
               ) : null}
-              {cta ? <div data-panel-cta className="pt-2">{cta}</div> : null}
             </div>
           </>
         )}

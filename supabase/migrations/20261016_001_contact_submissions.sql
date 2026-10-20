@@ -5,7 +5,7 @@ create table public.contact_submissions (
 
   -- form fields
   name text not null,
-  email text not null,
+  email text not null default '',
   phone text not null,
   kind text not null,           -- OCCASIONS value (matrimonio, cerimonia, ...)
   date date,
@@ -15,16 +15,14 @@ create table public.contact_submissions (
   -- routing metadata
   ip inet,
   user_agent text,
-  honeypot boolean not null default false,  -- true => probably bot, never emailed
-  source text not null default 'web',      -- future-proof for 'whatsapp', 'phone', ...
+  honeypot boolean not null default false,
+  source text not null default 'whatsapp',
 
-  -- delivery flags (server function updates these)
-  whatsapp_opened boolean not null default false,
+  -- delivery flags
+  whatsapp_opened boolean not null default true,
   email_sent boolean not null default false,
   email_error text,
 
-  constraint contact_submissions_email_format
-    check (email ~* '^[^@\s]+@[^@\s]+\.[^@\s]+$'),
   constraint contact_submissions_kind_nonempty
     check (length(kind) > 0)
 );

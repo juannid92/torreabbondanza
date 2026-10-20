@@ -387,7 +387,7 @@ export function EventsSection() {
             data-opener-img
             src={dayImg}
             alt="Cortile della masseria all'ora dorata, lunga tavola di legno in attesa sotto gli ulivi"
-            loading="eager"
+            loading="lazy"
             decoding="async"
             width={1920}
             height={1280}
@@ -533,7 +533,7 @@ export function EventsSection() {
               data-day-layer
               src={dayImg}
               alt=""
-              loading="eager"
+              loading="lazy"
               decoding="async"
               width={1920}
               height={1280}

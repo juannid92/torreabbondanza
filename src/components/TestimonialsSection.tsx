@@ -194,7 +194,6 @@ function GuestPage({ note, index }: { note: GuestNote; index: number }) {
           {note.origin}
         </span>
       </figcaption>
-      {!note.confirmed && <span className="sr-only">{/* DA CONFERMARE */}</span>}
     </figure>
   );
 }
@@ -252,7 +251,7 @@ export function TestimonialsSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-28 md:px-12 md:py-44">
         {/* Eyebrow + titolo */}
-        <p className="text-eyebrow mb-6 text-ink/70">10 — Il libro degli ospiti</p>
+        <p className="text-eyebrow mb-6 text-ink/70">09 — Il libro degli ospiti</p>
         <h2
           id="guestbook-title"
           className="mb-20 max-w-[18ch]"
@@ -267,49 +266,24 @@ export function TestimonialsSection() {
           Le voci di chi è stato qui
         </h2>
 
-        {/* [K4] Flusso pagine: nascosto finché NONTS è vuoto.
-            Quando avremo recensioni reali autorizzate, ripristinare il layout
-            asimmetrico a 7 colonne. Lo schema GuestNote è già pronto. */}
-        {NOTES.length > 0 ? (
-          <div className="relative grid grid-cols-1 gap-y-20 md:grid-cols-12 md:gap-y-28">
-            {NOTES.map((n, i) => {
-              const layout = [
-                "md:col-start-1 md:col-span-6",
-                "md:col-start-8 md:col-span-5",
-                "md:col-start-2 md:col-span-6",
-                "md:col-start-7 md:col-span-6",
-                "md:col-start-1 md:col-span-5",
-                "md:col-start-8 md:col-span-4",
-                "md:col-start-3 md:col-span-7",
-              ];
-              return (
-                <div key={i} className={layout[i] ?? "md:col-span-6"}>
-                  <GuestPage note={n} index={i} />
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="relative mx-auto max-w-2xl rounded-sm border border-ink/15 bg-ivory/40 px-8 py-12 text-center md:px-12 md:py-16">
-            <p
-              className="text-ink/75"
-              style={{
-                fontFamily: '"Caveat", "Segoe Script", cursive',
-                fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)",
-                lineHeight: 1.2,
-              }}
-            >
-              Il libro degli ospiti
-            </p>
-            <p className="mt-4 font-sans text-sm leading-relaxed text-ink/65">
-              [DA CONFERMARE: recensioni reali dei clienti autorizzate alla pubblicazione — Codice
-              del Consumo, art. 21-23]
-            </p>
-            <p className="mt-6 font-sans text-xs uppercase tracking-[0.22em] text-ink/45">
-              In arrivo
-            </p>
-          </div>
-        )}
+        <div className="relative grid grid-cols-1 gap-y-20 md:grid-cols-12 md:gap-y-28">
+          {NOTES.map((n, i) => {
+            const layout = [
+              "md:col-start-1 md:col-span-6",
+              "md:col-start-8 md:col-span-5",
+              "md:col-start-2 md:col-span-6",
+              "md:col-start-7 md:col-span-6",
+              "md:col-start-1 md:col-span-5",
+              "md:col-start-8 md:col-span-4",
+              "md:col-start-3 md:col-span-7",
+            ];
+            return (
+              <div key={i} className={layout[i] ?? "md:col-span-6"}>
+                <GuestPage note={n} index={i} />
+              </div>
+            );
+          })}
+        </div>
 
         {/* Sigillo qualitativo + piattaforme (zero numeri) */}
         <div className="mt-32 border-t border-ink/15 pt-12 text-center">

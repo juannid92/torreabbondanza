@@ -2,29 +2,74 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
-import { ParallaxLayer } from "./ParallaxLayer";
 import antipastiImg from "@/assets/kitchen-antipasti.jpg";
 import primiImg from "@/assets/kitchen-primi.jpg";
 import secondiImg from "@/assets/kitchen-secondi.jpg";
 import dolciImg from "@/assets/kitchen-dolci.jpg";
 
 const WA_PHONE = "393384834318";
+const TEL_HREF = "tel:+393384834318";
 const WA_MSG = encodeURIComponent(
   "Ciao, vorrei informazioni su menù e prezzi per un gruppo di almeno 20 persone. Data orientativa: ___.",
 );
 const WA_HREF = `https://wa.me/${WA_PHONE}?text=${WA_MSG}`;
 
-// Foto evocative della tavola: riuso le 4 immagini di portata in un layout
-// "mood board" 2x2 invece di sequenza alternata. Niente prezzi, niente elenco
-// piatti, niente caption a hover. La sezione rimanda a wa.me.
-const MOOD: { src: string; alt: string }[] = [
+interface CourseItem {
+  numeral: string;
+  course: string;
+  oversizedWord: string;
+  dishTitle: string;
+  description: string;
+  src: string;
+  alt: string;
+  align: "left" | "right";
+}
+
+const COURSES: CourseItem[] = [
   {
+    numeral: "I",
+    course: "Antipasti di terra",
+    oversizedWord: "ANTIPASTI",
+    dishTitle: "Carrellata della tradizione pugliese",
+    description:
+      "Olive fritte, salumi e formaggi locali, parmigiana, focaccia calda, purè di fave bianche e peperoni fritti. Una carrellata generosa che apre il pasto come un racconto del territorio.",
     src: antipastiImg,
     alt: "Antipasti pugliesi: tagliere di focaccia, salumi, formaggi e olive",
+    align: "right",
   },
-  { src: primiImg, alt: "Primo piatto: nido di linguine con ragù di carne e funghi" },
-  { src: secondiImg, alt: "Secondo: brasato di carne al vino su purè con timo fresco" },
-  { src: dolciImg, alt: "Dolce della casa: fetta di cheesecake all'amaretto" },
+  {
+    numeral: "II",
+    course: "Primi della casa",
+    oversizedWord: "PRIMI",
+    dishTitle: "Nido di linguine, carne e funghi",
+    description:
+      "Primi di terra e di mare nella tradizione pugliese. Il piatto simbolo della masseria: il nido di linguine con ragù di carne e funghi cardoncelli della Murgia.",
+    src: primiImg,
+    alt: "Primo piatto: nido di linguine con ragù di carne e funghi",
+    align: "left",
+  },
+  {
+    numeral: "III",
+    course: "Secondi",
+    oversizedWord: "SECONDI",
+    dishTitle: "Brasato di carne al vino",
+    description:
+      "Carni selezionate della tradizione, cotture lente al vino rosso pugliese e profumi di erbe spontanee. Una memoria di campagna che torna in tavola.",
+    src: secondiImg,
+    alt: "Secondo: brasato di carne al vino su purè con timo fresco",
+    align: "right",
+  },
+  {
+    numeral: "IV",
+    course: "Dolci fatti a mano",
+    oversizedWord: "DOLCI",
+    dishTitle: "Cheesecake all'amaretto",
+    description:
+      "Dolci della casa preparati artigianalmente per ogni ricorrenza. La cheesecake all'amaretto chiude il convivio con equilibrio e dolcezza.",
+    src: dolciImg,
+    alt: "Dolce della casa: fetta di cheesecake all'amaretto",
+    align: "left",
+  },
 ];
 
 const SERVICE_TAGS = [
@@ -36,7 +81,6 @@ const SERVICE_TAGS = [
 
 export function KitchenSection() {
   const rootRef = useRef<HTMLElement>(null);
-  const moodRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -62,26 +106,25 @@ export function KitchenSection() {
         },
       });
 
-      // Mood board: reveal + parallax leggero delle 4 foto
-      const tiles = moodRef.current?.querySelectorAll<HTMLElement>("[data-mood-tile]");
-      if (tiles && tiles.length) {
-        gsap.set(tiles, { opacity: 0, y: 60, scale: 0.96 });
-        ScrollTrigger.create({
-          trigger: moodRef.current,
-          start: "top 80%",
-          once: true,
-          onEnter: () => {
-            gsap.to(tiles, {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 1,
-              ease: "power3.out",
-              stagger: 0.12,
-            });
+      // Reveal fluido per ciascuna delle 4 portate (Antipasti, Primi, Secondi, Dolci)
+      const rows = root.querySelectorAll<HTMLElement>("[data-course-row]");
+      rows.forEach((row) => {
+        gsap.fromTo(
+          row,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: row,
+              start: "top 82%",
+              once: true,
+            },
           },
-        });
-      }
+        );
+      });
     }, root);
 
     return () => ctx.revert();
@@ -156,30 +199,72 @@ export function KitchenSection() {
         {/* Filetto */}
         <div aria-hidden className="mt-16 h-px w-full bg-ink/15 md:mt-24" />
 
-        {/* Mood board 2x2: foto evocative della tavola, niente prezzi */}
+        {/* Sequenza completa delle 4 portate: I Antipasti, II Primi, III Secondi, IV Dolci */}
         <div
-          ref={moodRef}
-          className="mt-16 grid grid-cols-2 gap-3 md:mt-24 md:grid-cols-4 md:gap-4"
-          aria-label="La tavola della masseria"
+          className="mt-16 divide-y divide-ink/10 md:mt-24"
+          aria-label="Le quattro portate della masseria"
         >
-          {MOOD.map((m, i) => (
-            <ParallaxLayer key={i} speed={i % 2 === 0 ? -0.15 : 0.15} zIndex={1}>
-              <figure
-                data-mood-tile
-                className="relative overflow-hidden rounded-sm shadow-soft"
-                style={{ aspectRatio: "3 / 4" }}
+          {COURSES.map((item) => {
+            const isLeft = item.align === "left";
+            return (
+              <article
+                key={item.numeral}
+                data-course-row
+                className="group grid grid-cols-1 items-center gap-8 py-12 md:grid-cols-12 md:gap-12 md:py-20"
               >
-                <img
-                  src={m.src}
-                  alt={m.alt}
-                  loading="lazy"
-                  width={768}
-                  height={1024}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              </figure>
-            </ParallaxLayer>
-          ))}
+                {/* Immagine portata */}
+                <figure
+                  className={`relative overflow-hidden rounded-sm shadow-soft md:row-start-1 ${
+                    isLeft ? "md:col-start-1 md:col-end-8" : "md:col-start-6 md:col-end-13"
+                  }`}
+                  style={{ aspectRatio: "4 / 3" }}
+                >
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    loading="lazy"
+                    width={1024}
+                    height={768}
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  />
+                  <figcaption className="absolute bottom-4 left-4 rounded-sm bg-ivory/92 px-3.5 py-1.5 text-eyebrow text-ink shadow-sm backdrop-blur-sm md:bottom-6 md:left-6">
+                    {item.dishTitle}
+                  </figcaption>
+                </figure>
+
+                {/* Testo portata */}
+                <div
+                  className={`flex flex-col gap-5 md:row-start-1 ${
+                    isLeft
+                      ? "md:col-start-8 md:col-end-13 md:pl-4"
+                      : "md:col-start-1 md:col-end-6 md:pr-4"
+                  }`}
+                >
+                  <div className="inline-flex items-center gap-3 text-eyebrow text-terracotta">
+                    <span className="font-display text-base italic">{item.numeral}</span>
+                    <span aria-hidden className="h-px w-8 bg-terracotta/50" />
+                    <span>{item.course}</span>
+                  </div>
+
+                  <h3
+                    className="font-display font-semibold leading-[0.92] text-ink transition-colors duration-500 group-hover:text-terracotta"
+                    style={{
+                      fontSize: "clamp(2.2rem, 5.5vw, 4.2rem)",
+                      letterSpacing: "-0.03em",
+                    }}
+                  >
+                    {item.oversizedWord}
+                  </h3>
+
+                  <p className="font-display text-xl italic text-ink/90">{item.dishTitle}</p>
+
+                  <p className="max-w-md font-sans text-base leading-relaxed text-ink/80 md:text-lg">
+                    {item.description}
+                  </p>
+                </div>
+              </article>
+            );
+          })}
         </div>
 
         {/* Messaggio + CTA: menù e prezzi su richiesta per gruppi ≥20 */}
@@ -203,9 +288,19 @@ export function KitchenSection() {
           </div>
 
           <div className="flex flex-col items-start gap-4 md:col-span-5 md:items-end md:justify-end">
-            <MagneticButton href={WA_HREF} variant="pill" target="_blank" rel="noopener noreferrer">
-              Scrivici su WhatsApp →
-            </MagneticButton>
+            <div className="flex flex-wrap items-center gap-3 md:justify-end">
+              <MagneticButton
+                href={WA_HREF}
+                variant="pill"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Scrivici su WhatsApp →
+              </MagneticButton>
+              <MagneticButton href={TEL_HREF} variant="link">
+                Oppure chiama +39 338 483 4318
+              </MagneticButton>
+            </div>
             <p className="text-eyebrow text-ink/55">Risposta in giornata · senza impegno</p>
           </div>
         </div>

@@ -1,6 +1,5 @@
 export type ContactFormData = {
   name: string;
-  email: string;
   phone: string;
   kind: string;
   date: string;
@@ -12,13 +11,13 @@ export type ContactFormData = {
 // Mirrors OCCASIONS in src/components/VisitSection.tsx — kept here so the
 // builder is self-contained and testable without pulling in the form.
 const KIND_LABELS: Record<string, string> = {
-  "matrimonio": "Matrimonio",
-  "cerimonia": "Cerimonia",
-  "battesimo": "Battesimo",
-  "compleanno": "Compleanno",
+  matrimonio: "Matrimonio",
+  cerimonia: "Cerimonia",
+  battesimo: "Battesimo",
+  compleanno: "Compleanno",
   "festa-privata": "Festa privata",
   "esperienza-equestre": "Esperienza equestre",
-  "altro": "Altro",
+  altro: "Altro",
 };
 
 const MAX_MESSAGE_CHARS = 800;
@@ -63,7 +62,6 @@ export function buildWhatsAppUrl(phone: string, data: ContactFormData): string {
   }
 
   lines.push("Contatti:");
-  lines.push(`Email: ${data.email}`);
   lines.push(`Telefono: ${data.phone}`);
 
   const body = lines.join("\n");

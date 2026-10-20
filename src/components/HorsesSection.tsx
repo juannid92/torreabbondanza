@@ -4,11 +4,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useReducedMotion } from "framer-motion";
 import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
-import apparitionImg from "@/assets/puledri-fattrici/cavallo-penombra.svg";
+import apparitionImg from "@/assets/puledri-fattrici/cavallo-penombra.webp";
 import gallopImg from "@/assets/horse-gallop.jpg";
 import skyImg from "@/assets/horses-sky.jpg";
-import hillsImg from "@/assets/horses-hills.png";
-import grazingImg from "@/assets/horses-grazing.png";
+import hillsImg from "@/assets/horses-hills.webp";
+import grazingImg from "@/assets/horses-grazing.webp";
 import traditionImg from "@/assets/horses-tradition.jpg";
 
 const MICRO_LABELS = [

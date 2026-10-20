@@ -7,14 +7,14 @@ import winterBg from "@/assets/season-winter.jpg";
 import springBg from "@/assets/season-spring.jpg";
 import summerBg from "@/assets/season-may.jpg";
 import autumnBg from "@/assets/season-autumn.jpg";
-import expSpringRide from "@/assets/primavera-alessio/primavera-esperienza.svg";
+import expSpringRide from "@/assets/primavera-alessio/primavera-esperienza.webp";
 import expSummerAttacchi from "@/assets/season-exp-summer-attacchi.jpg";
 import expAutumnOlives from "@/assets/season-exp-autumn-olives.jpg";
 import expWinterHorses from "@/assets/season-exp-winter-horses.jpg";
 import expSummerNight from "@/assets/events-space-night.jpg";
 import expAutumnTable from "@/assets/kitchen-antipasti.jpg";
 import expWinterCamino from "@/assets/kitchen-primi.jpg";
-import expSpringPicnic from "@/assets/events-carriage.jpg";
+import expSpringPicnic from "@/assets/events-ceremony.jpg";
 
 type SeasonKey = "spring" | "summer" | "autumn" | "winter";
 type Soul = "equestre" | "tavola";

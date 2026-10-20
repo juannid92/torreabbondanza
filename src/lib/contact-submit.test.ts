@@ -21,7 +21,6 @@ import { validateContactInput } from "./contact-submit.functions.server";
 describe("validateContactInput", () => {
   const ok = {
     name: "Giulia Rossi",
-    email: "giulia@example.com",
     phone: "+39 333 1234567",
     kind: "matrimonio",
     message: "Tutto bene.",
@@ -37,8 +36,8 @@ describe("validateContactInput", () => {
     expect(r.ok).toBe(false);
   });
 
-  it("rejects malformed email", () => {
-    const r = validateContactInput({ ...ok, email: "not-an-email" });
+  it("rejects invalid phone", () => {
+    const r = validateContactInput({ ...ok, phone: "123" });
     expect(r.ok).toBe(false);
   });
 

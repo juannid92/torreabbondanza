@@ -5,17 +5,18 @@ import { ParallaxLayer } from "./ParallaxLayer";
 import { FloatingDatum } from "./FloatingDatum";
 import { StylizedMap } from "./StylizedMap";
 import { observeRevealElements } from "@/lib/scroll-ready";
+import { BUSINESS } from "@/lib/site";
 import skyImg from "@/assets/place-sky.jpg";
-import hillsImg from "@/assets/place-hills.png";
-import olivesImg from "@/assets/place-olives.png";
-import masseriaImg from "@/assets/place-masseria.png";
-import horsesImg from "@/assets/place-horses.png";
+import hillsImg from "@/assets/place-hills.webp";
+import olivesImg from "@/assets/place-olives.webp";
+import masseriaImg from "@/assets/place-masseria.webp";
+import horsesImg from "@/assets/place-horses.webp";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const MAP_URL = "https://www.google.com/maps/search/?api=1&query=40.728664,17.132612";
+const MAP_URL = `https://www.google.com/maps/search/?api=1&query=${BUSINESS.geo.lat},${BUSINESS.geo.lon}`;
 
 export function PlaceSection() {
   const sceneRef = useRef<HTMLDivElement | null>(null);
@@ -161,7 +162,6 @@ export function PlaceSection() {
         </ParallaxLayer>
 
         {/* L3.5 Cavalli Murgesi al pascolo — piano intermedio tra muretti e masseria */}
-        {/* presenza reale di cavalli al pascolo presso la masseria: DA CONFERMARE */}
         <ParallaxLayer speed={-0.15} scaleBoost={0.06} zIndex={4}>
           <img
             src={horsesImg}
@@ -277,7 +277,7 @@ export function PlaceSection() {
               className="mt-8 grid grid-cols-1 gap-2 md:hidden"
             >
               {[
-                { t: "40.72° N — 17.13° E", deep: false },
+                { t: "40.73° N — 17.13° E", deep: false },
                 { t: "Murgia dei Trulli · altopiano", deep: false },
                 { t: "Noci (BA) · Puglia", deep: false },
                 { t: "Terra del cavallo Murgese", deep: true },
@@ -302,7 +302,7 @@ export function PlaceSection() {
         {/* FloatingDatum desktop — sparsi e asimmetrici */}
         <div className="pointer-events-none absolute inset-0 z-25 hidden md:block">
           <FloatingDatum className="left-[6%] top-[18%]" delay={0.4}>
-            40.72° N — 17.13° E
+            40.73° N — 17.13° E
           </FloatingDatum>
           <FloatingDatum className="right-[8%] top-[24%]" delay={0.6} amplitude={8} duration={7}>
             Murgia dei Trulli · altopiano
@@ -423,7 +423,7 @@ export function PlaceSection() {
               href={MAP_URL}
               target="_blank"
               rel="noreferrer noopener"
-              aria-label="Apri la posizione su Google Maps in una nuova scheda"
+              aria-label="Apri in mappa su Google Maps"
               className="group inline-flex w-fit items-center gap-3 border-b border-ink/30 pb-1 text-eyebrow text-ink transition-colors hover:border-terracotta hover:text-terracotta"
             >
               Apri in mappa

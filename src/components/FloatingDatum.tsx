@@ -38,9 +38,7 @@ export function FloatingDatum({
         animate={{ y: [0, -amplitude, 0] }}
         transition={{ duration, repeat: Infinity, ease: "easeInOut", delay }}
       >
-        {withRule ? (
-          <span aria-hidden className="block h-px w-6 bg-ink/40" />
-        ) : null}
+        {withRule ? <span aria-hidden className="block h-px w-6 bg-ink/40" /> : null}
         <span className="whitespace-nowrap">{children}</span>
       </motion.div>
     </motion.div>

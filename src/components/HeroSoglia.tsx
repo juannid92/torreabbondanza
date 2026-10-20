@@ -21,6 +21,9 @@ const MARQUEE_ITEMS = [
   "MURGIA · NOCI",
 ];
 
+// URL diretto del video sul CDN di Lovable (funziona anche su localhost e fuori da *.lovable.app)
+const LOVABLE_CDN_VIDEO_URL = `https://id-preview--${sogliaVideoAsset.project_id}.lovable.app${sogliaVideoAsset.url}`;
+
 /**
  * Hero "La Soglia delle Due Anime" — dittico di archi gemelli.
  * Arco A (sx) = LA TAVOLA · Arco B (dx) = I CAVALLI.
@@ -55,23 +58,23 @@ export function HeroSoglia() {
           clipPath: "inset(0%)",
         });
         if (poster) gsap.set(poster, { opacity: 1, scale: 1 });
-        if (video) gsap.set(video, { opacity: 0 });
+        if (video) {
+          gsap.set(video, { opacity: 1, scale: 1 });
+          video.play().catch(() => {});
+        }
         return;
       }
 
-      // === Media full-bleed: foto (poster) → video con crossfade ===
+      // === Media full-bleed: foto (poster) → video immediato ===
       if (poster) {
         gsap.fromTo(poster, { scale: 1.04 }, { scale: 1.0, duration: 1.5, ease: "power3.out" });
       }
       if (video) {
-        gsap.set(video, { opacity: 0, scale: 1.02, transformOrigin: "center center" });
-        gsap.delayedCall(1.5, () => {
-          video.play().catch(() => {
-            /* autoplay bloccato: resta la foto */
-          });
+        gsap.set(video, { opacity: 1, scale: 1.02, transformOrigin: "center center" });
+        video.play().catch(() => {
+          /* autoplay bloccato: resta il poster */
         });
-        gsap.to(video, { opacity: 1, duration: 0.8, ease: "power2.out", delay: 1.6 });
-        gsap.to(video, { scale: 1.0, duration: 1.6, ease: "power3.out", delay: 1.6 });
+        gsap.to(video, { scale: 1.0, duration: 1.6, ease: "power3.out", delay: 0.2 });
         // Ken Burns continuo sul video
         gsap.to(video, {
           scale: 1.05,
@@ -79,7 +82,7 @@ export function HeroSoglia() {
           ease: "sine.inOut",
           yoyo: true,
           repeat: -1,
-          delay: 3.5,
+          delay: 2.0,
         });
       }
 
@@ -169,7 +172,6 @@ export function HeroSoglia() {
         />
         <video
           ref={videoRef}
-          src={sogliaVideoAsset.url}
           poster={sogliaImg}
           muted
           loop
@@ -177,9 +179,14 @@ export function HeroSoglia() {
           autoPlay
           preload="auto"
           aria-hidden
+          onCanPlay={(e) => {
+            e.currentTarget.play().catch(() => {});
+          }}
           className="absolute inset-0 h-full w-full object-cover will-change-transform"
-          style={{ opacity: 0 }}
-        />
+        >
+          <source src={LOVABLE_CDN_VIDEO_URL} type="video/mp4" />
+          <source src={sogliaVideoAsset.url} type="video/mp4" />
+        </video>
       </div>
 
       {/* === Layer 1 (z-[1]): Overlay caldo per leggibilità === */}
@@ -239,7 +246,7 @@ export function HeroSoglia() {
         data-meta
         className="absolute right-6 top-6 z-40 text-eyebrow text-ink/70 md:right-10 md:top-8"
       >
-        40.72° N — 17.13° E
+        40.73° N — 17.13° E
       </div>
 
       {/* === Layer 10: ABBONDANZA back — watermark sopra il video === */}
@@ -323,7 +330,6 @@ export function HeroSoglia() {
             <MagneticButton
               variant="pill-solid"
               href="#eventi"
-              ariaLabel="Tavola, eventi e cerimonie"
               className="w-full sm:w-auto justify-center"
             >
               Tavola &amp; Cerimonie
@@ -333,7 +339,6 @@ export function HeroSoglia() {
             <MagneticButton
               variant="pill-murgese"
               href="#cavalli"
-              ariaLabel="Allevamento e attività con i cavalli Murgesi"
               className="w-full sm:w-auto justify-center"
             >
               I Cavalli Murgesi
@@ -342,8 +347,7 @@ export function HeroSoglia() {
         </div>
         <div className="-mt-1">
           <div data-cta>
-            {/* [K1] #prenota non esiste; il bottone porta al form di contatto (#contatti) */}
-            <MagneticButton variant="link" href="#contatti" ariaLabel="Prenota un tavolo">
+            <MagneticButton variant="link" href="#contatti">
               Prenota un tavolo
             </MagneticButton>
           </div>

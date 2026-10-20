@@ -43,10 +43,7 @@ export function KineticMarquee({ items, separator = "✦", duration = 40 }: Kine
   );
 
   return (
-    <div
-      className="relative w-full overflow-hidden border-y border-ink/15 py-4"
-      aria-hidden
-    >
+    <div className="relative w-full overflow-hidden border-y border-ink/15 py-4" aria-hidden>
       <div ref={trackRef} className="flex w-max will-change-transform">
         {row}
         {row}

@@ -5,6 +5,7 @@
 **Goal:** Replace the mock `OccasionForm` in `VisitSection.tsx` with a real submission flow that opens WhatsApp with a pre-filled message, persists the lead in Supabase, sends a confirmation email to the customer, and rate-limits by IP — without breaking the existing TanStack Start SSR / Lovable Cloudflare deployment.
 
 **Architecture:** Three independent paths activated by a single `onSubmit`:
+
 1. **WhatsApp (primary UX)** — build a `wa.me` deep link from the form data and open it in a new tab via `window.open`. No backend round-trip required for the user's primary action.
 2. **Supabase persistence (lead capture)** — `POST` to a TanStack Start server function `submitContact`, which uses the service-role Supabase client to insert a row into `contact_submissions`. The `service_role` key bypasses RLS; we still validate input server-side.
 3. **Email auto-reply** — sent from the same server function via Resend HTTP API (key in Cloudflare env, never exposed client-side). A 5xx from Resend must NOT block the Supabase insert or the WhatsApp open.
@@ -14,6 +15,7 @@ Rate limiting uses a Cloudflare KV namespace (binding added to the Nitro `wrangl
 **Tech Stack:** TanStack Start (server functions via `createServerFn`), Supabase (service-role), Cloudflare Workers KV, Resend HTTP API, Zod (already in deps), existing React 19 / Framer Motion form chrome.
 
 **Spec:** The diagnosis report in this session (block "Tecnico / UX", bug 1 and 3) plus the user's choices:
+
 - WhatsApp as primary delivery channel (`wa.me/+393384834318`)
 - Save copy in Supabase
 - Auto-reply email to customer
@@ -47,11 +49,13 @@ The five most likely silent failures this plan does not explicitly test for:
 ## Task 0: Test setup + folder scaffolding
 
 **Files:**
+
 - Modify: `package.json` (add Vitest dev dep, add `test` script)
 - Modify: `supabase/config.toml` (declare `migrations_path`)
 - Create: `supabase/migrations/.gitkeep` (empty marker so the folder lands in git)
 
 **Interfaces:**
+
 - Consumes: nothing
 - Produces: a working `bun test` command and a `supabase/migrations/` directory.
 
@@ -62,15 +66,18 @@ This task is the prerequisite for every other task. The repo currently has no te
 Run: `bun add -d vitest@^2.1.8`
 
 This command:
+
 - adds `"vitest": "^2.1.8"` to `devDependencies` in `package.json`,
 - updates `bun.lock`,
 - creates a `node_modules/.bin/vitest` symlink (Bun handles this automatically; do not commit `node_modules`).
 
 Then manually add a `test` script to `package.json` (Bun does not have an `add-script` flag):
+
 ```json
 "test": "vitest run",
 "test:watch": "vitest"
 ```
+
 Place them at the same level as `"lint"` and `"format"`.
 
 - [ ] **Step 2: Verify install**
@@ -86,6 +93,7 @@ Expected: folder exists. We are NOT using `supabase db push` from CLI (Lovable C
 - [ ] **Step 4: Declare the migrations path in `supabase/config.toml`**
 
 Append the following lines at the bottom of `supabase/config.toml`:
+
 ```toml
 [db]
 migrations_path = "./migrations"
@@ -94,10 +102,13 @@ migrations_path = "./migrations"
 - [ ] **Step 5: Smoke-test the runner**
 
 Create a trivial `src/sanity.test.ts`:
+
 ```ts
 import { describe, it, expect } from "vitest";
 describe("sanity", () => {
-  it("runs", () => { expect(1 + 1).toBe(2); });
+  it("runs", () => {
+    expect(1 + 1).toBe(2);
+  });
 });
 ```
 
@@ -118,11 +129,13 @@ git commit -m "chore: add vitest + supabase migrations folder"
 ## Task 1: WhatsApp message builder + open helper (pure, client-side)
 
 **Files:**
+
 - Create: `src/lib/contact-message.ts`
 - Create: `src/lib/contact-message.test.ts` (Vitest unit test)
 - Modify: `package.json` (add `vitest` dev dep — only if not present; check before adding)
 
 **Interfaces:**
+
 - Consumes: nothing (pure function)
 - Produces:
   - `buildWhatsAppUrl(phone: string, data: ContactFormData): string` — returns `https://wa.me/<phone>?text=<urlencoded>` ready to be opened
@@ -197,25 +210,28 @@ Expected: `Cannot find module './contact-message'`.
 - [ ] **Step 3: Implement `buildWhatsAppUrl` and `ContactFormData` in `src/lib/contact-message.ts`**
 
 Signature:
+
 ```ts
 export type ContactFormData = {
   name: string;
   email: string;
   phone: string;
-  kind: string;       // OCCASIONS value
-  date: string;       // ISO yyyy-mm-dd or ""
-  guests: string;     // string from <input type=number>, or ""
+  kind: string; // OCCASIONS value
+  date: string; // ISO yyyy-mm-dd or ""
+  guests: string; // string from <input type=number>, or ""
   message: string;
-  website: string;     // honeypot
+  website: string; // honeypot
 };
 
 export function buildWhatsAppUrl(phone: string, data: ContactFormData): string;
 ```
 
 Algorithm:
+
 - Strip `phone` of `+`, spaces, and non-digits.
 - Look up the human-readable label for `data.kind` from a `KIND_LABELS: Record<string, string>` map mirroring the `OCCASIONS` array in `VisitSection.tsx:198-206`. If not in the map, use `data.kind` verbatim.
 - Compose the body as multi-line Italian text, e.g.:
+
   ```
   Ciao, sono {name}.
   Vorrei organizzare un'occasione da voi.
@@ -230,6 +246,7 @@ Algorithm:
   Email: {email}
   Telefono: {phone}
   ```
+
 - If `data.message` is longer than 800 chars, truncate to 800 and append "…" (whatsapp 2000-char safety).
 - Return `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(body)}`.
 
@@ -250,9 +267,11 @@ git commit -m "feat(contact): WhatsApp message builder + unit tests"
 ## Task 2: Contact-submissions table migration
 
 **Files:**
+
 - Create: `supabase/migrations/20261016_001_contact_submissions.sql`
 
 **Interfaces:**
+
 - Consumes: nothing
 - Produces: a new table `public.contact_submissions` the server function (Task 3) will insert into.
 
@@ -325,9 +344,11 @@ git commit -m "feat(supabase): contact_submissions table migration"
 ## Task 3: Supabase TypeScript types for contact_submissions
 
 **Files:**
+
 - Modify: `src/integrations/supabase/types.ts`
 
 **Interfaces:**
+
 - Consumes: the `Database` shape already in `types.ts`
 - Produces: a `contact_submissions` table type so the server function (Task 4) gets autocomplete and type safety on insert.
 
@@ -424,10 +445,12 @@ git commit -m "feat(supabase): type contact_submissions table"
 ## Task 4: Server function `submitContact` (Supabase + rate limit + email)
 
 **Files:**
+
 - Create: `src/lib/contact-submit.functions.ts`
 - Create: `src/lib/contact-submit.test.ts` (Vitest, only the pure parts; rate limit and email sending are mocked)
 
 **Interfaces:**
+
 - Consumes:
   - `ContactFormData` from `src/lib/contact-message.ts`
   - `supabaseAdmin` from `src/integrations/supabase/client.server.ts`
@@ -514,8 +537,13 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import type { ContactFormData } from "@/lib/contact-message";
 
 const VALID_KINDS = new Set([
-  "matrimonio", "cerimonia", "battesimo", "compleanno",
-  "festa-privata", "esperienza-equestre", "altro",
+  "matrimonio",
+  "cerimonia",
+  "battesimo",
+  "compleanno",
+  "festa-privata",
+  "esperienza-equestre",
+  "altro",
 ]);
 
 export type ValidatedInput = Omit<ContactFormData, "website" | "guests" | "date"> & {
@@ -525,17 +553,14 @@ export type ValidatedInput = Omit<ContactFormData, "website" | "guests" | "date"
 
 /** Pure validation. Exported for tests. */
 export function validateContactInput(
-  raw: Partial<ContactFormData>
+  raw: Partial<ContactFormData>,
 ): { ok: true; value: ValidatedInput } | { ok: false; reason: string } {
   if (!raw.name || raw.name.trim().length < 2) return { ok: false, reason: "name" };
   if (!raw.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(raw.email))
     return { ok: false, reason: "email" };
-  if (!raw.phone || raw.phone.replace(/\D/g, "").length < 6)
-    return { ok: false, reason: "phone" };
-  if (!raw.kind || !VALID_KINDS.has(raw.kind))
-    return { ok: false, reason: "kind" };
-  if (!raw.message || raw.message.trim().length < 5)
-    return { ok: false, reason: "message" };
+  if (!raw.phone || raw.phone.replace(/\D/g, "").length < 6) return { ok: false, reason: "phone" };
+  if (!raw.kind || !VALID_KINDS.has(raw.kind)) return { ok: false, reason: "kind" };
+  if (!raw.message || raw.message.trim().length < 5) return { ok: false, reason: "message" };
   return {
     ok: true,
     value: {
@@ -554,7 +579,7 @@ export function validateContactInput(
 async function bumpRateLimit(
   kv: KVNamespace | undefined,
   ip: string,
-  envTag: string
+  envTag: string,
 ): Promise<{ allowed: boolean; remaining: number }> {
   if (!kv) return { allowed: true, remaining: 999 };
   const key = `kl:contact:${envTag}:${ip}`;
@@ -568,7 +593,7 @@ async function bumpRateLimit(
 
 async function sendAutoReply(
   env: Record<string, string | undefined>,
-  data: ValidatedInput
+  data: ValidatedInput,
 ): Promise<{ ok: boolean; error?: string }> {
   const apiKey = env["RESEND_API_KEY"];
   const from = env["MAIL_FROM"] ?? "Masseria Torre Abbondanza <info@torreabbondanza.com>";
@@ -635,7 +660,8 @@ export const submitContact = createServerFn({ method: "POST" })
     const kv: KVNamespace | undefined = env["RATE_LIMIT"];
 
     const envTag = env["ENV_TAG"] ?? "prod";
-    const ip = data.ip || (request?.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "0.0.0.0";
+    const ip =
+      data.ip || (request?.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "0.0.0.0";
 
     // 1. Rate limit FIRST so honeypot traffic can't burn Supabase writes.
     const rl = await bumpRateLimit(kv, ip, envTag);
@@ -716,9 +742,11 @@ git commit -m "feat(contact): submitContact server function with rate limit + Re
 ## Task 5: Wire `OccasionForm` to WhatsApp + server function
 
 **Files:**
+
 - Modify: `src/components/VisitSection.tsx:208-334` (the `OccasionForm` component only)
 
 **Interfaces:**
+
 - Consumes:
   - `buildWhatsAppUrl` and `ContactFormData` from `src/lib/contact-message.ts`
   - `submitContact` from `src/lib/contact-submit.functions.ts`
@@ -791,6 +819,7 @@ Expected: no errors. (The `submitContact` server function import is valid even i
 - [ ] **Step 3: Manual smoke test in dev**
 
 Run: `npm run dev`, open `http://localhost:5173`, scroll to the form, fill it in, submit. Expected:
+
 - A new tab opens at `https://wa.me/393384834318?text=...` with the pre-filled message.
 - The form below shows the success copy.
 - In the Supabase dashboard, `contact_submissions` has one new row, `whatsapp_opened` defaults to false (we don't try to detect the popup).
@@ -799,6 +828,7 @@ Run: `npm run dev`, open `http://localhost:5173`, scroll to the form, fill it in
 - [ ] **Step 4: Verify honeypot path**
 
 Open the form, with devtools set `v.website = "spam"` via a one-shot `useEffect` injected in dev only, OR temporarily add `defaultValue="bot"` to the honeypot input. Submit. Expected:
+
 - No WhatsApp tab opens.
 - The Supabase row exists with `honeypot = true` and `email_sent = false`.
 - The form shows the generic success message.
@@ -817,6 +847,7 @@ git commit -m "feat(contact): wire OccasionForm to WhatsApp + server function"
 ## Task 6: Cloudflare KV binding + env vars
 
 **Files:**
+
 - Modify: `supabase/config.toml` (only the comment, no functional change) — actually skip this; bindings are configured in the Lovable dashboard.
 - The user configures these in the Lovable project settings:
   1. **KV namespace binding** named `RATE_LIMIT` (Lovable dashboard → Cloudflare → KV → Create namespace → bind to project as `RATE_LIMIT`).
@@ -827,6 +858,7 @@ git commit -m "feat(contact): wire OccasionForm to WhatsApp + server function"
 - [ ] **Step 1: Create the Resend account and domain**
 
 User instructions (the implementer writes these in a one-page doc, not in code):
+
 - Sign up at https://resend.com.
 - Add the domain `torreabbondanza.com` and add the three DNS records Resend shows (DKIM, SPF, return-path).
 - Wait for verification (a few minutes to a few hours).
@@ -839,6 +871,7 @@ Lovable dashboard → Cloud → KV → New namespace → name it `rate-limit` (t
 - [ ] **Step 3: Set the three secrets**
 
 Lovable dashboard → Settings → Secrets → add:
+
 - `RESEND_API_KEY` = `re_...`
 - `ENV_TAG` = `prod`
 - `MAIL_FROM` = `Masseria Torre Abbondanza <info@torreabbondanza.com>`
@@ -871,6 +904,7 @@ Expected: the counter resets and a new submission goes through.
 - [ ] **Step 3: Verify the Supabase rows**
 
 Open the Supabase dashboard → Table Editor → `contact_submissions`. Expect:
+
 - A new row per submission with the correct fields.
 - `whatsapp_opened` = false (we don't detect this; the column exists for future analytics).
 - `email_sent` = true for the non-honeypot rows.
@@ -908,4 +942,3 @@ git push origin main contact-whatsapp-v1
    - KV env collision → `ENV_TAG` prefix (Task 4)
    - Resend domain unverified → catch + log + continue (Task 4)
 5. **Proportion:** The plan is ~280 lines of decisions, the code it describes is ~300 lines. Each step is unambiguous; no transcript. ✅
-

@@ -34,11 +34,13 @@ Cose che i test automatici non coprono ma che un essere umano noterebbe:
 ## Task 1: Fix ESLint error — `server-only` import bandito (I1)
 
 **File:**
+
 - Modify: `src/lib/contact-submit.functions.ts` (rinominare o sostituire import)
 - Eventualmente Modify: `src/routes/index.tsx` (se cambia il path dell'import)
 - Test: `src/lib/contact-submit.test.ts` (deve continuare a importare e passare)
 
 **Interfacce:**
+
 - Consumes: l'oggetto `submitContact` esportato da `contact-submit.functions.ts` viene importato da `src/components/VisitSection.tsx` riga 9. Il rinominamento del file non deve rompere quella import.
 - Produce: la regola `no-restricted-imports` in `eslint.config.js` non deve più segnalare questo file.
 
@@ -51,9 +53,11 @@ Atteso: se esiste `@tanstack/react-start/server-only` o simile, useremo quello. 
 **Step 2: Decidi e applica il fix.**
 
 Se esiste un equivalente (`@tanstack/react-start/server-only`):
+
 - Sostituisci `import "server-only";` con `import "@tanstack/react-start/server-only";`
 
 Altrimenti (più probabile):
+
 - Rinomina `src/lib/contact-submit.functions.ts` → `src/lib/contact-submit.functions.server.ts` con `git mv`
 - Aggiorna l'import in `src/components/VisitSection.tsx` riga 9
 - Aggiorna l'import in `src/lib/contact-submit.test.ts` riga 19
@@ -83,9 +87,11 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 ## Task 2: Fix ESLint error — `any` type in `globalThis.env` (I1)
 
 **File:**
+
 - Modify: `src/lib/contact-submit.functions.ts` (o il nuovo nome del file se rinominato nel Task 1) alla riga che contiene `(globalThis as any).env`
 
 **Interfacce:**
+
 - Consumes: nessuno (fix locale)
 - Produce: zero errori ESLint `no-explicit-any` su questo file. Il codice deve continuare a funzionare su Cloudflare Workers (dove `globalThis.env` esiste) e in Node (dove `process.env` esiste).
 
@@ -98,14 +104,17 @@ Atteso: una riga che legge `const env = (globalThis as any).env ?? process.env;`
 **Step 2: Sostituisci con tipo esplicito.**
 
 Cambia:
+
 ```ts
 const env = (globalThis as any).env ?? process.env;
 ```
 
 In:
+
 ```ts
-const env: Record<string, string | undefined> =
-  ((globalThis as { env?: Record<string, string | undefined> }).env ?? process.env) as Record<string, string | undefined>;
+const env: Record<string, string | undefined> = ((
+  globalThis as { env?: Record<string, string | undefined> }
+).env ?? process.env) as Record<string, string | undefined>;
 ```
 
 Oppure, se il rinominamento in Task 1 è avvenuto, adatta il path.
@@ -134,9 +143,11 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 ## Task 3: Fix ESLint error — `let timer` → `const timer` in EventsSection (I1)
 
 **File:**
+
 - Modify: `src/components/EventsSection.tsx` alla riga 38 circa (`let timer` → `const timer`)
 
 **Interfacce:**
+
 - Consumes: nessuno
 - Produce: zero errori ESLint `prefer-const` su questo file.
 
@@ -168,9 +179,11 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 ## Task 4: Fix commento ArchFrame border-radius (I2)
 
 **File:**
+
 - Modify: `src/components/ArchFrame.tsx` righe 25-27 (commento accanto a `archRadius`)
 
 **Interfacce:**
+
 - Consumes: nessuno
 - Produce: il commento è ora coerente con la realtà. Nessun cambiamento al codice.
 
@@ -204,9 +217,11 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 ## Task 5: Fix ArchFrame reveal — aggiungi scrollTrigger + reduced-motion (I3)
 
 **File:**
+
 - Modify: `src/components/ArchFrame.tsx` (l'animazione `gsap.fromTo` su `clipPath` che attualmente parte al mount)
 
 **Interfacce:**
+
 - Consumes: `useReducedMotion()` da framer-motion è già importato nel codebase se serve (verifica); in alternativa `window.matchMedia`.
 - Produce: il reveal `clipPath` parte quando la finestra entra in viewport, non al mount. Rispetta `prefers-reduced-motion`.
 
@@ -221,11 +236,14 @@ Dovrebbe essere la transizione che fa "aprire" la finestra. Attualmente ha `gsap
 **Step 3: Aggiungi lo scrollTrigger e il check reduced-motion.**
 
 Prima della `gsap.fromTo`, prendi il valore:
+
 ```ts
-const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reduced =
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 ```
 
 Sostituisci l'animazione esistente con:
+
 ```ts
 if (!reduced) {
   gsap.fromTo(
@@ -267,9 +285,11 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 ## Task 6: Fix ArchFrame video autoplay silent failure (I4)
 
 **File:**
+
 - Modify: `src/components/ArchFrame.tsx` (la chiamata `videoRef.current.play().catch(() => {})`)
 
 **Interfacce:**
+
 - Consumes: nessuno
 - Produce: in dev, un warning in console se il video fallisce a partire. In prod, comportamento identico a oggi (silent).
 
@@ -280,11 +300,13 @@ Comando: `grep -n ".play().catch" src/components/ArchFrame.tsx`
 **Step 2: Sostituisci con un catch che logga in dev.**
 
 Cambia:
+
 ```ts
 videoRef.current.play().catch(() => {});
 ```
 
 In:
+
 ```ts
 videoRef.current.play().catch((e) => {
   // In dev, logga il motivo del fallimento (autoplay bloccato, codec,
@@ -308,6 +330,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 ## Task 7: Fix StorySection alt text alessio-cura.svg (I5)
 
 **File:**
+
 - Modify: `src/components/StorySection.tsx` (l'`alt` text e/o la stringa importata)
 - Verify: `src/assets/alessio-cura.svg` esiste ed è effettivamente un SVG stilizzato, non una foto
 
@@ -326,8 +349,9 @@ Atteso: è un `<svg>`, non un raster.
 Il commento interno menziona: il file è 247KB ed è un SVG stilizzato, non una foto. L'alt text attuale dice "fotografia in bianco e nero" — errato.
 
 Sostituisci con qualcosa di aderente all'asset, ad esempio:
+
 ```ts
-alt="Illustrazione stilizzata di un cavallo Murgese e del mandriano, in bianco e nero"
+alt = "Illustrazione stilizzata di un cavallo Murgese e del mandriano, in bianco e nero";
 ```
 
 Se l'asset mostra altro, adatta. Il principio: l'alt deve descrivere l'asset reale, non quello che l'autore avrebbe voluto.
@@ -350,6 +374,7 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 ## Allegato A — Estratto del report per I1–I5
 
 > ### I1 — ESLint: 3 errori reali (525 restanti sono `prettier/prettier`)
+>
 > - **Cosa:** `tsc --noEmit` è pulito, ma `eslint .` segnala:
 >   1. `src/lib/contact-submit.functions.ts:1:1` — `'server-only' import is restricted from being used` (esplicitamente bandito in `eslint.config.js`)
 >   2. `src/lib/contact-submit.functions.ts:128:32` — `Unexpected any` in `(globalThis as any).env`
@@ -359,22 +384,26 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>"
 > - **Decisione:** rinominare `contact-submit.functions.ts` in `contact-submit.functions.server.ts` o sostituire l'import con `@tanstack/react-start/server-only`. Cambiare `(globalThis as any).env` in tipo `Record<string, string | undefined>`. Sostituire `let timer` con `const timer`.
 >
 > ### I2 — ArchFrame: commento del border-radius sbagliato
+>
 > - **Cosa:** il commento dice `verticale 38% (≈ width/2 di un box 3:4)`. Per un box 3:4 (largo:alto = 3:4), `width/2` sarebbe 50% del lato corto, ma height/2 è 50% del lato lungo. La formula reale è `38% ≈ height/2.67`. Il valore è corretto per l'arco, la spiegazione no.
 > - **Dove:** [src/components/ArchFrame.tsx:25-27](src/components/ArchFrame.tsx#L25-L27)
 > - **Decisione:** correggere il commento in `(≈ height/2.67 per un box 3:4)`. Facoltativo.
 >
 > ### I3 — ArchFrame: il reveal di apertura non ha `scrollTrigger`
+>
 > - **Cosa:** `gsap.fromTo` su `clipPath` parte al mount, non quando la finestra entra in viewport. Se l'ArchFrame è usato in sezioni sotto la fold (es. StorySection), la soglia si "apre" prima che l'utente la veda, perdendo l'effetto.
 > - **Dove:** [src/components/ArchFrame.tsx:43-58](src/components/ArchFrame.tsx#L43-L58)
 > - **Impatto:** bug UX se la finestra è montata fuori vista iniziale. Attualmente sembra ok perché ArchFrame è usato solo in StorySection e parte alta dell'hero.
 > - **Decisione:** aggiungere uno `ScrollTrigger.create({ start: "top 80%" })` o almeno `immediateRender: false`. Aggiungere test per comportamento reduced-motion.
 >
 > ### I4 — ArchFrame: video autoplay con `.catch(() => {})` silenzioso
+>
 > - **Cosa:** se il video non carica (404, codec, CSP), l'utente vede solo la foto statica senza sapere perché.
 > - **Dove:** [src/components/ArchFrame.tsx:74-78](src/components/ArchFrame.tsx#L74-L78)
 > - **Decisione:** logging in dev (`console.warn`) + telemetria. Per ora accettabile in prod.
 >
 > ### I5 — StorySection: `alessio-cura.svg` referenziato con alt text "fotografia in bianco e nero"
+>
 > - **Cosa:** l'`<img>` ha `alt: "Alessio accompagna un cavallo... fotografia in bianco e nero"` ma è un file `.svg` stilizzato vettoriale (247KB), non una foto.
 > - **Dove:** [src/components/StorySection.tsx:8,86](src/components/StorySection.tsx#L8)
 > - **Decisione:** correggere l'alt o sostituire con foto reale.

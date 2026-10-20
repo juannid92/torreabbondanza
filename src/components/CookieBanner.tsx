@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Cookie, Settings2, X, Check } from "lucide-react";
@@ -79,13 +79,6 @@ export type CookieBannerHandle = {
   openPreferences: () => void;
 };
 
-export function useCookiePreferences() {
-  return useCallback(() => {
-    if (typeof window === "undefined") return;
-    window.dispatchEvent(new CustomEvent("open-cookie-preferences"));
-  }, []);
-}
-
 export function CookieBanner() {
   const [open, setOpen] = useState(false);
   const [panel, setPanel] = useState<"banner" | "prefs">("banner");
@@ -132,55 +125,32 @@ export function CookieBanner() {
     setOpen(false);
   };
 
-  const toggle = (k: "analytics" | "marketing") => setCategories((p) => ({ ...p, [k]: !p[k] }));
-
   return (
     <AnimatePresence>
       {open && (
-        <>
-          {/* Overlay leggero per concentrare l'attenzione sulle preferenze */}
-          <motion.div
-            key="overlay"
-            initial={reduced ? { opacity: 0.3 } : { opacity: 0 }}
-            animate={{ opacity: 0.3 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[59] bg-ink"
-            aria-hidden
-          />
-
-          <motion.div
-            key={panel}
-            role="dialog"
-            aria-modal="false"
-            aria-labelledby="cookie-banner-title"
-            initial={reduced ? { opacity: 1 } : { y: 24, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={reduced ? { opacity: 0 } : { y: 24, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-0 bottom-0 z-[60] px-3 pb-3 md:px-6 md:pb-6"
-          >
-            <div className="mx-auto w-full max-w-5xl rounded-lg border border-stone/30 bg-ivory shadow-[0_-20px_60px_-20px_color-mix(in_oklab,var(--ink)_50%,transparent)]">
-              {panel === "banner" ? (
-                <BannerView
-                  onAccept={acceptAll}
-                  onReject={rejectAll}
-                  onCustomize={() => setPanel("prefs")}
-                  onClose={rejectAll}
-                />
-              ) : (
-                <PrefsView
-                  categories={categories}
-                  onToggle={toggle}
-                  onSave={savePrefs}
-                  onAcceptAll={acceptAll}
-                  onRejectAll={rejectAll}
-                  onClose={() => setOpen(false)}
-                />
-              )}
-            </div>
-          </motion.div>
-        </>
+        <motion.div
+          key={panel}
+          role="dialog"
+          aria-modal="false"
+          aria-labelledby="cookie-banner-title"
+          initial={reduced ? { opacity: 1 } : { y: 24, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={reduced ? { opacity: 0 } : { y: 24, opacity: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed inset-x-0 bottom-0 z-[60] pointer-events-none px-3 pb-3 md:px-6 md:pb-6"
+        >
+          <div className="pointer-events-auto mx-auto w-full max-w-4xl rounded-lg border border-stone/40 bg-ivory/95 backdrop-blur-md shadow-[0_-16px_48px_-16px_color-mix(in_oklab,var(--ink)_35%,transparent)]">
+            {panel === "banner" ? (
+              <BannerView
+                onAccept={acceptAll}
+                onCustomize={() => setPanel("prefs")}
+                onClose={rejectAll}
+              />
+            ) : (
+              <PrefsView onSave={savePrefs} onClose={() => setOpen(false)} />
+            )}
+          </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );
@@ -189,35 +159,32 @@ export function CookieBanner() {
 /* ---------------- Banner ---------------- */
 function BannerView({
   onAccept,
-  onReject,
   onCustomize,
   onClose,
 }: {
   onAccept: () => void;
-  onReject: () => void;
   onCustomize: () => void;
   onClose: () => void;
 }) {
   return (
-    <div className="flex flex-col gap-5 p-5 md:p-7 md:flex-row md:items-start md:gap-8">
+    <div className="relative flex flex-col gap-4 p-4 pr-10 md:p-6 md:pr-12 md:flex-row md:items-center md:justify-between md:gap-8">
       <div className="flex items-start gap-3 md:flex-1">
         <span
           aria-hidden
-          className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink/5 text-ink"
+          className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink/5 text-ink"
         >
           <Cookie className="h-4 w-4" />
         </span>
         <div>
           <h2
             id="cookie-banner-title"
-            className="font-display text-lg font-semibold text-ink md:text-xl"
+            className="font-display text-base font-semibold text-ink md:text-lg"
           >
-            Questo sito usa solo cookie tecnici
+            Informativa sui cookie tecnici
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-ink/80 md:text-[15px]">
-            Non utilizziamo cookie di profilazione, tracciamento o marketing, ma il provider di
-            hosting (Cloudflare) può installare cookie tecnici necessari al funzionamento del sito.
-            Per maggiori informazioni leggi la{" "}
+          <p className="mt-1 text-xs leading-relaxed text-ink/80 md:text-sm">
+            Questo sito utilizza esclusivamente cookie tecnici necessari al funzionamento e non
+            impiega cookie di profilazione o tracciamento. Per i dettagli consulta la{" "}
             <Link
               to="/cookie"
               className="font-medium text-ink underline underline-offset-4 hover:text-terracotta"
@@ -231,42 +198,34 @@ function BannerView({
             >
               Privacy Policy
             </Link>
-            . Puoi modificare la tua scelta in qualsiasi momento dal footer (
-            <em>Preferenze cookie</em>).
+            .
           </p>
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 md:w-auto md:flex-row md:flex-wrap md:items-center md:gap-3">
+      <div className="flex flex-wrap items-center gap-2.5 md:shrink-0">
         <button
           type="button"
           onClick={onCustomize}
-          className="order-3 inline-flex items-center justify-center gap-2 rounded-full border border-ink/20 px-4 py-2.5 text-[11px] tracking-[0.18em] uppercase text-ink transition-colors hover:border-terracotta hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-ivory md:order-1 md:px-5"
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/20 px-4 py-2 text-[11px] tracking-[0.16em] uppercase text-ink transition-colors hover:border-terracotta hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
         >
           <Settings2 className="h-3.5 w-3.5" />
-          Personalizza
-        </button>
-        <button
-          type="button"
-          onClick={onReject}
-          className="order-2 inline-flex items-center justify-center rounded-full border border-ink/30 bg-transparent px-5 py-2.5 text-[11px] tracking-[0.18em] uppercase text-ink transition-colors hover:border-ink hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-ivory"
-        >
-          Rifiuta
+          Dettagli
         </button>
         <button
           type="button"
           onClick={onAccept}
-          className="order-1 inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[11px] tracking-[0.18em] uppercase text-ivory transition-colors hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-ivory md:order-3"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-2 text-[11px] tracking-[0.16em] uppercase text-ivory transition-colors hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
         >
           <Check className="h-3.5 w-3.5" />
-          Accetta
+          Ho capito
         </button>
       </div>
 
       <button
         type="button"
         onClick={onClose}
-        aria-label="Chiudi informativa cookie (rifiuta)"
+        aria-label="Chiudi informativa cookie"
         className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-ink/60 transition-colors hover:bg-stone/20 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
       >
         <X className="h-4 w-4" />
@@ -276,21 +235,7 @@ function BannerView({
 }
 
 /* ---------------- Pannello Preferenze ---------------- */
-function PrefsView({
-  categories,
-  onToggle,
-  onSave,
-  onAcceptAll,
-  onRejectAll,
-  onClose,
-}: {
-  categories: Categories;
-  onToggle: (k: "analytics" | "marketing") => void;
-  onSave: () => void;
-  onAcceptAll: () => void;
-  onRejectAll: () => void;
-  onClose: () => void;
-}) {
+function PrefsView({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
   return (
     <div className="relative p-5 md:p-7">
       <button
@@ -306,67 +251,45 @@ function PrefsView({
         id="cookie-banner-title"
         className="font-display text-lg font-semibold text-ink md:text-xl"
       >
-        Preferenze cookie
+        Stato dei cookie sul sito
       </h2>
       <p className="mt-2 text-sm text-ink/80">
-        Gestisci le categorie di cookie. I cookie tecnici sono necessari al funzionamento del sito e
-        non possono essere disattivati. Le altre categorie sono opzionali.
+        Ai sensi del Provvedimento del Garante per la protezione dei dati personali del 10 giugno
+        2021, questo sito utilizza soltanto cookie tecnici strettamente necessari all'erogazione del
+        servizio.
       </p>
 
       <ul className="mt-5 grid gap-3">
         <CookieRow
-          name="Cookie tecnici"
-          description="Necessari al funzionamento del sito (bilanciamento, sicurezza). Non profilano l'utente."
+          name="Cookie tecnici (sempre attivi)"
+          description="Necessari al funzionamento della rete di distribuzione e alla sicurezza del sito (Cloudflare). Non profilano l'utente."
           required
           checked
-          onToggle={() => undefined}
         />
         <CookieRow
-          name="Cookie analitici"
-          description="Statistica anonima delle visite per migliorare il sito. Ad oggi non attivi su questo sito."
-          checked={categories.analytics}
-          onToggle={() => onToggle("analytics")}
-        />
-        <CookieRow
-          name="Cookie di marketing"
-          description="Profilazione e annunci personalizzati. Ad oggi non attivi su questo sito."
-          checked={categories.marketing}
-          onToggle={() => onToggle("marketing")}
+          name="Cookie analitici e di marketing (assenti)"
+          description="Questo sito non installa cookie analitici di terze parti né pixel pubblicitari o di profilazione."
+          required
+          checked={false}
         />
       </ul>
 
       <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-ink/60">
-          Per dettagli leggi la{" "}
+          Per approfondire consulta la{" "}
           <Link to="/cookie" className="underline hover:text-terracotta">
             Cookie Policy
           </Link>
           .
         </p>
-        <div className="flex flex-wrap gap-2 sm:gap-3">
-          <button
-            type="button"
-            onClick={onRejectAll}
-            className="inline-flex items-center justify-center rounded-full border border-ink/30 bg-transparent px-5 py-2.5 text-[11px] tracking-[0.18em] uppercase text-ink transition-colors hover:border-ink hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-ivory"
-          >
-            Rifiuta tutti
-          </button>
-          <button
-            type="button"
-            onClick={onSave}
-            className="inline-flex items-center justify-center rounded-full border border-ink/30 px-5 py-2.5 text-[11px] tracking-[0.18em] uppercase text-ink transition-colors hover:border-terracotta hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-ivory"
-          >
-            Salva preferenze
-          </button>
-          <button
-            type="button"
-            onClick={onAcceptAll}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[11px] tracking-[0.18em] uppercase text-ivory transition-colors hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-ivory"
-          >
-            <Check className="h-3.5 w-3.5" />
-            Accetta tutti
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={onSave}
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[11px] tracking-[0.18em] uppercase text-ivory transition-colors hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
+        >
+          <Check className="h-3.5 w-3.5" />
+          Chiudi e salva
+        </button>
       </div>
     </div>
   );
@@ -377,13 +300,11 @@ function CookieRow({
   description,
   checked,
   required,
-  onToggle,
 }: {
   name: string;
   description: string;
   checked: boolean;
   required?: boolean;
-  onToggle: () => void;
 }) {
   return (
     <li className="flex items-start justify-between gap-4 rounded-md border border-stone/40 p-4">
@@ -396,7 +317,7 @@ function CookieRow({
           type="checkbox"
           checked={checked}
           disabled={required}
-          onChange={onToggle}
+          readOnly
           className="peer sr-only"
           aria-label={name}
         />

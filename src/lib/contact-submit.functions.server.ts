@@ -23,8 +23,6 @@ export function validateContactInput(
   raw: Partial<ContactFormData>,
 ): { ok: true; value: ValidatedInput } | { ok: false; reason: string } {
   if (!raw.name || raw.name.trim().length < 2) return { ok: false, reason: "name" };
-  if (!raw.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(raw.email))
-    return { ok: false, reason: "email" };
   if (!raw.phone || raw.phone.replace(/\D/g, "").length < 6) return { ok: false, reason: "phone" };
   if (!raw.kind || !VALID_KINDS.has(raw.kind)) return { ok: false, reason: "kind" };
   if (!raw.message || raw.message.trim().length < 5) return { ok: false, reason: "message" };
@@ -32,7 +30,6 @@ export function validateContactInput(
     ok: true,
     value: {
       name: raw.name.trim(),
-      email: raw.email.trim(),
       phone: raw.phone.trim(),
       kind: raw.kind,
       date: raw.date && raw.date !== "" ? raw.date : null,
@@ -58,54 +55,9 @@ async function bumpRateLimit(
   return { allowed: true, remaining: 2 - current };
 }
 
-async function sendAutoReply(
-  env: Record<string, string | undefined>,
-  data: ValidatedInput,
-): Promise<{ ok: boolean; error?: string }> {
-  const apiKey = env["RESEND_API_KEY"];
-  const from = env["MAIL_FROM"] ?? "Masseria Torre Abbondanza <info@torreabbondanza.com>";
-  if (!apiKey) return { ok: false, error: "RESEND_API_KEY not set" };
-
-  const subject = "Grazie per averci scritto — Masseria Torre Abbondanza";
-  const text = [
-    `Ciao ${data.name.split(" ")[0]},`,
-    "",
-    "abbiamo ricevuto la tua richiesta. Ti rispondiamo entro 24 ore con una proposta.",
-    "",
-    "Se preferisci parlarci subito: +39 338 483 4318 (WhatsApp).",
-    "",
-    "— Masseria Torre Abbondanza",
-  ].join("\n");
-
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from,
-        to: data.email,
-        subject,
-        text,
-        reply_to: "info@torreabbondanza.com",
-      }),
-    });
-    if (!res.ok) {
-      const body = await res.text();
-      return { ok: false, error: `Resend ${res.status}: ${body.slice(0, 200)}` };
-    }
-    return { ok: true };
-  } catch (e) {
-    return { ok: false, error: e instanceof Error ? e.message : String(e) };
-  }
-}
-
 const inputSchema = z.object({
   data: z.object({
     name: z.string(),
-    email: z.string(),
     phone: z.string(),
     kind: z.string(),
     date: z.string().optional().default(""),
@@ -144,25 +96,26 @@ export const submitContact = createServerFn({ method: "POST" })
 
     const honeypot = Boolean(data.data.website);
 
-    // 2. Honeypot short-circuit: persist the raw lead, skip validation,
-    //    skip email, skip WhatsApp. Bots that fill garbage fields + the
-    //    honeypot must still be logged for review.
+    // 2. Honeypot short-circuit: best-effort log if Supabase is configured.
     if (honeypot) {
-      const { error: sbError } = await supabaseAdmin.from("contact_submissions").insert({
-        name: data.data.name,
-        email: data.data.email,
-        phone: data.data.phone,
-        kind: data.data.kind,
-        date: data.data.date || null,
-        guests: data.data.guests ? Number(data.data.guests) : null,
-        message: data.data.message,
-        ip: ip || null,
-        user_agent: userAgent || null,
-        honeypot: true,
-        source: "web",
-      });
-      if (sbError) {
-        return { ok: false as const, rateLimited: false as const, error: "persist" };
+      if (env["SUPABASE_URL"] && env["SUPABASE_SERVICE_ROLE_KEY"]) {
+        try {
+          await supabaseAdmin.from("contact_submissions").insert({
+            name: data.data.name,
+            email: "",
+            phone: data.data.phone,
+            kind: data.data.kind,
+            date: data.data.date || null,
+            guests: data.data.guests ? Number(data.data.guests) : null,
+            message: data.data.message,
+            ip: ip || null,
+            user_agent: userAgent || null,
+            honeypot: true,
+            source: "web",
+          });
+        } catch {
+          // Ignore DB errors if Supabase table is not configured
+        }
       }
       return { ok: true as const, rateLimited: false as const, honeypot: true };
     }
@@ -171,37 +124,26 @@ export const submitContact = createServerFn({ method: "POST" })
     const v = validateContactInput(data.data);
     if (!v.ok) return { ok: false as const, rateLimited: false as const, error: v.reason };
 
-    // 4. Persist the real lead.
-    const insertResult = await supabaseAdmin
-      .from("contact_submissions")
-      .insert({
-        name: v.value.name,
-        email: v.value.email,
-        phone: v.value.phone,
-        kind: v.value.kind,
-        date: v.value.date,
-        guests: v.value.guests,
-        message: v.value.message,
-        ip: ip || null,
-        user_agent: userAgent || null,
-        honeypot: false,
-        source: "web",
-      })
-      .select("id")
-      .single();
-    if (insertResult.error || !insertResult.data) {
-      return { ok: false as const, rateLimited: false as const, error: "persist" };
+    // 4. Persist the real lead if Supabase is configured (best-effort; primary channel is WhatsApp/phone).
+    if (env["SUPABASE_URL"] && env["SUPABASE_SERVICE_ROLE_KEY"]) {
+      try {
+        await supabaseAdmin.from("contact_submissions").insert({
+          name: v.value.name,
+          email: "",
+          phone: v.value.phone,
+          kind: v.value.kind,
+          date: v.value.date,
+          guests: v.value.guests,
+          message: v.value.message,
+          ip: ip || null,
+          user_agent: userAgent || null,
+          honeypot: false,
+          source: "web",
+        });
+      } catch {
+        // Ignore DB errors so the endpoint never returns 500
+      }
     }
-    const rowId = insertResult.data.id;
-
-    // 5. Auto-reply (only for real submissions).
-    const r = await sendAutoReply(env, v.value);
-
-    // 6. Update the just-inserted row with the email outcome.
-    await supabaseAdmin
-      .from("contact_submissions")
-      .update({ email_sent: r.ok, email_error: r.error ?? null })
-      .eq("id", rowId);
 
     return {
       ok: true as const,

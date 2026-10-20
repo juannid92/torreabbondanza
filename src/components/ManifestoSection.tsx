@@ -21,39 +21,82 @@ const DEEP = "var(--color-murgese, #15110F)";
 // Righe del manifesto. Layout broken grid via LINE_INDENT.
 const LINES: Token[][] = [
   [
-    { text: "C'è" }, { text: "un" }, { text: "luogo" }, { text: "dove" },
-    { text: "la" }, { text: "pietra", accent: true, tone: "warm" }, { text: "racconta" },
-    { text: "tre" }, { text: "secoli," },
+    { text: "C'è" },
+    { text: "un" },
+    { text: "luogo" },
+    { text: "dove" },
+    { text: "la" },
+    { text: "pietra", accent: true, tone: "warm" },
+    { text: "racconta" },
+    { text: "tre" },
+    { text: "secoli," },
   ],
   [
-    { text: "dove" }, { text: "la" }, { text: "terra", accent: true, tone: "warm" },
-    { text: "dona" }, { text: "i" }, { text: "suoi" }, { text: "frutti" },
-    { text: "e" }, { text: "ogni" }, { text: "tavola", accent: true, tone: "warm" },
-    { text: "diventa" }, { text: "una" }, { text: "festa," },
+    { text: "dove" },
+    { text: "la" },
+    { text: "terra", accent: true, tone: "warm" },
+    { text: "dona" },
+    { text: "i" },
+    { text: "suoi" },
+    { text: "frutti" },
+    { text: "e" },
+    { text: "ogni" },
+    { text: "tavola", accent: true, tone: "warm" },
+    { text: "diventa" },
+    { text: "una" },
+    { text: "festa," },
   ],
   [
-    { text: "e" }, { text: "dove" }, { text: "i" },
+    { text: "e" },
+    { text: "dove" },
+    { text: "i" },
     { text: "cavalli", accent: true, tone: "deep" },
-    { text: "Murgesi" }, { text: "corrono" }, { text: "liberi" },
-    { text: "come" }, { text: "un" }, { text: "tempo." },
+    { text: "Murgesi" },
+    { text: "corrono" },
+    { text: "liberi" },
+    { text: "come" },
+    { text: "un" },
+    { text: "tempo." },
   ],
   [
-    { text: "Qui" }, { text: "il" }, { text: "tempo", accent: true, tone: "warm" },
-    { text: "rallenta," }, { text: "l'accoglienza" }, { text: "è" }, { text: "di" },
+    { text: "Qui" },
+    { text: "il" },
+    { text: "tempo", accent: true, tone: "warm" },
+    { text: "rallenta," },
+    { text: "l'accoglienza" },
+    { text: "è" },
+    { text: "di" },
     { text: "famiglia,", accent: true, tone: "warm" },
   ],
   [
-    { text: "e" }, { text: "l'" }, { text: "abbondanza", accent: true, tone: "warm" },
-    { text: "non" }, { text: "è" }, { text: "quantità" }, { text: "—" },
+    { text: "e" },
+    { text: "l'" },
+    { text: "abbondanza", accent: true, tone: "warm" },
+    { text: "non" },
+    { text: "è" },
+    { text: "quantità" },
+    { text: "—" },
   ],
   [
-    { text: "è" }, { text: "la" }, { text: "generosità" }, { text: "di" },
-    { text: "un" }, { text: "gesto" }, { text: "antico" },
+    { text: "è" },
+    { text: "la" },
+    { text: "generosità" },
+    { text: "di" },
+    { text: "un" },
+    { text: "gesto" },
+    { text: "antico" },
   ],
   [
-    { text: "e" }, { text: "la" }, { text: "nobiltà" }, { text: "di" }, { text: "un" },
+    { text: "e" },
+    { text: "la" },
+    { text: "nobiltà" },
+    { text: "di" },
+    { text: "un" },
     { text: "galoppo", accent: true, tone: "deep" },
-    { text: "che" }, { text: "dura" }, { text: "da" }, { text: "sempre." },
+    { text: "che" },
+    { text: "dura" },
+    { text: "da" },
+    { text: "sempre." },
   ],
 ];
 
@@ -95,12 +138,17 @@ export function ManifestoSection() {
     const ctx = gsap.context(() => {
       // Ingresso eyebrow + filetto (prima del pin)
       gsap.from(eyebrowTextRef.current, {
-        opacity: 0, y: 8, duration: 0.6, ease: "power2.out",
+        opacity: 0,
+        y: 8,
+        duration: 0.6,
+        ease: "power2.out",
         scrollTrigger: { trigger: section, start: "top 80%" },
       });
       gsap.from(ruleRef.current, {
-        scaleX: 0, transformOrigin: "left center",
-        duration: 0.9, ease: "power3.out",
+        scaleX: 0,
+        transformOrigin: "left center",
+        duration: 0.9,
+        ease: "power3.out",
         scrollTrigger: { trigger: section, start: "top 80%" },
       });
 
@@ -112,7 +160,10 @@ export function ManifestoSection() {
           strokeDashoffset: 0,
           ease: "none",
           scrollTrigger: {
-            trigger: section, start: "top bottom", end: "bottom top", scrub: true,
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
           },
         });
       }
@@ -159,50 +210,71 @@ export function ManifestoSection() {
       words.forEach((w, i) => {
         const accent = w.dataset.accent === "true";
         const tone = w.dataset.tone as AccentTone | undefined;
-        const activeColor = accent
-          ? tone === "deep" ? DEEP : WARM
-          : "var(--ink)";
+        const activeColor = accent ? (tone === "deep" ? DEEP : WARM) : "var(--ink)";
         const at = i * wordSlot;
-        tl.to(w, {
-          opacity: 1,
-          scale: 1.02,
-          color: activeColor,
-          duration: stepIn,
-          ease: "power2.out",
-        }, at);
-        tl.to(w, {
-          opacity: 0.55,
-          scale: 1,
-          duration: stepOut,
-          ease: "power2.inOut",
-        }, at + stepIn + stepHold);
+        tl.to(
+          w,
+          {
+            opacity: 1,
+            scale: 1.02,
+            color: activeColor,
+            duration: stepIn,
+            ease: "power2.out",
+          },
+          at,
+        );
+        tl.to(
+          w,
+          {
+            opacity: 0.55,
+            scale: 1,
+            duration: stepOut,
+            ease: "power2.inOut",
+          },
+          at + stepIn + stepHold,
+        );
       });
 
       const readingDuration = words.length * wordSlot;
 
       // Teleprompter: trasla il blockquote linearmente sulla stessa progress.
-      tl.to(blockquote, {
-        y: () => -computeOffset(),
-        ease: "none",
-        duration: readingDuration,
-      }, 0);
+      tl.to(
+        blockquote,
+        {
+          y: () => -computeOffset(),
+          ease: "none",
+          duration: readingDuration,
+        },
+        0,
+      );
 
       // Firma fade-in nel finale della lettura
-      tl.from(signatureRef.current, {
-        opacity: 0, y: 12, duration: 1.2, ease: "power2.out",
-      }, readingDuration - 1.5);
+      tl.from(
+        signatureRef.current,
+        {
+          opacity: 0,
+          y: 12,
+          duration: 1.2,
+          ease: "power2.out",
+        },
+        readingDuration - 1.5,
+      );
 
       // Hold confortevole (~6% finale prima dell'uscita)
       const holdDuration = Math.max(0.6, readingDuration * 0.06);
       tl.to({}, { duration: holdDuration }, readingDuration);
 
       // Uscita morbida: fade + scale-out del manifesto prima di sganciare il pin
-      tl.to(stage, {
-        opacity: 0,
-        scale: 0.98,
-        duration: Math.max(1.5, readingDuration * 0.1),
-        ease: "power2.in",
-      }, readingDuration + holdDuration);
+      tl.to(
+        stage,
+        {
+          opacity: 0,
+          scale: 0.98,
+          duration: Math.max(1.5, readingDuration * 0.1),
+          ease: "power2.in",
+        },
+        readingDuration + holdDuration,
+      );
     }, section);
 
     return () => ctx.revert();
@@ -240,13 +312,15 @@ export function ManifestoSection() {
       </svg>
 
       {/* H2 semanticamente presente ma visivamente nascosto */}
-      <h2 id="manifesto-title" className="sr-only">Manifesto — Il Tempo Lento</h2>
+      <h2 id="manifesto-title" className="sr-only">
+        Manifesto — Il Tempo Lento
+      </h2>
 
       <div className="relative z-10 mx-auto flex h-[100svh] max-w-[1400px] flex-col px-6 pt-[10vh] pb-[8vh] md:px-12 lg:px-20">
         {/* Eyebrow + filetto */}
         <div className="flex items-center gap-4">
           <span ref={eyebrowTextRef} className="text-eyebrow text-ink/70">
-            02 — Manifesto
+            01 — Manifesto
           </span>
           <span
             ref={ruleRef}
@@ -300,17 +374,11 @@ export function ManifestoSection() {
                           data-word
                           data-accent={tok.accent ? "true" : "false"}
                           data-tone={tok.tone ?? ""}
-                          className={
-                            tok.accent
-                              ? "font-display italic"
-                              : ""
-                          }
+                          className={tok.accent ? "font-display italic" : ""}
                           style={{
                             display: "inline-block",
                             opacity: 0.18,
-                            color: tok.accent
-                              ? tok.tone === "deep" ? DEEP : WARM
-                              : undefined,
+                            color: tok.accent ? (tok.tone === "deep" ? DEEP : WARM) : undefined,
                             fontSize: tok.accent ? "1.08em" : undefined,
                             willChange: "opacity, transform, color",
                           }}
@@ -331,9 +399,7 @@ export function ManifestoSection() {
             ref={signatureRef}
             className="mt-[8vh] flex justify-end md:absolute md:bottom-0 md:right-0 md:mt-0"
           >
-            <span className="text-eyebrow text-ink/60">
-              — Masseria Torre Abbondanza, Noci
-            </span>
+            <span className="text-eyebrow text-ink/60">— Masseria Torre Abbondanza, Noci</span>
           </div>
         </div>
       </div>

@@ -3,9 +3,10 @@ import { Link } from "@tanstack/react-router";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Instagram, Phone, Mail, MapPin, Globe, Check, ArrowRight } from "lucide-react";
+import { Instagram, Phone, MessageCircle, MapPin, Globe, Check, ArrowRight } from "lucide-react";
 import { StylizedMap } from "@/components/StylizedMap";
 import { cn } from "@/lib/utils";
+import { BUSINESS, SITE_URL } from "@/lib/site";
 import { buildWhatsAppUrl, type ContactFormData } from "@/lib/contact-message";
 import { submitContact } from "@/lib/contact-submit.functions.server";
 
@@ -13,18 +14,17 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const ADDRESS_LINE_1 = "Strada Vicinale per Massafra / SP 211";
-const ADDRESS_LINE_2 = "Zona E n. 49 — 70015 Noci (BA)";
+const ADDRESS_LINE_1 = BUSINESS.address.line1;
+const ADDRESS_LINE_2 = BUSINESS.address.line2;
 const ADDRESS_FULL = `${ADDRESS_LINE_1}, ${ADDRESS_LINE_2}`;
-const PHONE = "+39 338 483 4318";
-const PHONE_TEL = "+393384834318";
-const WHATSAPP_NUMBER = "393384834318"; // for wa.me; no +, no spaces
-const EMAIL = "info@torreabbondanza.com";
+const PHONE = BUSINESS.phone;
+const PHONE_TEL = BUSINESS.phoneTel;
+const WHATSAPP_NUMBER = BUSINESS.whatsappNumber; // for wa.me; no +, no spaces
+const WHATSAPP_URL = BUSINESS.whatsappUrl;
 const SITE = "torreabbondanza.com";
-const SITE_URL = "https://torreabbondanza.com";
-const IG_HANDLE = "@masseria_torre_abbondanza";
-const IG_URL = "https://www.instagram.com/masseria_torre_abbondanza/";
-const COORDS = { lat: 40.728664, lng: 17.132612 };
+const IG_HANDLE = BUSINESS.instagram.handle;
+const IG_URL = BUSINESS.instagram.url;
+const COORDS = { lat: BUSINESS.geo.lat, lng: BUSINESS.geo.lon };
 const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${COORDS.lat},${COORDS.lng}`;
 const APPLE_MAPS_URL = `https://maps.apple.com/?ll=${COORDS.lat},${COORDS.lng}&q=Masseria%20Torre%20Abbondanza`;
 
@@ -211,22 +211,27 @@ function Feedback({
               </span>
               {message}
             </p>
-            {/* [K6] Link wa.me reale (target=_blank) come fallback se window.open
-                è stato bloccato dal browser. L'utente può cliccarlo per aprire
-                WhatsApp con il messaggio preimpostato. */}
+            {/* Link diretto WhatsApp + chiamata telefonica di emergenza/alternativa */}
             {waUrl && (
-              <p className="text-sm text-ink/80">
-                Apri direttamente WhatsApp:{" "}
+              <div className="flex flex-wrap items-center gap-3 pt-1">
                 <a
                   href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 font-medium text-[color:var(--olive,#5a6a3a)] underline underline-offset-4 hover:text-terracotta"
+                  className="inline-flex items-center gap-2 rounded-full bg-olive px-5 py-2.5 text-xs tracking-[0.16em] uppercase text-ivory transition-colors hover:bg-terracotta"
                 >
-                  {waUrl}
+                  <MessageCircle className="h-3.5 w-3.5" />
+                  Apri WhatsApp
                   <ArrowRight className="h-3.5 w-3.5" />
                 </a>
-              </p>
+                <a
+                  href={`tel:${PHONE_TEL}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-stone/80 px-5 py-2.5 text-xs tracking-[0.16em] uppercase text-ink transition-colors hover:border-terracotta hover:text-terracotta"
+                >
+                  <Phone className="h-3.5 w-3.5" />
+                  Chiama {PHONE}
+                </a>
+              </div>
             )}
           </motion.div>
         )}
@@ -260,7 +265,6 @@ const OCCASIONS: { value: string; label: string; horse?: boolean }[] = [
 function OccasionForm() {
   const [v, setV] = useState({
     name: "",
-    email: "",
     phone: "",
     kind: "",
     date: "",
@@ -272,8 +276,6 @@ function OccasionForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<FormStatus>("idle");
   const [msg, setMsg] = useState("");
-  // [K6] Conserva il link wa.me dopo l'invio per mostrarlo come fallback
-  // visibile nel feedback (alcuni browser bloccano window.open).
   const [waUrl, setWaUrl] = useState<string | null>(null);
   const set = (k: keyof typeof v) => (val: string) => setV((p) => ({ ...p, [k]: val }));
 
@@ -282,8 +284,7 @@ function OccasionForm() {
   function validate() {
     const e: Record<string, string> = {};
     if (!v.name.trim()) e.name = "Inserisci il tuo nome.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) e.email = "Email non valida.";
-    if (!/^[\d +().\-/]{6,}$/.test(v.phone)) e.phone = "Numero non valido.";
+    if (!/^[\d +().\-/]{6,}$/.test(v.phone)) e.phone = "Numero di telefono non valido.";
     if (!v.kind) e.kind = "Scegli il tipo di occasione.";
     if (!v.message.trim()) e.message = "Raccontaci qualcosa.";
     if (v.consent !== "yes") e.consent = "È necessario il consenso privacy.";
@@ -291,11 +292,10 @@ function OccasionForm() {
     return Object.keys(e).length === 0;
   }
 
-  async function onSubmit(e: FormEvent) {
+  function onSubmit(e: FormEvent) {
     e.preventDefault();
     const payload: ContactFormData = {
       name: v.name,
-      email: v.email,
       phone: v.phone,
       kind: v.kind,
       date: v.date,
@@ -304,58 +304,44 @@ function OccasionForm() {
       website: v.website,
     };
     if (v.website) {
-      // Honeypot trip: silently persist (best-effort), do not open WhatsApp,
-      // do not send email. UI shows the same generic success as a real
-      // submission so bots cannot distinguish the two paths.
-      void submitContact({ data: { data: payload, userAgent: navigator.userAgent } });
+      // Honeypot trip: silently persist (best-effort), do not open WhatsApp.
+      void submitContact({ data: { data: payload, userAgent: navigator.userAgent } }).catch(
+        () => null,
+      );
       setStatus("success");
       setMsg("Grazie. Ti rispondiamo a breve.");
       return;
     }
     if (!validate()) return;
-    setStatus("loading");
-    setWaUrl(null);
 
-    // 1. Server PRIMA: salvataggio su Supabase, auto-reply email, rate limit.
-    //    Il bottone "Invia" è una submit di form, non un click su link wa.me:
-    //    nessuna window.open coinvolta.
-    const result = await submitContact({
+    // 1. Costruisci il link wa.me con il messaggio precompilato.
+    const wa = buildWhatsAppUrl(WHATSAPP_NUMBER, payload);
+    setWaUrl(wa);
+    setStatus("success");
+    setMsg(
+      "Stiamo aprendo WhatsApp con la tua richiesta già pronta. Se non dovesse aprirsi in automatico, usa i pulsanti qui sotto.",
+    );
+
+    // 2. Salva il lead su server in background (non bloccante).
+    //    Non usiamo `await` prima dell'apertura di WhatsApp perché iOS Safari
+    //    blocca window.open / redirect verso Universal Link se avviene fuori
+    //    dal contesto sincrono del tap dell'utente.
+    void submitContact({
       data: { data: payload, userAgent: navigator.userAgent },
     }).catch(() => null);
 
-    const rateLimited = !!(result && !result.ok && result.rateLimited);
-    const honeypotTripped = !!(result && result.ok && result.honeypot);
-    const serverOk = !!(result && result.ok);
-
-    // 2. Costruisci il link wa.me; lo mostriamo come <a> reale nel feedback
-    //    così l'utente può cliccarlo anche se il browser blocca i popup.
-    const wa = buildWhatsAppUrl(WHATSAPP_NUMBER, payload);
-    setWaUrl(wa);
-
-    // 3. Prova ad aprire WhatsApp subito come best-effort (la maggior parte
-    //    dei browser lo permette da click handler, ma non tutti).
-    if (serverOk) {
-      window.open(wa, "_blank", "noopener,noreferrer");
-    }
-
-    // 4. UI state. Il link wa.me visibile copre sia il caso popup bloccato
-    //    sia un errore di rete.
-    if (rateLimited) {
-      setStatus("error");
-      setMsg("Troppe richieste in poco tempo. Riprova più tardi o scrivici a +39 338 483 4318.");
-    } else if (honeypotTripped) {
-      setStatus("success");
-      setMsg("Grazie. Ti rispondiamo a breve.");
-    } else if (serverOk) {
-      setStatus("success");
-      setMsg(
-        "Abbiamo salvato la tua richiesta. Clicca il link qui sotto per aprire WhatsApp con il messaggio già pronto.",
-      );
+    // 3. Apri WhatsApp SINCRONAMENTE nel gestore dell'evento click/submit:
+    //    su iPhone / iPad / Android usiamo `window.location.href = wa` che
+    //    attiva direttamente l'Universal Link dell'app WhatsApp senza blocchi
+    //    popup di Safari iOS. Su desktop apriamo una nuova scheda con fallback.
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.location.href = wa;
     } else {
-      setStatus("success");
-      setMsg(
-        "Non siamo riusciti a salvare l'invio. Clicca il link WhatsApp qui sotto per scriverci direttamente.",
-      );
+      const win = window.open(wa, "_blank", "noopener,noreferrer");
+      if (!win) {
+        window.location.href = wa;
+      }
     }
   }
 
@@ -386,19 +372,6 @@ function OccasionForm() {
           error={errors.name}
         />
         <Field
-          label="Email"
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          value={v.email}
-          onChange={set("email")}
-          error={errors.email}
-        />
-      </div>
-
-      <div data-field className="grid gap-7 md:grid-cols-2">
-        <Field
           label="Telefono"
           name="phone"
           type="tel"
@@ -408,6 +381,9 @@ function OccasionForm() {
           onChange={set("phone")}
           error={errors.phone}
         />
+      </div>
+
+      <div data-field className="grid gap-7 md:grid-cols-3">
         <Field
           label="Tipo di occasione"
           name="kind"
@@ -433,9 +409,6 @@ function OccasionForm() {
             ))}
           </select>
         </Field>
-      </div>
-
-      <div data-field className="grid gap-7 md:grid-cols-2">
         <Field
           label="Data indicativa"
           name="date"
@@ -500,8 +473,15 @@ function OccasionForm() {
         </span>
       </label>
 
-      <div data-field>
+      <div data-field className="flex flex-wrap items-center gap-4">
         <SubmitButton status={status} label="Invia su WhatsApp" />
+        <a
+          href={`tel:${PHONE_TEL}`}
+          className="inline-flex items-center gap-2.5 rounded-full border border-stone/80 px-6 py-3.5 text-sm tracking-[0.16em] uppercase text-ink transition-colors duration-300 hover:border-terracotta hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
+        >
+          <Phone className="h-4 w-4" />
+          <span>Chiama ora</span>
+        </a>
       </div>
       <Feedback status={status} message={msg} waUrl={waUrl ?? undefined} />
     </form>
@@ -651,7 +631,7 @@ export function VisitSection() {
         {/* Testata */}
         <header className="max-w-3xl">
           <p data-field className="text-[11px] tracking-[0.28em] uppercase text-ink/55 mb-6">
-            11 — Contatti
+            10 — Contatti
           </p>
           <h2
             ref={titleRef}
@@ -707,9 +687,17 @@ export function VisitSection() {
                     {PHONE}
                   </a>
                 </ContactRow>
-                <ContactRow label="Email" icon={<Mail className="h-4 w-4" />}>
-                  <a href={`mailto:${EMAIL}`} className="hover:text-terracotta transition-colors">
-                    {EMAIL}
+                <ContactRow label="WhatsApp" icon={<MessageCircle className="h-4 w-4" />}>
+                  <a
+                    href={WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-terracotta transition-colors"
+                  >
+                    Scrivici su WhatsApp
+                    <span className="block text-base text-ink/70 not-italic font-sans">
+                      {PHONE}
+                    </span>
                   </a>
                 </ContactRow>
                 <ContactRow label="Sito" icon={<Globe className="h-4 w-4" />}>

@@ -69,13 +69,13 @@
   --radius: 0.5rem;
 
   /* Brand */
-  --ivory: oklch(0.962 0.014 80);          /* #F7F3EC */
-  --stone: oklch(0.905 0.022 75);          /* #E7DDCF */
-  --terracotta: oklch(0.575 0.115 45);     /* #B5673A */
-  --olive: oklch(0.495 0.045 115);         /* #6B7250 */
-  --gold: oklch(0.625 0.115 75);           /* #A9802E */
-  --ink: oklch(0.235 0.015 55);            /* #2A2622 */
-  --murgese: oklch(0.155 0.008 50);        /* #15110F — nero Murgese */
+  --ivory: oklch(0.962 0.014 80); /* #F7F3EC */
+  --stone: oklch(0.905 0.022 75); /* #E7DDCF */
+  --terracotta: oklch(0.575 0.115 45); /* #B5673A */
+  --olive: oklch(0.495 0.045 115); /* #6B7250 */
+  --gold: oklch(0.625 0.115 75); /* #A9802E */
+  --ink: oklch(0.235 0.015 55); /* #2A2622 */
+  --murgese: oklch(0.155 0.008 50); /* #15110F — nero Murgese */
 
   /* Mapping shadcn → brand */
   --background: var(--ivory);
@@ -119,7 +119,9 @@
     max-width: 100vw;
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     font-family: var(--font-display);
     font-weight: 600;
     letter-spacing: -0.02em;
@@ -187,7 +189,9 @@ html.js-ready [data-reveal][data-reveal-pending]:not(.in-view) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
