@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Instagram, Phone, MessageCircle, MapPin, Globe, Check, ArrowRight } from "lucide-react";
+import { Instagram, Facebook, Phone, MessageCircle, MapPin, Globe, Check, ArrowRight } from "lucide-react";
 import { StylizedMap } from "@/components/StylizedMap";
 import { cn } from "@/lib/utils";
 import { BUSINESS, SITE_URL } from "@/lib/site";
@@ -24,6 +24,8 @@ const WHATSAPP_URL = BUSINESS.whatsappUrl;
 const SITE = "torreabbondanza.com";
 const IG_HANDLE = BUSINESS.instagram.handle;
 const IG_URL = BUSINESS.instagram.url;
+const FB_HANDLE = BUSINESS.facebook.handle;
+const FB_URL = BUSINESS.facebook.url;
 const COORDS = { lat: BUSINESS.geo.lat, lng: BUSINESS.geo.lon };
 const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${COORDS.lat},${COORDS.lng}`;
 const APPLE_MAPS_URL = `https://maps.apple.com/?ll=${COORDS.lat},${COORDS.lng}&q=Masseria%20Torre%20Abbondanza`;
@@ -718,6 +720,16 @@ export function VisitSection() {
                     className="hover:text-terracotta transition-colors"
                   >
                     {IG_HANDLE}
+                  </a>
+                </ContactRow>
+                <ContactRow label="Facebook" icon={<Facebook className="h-4 w-4" />}>
+                  <a
+                    href={FB_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-terracotta transition-colors"
+                  >
+                    {FB_HANDLE}
                   </a>
                 </ContactRow>
               </ul>
