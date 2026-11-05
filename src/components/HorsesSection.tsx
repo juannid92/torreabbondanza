@@ -457,7 +457,7 @@ export function HorsesSection() {
               fontSize: "clamp(5rem, 22vw, 22rem)",
               letterSpacing: "-0.04em",
               lineHeight: 0.85,
-              backgroundImage: `url(${gallopImg})`,
+              backgroundImage: `url(${apparitionImg})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               WebkitBackgroundClip: "text",
