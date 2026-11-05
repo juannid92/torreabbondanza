@@ -6,8 +6,6 @@ import { KineticMarquee } from "./KineticMarquee";
 import { VerticalWord } from "./VerticalWord";
 import { MagneticButton } from "./MagneticButton";
 import sogliaImg from "@/assets/hero-soglia-unica.jpg";
-import sogliaVideoAsset from "@/assets/hero-soglia-unica.mp4.asset.json";
-
 gsap.registerPlugin(ScrollTrigger);
 
 const MARQUEE_ITEMS = [
@@ -21,15 +19,15 @@ const MARQUEE_ITEMS = [
   "MURGIA · NOCI",
 ];
 
-// URL diretto del video sul CDN di Lovable (funziona anche su localhost e fuori da *.lovable.app)
-const LOVABLE_CDN_VIDEO_URL = `https://id-preview--${sogliaVideoAsset.project_id}.lovable.app${sogliaVideoAsset.url}`;
+// Video hero locale convertito da IMG_0664.MOV (48 MB originale, ottimizzato per web)
+const HERO_VIDEO_URL = "/hero-video.mp4";
 
 /**
  * Hero "La Soglia delle Due Anime" — dittico di archi gemelli.
  * Arco A (sx) = LA TAVOLA · Arco B (dx) = I CAVALLI.
  * Stessa dimensione, equità visiva e di movimento.
  * "ABBONDANZA" attraversa entrambi gli archi (back watermark + frammento terracotta davanti).
- * "TORRE" verticale a sinistra; connettore "&" centrale; due CTA di pari peso.
+ * Layout verticale a sinistra; connettore "&" centrale; due CTA di pari peso.
  */
 export function HeroSoglia() {
   const root = useRef<HTMLElement>(null);
@@ -42,7 +40,7 @@ export function HeroSoglia() {
     const ctx = gsap.context(() => {
       const back = root.current!.querySelector<HTMLElement>("[data-abbondanza-back]")!;
       const front = root.current!.querySelector<HTMLElement>("[data-abbondanza-front]")!;
-      const torre = root.current!.querySelector<HTMLElement>("[data-torre]")!;
+      const torre = root.current!.querySelector<HTMLElement>("[data-torre]")!; // selettore storico, ora contiene "MASSERIA"
       const meta = root.current!.querySelectorAll<HTMLElement>("[data-meta]");
       const subtitle = root.current!.querySelector<HTMLElement>("[data-subtitle]")!;
       const ctas = root.current!.querySelectorAll<HTMLElement>("[data-cta]");
@@ -184,8 +182,7 @@ export function HeroSoglia() {
           }}
           className="absolute inset-0 h-full w-full object-cover will-change-transform"
         >
-          <source src={LOVABLE_CDN_VIDEO_URL} type="video/mp4" />
-          <source src={sogliaVideoAsset.url} type="video/mp4" />
+          <source src={HERO_VIDEO_URL} type="video/mp4" />
         </video>
       </div>
 
@@ -198,7 +195,7 @@ export function HeroSoglia() {
             "radial-gradient(120% 80% at 50% 45%, transparent 0%, transparent 38%, rgba(247,243,236,0.18) 70%, rgba(247,243,236,0.35) 100%)",
         }}
       />
-      {/* Protezione alto-sinistra (TORRE + metadati) */}
+      {/* Protezione alto-sinistra (MASSERIA + metadati) */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-[1]"
@@ -228,8 +225,8 @@ export function HeroSoglia() {
       <div className="grain-overlay z-[2]" />
 
       <h1 className="sr-only">
-        Torre Abbondanza — Masseria del XVIII secolo a Noci, Puglia: ristorante, cerimonie e
-        allevamento di cavalli Murgesi
+        Masseria del XVIII secolo a Noci, Puglia: ristorante, cerimonie e allevamento di cavalli
+        Murgesi
       </h1>
 
       {/* === Metadati editoriali === */}
@@ -279,13 +276,13 @@ export function HeroSoglia() {
         </span>
       </div>
 
-      {/* === Layer 5 (z-30): TORRE verticale a sinistra === */}
+      {/* === Layer 5 (z-30): Parola chiave verticale a sinistra === */}
       <div
         data-torre
         className="absolute left-6 z-30 hidden md:block"
         style={{ top: "14%", height: "62%" }}
       >
-        <VerticalWord className="" children="TORRE" />
+        <VerticalWord className="" children="MASSERIA" />
       </div>
 
       {/* Etichette luogo · epoca · allevamento: in alto, sopra il dittico */}
@@ -301,14 +298,14 @@ export function HeroSoglia() {
         <span style={{ color: "var(--murgese)" }}>Allevamento Murgese</span>
       </div>
 
-      {/* TORRE kicker + meta su mobile */}
+      {/* MASSERIA kicker + meta su mobile */}
       <div className="absolute left-6 right-6 z-30 md:hidden" style={{ top: "7%" }}>
         <span
           data-torre
           className="block font-display font-semibold text-ink"
           style={{ fontSize: "clamp(1.8rem, 8vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1 }}
         >
-          TORRE
+          MASSERIA
         </span>
         <div data-meta className="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-eyebrow text-ink/60">
           <span>Noci · Puglia</span>

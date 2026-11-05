@@ -35,13 +35,12 @@ const PANELS: StoryPanelData[] = [
   {
     eyebrow: "Capitolo I — Le origini",
     ghost: "1700",
-    title: <>La Torre nell&apos;agro di Noci</>,
+    title: <>Nell&apos;agro di Noci</>,
     body: (
       <>
         Nel cuore del Settecento, tra i boschi cedui, i muretti a secco e il bianco di Noci, la
-        masseria nasce attorno all&apos;antica torre rurale: pietra su pietra, alzata per custodire
-        i raccolti granari, i pascoli e il bestiame nella Murgia dei Trulli, culla storica del
-        cavallo Murgese.
+        masseria nasce pietra su pietra, alzata per custodire i raccolti granari, i pascoli e il
+        bestiame nella Murgia dei Trulli, culla storica del cavallo Murgese.
       </>
     ),
     image: {

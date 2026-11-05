@@ -564,8 +564,8 @@ export function HorsesSection() {
                 color: "color-mix(in oklab, var(--ivory) 82%, transparent)",
               }}
             >
-              Sfilata di Attacchi d&apos;Epoca, cavalli Murgesi e muli Martinesi: a Torre Abbondanza
-              la tradizione equestre della Murgia non è memoria, è gesto vivo.
+              Sfilata di Attacchi d&apos;Epoca, cavalli Murgesi e muli Martinesi: nella masseria la
+              tradizione equestre della Murgia non è memoria, è gesto vivo.
             </p>
             <p
               data-h-fade
