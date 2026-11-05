@@ -4,12 +4,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useReducedMotion } from "framer-motion";
 import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
-import apparitionImg from "@/assets/puledri-fattrici/cavallo-penombra.webp";
-import gallopImg from "@/assets/horse-gallop.jpg";
-import skyImg from "@/assets/horses-sky.jpg";
-import hillsImg from "@/assets/horses-hills.webp";
-import grazingImg from "@/assets/horses-grazing.webp";
-import traditionImg from "@/assets/horses-tradition.jpg";
+import apparitionImg from "@/assets/fiocco-quinta/cavallo-dettaglio.jpg";
+import gallopImg from "@/assets/fiocco-quinta/cavallo-corte.jpg";
+import skyImg from "@/assets/sfilata/fattrici-sfilata.jpg";
+import hillsImg from "@/assets/fiocco-quinta/cavallo-corte.jpg";
+import grazingImg from "@/assets/sfilata/fattrici-sfilata.jpg";
+import traditionImg from "@/assets/fiocco-quinta/cavallo-dettaglio.jpg";
 
 const MICRO_LABELS = [
   { text: "MANTO CORVINO", x: "8%", y: "22%", delay: 0.1 },

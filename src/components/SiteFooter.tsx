@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BUSINESS, SITE_URL } from "@/lib/site";
-import closingArchImg from "@/assets/puledri-fattrici/cavallo-penombra.webp";
+import closingArchImg from "@/assets/fiocco-quinta/cavallo-dettaglio.jpg";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
