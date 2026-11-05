@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
 import apparitionImg from "@/assets/fiocco-quinta/cavallo-dettaglio.jpg";
-import gallopImg from "@/assets/fiocco-quinta/cavallo-corte.jpg";
+import gallopImg from "@/assets/horse-gallop.jpg";
 import skyImg from "@/assets/sfilata/fattrici-sfilata.jpg";
 import hillsImg from "@/assets/fiocco-quinta/cavallo-corte.jpg";
 import grazingImg from "@/assets/sfilata/fattrici-sfilata.jpg";
