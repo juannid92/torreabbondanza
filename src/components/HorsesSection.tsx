@@ -4,12 +4,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useReducedMotion } from "framer-motion";
 import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
-import apparitionImg from "@/assets/fiocco-quinta/cavallo-dettaglio.jpg";
+import murgeseStudioImg from "@/assets/murgese-studio.jpg";
 import gallopImg from "@/assets/horse-gallop.jpg";
-import skyImg from "@/assets/sfilata/fattrici-sfilata.jpg";
-import hillsImg from "@/assets/fiocco-quinta/cavallo-corte.jpg";
-import grazingImg from "@/assets/sfilata/fattrici-sfilata.jpg";
-import traditionImg from "@/assets/fiocco-quinta/cavallo-dettaglio.jpg";
 
 const MICRO_LABELS = [
   { text: "MANTO CORVINO", x: "8%", y: "22%", delay: 0.1 },
@@ -232,7 +228,7 @@ export function HorsesSection() {
               }}
             >
               <img
-                src={apparitionImg}
+                src={murgeseStudioImg}
                 alt="Ritratto di un cavallo dal manto nero nella penombra, con l’occhio e la criniera appena illuminati dietro un altro cavallo"
                 loading="lazy"
                 width={1600}
@@ -380,7 +376,7 @@ export function HorsesSection() {
           style={{ willChange: "transform" }}
         >
           <img
-            src={skyImg}
+            src={murgeseStudioImg}
             alt=""
             aria-hidden
             loading="lazy"
@@ -397,7 +393,7 @@ export function HorsesSection() {
           style={{ willChange: "transform" }}
         >
           <img
-            src={hillsImg}
+            src={murgeseStudioImg}
             alt=""
             aria-hidden
             loading="lazy"
@@ -414,7 +410,7 @@ export function HorsesSection() {
           style={{ willChange: "transform" }}
         >
           <img
-            src={grazingImg}
+            src={murgeseStudioImg}
             alt="Cavalli Murgesi al pascolo nella prateria della Murgia all'ora dorata"
             loading="lazy"
             className="absolute inset-x-0 bottom-0 h-full w-full object-contain object-bottom"
@@ -457,7 +453,7 @@ export function HorsesSection() {
               fontSize: "clamp(5rem, 22vw, 22rem)",
               letterSpacing: "-0.04em",
               lineHeight: 0.85,
-              backgroundImage: `url(${apparitionImg})`,
+              backgroundImage: `url(${murgeseStudioImg})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               WebkitBackgroundClip: "text",
@@ -517,7 +513,7 @@ export function HorsesSection() {
               }}
             >
               <img
-                src={traditionImg}
+                src={murgeseStudioImg}
                 alt="Carrozza d'epoca con due cavalli Murgesi nella tradizione equestre della Murgia, al tramonto presso la masseria"
                 loading="lazy"
                 width={1408}
