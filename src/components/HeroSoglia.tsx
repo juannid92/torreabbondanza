@@ -5,7 +5,6 @@ import { SplitText } from "@/lib/split-text";
 import { KineticMarquee } from "./KineticMarquee";
 import { VerticalWord } from "./VerticalWord";
 import { MagneticButton } from "./MagneticButton";
-import sogliaImg from "@/assets/hero-soglia-unica.jpg";
 gsap.registerPlugin(ScrollTrigger);
 
 const MARQUEE_ITEMS = [
@@ -31,7 +30,6 @@ const HERO_VIDEO_URL = "/hero-video.mp4";
  */
 export function HeroSoglia() {
   const root = useRef<HTMLElement>(null);
-  const posterRef = useRef<HTMLImageElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -46,7 +44,6 @@ export function HeroSoglia() {
       const ctas = root.current!.querySelectorAll<HTMLElement>("[data-cta]");
       const scrollCue = root.current!.querySelector<HTMLElement>("[data-scroll-cue]")!;
       const media = root.current!.querySelector<HTMLElement>("[data-media]")!;
-      const poster = posterRef.current;
       const video = videoRef.current;
 
       if (reduced) {
@@ -55,7 +52,6 @@ export function HeroSoglia() {
           y: 0,
           clipPath: "inset(0%)",
         });
-        if (poster) gsap.set(poster, { opacity: 1, scale: 1 });
         if (video) {
           gsap.set(video, { opacity: 1, scale: 1 });
           video.play().catch(() => {});
@@ -63,14 +59,11 @@ export function HeroSoglia() {
         return;
       }
 
-      // === Media full-bleed: foto (poster) → video immediato ===
-      if (poster) {
-        gsap.fromTo(poster, { scale: 1.04 }, { scale: 1.0, duration: 1.5, ease: "power3.out" });
-      }
+      // === Media full-bleed: video immediato ===
       if (video) {
         gsap.set(video, { opacity: 1, scale: 1.02, transformOrigin: "center center" });
         video.play().catch(() => {
-          /* autoplay bloccato: resta il poster */
+          /* autoplay bloccato: resta lo sfondo ivory */
         });
         gsap.to(video, { scale: 1.0, duration: 1.6, ease: "power3.out", delay: 0.2 });
         // Ken Burns continuo sul video
@@ -158,19 +151,9 @@ export function HeroSoglia() {
       {/* MEDIA REALE DEL CLIENTE: ripresa cinematografica full-screen che inquadra
           insieme la masseria del '700 e i cavalli Murgesi nella Murgia all'ora dorata.
           Foto come poster + video mp4/webm muto in loop. */}
-      <div data-media className="absolute inset-0 z-0 overflow-hidden">
-        <img
-          ref={posterRef}
-          src={sogliaImg}
-          alt="La masseria del Settecento e i cavalli Murgesi insieme nella campagna della Murgia all'ora dorata."
-          loading="eager"
-          decoding="async"
-          fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover will-change-transform"
-        />
+      <div data-media className="absolute inset-0 z-0 overflow-hidden bg-[var(--ivory)]">
         <video
           ref={videoRef}
-          poster={sogliaImg}
           muted
           loop
           playsInline
@@ -282,7 +265,7 @@ export function HeroSoglia() {
         className="absolute left-6 z-30 hidden md:block"
         style={{ top: "14%", height: "62%" }}
       >
-        <VerticalWord className="" children="MASSERIA" />
+        <VerticalWord className="" children="TORRE" />
       </div>
 
       {/* Etichette luogo · epoca · allevamento: in alto, sopra il dittico */}
@@ -298,14 +281,14 @@ export function HeroSoglia() {
         <span style={{ color: "var(--murgese)" }}>Allevamento Murgese</span>
       </div>
 
-      {/* MASSERIA kicker + meta su mobile */}
+      {/* TORRE kicker + meta su mobile */}
       <div className="absolute left-6 right-6 z-30 md:hidden" style={{ top: "7%" }}>
         <span
           data-torre
           className="block font-display font-semibold text-ink"
           style={{ fontSize: "clamp(1.8rem, 8vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1 }}
         >
-          MASSERIA
+          TORRE
         </span>
         <div data-meta className="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-eyebrow text-ink/60">
           <span>Noci · Puglia</span>
