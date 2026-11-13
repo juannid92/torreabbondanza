@@ -5,6 +5,7 @@ import { SplitText } from "@/lib/split-text";
 import { KineticMarquee } from "./KineticMarquee";
 import { VerticalWord } from "./VerticalWord";
 import { MagneticButton } from "./MagneticButton";
+import heroPoster from "@/assets/hero-masseria.jpg";
 gsap.registerPlugin(ScrollTrigger);
 
 const MARQUEE_ITEMS = [
@@ -159,6 +160,7 @@ export function HeroSoglia() {
           playsInline
           autoPlay
           preload="auto"
+          poster={heroPoster}
           aria-hidden
           onCanPlay={(e) => {
             e.currentTarget.play().catch(() => {});
