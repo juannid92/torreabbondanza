@@ -69,6 +69,104 @@ export function absoluteUrl(path: string): string {
 }
 
 /**
+ * Dati strutturati schema.org per la pagina Cucina.
+ * Riutilizza i dati Restaurant canonici con focus su servesCuisine e menù.
+ */
+export function buildKitchenJsonLd(imageUrl: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "@id": `${SITE_URL}/cucina#kitchen`,
+    name: `${BUSINESS.name} — Cucina`,
+    description:
+      "Cucina pugliese su prenotazione per cerimonie ed eventi: antipasti di terra, primi fatti a mano, secondi della tradizione e dolci artigianali.",
+    url: `${SITE_URL}/cucina`,
+    image: [imageUrl],
+    servesCuisine: "Pugliese",
+    acceptsReservations: true,
+    telephone: BUSINESS.phone,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: BUSINESS.address.street,
+      addressLocality: BUSINESS.address.locality,
+      addressRegion: BUSINESS.address.region,
+      postalCode: BUSINESS.address.postalCode,
+      addressCountry: BUSINESS.address.country,
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: BUSINESS.geo.lat,
+      longitude: BUSINESS.geo.lon,
+    },
+    sameAs: [BUSINESS.instagram.url, BUSINESS.facebook.url],
+  };
+}
+
+/**
+ * Dati strutturati schema.org per la pagina Cavalli.
+ * Allevamento cavalli Murgesi presso la masseria.
+ */
+export function buildHorsesJsonLd(imageUrl: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `${SITE_URL}/cavalli#horses`,
+    name: `${BUSINESS.name} — Allevamento Cavalli Murgesi`,
+    description:
+      "Allevamento di cavalli Murgesi nella Murgia di Noci: soggetti iscritti al Registro Anagrafico, esperienze equestri e sfilata di Attacchi d'Epoca.",
+    url: `${SITE_URL}/cavalli`,
+    image: [imageUrl],
+    telephone: BUSINESS.phone,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: BUSINESS.address.street,
+      addressLocality: BUSINESS.address.locality,
+      addressRegion: BUSINESS.address.region,
+      postalCode: BUSINESS.address.postalCode,
+      addressCountry: BUSINESS.address.country,
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: BUSINESS.geo.lat,
+      longitude: BUSINESS.geo.lon,
+    },
+    sameAs: [BUSINESS.instagram.url, BUSINESS.facebook.url],
+  };
+}
+
+/**
+ * Dati strutturati schema.org per la pagina Eventi.
+ * Location per matrimoni, cerimonie e feste private.
+ */
+export function buildEventsJsonLd(imageUrl: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "EventVenue",
+    "@id": `${SITE_URL}/eventi#venue`,
+    name: `${BUSINESS.name} — Eventi & Cerimonie`,
+    description:
+      "Masseria del Settecento per matrimoni, cerimonie civili e simboliche, battesimi, compleanni e feste private nel cuore della Murgia di Noci.",
+    url: `${SITE_URL}/eventi`,
+    image: [imageUrl],
+    telephone: BUSINESS.phone,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: BUSINESS.address.street,
+      addressLocality: BUSINESS.address.locality,
+      addressRegion: BUSINESS.address.region,
+      postalCode: BUSINESS.address.postalCode,
+      addressCountry: BUSINESS.address.country,
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: BUSINESS.geo.lat,
+      longitude: BUSINESS.geo.lon,
+    },
+    sameAs: [BUSINESS.instagram.url, BUSINESS.facebook.url],
+  };
+}
+
+/**
  * Dati strutturati schema.org per la scheda attività.
  *
  * Includono: anagrafica completa, coordinate GPS e valutazione aggregata.

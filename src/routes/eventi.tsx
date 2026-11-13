@@ -4,7 +4,8 @@ import { EventsSection } from "@/components/EventsSection";
 import { SeasonsSection } from "@/components/SeasonsSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
-import { SITE_URL, absoluteUrl } from "@/lib/site";
+import { SITE_URL, absoluteUrl, buildEventsJsonLd } from "@/lib/site";
+import eventsImg from "@/assets/events-space-day.jpg";
 
 export const Route = createFileRoute("/eventi")({
   head: () => ({
@@ -17,6 +18,12 @@ export const Route = createFileRoute("/eventi")({
       },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}eventi` }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(buildEventsJsonLd(absoluteUrl(eventsImg))),
+      },
+    ],
   }),
   component: Eventi,
 });
