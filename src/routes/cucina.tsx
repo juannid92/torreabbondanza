@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SiteHeader } from "@/components/SiteHeader";
 import { KitchenSection } from "@/components/KitchenSection";
 import { MenuSection } from "@/components/MenuSection";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -24,6 +25,7 @@ function Cucina() {
   useLenis();
   return (
     <main className="bg-background text-foreground">
+      <SiteHeader />
       <KitchenSection />
       <MenuSection />
       <SiteFooter />

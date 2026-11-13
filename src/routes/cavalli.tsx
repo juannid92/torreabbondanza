@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SiteHeader } from "@/components/SiteHeader";
 import { HorsesSection } from "@/components/HorsesSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
@@ -23,6 +24,7 @@ function Cavalli() {
   useLenis();
   return (
     <main className="bg-background text-foreground">
+      <SiteHeader />
       <HorsesSection />
       <SiteFooter />
     </main>
