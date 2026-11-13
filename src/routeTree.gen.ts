@@ -10,7 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as EventiRouteImport } from './routes/eventi'
+import { Route as CucinaRouteImport } from './routes/cucina'
 import { Route as CookieRouteImport } from './routes/cookie'
+import { Route as CavalliRouteImport } from './routes/cavalli'
 import { Route as IndexRouteImport } from './routes/index'
 
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -18,9 +21,24 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EventiRoute = EventiRouteImport.update({
+  id: '/eventi',
+  path: '/eventi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CucinaRoute = CucinaRouteImport.update({
+  id: '/cucina',
+  path: '/cucina',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CookieRoute = CookieRouteImport.update({
   id: '/cookie',
   path: '/cookie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CavalliRoute = CavalliRouteImport.update({
+  id: '/cavalli',
+  path: '/cavalli',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,31 +49,50 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cavalli': typeof CavalliRoute
   '/cookie': typeof CookieRoute
+  '/cucina': typeof CucinaRoute
+  '/eventi': typeof EventiRoute
   '/privacy': typeof PrivacyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cavalli': typeof CavalliRoute
   '/cookie': typeof CookieRoute
+  '/cucina': typeof CucinaRoute
+  '/eventi': typeof EventiRoute
   '/privacy': typeof PrivacyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cavalli': typeof CavalliRoute
   '/cookie': typeof CookieRoute
+  '/cucina': typeof CucinaRoute
+  '/eventi': typeof EventiRoute
   '/privacy': typeof PrivacyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cookie' | '/privacy'
+  fullPaths: '/' | '/cavalli' | '/cookie' | '/cucina' | '/eventi' | '/privacy'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cookie' | '/privacy'
-  id: '__root__' | '/' | '/cookie' | '/privacy'
+  to: '/' | '/cavalli' | '/cookie' | '/cucina' | '/eventi' | '/privacy'
+  id:
+    | '__root__'
+    | '/'
+    | '/cavalli'
+    | '/cookie'
+    | '/cucina'
+    | '/eventi'
+    | '/privacy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CavalliRoute: typeof CavalliRoute
   CookieRoute: typeof CookieRoute
+  CucinaRoute: typeof CucinaRoute
+  EventiRoute: typeof EventiRoute
   PrivacyRoute: typeof PrivacyRoute
 }
 
@@ -68,11 +105,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/eventi': {
+      id: '/eventi'
+      path: '/eventi'
+      fullPath: '/eventi'
+      preLoaderRoute: typeof EventiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cucina': {
+      id: '/cucina'
+      path: '/cucina'
+      fullPath: '/cucina'
+      preLoaderRoute: typeof CucinaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cookie': {
       id: '/cookie'
       path: '/cookie'
       fullPath: '/cookie'
       preLoaderRoute: typeof CookieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cavalli': {
+      id: '/cavalli'
+      path: '/cavalli'
+      fullPath: '/cavalli'
+      preLoaderRoute: typeof CavalliRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,7 +145,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CavalliRoute: CavalliRoute,
   CookieRoute: CookieRoute,
+  CucinaRoute: CucinaRoute,
+  EventiRoute: EventiRoute,
   PrivacyRoute: PrivacyRoute,
 }
 export const routeTree = rootRouteImport
