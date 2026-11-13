@@ -33,7 +33,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   useLenis();
   return (
-    <main className="bg-background text-foreground">
+    <main id="main-content" className="bg-background text-foreground">
       <HeroSoglia />
       <ManifestoSection />
       <StorySection />
