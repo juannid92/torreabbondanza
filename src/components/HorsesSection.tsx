@@ -9,6 +9,7 @@ import gallopImg from "@/assets/horse-gallop.jpg";
 import horsesSkyImg from "@/assets/horses-sky.jpg";
 import horsesHillsImg from "@/assets/horses-hills.webp";
 import horsesGrazingImg from "@/assets/horses-grazing.webp";
+import murgeseRiderImg from "@/assets/murgese-rider.jpg";
 
 const MICRO_LABELS = [
   { text: "MANTO CORVINO", x: "8%", y: "22%", delay: 0.1 },
@@ -456,7 +457,7 @@ export function HorsesSection() {
               fontSize: "clamp(5rem, 22vw, 22rem)",
               letterSpacing: "-0.04em",
               lineHeight: 0.85,
-              backgroundImage: `url(${murgeseStudioImg})`,
+              backgroundImage: `url(${murgeseRiderImg})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               WebkitBackgroundClip: "text",
