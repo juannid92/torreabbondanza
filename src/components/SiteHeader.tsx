@@ -63,9 +63,7 @@ export function SiteHeader() {
                 to={item.href}
                 className={cn(
                   "text-sm tracking-wide transition-colors hover:text-gold",
-                  scrolled
-                    ? "text-ivory/80"
-                    : "text-ink/80",
+                  scrolled ? "text-ivory/80" : "text-ink/80",
                   isActive && "text-gold font-medium",
                 )}
               >
@@ -99,9 +97,7 @@ export function SiteHeader() {
             aria-expanded={mobileOpen}
             className={cn(
               "inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors md:hidden",
-              scrolled || mobileOpen
-                ? "text-ivory hover:bg-ivory/10"
-                : "text-ink hover:bg-ink/10",
+              scrolled || mobileOpen ? "text-ivory hover:bg-ivory/10" : "text-ink hover:bg-ink/10",
             )}
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

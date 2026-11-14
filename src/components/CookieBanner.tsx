@@ -184,8 +184,8 @@ function BannerView({
           </h2>
           <p className="mt-1 text-xs leading-relaxed text-ink/80 md:text-sm">
             Questo sito utilizza esclusivamente cookie tecnici necessari al funzionamento e non
-            impiega cookie di profilazione o tracciamento. Puoi rifiutare i cookie non tecnici
-            senza alcuna conseguenza per la navigazione. Per i dettagli consulta la{" "}
+            impiega cookie di profilazione o tracciamento. Puoi rifiutare i cookie non tecnici senza
+            alcuna conseguenza per la navigazione. Per i dettagli consulta la{" "}
             <Link
               to="/cookie"
               className="font-medium text-ink underline underline-offset-4 hover:text-terracotta"
