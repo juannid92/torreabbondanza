@@ -184,7 +184,8 @@ function BannerView({
           </h2>
           <p className="mt-1 text-xs leading-relaxed text-ink/80 md:text-sm">
             Questo sito utilizza esclusivamente cookie tecnici necessari al funzionamento e non
-            impiega cookie di profilazione o tracciamento. Per i dettagli consulta la{" "}
+            impiega cookie di profilazione o tracciamento. Puoi rifiutare i cookie non tecnici
+            senza alcuna conseguenza per la navigazione. Per i dettagli consulta la{" "}
             <Link
               to="/cookie"
               className="font-medium text-ink underline underline-offset-4 hover:text-terracotta"
@@ -203,14 +204,22 @@ function BannerView({
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2.5 md:shrink-0">
+      <div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center md:shrink-0">
+        <button
+          type="button"
+          onClick={onClose}
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/20 px-5 py-2 text-[11px] tracking-[0.16em] uppercase text-ink transition-colors hover:border-terracotta hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
+        >
+          <X className="h-3.5 w-3.5" />
+          Rifiuta tutti
+        </button>
         <button
           type="button"
           onClick={onCustomize}
-          className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/20 px-4 py-2 text-[11px] tracking-[0.16em] uppercase text-ink transition-colors hover:border-terracotta hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/20 px-5 py-2 text-[11px] tracking-[0.16em] uppercase text-ink transition-colors hover:border-terracotta hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
         >
           <Settings2 className="h-3.5 w-3.5" />
-          Dettagli
+          Personalizza
         </button>
         <button
           type="button"
@@ -218,18 +227,9 @@ function BannerView({
           className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-2 text-[11px] tracking-[0.16em] uppercase text-ivory transition-colors hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
         >
           <Check className="h-3.5 w-3.5" />
-          Ho capito
+          Accetta tutti
         </button>
       </div>
-
-      <button
-        type="button"
-        onClick={onClose}
-        aria-label="Chiudi informativa cookie"
-        className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-ink/60 transition-colors hover:bg-stone/20 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
-      >
-        <X className="h-4 w-4" />
-      </button>
     </div>
   );
 }
