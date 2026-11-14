@@ -6,6 +6,9 @@ import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
 import murgeseStudioImg from "@/assets/murgese-studio.jpg";
 import gallopImg from "@/assets/horse-gallop.jpg";
+import horsesSkyImg from "@/assets/horses-sky.jpg";
+import horsesHillsImg from "@/assets/horses-hills.webp";
+import horsesGrazingImg from "@/assets/horses-grazing.webp";
 
 const MICRO_LABELS = [
   { text: "MANTO CORVINO", x: "8%", y: "22%", delay: 0.1 },
@@ -376,7 +379,7 @@ export function HorsesSection() {
           style={{ willChange: "transform" }}
         >
           <img
-            src={murgeseStudioImg}
+            src={horsesSkyImg}
             alt=""
             aria-hidden
             loading="lazy"
@@ -393,7 +396,7 @@ export function HorsesSection() {
           style={{ willChange: "transform" }}
         >
           <img
-            src={murgeseStudioImg}
+            src={horsesHillsImg}
             alt=""
             aria-hidden
             loading="lazy"
@@ -410,7 +413,7 @@ export function HorsesSection() {
           style={{ willChange: "transform" }}
         >
           <img
-            src={murgeseStudioImg}
+            src={horsesGrazingImg}
             alt="Cavalli Murgesi al pascolo nella prateria della Murgia all'ora dorata"
             loading="lazy"
             className="absolute inset-x-0 bottom-0 h-full w-full object-contain object-bottom"
