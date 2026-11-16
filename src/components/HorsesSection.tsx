@@ -136,24 +136,24 @@ export function HorsesSection() {
       const prairie = prairieSceneRef.current;
       if (prairie && !isReduced) {
         prairie.querySelectorAll<HTMLElement>("[data-p-layer]").forEach((layer) => {
-            const speed = Number(layer.dataset.speed ?? "0.2");
-            const scale = Number(layer.dataset.scale ?? "0");
-            gsap.fromTo(
-              layer,
-              { y: 80 * speed, scale: 1 + scale * 0.04 },
-              {
-                y: -80 * speed,
-                scale: 1 + scale * 0.12,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: prairie,
-                  start: "top bottom",
-                  end: "bottom top",
-                  scrub: 1,
-                },
+          const speed = Number(layer.dataset.speed ?? "0.2");
+          const scale = Number(layer.dataset.scale ?? "0");
+          gsap.fromTo(
+            layer,
+            { y: 80 * speed, scale: 1 + scale * 0.04 },
+            {
+              y: -80 * speed,
+              scale: 1 + scale * 0.12,
+              ease: "none",
+              scrollTrigger: {
+                trigger: prairie,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1,
               },
-            );
-          });
+            },
+          );
+        });
 
         // Erba che ondeggia
         const grass = prairie.querySelector<HTMLElement>("[data-p-grass]");
@@ -372,31 +372,55 @@ export function HorsesSection() {
 
       {/* ────────── MOMENTO C — LA PRATERIA ────────── */}
       <div ref={prairieSceneRef} className="relative mt-0 h-[110vh] w-full overflow-hidden">
-        {/* Sfondo completo: prateria con cavalli al tramonto */}
+        {/* Cielo */}
         <div
           data-p-layer
           data-speed="0.05"
-          data-scale-boost="0.1"
+          data-scale-boost="0"
           className="absolute inset-0"
           style={{ willChange: "transform" }}
         >
           <img
-            src={murgesePrairieBg}
-            alt="Due cavalli Murgesi al pascolo sulle colline della Murgia al tramonto"
+            src={horsesSkyImg}
+            alt=""
+            aria-hidden
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover"
           />
         </div>
 
-        {/* Overlay gradient per uniformare toni con sezione */}
+        {/* Colline */}
         <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--murgese) 30%, transparent) 0%, transparent 40%, color-mix(in oklab, var(--murgese) 50%, transparent) 100%)",
-          }}
-        />
+          data-p-layer
+          data-speed="0.2"
+          data-scale-boost="0.4"
+          className="absolute inset-x-0 bottom-0 h-[70%]"
+          style={{ willChange: "transform" }}
+        >
+          <img
+            src={horsesHillsImg}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            className="absolute inset-x-0 bottom-0 h-full w-full object-cover object-bottom"
+          />
+        </div>
+
+        {/* Cavalli al pascolo */}
+        <div
+          data-p-layer
+          data-speed="0.35"
+          data-scale-boost="0.7"
+          className="absolute inset-x-0 bottom-[12%] h-[42%]"
+          style={{ willChange: "transform" }}
+        >
+          <img
+            src={horsesGrazingImg}
+            alt="Cavalli Murgesi al pascolo nella prateria della Murgia all'ora dorata"
+            loading="lazy"
+            className="absolute inset-x-0 bottom-0 h-full w-full object-contain object-bottom"
+          />
+        </div>
 
         {/* Erba in primo piano (SVG sway) */}
         <div
