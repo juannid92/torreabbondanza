@@ -10,6 +10,7 @@ import horsesSkyImg from "@/assets/horses-sky.jpg";
 import horsesHillsImg from "@/assets/horses-hills.webp";
 import horsesGrazingImg from "@/assets/horses-grazing.webp";
 import murgeseRiderImg from "@/assets/murgese-rider.jpg";
+import murgesePrairieBg from "@/assets/murgese-prairie-bg.png";
 
 const MICRO_LABELS = [
   { text: "MANTO CORVINO", x: "8%", y: "22%", delay: 0.1 },
@@ -371,53 +372,19 @@ export function HorsesSection() {
 
       {/* ────────── MOMENTO C — LA PRATERIA ────────── */}
       <div ref={prairieSceneRef} className="relative mt-0 h-[110vh] w-full overflow-hidden">
-        {/* Cielo */}
+        {/* Sfondo completo: prateria con cavalli al tramonto */}
         <div
           data-p-layer
           data-speed="0.05"
-          data-scale-boost="0"
+          data-scale-boost="0.1"
           className="absolute inset-0"
           style={{ willChange: "transform" }}
         >
           <img
-            src={horsesSkyImg}
-            alt=""
-            aria-hidden
+            src={murgesePrairieBg}
+            alt="Due cavalli Murgesi al pascolo sulle colline della Murgia al tramonto"
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover"
-          />
-        </div>
-
-        {/* Colline */}
-        <div
-          data-p-layer
-          data-speed="0.2"
-          data-scale-boost="0.4"
-          className="absolute inset-x-0 bottom-0 h-[70%]"
-          style={{ willChange: "transform" }}
-        >
-          <img
-            src={horsesHillsImg}
-            alt=""
-            aria-hidden
-            loading="lazy"
-            className="absolute inset-x-0 bottom-0 h-full w-full object-cover object-bottom"
-          />
-        </div>
-
-        {/* Cavalli al pascolo */}
-        <div
-          data-p-layer
-          data-speed="0.35"
-          data-scale-boost="0.7"
-          className="absolute inset-x-0 bottom-[12%] h-[42%]"
-          style={{ willChange: "transform" }}
-        >
-          <img
-            src={horsesGrazingImg}
-            alt="Cavalli Murgesi al pascolo nella prateria della Murgia all'ora dorata"
-            loading="lazy"
-            className="absolute inset-x-0 bottom-0 h-full w-full object-contain object-bottom"
           />
         </div>
 
