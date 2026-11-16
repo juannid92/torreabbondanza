@@ -46,7 +46,8 @@ export function EventsSection() {
 
     const ctx = gsap.context(() => {
       /* ---------- Motion constants: Premium archetype ---------- */
-      const EASE_PREMIUM = "cubic-bezier(0.4, 0, 0.2, 1)";
+      // GSAP non supporta cubic-bezier() CSS — uso power2.out (equivalente decelerate)
+      const EASE_PREMIUM = "power2.out";
       const DUR_TITLE = reduced ? 0.2 : 0.55;
       const DUR_CARD = reduced ? 0.15 : 0.45;
       const DUR_PHRASE = reduced ? 0.15 : 0.4;
@@ -380,7 +381,7 @@ export function EventsSection() {
               data-occasion-card
               data-reveal="soft"
               className="flex min-h-[80svh] items-center px-6 py-16 md:px-12"
-              style={{ willChange: "clip-path", clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
+              style={{ willChange: "clip-path" }}
             >
               <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-6">
                 <h3
