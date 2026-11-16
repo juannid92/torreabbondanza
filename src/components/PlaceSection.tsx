@@ -10,7 +10,7 @@ import skyImg from "@/assets/place-sky.jpg";
 import hillsImg from "@/assets/place-hills.webp";
 import olivesImg from "@/assets/place-olives.webp";
 import masseriaImg from "@/assets/place-masseria.webp";
-import masseriaNewImg from "@/assets/place-masseria-nobg.png";
+import masseriaNewImg from "@/assets/place-masseria-nobg.webp";
 import horsesImg from "@/assets/place-horses.webp";
 
 if (typeof window !== "undefined") {
@@ -158,7 +158,7 @@ export function PlaceSection() {
             loading="lazy"
             width={2400}
             height={1340}
-            className="absolute bottom-[18%] left-1/2 w-[62%] max-w-[820px] -translate-x-1/2 object-contain drop-shadow-[0_30px_60px_color-mix(in_oklab,var(--ink)_30%,transparent)] md:left-[58%] md:w-[52%]"
+            className="absolute bottom-[16%] left-[42%] w-[78%] max-w-[960px] -translate-x-1/2 object-contain drop-shadow-[0_30px_60px_color-mix(in_oklab,var(--ink)_30%,transparent)] md:left-[48%] md:w-[68%]"
           />
         </ParallaxLayer>
 
