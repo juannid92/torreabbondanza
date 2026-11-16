@@ -5,10 +5,11 @@ import { BUSINESS } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { label: "Home", href: "/" },
+  { label: "La Masseria", href: "/#luogo" },
   { label: "Cucina", href: "/cucina" },
   { label: "Cavalli", href: "/cavalli" },
   { label: "Eventi", href: "/eventi" },
+  { label: "Contatti", href: "/#contatti" },
 ] as const;
 
 export function SiteHeader() {
