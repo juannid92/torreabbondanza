@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
@@ -6,11 +6,54 @@ import { splitWords } from "@/lib/split-text";
 import { observeRevealElements } from "@/lib/scroll-ready";
 import dayImg from "@/assets/events-space-day.jpg";
 import nightImg from "@/assets/events-space-night.jpg";
+import tablePanoImg from "@/assets/events-table-pano.jpg";
 import carriageImg from "@/assets/events-carriage.jpg";
 
 /* -------------------------------------------------------------------------- */
-/* Occasioni — copy invariato rispetto al backup                               */
+/* Costanti: punti luce delle "lucine" (3 stringhe ad arco)                   */
 /* -------------------------------------------------------------------------- */
+type Light = { x: number; y: number; r: number; delay: number };
+
+const r3 = (n: number) => Math.round(n * 1000) / 1000;
+
+function buildLightStrings(): Light[] {
+  const lights: Light[] = [];
+  // 3 stringhe ad arco: x in [4..96]%, y centrata su 3 fasce
+  const strings = [
+    { yBase: 26, yAmp: -10, count: 22 },
+    { yBase: 36, yAmp: -8, count: 26 },
+    { yBase: 48, yAmp: -6, count: 20 },
+  ];
+  let order = 0;
+  const totalLights = strings.reduce((s, st) => s + st.count, 0);
+  strings.forEach((s, si) => {
+    for (let i = 0; i < s.count; i++) {
+      const t = i / (s.count - 1);
+      const x = 4 + t * 92;
+      const arc = Math.sin(t * Math.PI);
+      const y = s.yBase + s.yAmp * arc;
+      // ordine di accensione semi-random per evitare onda perfetta
+      const baseDelay = order / totalLights;
+      const jitter = ((si * 7 + i * 11) % 13) / 13 - 0.5;
+      lights.push({
+        x: r3(x),
+        y: r3(y),
+        r: r3(2.6 + (si === 1 ? 0.6 : 0)),
+        delay: r3(Math.min(0.95, Math.max(0, baseDelay + jitter * 0.04))),
+      });
+      order++;
+    }
+  });
+  return lights;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Occasioni — Momento C                                                       */
+/* -------------------------------------------------------------------------- */
+// [K8] L'array è ordinato: prima l'esperienza equestre (anima distinta del
+// brand — vedi HorsesSection), poi la masseria come cornice delle occasioni
+// classiche, in coda le 5 voci canoniche del form. Niente cambi estetici:
+// stesso layout, stesse animazioni, stesse classi CSS.
 const OCCASIONS = [
   {
     word: "ESPERIENZA EQUESTRE",
@@ -33,28 +76,21 @@ const OCCASIONS = [
 /* -------------------------------------------------------------------------- */
 export function EventsSection() {
   const rootRef = useRef<HTMLElement>(null);
+  const lights = useMemo(buildLightStrings, []);
 
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     root.querySelectorAll<HTMLElement>("[data-fade]").forEach((el) => {
       el.setAttribute("data-reveal", "soft");
     });
     const cleanupReveal = observeRevealElements(root);
 
     const ctx = gsap.context(() => {
-      /* ---------- Motion constants: Premium archetype ---------- */
-      // GSAP non supporta cubic-bezier() CSS — uso power2.out (equivalente decelerate)
-      const EASE_PREMIUM = "power2.out";
-      const DUR_TITLE = reduced ? 0.2 : 0.55;
-      const DUR_CARD = reduced ? 0.15 : 0.45;
-      const DUR_PHRASE = reduced ? 0.15 : 0.4;
-      const STAGGER_CARDS = reduced ? 0 : 0.08;
-
-      /* ---------- Mask-reveal per parola sui titoli (Premium easing) ---------- */
-      root.querySelectorAll<HTMLElement>("[data-mask-title]").forEach((title) => {
+      /* ---------- Titoli con mask-reveal per parola ---------- */
+      const titles = root.querySelectorAll<HTMLElement>("[data-mask-title]");
+      titles.forEach((title) => {
         const words = splitWords(title);
         ScrollTrigger.create({
           trigger: title,
@@ -67,8 +103,8 @@ export function EventsSection() {
               { yPercent: 110 },
               {
                 yPercent: 0,
-                duration: DUR_TITLE,
-                ease: EASE_PREMIUM,
+                duration: reduced ? 0.2 : 1.1,
+                ease: "power3.out",
                 stagger: reduced ? 0 : 0.06,
                 overwrite: true,
               },
@@ -77,14 +113,14 @@ export function EventsSection() {
         });
       });
 
-      /* ---------- Opener: parole titolo iniziale (Premium easing + secondary shadow) ---------- */
+      /* ---------- Opener title: mask-reveal manuale (rispetta l'accento) ---------- */
       const openerWords = root.querySelectorAll<HTMLElement>("[data-opener-word]");
       if (openerWords.length) {
         gsap.set(openerWords, { yPercent: 110 });
         gsap.to(openerWords, {
           yPercent: 0,
-          duration: DUR_TITLE,
-          ease: EASE_PREMIUM,
+          duration: reduced ? 0.2 : 1.1,
+          ease: "power3.out",
           stagger: reduced ? 0 : 0.08,
           delay: 0.2,
         });
@@ -92,40 +128,52 @@ export function EventsSection() {
 
       if (reduced) return;
 
-      /* ---------- SCENA 1 — Ken burns con curva fluida (non linear) ---------- */
+      /* ---------- MOMENTO A — ken burns lento sulla foto giorno ---------- */
       const openerImg = root.querySelector<HTMLElement>("[data-opener-img]");
       if (openerImg) {
         gsap.fromTo(
           openerImg,
           { scale: 1.02, xPercent: 0 },
-          {
-            scale: 1.1,
-            xPercent: -2,
-            duration: 28,
-            ease: "sine.inOut",
-            repeat: -1,
-            yoyo: true,
-          },
+          { scale: 1.1, xPercent: -2, duration: 22, ease: "none", repeat: -1, yoyo: true },
         );
       }
 
-      /* ---------- SCENA 2 — Crossfade giorno→notte con easing Premium ---------- */
+      /* ---------- MOMENTO C — switch desktop/mobile via matchMedia ---------- */
       const dayLayer = root.querySelector<HTMLElement>("[data-day-layer]");
       const nightLayer = root.querySelector<HTMLElement>("[data-night-layer]");
-      const pinContainer = root.querySelector<HTMLElement>("[data-occasions-pin]");
+      const skyLayer = root.querySelector<HTMLElement>("[data-sky-layer]");
+      const lightEls = root.querySelectorAll<HTMLElement>("[data-light]");
+      const candleEls = root.querySelectorAll<HTMLElement>("[data-candle]");
+      const bokehLayer = root.querySelector<HTMLElement>("[data-bokeh-layer]");
+      const kineticB = root.querySelector<HTMLElement>("[data-kinetic-b]");
+      const cScene = root.querySelector<HTMLElement>("[data-scene-c]");
+      const cTrack = root.querySelector<HTMLElement>("[data-scene-c-track]");
+      const cBg = root.querySelector<HTMLElement>("[data-scene-c-bg]");
+      const cMid = root.querySelector<HTMLElement>("[data-scene-c-mid]");
+      const cFg = root.querySelector<HTMLElement>("[data-scene-c-fg]");
+      const cOccs = root.querySelectorAll<HTMLElement>("[data-occasion]");
+      const firstCopy = root.querySelector<HTMLElement>("[data-events-first-copy]");
 
-      if (dayLayer && nightLayer && pinContainer) {
-        gsap.set(dayLayer, { autoAlpha: 1 });
-        gsap.set(nightLayer, { autoAlpha: 0 });
+      const mm = gsap.matchMedia();
 
-        const mm = gsap.matchMedia();
+      // DESKTOP / TABLET (≥ 768px) — unica timeline pinned: giorno/notte + dolly orizzontale
+      mm.add("(min-width: 768px)", () => {
+        if (cScene && cTrack) {
+          const getDistance = () => Math.max(0, cTrack.scrollWidth - window.innerWidth);
+          const getDuration = () => Math.max(getDistance(), window.innerHeight * 2.2);
 
-        mm.add("(min-width: 768px)", () => {
-          const tl = gsap.timeline({
+          gsap.set(dayLayer, { autoAlpha: 1 });
+          gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), { autoAlpha: 0 });
+          gsap.set(lightEls, { opacity: 0, scale: 0.6 });
+          gsap.set(candleEls, { opacity: 0 });
+          if (kineticB) gsap.set(kineticB, { yPercent: 30, opacity: 0 });
+
+          const masterTimeline = gsap.timeline({
             scrollTrigger: {
-              trigger: pinContainer,
+              id: "events-main-dolly",
+              trigger: cScene,
               start: "top top",
-              end: () => `+=${OCCASIONS.length * window.innerHeight * 0.7}`,
+              end: () => `+=${getDuration()}`,
               pin: true,
               pinSpacing: true,
               scrub: 1,
@@ -134,79 +182,167 @@ export function EventsSection() {
             },
           });
 
-          // Crossfade day→night con easing Premium nei primi 20% del pin
-          tl.to(dayLayer, { autoAlpha: 0, ease: EASE_PREMIUM }, 0);
-          tl.to(nightLayer, { autoAlpha: 1, ease: EASE_PREMIUM }, 0);
+          if (dayLayer) {
+            masterTimeline.to(dayLayer, { autoAlpha: 0.25, ease: "none", duration: 0.18 }, 0);
+          }
+          if (nightLayer) {
+            masterTimeline.to(nightLayer, { autoAlpha: 1, ease: "none", duration: 0.18 }, 0);
+          }
+          if (skyLayer) {
+            masterTimeline.to(skyLayer, { autoAlpha: 1, ease: "none", duration: 0.18 }, 0);
+          }
+          if (firstCopy) {
+            masterTimeline.to(
+              firstCopy,
+              { autoAlpha: 0, y: -24, ease: "none", duration: 0.12 },
+              0.06,
+            );
+          }
+          lightEls.forEach((el) => {
+            const delay = parseFloat(el.dataset.delay ?? "0");
+            const at = 0.03 + delay * 0.13;
+            masterTimeline.to(el, { opacity: 1, scale: 1, duration: 0.02, ease: "power2.out" }, at);
+          });
+          candleEls.forEach((el, i) => {
+            masterTimeline.to(
+              el,
+              { opacity: 1, duration: 0.02, ease: "power2.out" },
+              0.1 + (i / candleEls.length) * 0.08,
+            );
+          });
+          if (bokehLayer) {
+            masterTimeline.to(bokehLayer, { autoAlpha: 0.9, duration: 0.18, ease: "none" }, 0.04);
+          }
+          if (kineticB) {
+            masterTimeline.to(
+              kineticB,
+              { yPercent: -30, opacity: 0.95, ease: "none", duration: 0.18 },
+              0,
+            );
+          }
+
+          if (cBg) {
+            masterTimeline.to(
+              cBg,
+              {
+                x: () => -getDistance() * 0.3,
+                ease: "none",
+                duration: 0.82,
+              },
+              0.18,
+            );
+          }
+          if (cMid) {
+            masterTimeline.to(
+              cMid,
+              {
+                x: () => -getDistance() * 0.6,
+                ease: "none",
+                duration: 0.82,
+              },
+              0.18,
+            );
+          }
+          if (cFg) {
+            masterTimeline.to(
+              cFg,
+              {
+                x: () => -getDistance() * 1.15,
+                ease: "none",
+                duration: 0.82,
+              },
+              0.18,
+            );
+          }
+          masterTimeline.to(
+            cTrack,
+            { x: () => -getDistance(), ease: "none", duration: 0.82 },
+            0.18,
+          );
+
+          cOccs.forEach((occ) => {
+            const word = occ.querySelector<HTMLElement>("[data-occ-word]");
+            const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
+            if (!word || !phrase) return;
+            const wordChars = splitWords(word);
+            ScrollTrigger.create({
+              trigger: occ,
+              containerAnimation: masterTimeline,
+              start: "left center",
+              end: "right center",
+              onEnter: () => {
+                gsap.fromTo(
+                  wordChars,
+                  { yPercent: 110 },
+                  {
+                    yPercent: 0,
+                    duration: 0.9,
+                    ease: "power3.out",
+                    stagger: 0.05,
+                    overwrite: true,
+                  },
+                );
+                gsap.fromTo(
+                  phrase,
+                  { opacity: 0, y: 20 },
+                  {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.7,
+                    ease: "power3.out",
+                    delay: 0.15,
+                    overwrite: true,
+                  },
+                );
+              },
+              once: true,
+              horizontal: true,
+            });
+          });
+        }
+      });
+
+      // MOBILE (< 768px) — scena B/C statiche e verticali, fail-safe sempre visibile
+      mm.add("(max-width: 767px)", () => {
+        gsap.set(dayLayer, { autoAlpha: 0.25, clearProps: "transform" });
+        gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), {
+          autoAlpha: 1,
+          clearProps: "transform",
         });
-      }
+        gsap.set(lightEls, { opacity: 1, scale: 1, clearProps: "transform" });
+        gsap.set(candleEls, { opacity: 1 });
+        if (kineticB) gsap.set(kineticB, { yPercent: 0, opacity: 0.7 });
+        if (cTrack) gsap.set(cTrack, { clearProps: "transform,x" });
+        [cBg, cMid, cFg].forEach((el) => {
+          if (el) gsap.set(el, { clearProps: "transform,x" });
+        });
 
-      // Clip-path reveal con secondary motion (ombra che si espande) + stagger cards
-      root.querySelectorAll<HTMLElement>("[data-occasion-card]").forEach((card, idx) => {
-        const word = card.querySelector<HTMLElement>("[data-occ-word]");
-        const phrase = card.querySelector<HTMLElement>("[data-occ-phrase]");
-
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 78%",
-          once: true,
-          invalidateOnRefresh: true,
-          onEnter: () => {
-            // Primary: clip-path reveal
-            gsap.fromTo(
-              card,
-              { clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" },
-              {
-                clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-                duration: DUR_CARD,
-                ease: EASE_PREMIUM,
-                overwrite: true,
-              },
-            );
-            // Secondary: shadow expansion during reveal
-            gsap.fromTo(
-              card,
-              { boxShadow: "0 0 0 rgba(0,0,0,0)" },
-              {
-                boxShadow: "0 20px 60px rgba(0,0,0,0.35)",
-                duration: DUR_CARD,
-                ease: EASE_PREMIUM,
-                overwrite: true,
-              },
-            );
-            if (word) {
-              const chars = splitWords(word);
+        cOccs.forEach((occ) => {
+          const word = occ.querySelector<HTMLElement>("[data-occ-word]");
+          const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
+          if (!word || !phrase) return;
+          ScrollTrigger.create({
+            trigger: occ,
+            start: "top 86%",
+            once: true,
+            invalidateOnRefresh: true,
+            onEnter: () => {
               gsap.fromTo(
-                chars,
-                { yPercent: 110 },
-                {
-                  yPercent: 0,
-                  duration: DUR_TITLE,
-                  ease: EASE_PREMIUM,
-                  stagger: 0.05,
-                  delay: 0.12,
-                  overwrite: true,
-                },
+                word,
+                { y: 18 },
+                { y: 0, duration: 0.75, ease: "power3.out", overwrite: true },
               );
-            }
-            if (phrase) {
               gsap.fromTo(
                 phrase,
-                { opacity: 0, y: 20 },
-                {
-                  opacity: 1,
-                  y: 0,
-                  duration: DUR_PHRASE,
-                  ease: EASE_PREMIUM,
-                  delay: 0.25,
-                  overwrite: true,
-                },
+                { y: 14 },
+                { y: 0, duration: 0.65, ease: "power3.out", delay: 0.08, overwrite: true },
               );
-            }
-          },
+            },
+          });
         });
       });
 
-      /* ---------- SCENA 3 — Parallax carrozza con easing fluido ---------- */
+      /* ---------- MOMENTO D — parallax carrozza ---------- */
       const carriage = root.querySelector<HTMLElement>("[data-carriage-img]");
       if (carriage) {
         gsap.fromTo(
@@ -214,7 +350,7 @@ export function EventsSection() {
           { yPercent: -5, scale: 1.06 },
           {
             yPercent: 5,
-            ease: "sine.inOut",
+            ease: "none",
             scrollTrigger: {
               trigger: carriage,
               start: "top bottom",
@@ -239,30 +375,43 @@ export function EventsSection() {
         Eventi e matrimoni alla Masseria Torre Abbondanza
       </h2>
 
-      {/* ==================================================================== */}
-      {/* SCENA 1 — Opener cinematografico                                      */}
-      {/* ==================================================================== */}
-      <div className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-murgese">
-        <img
-          data-opener-img
-          src={dayImg}
-          alt="Cortile della masseria all'ora dorata, lunga tavola di legno in attesa sotto gli ulivi"
-          loading="lazy"
-          decoding="async"
-          width={1920}
-          height={1280}
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ willChange: "transform" }}
-        />
+      {/* ====================================================================
+          MOMENTO B — Apertura fotografica compatta
+      ==================================================================== */}
+      <div
+        data-scene-b
+        className="relative mb-0 h-[100svh] min-h-[640px] w-full overflow-hidden bg-murgese pb-0 max-md:h-auto max-md:min-h-[100svh]"
+      >
+        <div data-scene-b-media className="absolute inset-0">
+          <img
+            data-opener-img
+            src={dayImg}
+            alt="Cortile della masseria all'ora dorata, lunga tavola di legno in attesa sotto gli ulivi"
+            loading="lazy"
+            decoding="async"
+            width={1920}
+            height={1280}
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ willChange: "transform" }}
+          />
+        </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-x-0 top-0 z-20 h-56"
           style={{
             background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--murgese) 40%, transparent) 0%, transparent 35%, color-mix(in oklab, var(--ink) 55%, transparent) 75%, color-mix(in oklab, var(--ink) 85%, transparent) 100%)",
+              "linear-gradient(180deg, var(--murgese) 0%, color-mix(in oklab, var(--murgese) 50%, transparent) 35%, transparent 100%)",
           }}
         />
-        <div className="absolute inset-0 flex items-end">
+        <div data-scene-b-opener className="absolute inset-0 z-10 flex items-end">
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, transparent 25%, color-mix(in oklab, var(--ink) 30%, transparent) 65%, color-mix(in oklab, var(--ink) 70%, transparent) 100%)",
+            }}
+          />
           <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-end px-6 pb-20 md:px-12 md:pb-28">
             <p data-fade className="text-eyebrow text-ivory/85">
               07 — Eventi & Matrimoni
@@ -294,7 +443,7 @@ export function EventsSection() {
                       }}
                     >
                       {w}
-                      {i < arr.length - 1 ? " " : ""}
+                      {i < arr.length - 1 ? "\u00A0" : ""}
                     </span>
                   </span>
                 );
@@ -311,79 +460,283 @@ export function EventsSection() {
         </div>
       </div>
 
-      {/* ==================================================================== */}
-      {/* SCENA 2 — Occasioni pinned (sticky night + cards clip-path)          */}
-      {/* ==================================================================== */}
+      {/* ====================================================================
+          MOMENTO C — Dolly orizzontale dentro la festa
+      ==================================================================== */}
       <div
-        data-occasions-pin
-        className="relative min-h-[100svh] overflow-hidden bg-murgese"
+        data-scene-c
+        className="relative mt-0 min-h-[100svh] overflow-hidden bg-murgese pt-0 md:h-screen"
         style={{ contain: "paint" }}
       >
-        {/* Sticky image: day→night crossfade, dietro le cards */}
-        <div className="sticky top-0 h-screen w-full overflow-hidden">
-          <img
-            data-day-layer
-            src={dayImg}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            width={1920}
-            height={1280}
-            className="absolute inset-0 h-full w-full object-cover"
-            style={{ willChange: "opacity" }}
-          />
-          <img
-            data-night-layer
-            src={nightImg}
-            alt="La masseria di notte, luci calde sotto gli ulivi"
-            loading="lazy"
-            width={1920}
-            height={1280}
-            className="absolute inset-0 h-full w-full object-cover"
-            style={{ opacity: 0, willChange: "opacity" }}
-          />
-          {/* Velatura per leggibilità cards */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, color-mix(in oklab, var(--murgese) 55%, transparent) 0%, color-mix(in oklab, var(--ink) 40%, transparent) 50%, color-mix(in oklab, var(--murgese) 65%, transparent) 100%)",
-            }}
-          />
-          {/* CSS noise ambient (sostituisce Three.js shader) */}
-          <div aria-hidden className="ambient-noise pointer-events-none absolute inset-0" />
+        {/* Layer parallax di sfondo: panorama tavola */}
+        <div
+          data-scene-c-bg
+          className="absolute inset-0 -z-10 w-full md:inset-y-0 md:left-0 md:w-[800%]"
+          style={{
+            backgroundImage: `url(${tablePanoImg})`,
+            backgroundSize: "auto 110%",
+            backgroundRepeat: "repeat-x",
+            backgroundPosition: "left center",
+            opacity: 0.95,
+            willChange: "transform",
+          }}
+        />
+        {/* Velatura per leggibilità */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(180deg, color-mix(in oklab, var(--murgese) 55%, transparent) 0%, transparent 35%, color-mix(in oklab, var(--murgese) 70%, transparent) 100%)",
+          }}
+        />
+        {/* Lucine midground (parallax intermedio) */}
+        <div
+          data-scene-c-mid
+          className="absolute inset-0 -z-10 w-full md:inset-y-0 md:left-0 md:w-[800%]"
+          style={{ willChange: "transform" }}
+        >
+          {Array.from({ length: 120 }).map((_, i) => {
+            const x = (i / 119) * 100;
+            const y = 15 + ((i * 13) % 7) * 2;
+            return (
+              <span
+                key={i}
+                className={`absolute block rounded-full ${i >= 40 ? "max-md:hidden" : ""}`}
+                style={{
+                  left: `${x}%`,
+                  top: `${y}%`,
+                  width: 10,
+                  height: 10,
+                  background:
+                    "radial-gradient(circle, rgba(255,228,170,0.95) 0%, rgba(255,228,170,0) 70%)",
+                  filter: "blur(0.5px)",
+                  animation: `candle-flicker ${2 + (i % 4) * 0.4}s ease-in-out ${i * 0.07}s infinite`,
+                }}
+              />
+            );
+          })}
         </div>
 
-        {/* Cards che scorrono sopra lo sticky */}
-        <div className="relative z-10 -mt-[100vh] flex flex-col">
-          {/* Eyebrow introduttivo */}
-          <div data-reveal="soft" className="flex min-h-[100svh] items-center px-6 md:px-12">
-            <div className="mx-auto w-full max-w-7xl">
-              <p className="text-eyebrow text-ivory/65">I · Le occasioni</p>
-              <p
-                className="mt-6 max-w-xl font-display font-medium italic text-ivory"
+        {/* Track orizzontale con le occasioni */}
+        <div
+          data-scene-c-track
+          className="relative z-10 flex min-h-[100svh] flex-col items-start justify-center gap-10 px-6 py-20 md:absolute md:inset-y-0 md:left-0 md:flex-row md:items-center md:justify-start md:gap-0 md:px-0 md:py-0"
+          style={{ willChange: "transform" }}
+        >
+          {/* Primo pannello: giorno → notte integrato nella timeline pinned */}
+          <div
+            data-events-first-panel
+            className="relative h-[100svh] w-full shrink-0 overflow-hidden md:w-screen"
+          >
+            <img
+              data-day-layer
+              src={dayImg}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              width={1920}
+              height={1280}
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ willChange: "opacity" }}
+            />
+            <img
+              data-night-layer
+              src={nightImg}
+              alt=""
+              loading="lazy"
+              width={1920}
+              height={1280}
+              className="absolute inset-0 h-full w-full object-cover opacity-0"
+              style={{ willChange: "opacity" }}
+            />
+            <div
+              data-sky-layer
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                opacity: 0,
+                background:
+                  "linear-gradient(180deg, color-mix(in oklab, var(--murgese) 75%, #0b1a3a) 0%, color-mix(in oklab, var(--murgese) 35%, transparent) 55%, transparent 100%)",
+                willChange: "opacity",
+              }}
+            />
+
+            <svg
+              aria-hidden
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              className="pointer-events-none absolute inset-0 h-full w-full"
+            >
+              <defs>
+                <radialGradient id="events-bulb-glow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#FFE7B0" stopOpacity="1" />
+                  <stop offset="40%" stopColor="#F2B95C" stopOpacity="0.55" />
+                  <stop offset="100%" stopColor="#A9802E" stopOpacity="0" />
+                </radialGradient>
+                <radialGradient id="events-bulb-core" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#FFF6D8" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#F2B95C" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+              {["M 4 26 Q 50 16 96 26", "M 4 36 Q 50 28 96 36", "M 4 48 Q 50 42 96 48"].map(
+                (d, i) => (
+                  <path
+                    key={i}
+                    d={d}
+                    fill="none"
+                    stroke="rgba(247,243,236,0.18)"
+                    strokeWidth="0.12"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                ),
+              )}
+              {lights.map((l, i) => (
+                <g
+                  key={i}
+                  data-light
+                  data-delay={l.delay}
+                  className={i >= 36 ? "max-md:hidden" : undefined}
+                  style={{
+                    opacity: 0,
+                    transform: "scale(0.6)",
+                    transformOrigin: `${l.x}% ${l.y}%`,
+                    transformBox: "fill-box",
+                    willChange: "opacity, transform",
+                  }}
+                >
+                  <circle cx={l.x} cy={l.y} r={l.r * 3} fill="url(#events-bulb-glow)" />
+                  <circle cx={l.x} cy={l.y} r={l.r * 1.4} fill="url(#events-bulb-core)" />
+                  <circle cx={l.x} cy={l.y} r={l.r * 0.45} fill="#FFFBE6" />
+                </g>
+              ))}
+            </svg>
+
+            <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-[16%] z-10">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <span
+                  key={i}
+                  data-candle
+                  className="absolute block"
+                  style={{
+                    left: `${6 + (i / 11) * 88}%`,
+                    width: 14,
+                    height: 14,
+                    borderRadius: "50%",
+                    background:
+                      "radial-gradient(circle at 50% 45%, #FFF3BE 0%, #F2B95C 35%, rgba(169,128,46,0) 75%)",
+                    filter: "blur(1px)",
+                    opacity: 0,
+                    animation: `candle-flicker ${1.8 + (i % 5) * 0.3}s ease-in-out ${i * 0.1}s infinite`,
+                    willChange: "opacity, transform",
+                  }}
+                />
+              ))}
+            </div>
+
+            <div
+              data-bokeh-layer
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{ opacity: 0, willChange: "opacity" }}
+            >
+              {Array.from({ length: 14 }).map((_, i) => {
+                const seed = (i * 37) % 100;
+                const x = (seed * 1.7) % 100;
+                const y = 10 + ((seed * 0.6) % 65);
+                const size = 80 + (seed % 5) * 24;
+                const opacity = 0.18 + (seed % 7) * 0.05;
+                return (
+                  <span
+                    key={i}
+                    className="absolute block rounded-full"
+                    style={{
+                      left: `${x}%`,
+                      top: `${y}%`,
+                      width: size,
+                      height: size,
+                      background:
+                        "radial-gradient(circle at 50% 50%, rgba(255,213,138,0.9) 0%, rgba(255,213,138,0) 70%)",
+                      opacity,
+                      transform: "translate(-50%, -50%)",
+                      animation: `bokeh-drift ${10 + (i % 5) * 3}s ease-in-out ${i * 0.4}s infinite`,
+                    }}
+                  />
+                );
+              })}
+            </div>
+
+            <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
+              <span
+                data-kinetic-b
+                className="select-none font-display font-semibold tracking-[-0.05em] text-ivory/0"
                 style={{
-                  fontSize: "clamp(1.5rem, 2.4vw, 2.4rem)",
-                  lineHeight: 1.15,
-                  textShadow: "0 4px 24px rgba(0,0,0,0.4)",
+                  fontSize: "clamp(7rem, 22vw, 22rem)",
+                  lineHeight: 0.85,
+                  color: "color-mix(in oklab, var(--ivory) 18%, transparent)",
+                  mixBlendMode: "soft-light",
+                  willChange: "transform, opacity",
                 }}
               >
-                Ogni festa ha il suo passo: scegliete l'occasione, la masseria si trasforma.
+                FESTA
+              </span>
+            </div>
+
+            <div
+              data-events-first-copy
+              className="absolute inset-x-0 bottom-10 z-30 mx-auto flex max-w-7xl items-end justify-between gap-6 px-6 md:bottom-16 md:px-12"
+              style={{ willChange: "opacity, transform" }}
+            >
+              <p
+                className="font-display italic text-ivory"
+                style={{
+                  fontSize: "clamp(1.1rem, 1.6vw, 1.6rem)",
+                  textShadow: "0 4px 24px rgba(0,0,0,0.45)",
+                  maxWidth: "32ch",
+                }}
+              >
+                Scorri: la luce arriva, le candele si accendono, la tavola si apparecchia.
               </p>
+              <span
+                className="hidden text-eyebrow text-ivory/70 md:inline-flex"
+                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}
+              >
+                giorno → notte
+              </span>
             </div>
           </div>
 
-          {/* Cards occasioni */}
+          {/* Padding tra trasformazione e percorso nella tavola */}
+          <div className="hidden w-[20vw] flex-shrink-0 md:block" />
+
+          {/* Eyebrow di apertura del momento C */}
+          <div
+            data-reveal="soft"
+            className="w-full max-w-[28rem] flex-shrink-0 md:w-[50vw] md:pr-12"
+          >
+            <p className="text-eyebrow text-ivory/65">II · Dentro la festa</p>
+            <p
+              className="mt-6 font-display font-medium italic text-ivory"
+              style={{
+                fontSize: "clamp(1.5rem, 2.4vw, 2.4rem)",
+                lineHeight: 1.15,
+                maxWidth: "22ch",
+                textShadow: "0 4px 24px rgba(0,0,0,0.4)",
+              }}
+            >
+              Camminate dentro la tavola lunga: ogni occasione ha il suo passo.
+            </p>
+          </div>
+
           {OCCASIONS.map((occ) => (
             <article
               key={occ.word}
-              data-occasion-card
+              data-occasion
               data-reveal="soft"
-              className="flex min-h-[80svh] items-center px-6 py-16 md:px-12"
-              style={{ willChange: "clip-path" }}
+              className="relative flex w-full flex-shrink-0 items-center justify-start md:w-[80vw] md:justify-center md:px-[8vw]"
+              style={{ minHeight: undefined }}
             >
-              <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-6">
+              <div className="flex max-w-full flex-col items-start gap-6">
                 <h3
                   data-occ-word
                   className="font-display font-semibold leading-[0.95] tracking-[-0.04em] text-ivory"
@@ -397,10 +750,7 @@ export function EventsSection() {
                 <p
                   data-occ-phrase
                   className="max-w-md font-display text-lg italic leading-snug text-ivory/85 md:text-xl"
-                  style={{
-                    textShadow: "0 3px 18px rgba(0,0,0,0.5)",
-                    opacity: 0,
-                  }}
+                  style={{ textShadow: "0 3px 18px rgba(0,0,0,0.5)" }}
                 >
                   {occ.phrase}
                 </p>
@@ -408,12 +758,15 @@ export function EventsSection() {
             </article>
           ))}
 
-          {/* Chiusura: gli spazi */}
-          <div data-reveal="soft" className="flex min-h-[80svh] items-center px-6 py-16 md:px-12">
-            <div className="mx-auto flex w-full max-w-7xl flex-col gap-5">
+          {/* Chiusura: spazi */}
+          <div
+            data-reveal="soft"
+            className="flex w-full flex-shrink-0 items-center md:w-[80vw] md:px-[8vw]"
+          >
+            <div className="flex max-w-md flex-col gap-5">
               <p className="text-eyebrow text-gold">Gli spazi</p>
               <p
-                className="max-w-xl font-display italic text-ivory"
+                className="font-display italic text-ivory"
                 style={{
                   fontSize: "clamp(1.4rem, 2.2vw, 2.1rem)",
                   lineHeight: 1.2,
@@ -426,12 +779,46 @@ export function EventsSection() {
               </p>
             </div>
           </div>
+
+          {/* Padding finale */}
+          <div className="hidden w-[20vw] flex-shrink-0 md:block" />
+        </div>
+
+        {/* Foreground bokeh (parallax veloce) */}
+        <div
+          data-scene-c-fg
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-20"
+          style={{ width: "220%", willChange: "transform" }}
+        >
+          {Array.from({ length: 16 }).map((_, i) => {
+            const x = (i / 15) * 100;
+            const y = 30 + ((i * 17) % 50);
+            const size = 90 + (i % 4) * 40;
+            return (
+              <span
+                key={i}
+                className="absolute block rounded-full"
+                style={{
+                  left: `${x}%`,
+                  top: `${y}%`,
+                  width: size,
+                  height: size,
+                  transform: "translate(-50%, -50%)",
+                  background:
+                    "radial-gradient(circle, rgba(255,213,138,0.45) 0%, rgba(255,213,138,0) 70%)",
+                  filter: "blur(2px)",
+                  opacity: 0.55,
+                }}
+              />
+            );
+          })}
         </div>
       </div>
 
-      {/* ==================================================================== */}
-      {/* SCENA 3 — Carrozza equestre (parallax)                                */}
-      {/* ==================================================================== */}
+      {/* ====================================================================
+          MOMENTO D — Tocco equestre discreto
+      ==================================================================== */}
       <aside
         aria-labelledby="events-carriage-title"
         className="relative overflow-hidden"
@@ -501,9 +888,9 @@ export function EventsSection() {
         </div>
       </aside>
 
-      {/* ==================================================================== */}
-      {/* SCENA 4 — CTA chiusura                                                */}
-      {/* ==================================================================== */}
+      {/* ====================================================================
+          CTA — chiusura calda
+      ==================================================================== */}
       <div className="relative bg-ivory">
         <div className="mx-auto flex max-w-7xl flex-col items-start gap-12 px-6 py-28 md:flex-row md:items-end md:justify-between md:gap-16 md:px-12 md:py-36">
           <div data-fade className="max-w-2xl">
@@ -533,32 +920,20 @@ export function EventsSection() {
         />
       </div>
 
-      {/* CSS ambient noise (replaces Three.js shader — subtle warm gradient noise) */}
+      {/* Keyframes locali per flicker candele e bokeh */}
       <style>{`
-        .ambient-noise {
-          opacity: 0.08;
-          mix-blend-mode: overlay;
-          background:
-            radial-gradient(ellipse at 20% 30%, rgba(242,185,92,0.55) 0%, transparent 55%),
-            radial-gradient(ellipse at 80% 70%, rgba(169,128,46,0.45) 0%, transparent 55%),
-            conic-gradient(from 180deg at 50% 50%, #3a2e20 0deg, #6b4a28 90deg, #2a1e14 180deg, #8c5a32 270deg, #3a2e20 360deg);
-          animation: grain-drift 28s ease-in-out infinite;
+        @keyframes candle-flicker {
+          0%, 100% { opacity: 0.85; transform: scale(1); }
+          25% { opacity: 1; transform: scale(1.08); }
+          50% { opacity: 0.7; transform: scale(0.94); }
+          75% { opacity: 0.95; transform: scale(1.04); }
         }
-        @keyframes grain-drift {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(-2%, -1%) scale(1.04); }
+        @keyframes bokeh-drift {
+          0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+          50% { transform: translate(-50%, -50%) translateY(-14px); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .ambient-noise { animation: none !important; }
-          [data-occasion-card] {
-            clip-path: none !important;
-            will-change: auto !important;
-          }
-          [data-occ-phrase] { opacity: 1 !important; transform: none !important; }
-          [data-opener-img] { transform: scale(1.05) !important; }
-          [data-day-layer], [data-night-layer] {
-            will-change: auto !important;
-          }
+          [data-candle], [data-light] { animation: none !important; opacity: 1 !important; transform: none !important; }
         }
       `}</style>
     </section>
