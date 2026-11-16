@@ -158,8 +158,11 @@ export function PlaceSection() {
             loading="lazy"
             width={2752}
             height={1536}
-            className="absolute bottom-[18%] left-1/2 w-[58%] max-w-[760px] -translate-x-1/2 object-contain drop-shadow-[0_30px_60px_color-mix(in_oklab,var(--ink)_30%,transparent)] md:left-[58%] md:w-[48%]"
-            style={{ mixBlendMode: "multiply" }}
+            className="absolute bottom-[18%] left-1/2 w-[58%] max-w-[760px] -translate-x-1/2 object-cover drop-shadow-[0_30px_60px_color-mix(in_oklab,var(--ink)_30%,transparent)] md:left-[58%] md:w-[48%]"
+            style={{
+              maskImage: "radial-gradient(ellipse 90% 85% at center, black 50%, transparent 100%)",
+              WebkitMaskImage: "radial-gradient(ellipse 90% 85% at center, black 50%, transparent 100%)",
+            }}
           />
         </ParallaxLayer>
 
