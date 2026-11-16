@@ -135,25 +135,25 @@ export function HorsesSection() {
       // MOMENTO C — Prateria a piani: parallax dolly-in
       const prairie = prairieSceneRef.current;
       if (prairie && !isReduced) {
-        prairie.querySelectorAll<HTMLElement>("[data-p-layer]:not([data-no-parallax])").forEach((layer) => {
-          const speed = Number(layer.dataset.speed ?? "0.2");
-          const scale = Number(layer.dataset.scale ?? "0");
-          gsap.fromTo(
-            layer,
-            { y: 80 * speed, scale: 1 + scale * 0.04 },
-            {
-              y: -80 * speed,
-              scale: 1 + scale * 0.12,
-              ease: "none",
-              scrollTrigger: {
-                trigger: prairie,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1,
+        prairie.querySelectorAll<HTMLElement>("[data-p-layer]").forEach((layer) => {
+            const speed = Number(layer.dataset.speed ?? "0.2");
+            const scale = Number(layer.dataset.scale ?? "0");
+            gsap.fromTo(
+              layer,
+              { y: 80 * speed, scale: 1 + scale * 0.04 },
+              {
+                y: -80 * speed,
+                scale: 1 + scale * 0.12,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: prairie,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: 1,
+                },
               },
-            },
-          );
-        });
+            );
+          });
 
         // Erba che ondeggia
         const grass = prairie.querySelector<HTMLElement>("[data-p-grass]");
@@ -372,14 +372,13 @@ export function HorsesSection() {
 
       {/* ────────── MOMENTO C — LA PRATERIA ────────── */}
       <div ref={prairieSceneRef} className="relative mt-0 h-[110vh] w-full overflow-hidden">
-        {/* Sfondo completo: prateria con cavalli al tramonto (no parallax per evitare ghosting) */}
+        {/* Sfondo completo: prateria con cavalli al tramonto */}
         <div
           data-p-layer
-          data-no-parallax
-          data-speed="0"
-          data-scale-boost="0"
+          data-speed="0.05"
+          data-scale-boost="0.1"
           className="absolute inset-0"
-          style={{ willChange: "auto" }}
+          style={{ willChange: "transform" }}
         >
           <img
             src={murgesePrairieBg}
