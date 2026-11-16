@@ -135,7 +135,7 @@ export function HorsesSection() {
       // MOMENTO C — Prateria a piani: parallax dolly-in
       const prairie = prairieSceneRef.current;
       if (prairie && !isReduced) {
-        prairie.querySelectorAll<HTMLElement>("[data-p-layer]").forEach((layer) => {
+        prairie.querySelectorAll<HTMLElement>("[data-p-layer]:not([data-no-parallax])").forEach((layer) => {
           const speed = Number(layer.dataset.speed ?? "0.2");
           const scale = Number(layer.dataset.scale ?? "0");
           gsap.fromTo(
@@ -372,13 +372,14 @@ export function HorsesSection() {
 
       {/* ────────── MOMENTO C — LA PRATERIA ────────── */}
       <div ref={prairieSceneRef} className="relative mt-0 h-[110vh] w-full overflow-hidden">
-        {/* Sfondo completo: prateria con cavalli al tramonto */}
+        {/* Sfondo completo: prateria con cavalli al tramonto (no parallax per evitare ghosting) */}
         <div
           data-p-layer
-          data-speed="0.05"
-          data-scale-boost="0.1"
+          data-no-parallax
+          data-speed="0"
+          data-scale-boost="0"
           className="absolute inset-0"
-          style={{ willChange: "transform" }}
+          style={{ willChange: "auto" }}
         >
           <img
             src={murgesePrairieBg}
@@ -387,6 +388,16 @@ export function HorsesSection() {
             className="absolute inset-0 h-full w-full object-cover"
           />
         </div>
+
+        {/* Overlay gradient per uniformare toni con sezione */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, color-mix(in oklab, var(--murgese) 30%, transparent) 0%, transparent 40%, color-mix(in oklab, var(--murgese) 50%, transparent) 100%)",
+          }}
+        />
 
         {/* Erba in primo piano (SVG sway) */}
         <div
