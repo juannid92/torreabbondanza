@@ -373,55 +373,31 @@ export function HorsesSection() {
 
       {/* ────────── MOMENTO C — LA PRATERIA ────────── */}
       <div ref={prairieSceneRef} className="relative mt-0 h-[110vh] w-full overflow-hidden">
-        {/* Cielo */}
+        {/* Sfondo unico: cavallo al trotto a tutto schermo */}
         <div
           data-p-layer
           data-speed="0.05"
-          data-scale-boost="0"
+          data-scale-boost="0.1"
           className="absolute inset-0"
-          style={{ willChange: "transform" }}
-        >
-          <img
-            src={horsesSkyImg}
-            alt=""
-            aria-hidden
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        </div>
-
-        {/* Colline */}
-        <div
-          data-p-layer
-          data-speed="0.2"
-          data-scale-boost="0.4"
-          className="absolute inset-x-0 bottom-0 h-[70%]"
-          style={{ willChange: "transform" }}
-        >
-          <img
-            src={horsesHillsImg}
-            alt=""
-            aria-hidden
-            loading="lazy"
-            className="absolute inset-x-0 bottom-0 h-full w-full object-cover object-bottom"
-          />
-        </div>
-
-        {/* Cavalli al pascolo */}
-        <div
-          data-p-layer
-          data-speed="0.35"
-          data-scale-boost="0.7"
-          className="absolute inset-x-0 bottom-[12%] h-[42%]"
           style={{ willChange: "transform" }}
         >
           <img
             src={murgeseTrottingImg}
             alt="Cavallo Murgesi nero al trotto su sentiero erboso con alberi sullo sfondo"
             loading="lazy"
-            className="absolute inset-x-0 bottom-0 h-full w-full object-cover object-bottom"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         </div>
+
+        {/* Overlay gradient per uniformare toni con sezione */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, color-mix(in oklab, var(--murgese) 20%, transparent) 0%, transparent 30%, color-mix(in oklab, var(--murgese) 40%, transparent) 100%)",
+          }}
+        />
 
         {/* Erba in primo piano (SVG sway) */}
         <div
