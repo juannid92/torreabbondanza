@@ -45,7 +45,14 @@ export function EventsSection() {
     const cleanupReveal = observeRevealElements(root);
 
     const ctx = gsap.context(() => {
-      /* ---------- Mask-reveal per parola sui titoli ---------- */
+      /* ---------- Motion constants: Premium archetype ---------- */
+      const EASE_PREMIUM = "cubic-bezier(0.4, 0, 0.2, 1)";
+      const DUR_TITLE = reduced ? 0.2 : 0.55;
+      const DUR_CARD = reduced ? 0.15 : 0.45;
+      const DUR_PHRASE = reduced ? 0.15 : 0.4;
+      const STAGGER_CARDS = reduced ? 0 : 0.08;
+
+      /* ---------- Mask-reveal per parola sui titoli (Premium easing) ---------- */
       root.querySelectorAll<HTMLElement>("[data-mask-title]").forEach((title) => {
         const words = splitWords(title);
         ScrollTrigger.create({
@@ -59,8 +66,8 @@ export function EventsSection() {
               { yPercent: 110 },
               {
                 yPercent: 0,
-                duration: reduced ? 0.2 : 1.1,
-                ease: "power3.out",
+                duration: DUR_TITLE,
+                ease: EASE_PREMIUM,
                 stagger: reduced ? 0 : 0.06,
                 overwrite: true,
               },
@@ -69,14 +76,14 @@ export function EventsSection() {
         });
       });
 
-      /* ---------- Opener: parole titolo iniziale ---------- */
+      /* ---------- Opener: parole titolo iniziale (Premium easing + secondary shadow) ---------- */
       const openerWords = root.querySelectorAll<HTMLElement>("[data-opener-word]");
       if (openerWords.length) {
         gsap.set(openerWords, { yPercent: 110 });
         gsap.to(openerWords, {
           yPercent: 0,
-          duration: reduced ? 0.2 : 1.1,
-          ease: "power3.out",
+          duration: DUR_TITLE,
+          ease: EASE_PREMIUM,
           stagger: reduced ? 0 : 0.08,
           delay: 0.2,
         });
@@ -84,17 +91,24 @@ export function EventsSection() {
 
       if (reduced) return;
 
-      /* ---------- SCENA 1 — Ken burns sulla foto opener ---------- */
+      /* ---------- SCENA 1 — Ken burns con curva fluida (non linear) ---------- */
       const openerImg = root.querySelector<HTMLElement>("[data-opener-img]");
       if (openerImg) {
         gsap.fromTo(
           openerImg,
           { scale: 1.02, xPercent: 0 },
-          { scale: 1.1, xPercent: -2, duration: 22, ease: "none", repeat: -1, yoyo: true },
+          {
+            scale: 1.1,
+            xPercent: -2,
+            duration: 28,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+          },
         );
       }
 
-      /* ---------- SCENA 2 — Crossfade giorno→notte + clip-path cards ---------- */
+      /* ---------- SCENA 2 — Crossfade giorno→notte con easing Premium ---------- */
       const dayLayer = root.querySelector<HTMLElement>("[data-day-layer]");
       const nightLayer = root.querySelector<HTMLElement>("[data-night-layer]");
       const pinContainer = root.querySelector<HTMLElement>("[data-occasions-pin]");
@@ -119,14 +133,14 @@ export function EventsSection() {
             },
           });
 
-          // Crossfade day→night nei primi 20% del pin
-          tl.to(dayLayer, { autoAlpha: 0, ease: "none" }, 0);
-          tl.to(nightLayer, { autoAlpha: 1, ease: "none" }, 0);
+          // Crossfade day→night con easing Premium nei primi 20% del pin
+          tl.to(dayLayer, { autoAlpha: 0, ease: EASE_PREMIUM }, 0);
+          tl.to(nightLayer, { autoAlpha: 1, ease: EASE_PREMIUM }, 0);
         });
       }
 
-      // Clip-path reveal per ogni card occasione (funziona su desktop e mobile)
-      root.querySelectorAll<HTMLElement>("[data-occasion-card]").forEach((card) => {
+      // Clip-path reveal con secondary motion (ombra che si espande) + stagger cards
+      root.querySelectorAll<HTMLElement>("[data-occasion-card]").forEach((card, idx) => {
         const word = card.querySelector<HTMLElement>("[data-occ-word]");
         const phrase = card.querySelector<HTMLElement>("[data-occ-phrase]");
 
@@ -136,13 +150,25 @@ export function EventsSection() {
           once: true,
           invalidateOnRefresh: true,
           onEnter: () => {
+            // Primary: clip-path reveal
             gsap.fromTo(
               card,
               { clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" },
               {
                 clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-                duration: reduced ? 0.1 : 0.9,
-                ease: "power3.out",
+                duration: DUR_CARD,
+                ease: EASE_PREMIUM,
+                overwrite: true,
+              },
+            );
+            // Secondary: shadow expansion during reveal
+            gsap.fromTo(
+              card,
+              { boxShadow: "0 0 0 rgba(0,0,0,0)" },
+              {
+                boxShadow: "0 20px 60px rgba(0,0,0,0.35)",
+                duration: DUR_CARD,
+                ease: EASE_PREMIUM,
                 overwrite: true,
               },
             );
@@ -153,10 +179,10 @@ export function EventsSection() {
                 { yPercent: 110 },
                 {
                   yPercent: 0,
-                  duration: 0.9,
-                  ease: "power3.out",
+                  duration: DUR_TITLE,
+                  ease: EASE_PREMIUM,
                   stagger: 0.05,
-                  delay: 0.15,
+                  delay: 0.12,
                   overwrite: true,
                 },
               );
@@ -168,9 +194,9 @@ export function EventsSection() {
                 {
                   opacity: 1,
                   y: 0,
-                  duration: 0.7,
-                  ease: "power3.out",
-                  delay: 0.3,
+                  duration: DUR_PHRASE,
+                  ease: EASE_PREMIUM,
+                  delay: 0.25,
                   overwrite: true,
                 },
               );
@@ -179,7 +205,7 @@ export function EventsSection() {
         });
       });
 
-      /* ---------- SCENA 3 — Parallax carrozza ---------- */
+      /* ---------- SCENA 3 — Parallax carrozza con easing fluido ---------- */
       const carriage = root.querySelector<HTMLElement>("[data-carriage-img]");
       if (carriage) {
         gsap.fromTo(
@@ -187,7 +213,7 @@ export function EventsSection() {
           { yPercent: -5, scale: 1.06 },
           {
             yPercent: 5,
-            ease: "none",
+            ease: "sine.inOut",
             scrollTrigger: {
               trigger: carriage,
               start: "top bottom",
@@ -325,19 +351,13 @@ export function EventsSection() {
             }}
           />
           {/* CSS noise ambient (sostituisce Three.js shader) */}
-          <div
-            aria-hidden
-            className="ambient-noise pointer-events-none absolute inset-0"
-          />
+          <div aria-hidden className="ambient-noise pointer-events-none absolute inset-0" />
         </div>
 
         {/* Cards che scorrono sopra lo sticky */}
         <div className="relative z-10 -mt-[100vh] flex flex-col">
           {/* Eyebrow introduttivo */}
-          <div
-            data-reveal="soft"
-            className="flex min-h-[100svh] items-center px-6 md:px-12"
-          >
+          <div data-reveal="soft" className="flex min-h-[100svh] items-center px-6 md:px-12">
             <div className="mx-auto w-full max-w-7xl">
               <p className="text-eyebrow text-ivory/65">I · Le occasioni</p>
               <p
@@ -388,10 +408,7 @@ export function EventsSection() {
           ))}
 
           {/* Chiusura: gli spazi */}
-          <div
-            data-reveal="soft"
-            className="flex min-h-[80svh] items-center px-6 py-16 md:px-12"
-          >
+          <div data-reveal="soft" className="flex min-h-[80svh] items-center px-6 py-16 md:px-12">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-5">
               <p className="text-eyebrow text-gold">Gli spazi</p>
               <p
