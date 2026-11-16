@@ -10,6 +10,7 @@ import skyImg from "@/assets/place-sky.jpg";
 import hillsImg from "@/assets/place-hills.webp";
 import olivesImg from "@/assets/place-olives.webp";
 import masseriaImg from "@/assets/place-masseria.webp";
+import masseriaNewImg from "@/assets/place-masseria-new.jpg";
 import horsesImg from "@/assets/place-horses.webp";
 
 if (typeof window !== "undefined") {
@@ -152,12 +153,13 @@ export function PlaceSection() {
         {/* L3 Masseria — quasi neutra, punto fermo */}
         <ParallaxLayer speed={0.1} scaleBoost={0.05} zIndex={3}>
           <img
-            src={masseriaImg}
+            src={masseriaNewImg}
             alt="Masseria Torre Abbondanza nel paesaggio della Murgia"
             loading="lazy"
-            width={1408}
-            height={1024}
+            width={2752}
+            height={1536}
             className="absolute bottom-[18%] left-1/2 w-[58%] max-w-[760px] -translate-x-1/2 object-contain drop-shadow-[0_30px_60px_color-mix(in_oklab,var(--ink)_30%,transparent)] md:left-[58%] md:w-[48%]"
+            style={{ mixBlendMode: "multiply" }}
           />
         </ParallaxLayer>
 
