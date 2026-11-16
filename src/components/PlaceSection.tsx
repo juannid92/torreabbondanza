@@ -158,7 +158,7 @@ export function PlaceSection() {
             loading="lazy"
             width={2400}
             height={1340}
-            className="absolute bottom-[16%] left-[42%] w-[78%] max-w-[960px] -translate-x-1/2 object-contain drop-shadow-[0_30px_60px_color-mix(in_oklab,var(--ink)_30%,transparent)] md:left-[48%] md:w-[68%]"
+            className="absolute bottom-[16%] left-[42%] w-[92%] max-w-[1200px] -translate-x-1/2 object-contain drop-shadow-[0_30px_60px_color-mix(in_oklab,var(--ink)_30%,transparent)] md:left-[48%] md:w-[82%]"
           />
         </ParallaxLayer>
 
