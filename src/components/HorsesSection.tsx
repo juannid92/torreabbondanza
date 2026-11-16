@@ -11,6 +11,7 @@ import horsesHillsImg from "@/assets/horses-hills.webp";
 import horsesGrazingImg from "@/assets/horses-grazing.webp";
 import murgeseRiderImg from "@/assets/murgese-rider.jpg";
 import murgesePrairieBg from "@/assets/murgese-prairie-bg.png";
+import murgeseTrottingImg from "@/assets/murgese-trotting.jpg";
 
 const MICRO_LABELS = [
   { text: "MANTO CORVINO", x: "8%", y: "22%", delay: 0.1 },
@@ -415,10 +416,10 @@ export function HorsesSection() {
           style={{ willChange: "transform" }}
         >
           <img
-            src={horsesGrazingImg}
-            alt="Cavalli Murgesi al pascolo nella prateria della Murgia all'ora dorata"
+            src={murgeseTrottingImg}
+            alt="Cavallo Murgesi nero al trotto su sentiero erboso con alberi sullo sfondo"
             loading="lazy"
-            className="absolute inset-x-0 bottom-0 h-full w-full object-contain object-bottom"
+            className="absolute inset-x-0 bottom-0 h-full w-full object-cover object-bottom"
           />
         </div>
 
