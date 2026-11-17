@@ -14,8 +14,8 @@
 export const SITE_URL = "https://torreabbondanza.com";
 
 /**
- * Google Tag ID (GA4 / Google Tag Gateway).
- * Configurabile tramite variabile d'ambiente `VITE_GOOGLE_TAG_ID` (es. G-XXXXXXXXXX)
+ * Google Tag Manager Container ID (`GTM-W34HZK8C`).
+ * Configurabile tramite variabile d'ambiente `VITE_GOOGLE_TAG_ID` (es. GTM-XXXXXXXX)
  * oppure direttamente qui prima del deploy.
  */
 const rawGoogleTagId =
@@ -24,7 +24,7 @@ const rawGoogleTagId =
         ?.VITE_GOOGLE_TAG_ID
     : undefined;
 
-export const GOOGLE_TAG_ID: string = rawGoogleTagId?.trim() || "G-TORREABBONDANZA";
+export const GOOGLE_TAG_ID: string = rawGoogleTagId?.trim() || "GTM-W34HZK8C";
 
 export const BUSINESS = {
   name: "Masseria Torre Abbondanza",

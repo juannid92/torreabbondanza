@@ -11,7 +11,7 @@ import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import ogImage from "../assets/hero-masseria.jpg";
-import { BUSINESS, SITE_URL, absoluteUrl } from "../lib/site";
+import { BUSINESS, GOOGLE_TAG_ID, SITE_URL, absoluteUrl } from "../lib/site";
 import { CookieBanner } from "../components/CookieBanner";
 import { GoogleTag } from "../components/GoogleTag";
 
@@ -122,11 +122,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+const GTM_INIT_SCRIPT = `(function(){window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});try{var raw=localStorage.getItem('torreabbondanza.cookieConsent');if(raw){var parsed=JSON.parse(raw);if(parsed&&parsed.version===1&&parsed.categories){gtag('consent','update',{analytics_storage:parsed.categories.analytics?'granted':'denied',ad_storage:parsed.categories.marketing?'granted':'denied',ad_user_data:parsed.categories.marketing?'granted':'denied',ad_personalization:parsed.categories.marketing?'granted':'denied'});}}}catch(e){}gtag('js',new Date());window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});})();`;
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="it">
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: GTM_INIT_SCRIPT }} />
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(GOOGLE_TAG_ID)}`}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{if(location.pathname==="/"&&!matchMedia("(prefers-reduced-motion:reduce)").matches&&sessionStorage.getItem("torreabbondanza.introSeen")!=="1"){document.documentElement.classList.add("intro-pending");setTimeout(function(){document.documentElement.classList.remove("intro-pending")},3500);}}catch(e){}})();`,
@@ -134,6 +141,15 @@ function RootShell({ children }: { children: ReactNode }) {
         />
       </head>
       <body>
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${encodeURIComponent(GOOGLE_TAG_ID)}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-terracotta focus:ring-offset-2"
