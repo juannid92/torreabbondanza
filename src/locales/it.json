@@ -1,0 +1,133 @@
+{
+  "nav": {
+    "masseria": "La Masseria",
+    "cucina": "Cucina",
+    "cavalli": "Cavalli",
+    "eventi": "Eventi",
+    "contatti": "Contatti",
+    "gallery": "Galleria",
+    "faq": "FAQ",
+    "doveSiamo": "Dove Siamo"
+  },
+  "cta": {
+    "whatsapp": "WhatsApp",
+    "whatsappFull": "Scrivici su WhatsApp",
+    "prenota": "Prenota ora",
+    "scopri": "Scopri di più",
+    "contattaci": "Contattaci",
+    "preventivo": "Richiedi preventivo",
+    "menu": "Apri menu",
+    "chiudiMenu": "Chiudi menu"
+  },
+  "hero": {
+    "eyebrow": "Masseria del Settecento · Noci, Puglia",
+    "title": "Torre Abbondanza",
+    "subtitle": "Dove la pietra incontra il galoppo. Cucina tradizionale, eventi esclusivi e cavalli Murgesi nel cuore della Murgia dei Trulli."
+  },
+  "masseria": {
+    "eyebrow": "Dal Settecento a oggi",
+    "title": "La Masseria Torre Abbondanza",
+    "subtitle": "Un complesso rurale del XVIII secolo immerso nella Murgia dei Trulli, dove la storia della pietra incontra l'ospitalità della famiglia Giunta.",
+    "storiaTitle": "Una storia di terra e tradizione",
+    "storia1": "Masseria Torre Abbondanza nasce come complesso rurale nel cuore della Murgia dei Trulli, tra Noci e Alberobello. Le sue mura in pietra bianca raccontano secoli di vita contadina, quando le masserie erano il centro pulsante dell'economia agricola pugliese.",
+    "storia2": "Dal 2005, la famiglia Giunta ha trasformato questo luogo in un punto di riferimento per l'ospitalità autentica: la sala storica con volte in pietra del Settecento accoglie matrimoni e cerimonie, la cucina propone i sapori della tradizione pugliese su prenotazione, e l'allevamento di cavalli Murgesi mantiene viva una delle razze più antiche d'Italia.",
+    "storia3": "Oggi la masseria vive di due anime in equilibrio: la tavola e il galoppo, la pietra e la terra, la memoria e l'accoglienza. Ogni ospite che varca la soglia entra in una storia che continua.",
+    "fondazione": "Anno di fondazione",
+    "fondazioneVal": "XVIII sec.",
+    "gestione": "Gestione familiare",
+    "capacita": "Capacità eventi",
+    "capacitaVal": "Fino a 250 ospiti",
+    "razza": "Razza allevata",
+    "razzaVal": "Cavallo Murgese",
+    "vieniTitle": "Vieni a trovarci",
+    "vieniDesc": "Prenota una visita alla masseria o scopri i nostri servizi per eventi, cucina e cavalli.",
+    "scopriEventi": "Scopri gli eventi"
+  },
+  "cucina": {
+    "eyebrow": "Sapori della tradizione",
+    "title": "La nostra cucina",
+    "subtitle": "Cucina pugliese autentica preparata con ingredienti locali e ricette tramandate da generazioni. Su prenotazione per gruppi da 20 persone."
+  },
+  "cavalli": {
+    "eyebrow": "Allevamento Murgesi",
+    "title": "I nostri cavalli",
+    "subtitle": "Allevamento di cavalli Murgesi iscritti al Registro Anagrafico. Esperienze equestri, sfilate d'epoca e vendita internazionale.",
+    "venditaTitle": "Vendita Cavalli Murgesi",
+    "venditaSubtitle": "Murgese horses for sale. Registered breeding stock. EU, Russia, China export available.",
+    "exportEU": "Spedizione Europa",
+    "exportRU": "Russia e CIS",
+    "exportCN": "Cina e Asia",
+    "pedigree": "Pedigree certificato",
+    "dressage": "Dressage",
+    "attacchi": "Attacchi d'epoca"
+  },
+  "eventi": {
+    "eyebrow": "Celebrazioni uniche",
+    "title": "Eventi e cerimonie",
+    "subtitle": "Matrimoni, cerimonie, feste private e cene aziendali nella corte storica e nella sala con volte in pietra del Settecento."
+  },
+  "faq": {
+    "eyebrow": "Informazioni utili",
+    "title": "Domande frequenti",
+    "subtitle": "Tutto quello che devi sapere sulla Masseria Torre Abbondanza: prenotazioni, eventi, cucina, cavalli e come raggiungerci.",
+    "noAnswer": "Non hai trovato la risposta?",
+    "noAnswerDesc": "Scrivici direttamente: rispondiamo entro 24 ore.",
+    "q1": "Come funziona la prenotazione del ristorante?",
+    "a1": "La cucina apre su prenotazione per gruppi di almeno 20 persone con almeno due giorni di anticipo. Il menù viene composto insieme, su misura della tradizione pugliese, a partire da 50 euro a persona.",
+    "q2": "È possibile organizzare matrimoni o cerimonie in masseria?",
+    "a2": "Sì. La masseria del Settecento ospita matrimoni, cerimonie civili e simboliche, battesimi, compleanni, feste private e cene aziendali sia nella sala storica con volte in pietra sia nella corte esterna tra gli ulivi secolari.",
+    "q3": "Sono disponibili menù vegetariani, vegani o senza glutine?",
+    "a3": "Sì, su richiesta vengono preparate proposte dedicate vegetariane, vegane, gluten-free e menù per bambini in linea con le esigenze degli ospiti.",
+    "q4": "La masseria alleva e vende cavalli Murgesi?",
+    "a4": "Sì. La famiglia Giunta alleva cavalli Murgesi iscritti al Registro Anagrafico (suffisso T.A.), organizza esperienze equestri, Sfilate di Attacchi d'Epoca ed effettua vendita con spedizione internazionale in Europa, Russia e Cina.",
+    "q5": "È possibile arrivare in carrozza d'epoca durante una cerimonia?",
+    "a5": "Sì, su richiesta l'ingresso della cerimonia può aprirsi con una carrozza d'epoca trainata dai cavalli Murgesi dell'allevamento della masseria.",
+    "q6": "Dove si trova esattamente la masseria?",
+    "a6": "Si trova in Strada Vicinale per Massafra, Zona E n. 49, 70015 Noci (BA), nel cuore della Murgia dei Trulli e della Valle d'Itria, a circa 12 minuti da Putignano e Alberobello.",
+    "q7": "C'è parcheggio disponibile?",
+    "a7": "Sì, ampio parcheggio gratuito all'interno della proprietà, accessibile direttamente dalla strada vicinale. Spazi riservati per ospiti con mobilità ridotta.",
+    "q8": "Qual è la capacità massima per eventi?",
+    "a8": "La masseria può ospitare fino a 250 persone tra sala storica e corte esterna, con allestimenti personalizzabili in base al tipo di evento.",
+    "q9": "Come posso richiedere un preventivo?",
+    "a9": "Contattaci tramite WhatsApp oppure compila il modulo di contatto nella pagina Eventi. Rispondiamo entro 24 ore.",
+    "q10": "I cavalli Murgesi possono essere esportati all'estero?",
+    "a10": "Sì. Gestiamo tutta la documentazione per l'export: passaporto UE, certificati sanitari, CITES per paesi extra-UE, trasporto terrestre e aereo. Serviamo Europa, Russia/CIS e Cina/Asia."
+  },
+  "gallery": {
+    "eyebrow": "Il nostro mondo in immagini",
+    "title": "Galleria fotografica",
+    "subtitle": "Eventi, cucina, cavalli Murgesi e la bellezza della Murgia dei Trulli: scopri la Masseria Torre Abbondanza attraverso le immagini."
+  },
+  "doveSiamo": {
+    "eyebrow": "Come raggiungerci",
+    "title": "Dove siamo",
+    "subtitle": "Masseria Torre Abbondanza si trova nel cuore della Murgia dei Trulli, a pochi minuti da Noci, Alberobello e Putignano.",
+    "indirizzo": "Indirizzo",
+    "apriMaps": "Apri in Google Maps",
+    "chiama": "Chiama",
+    "indicazioni": "Indicazioni stradali",
+    "daBari": "Da Bari (55 km, ~50 min)",
+    "daBariDesc": "Prendere la SS16 sud verso Brindisi → uscita Noci → seguire SP211 per Massafra → Strada Vicinale per Massafra, Zona E n. 49.",
+    "daBrindisi": "Da Brindisi (65 km, ~55 min)",
+    "daBrindisiDesc": "Prendere la SS16 nord verso Bari → uscita Noci → seguire SP211 per Massafra → Strada Vicinale per Massafra, Zona E n. 49.",
+    "daTaranto": "Da Taranto (45 km, ~40 min)",
+    "daTarantoDesc": "Prendere la SS172 dir verso Martina Franca → proseguire su SP211 per Noci → Strada Vicinale per Massafra, Zona E n. 49.",
+    "daAlberobello": "Da Alberobello (12 km, ~15 min)",
+    "daAlberobelloDesc": "Seguire SP211 per Noci → Strada Vicinale per Massafra, Zona E n. 49.",
+    "gps": "Coordinate GPS",
+    "gpsNote": "Utilizzabili per navigatori satellitari e app di navigazione offline.",
+    "parcheggio": "Parcheggio",
+    "parcheggioDesc": "Ampio parcheggio gratuito all'interno della proprietà, accessibile direttamente dalla strada vicinale. Spazi riservati per ospiti con mobilità ridotta."
+  },
+  "visit": {
+    "title": "Vieni a trovarci",
+    "subtitle": "Prenota una visita, un evento o scopri i nostri cavalli Murgesi.",
+    "cta": "Contattaci"
+  },
+  "footer": {
+    "tagline": "Masseria del Settecento nel cuore della Murgia dei Trulli.",
+    "diritti": "Tutti i diritti riservati.",
+    "privacy": "Privacy Policy",
+    "cookie": "Cookie Policy"
+  }
+}

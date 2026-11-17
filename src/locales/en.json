@@ -1,0 +1,133 @@
+{
+ "nav": {
+ "masseria": "The Masseria",
+ "cucina": "Kitchen",
+ "cavalli": "Horses",
+ "eventi": "Events",
+ "contatti": "Contact",
+ "gallery": "Gallery",
+ "faq": "FAQ",
+ "doveSiamo": "Directions"
+ },
+ "cta": {
+ "whatsapp": "WhatsApp",
+ "whatsappFull": "Message us on WhatsApp",
+ "prenota": "Book now",
+ "scopri": "Learn more",
+ "contattaci": "Contact us",
+ "preventivo": "Request a quote",
+ "menu": "Open menu",
+ "chiudiMenu": "Close menu"
+ },
+ "hero": {
+ "eyebrow": "18th-century Masseria · Noci, Puglia",
+ "title": "Torre Abbondanza",
+ "subtitle": "Where stone meets gallop. Traditional cuisine, exclusive events and Murgese horses in the heart of the Trulli Valley."
+ },
+ "masseria": {
+ "eyebrow": "From the 18th century to today",
+ "title": "Masseria Torre Abbondanza",
+ "subtitle": "An 18th-century rural estate set in the Trulli Valley, where the history of stone meets the hospitality of the Giunta family.",
+ "storiaTitle": "A story of land and tradition",
+ "storia1": "Masseria Torre Abbondanza was born as a rural estate in the heart of the Trulli Valley, between Noci and Alberobello. Its white stone walls tell centuries of farming life, when masserie were the beating heart of Puglia's agricultural economy.",
+ "storia2": "Since 2005, the Giunta family has transformed this place into a landmark for authentic hospitality: the historic hall with its 18th-century stone vaults hosts weddings and ceremonies, the kitchen serves traditional Pugliese flavours by reservation, and the Murgese horse breeding keeps alive one of Italy's oldest breeds.",
+ "storia3": "Today the masseria lives with two souls in balance: the table and the gallop, the stone and the earth, memory and welcome. Every guest who crosses the threshold enters a continuing story.",
+ "fondazione": "Year founded",
+ "fondazioneVal": "18th cent.",
+ "gestione": "Family-run since",
+ "capacita": "Event capacity",
+ "capacitaVal": "Up to 250 guests",
+ "razza": "Breed raised",
+ "razzaVal": "Murgese Horse",
+ "vieniTitle": "Come visit us",
+ "vieniDesc": "Book a visit to the masseria or discover our services for events, cuisine and horses.",
+ "scopriEventi": "Discover events"
+ },
+ "cucina": {
+ "eyebrow": "Traditional flavours",
+ "title": "Our kitchen",
+ "subtitle": "Authentic Pugliese cuisine prepared with local ingredients and recipes passed down through generations. By reservation for groups of 20 or more."
+ },
+ "cavalli": {
+ "eyebrow": "Murgese breeding",
+ "title": "Our horses",
+ "subtitle": "Breeding of registered Murgese horses. Equestrian experiences, historic carriage parades and international sales.",
+ "venditaTitle": "Murgese Horses for Sale",
+ "venditaSubtitle": "Registered breeding stock. EU, Russia, China export available.",
+ "exportEU": "Europe shipping",
+ "exportRU": "Russia & CIS",
+ "exportCN": "China & Asia",
+ "pedigree": "Certified pedigree",
+ "dressage": "Dressage",
+ "attacchi": "Historic carriage driving"
+ },
+ "eventi": {
+ "eyebrow": "Unique celebrations",
+ "title": "Events & ceremonies",
+ "subtitle": "Weddings, ceremonies, private parties and corporate dinners in the historic courtyard and the 18th-century vaulted hall."
+ },
+ "faq": {
+ "eyebrow": "Useful information",
+ "title": "Frequently asked questions",
+ "subtitle": "Everything you need to know about Masseria Torre Abbondanza: reservations, events, cuisine, horses and how to reach us.",
+ "noAnswer": "Didn't find your answer?",
+ "noAnswerDesc": "Write to us directly: we reply within 24 hours.",
+ "q1": "How does restaurant booking work?",
+ "a1": "The kitchen opens by reservation for groups of at least 20 people with at least two days' notice. The menu is created together, tailored to Pugliese tradition, starting from €50 per person.",
+ "q2": "Can I host weddings or ceremonies at the masseria?",
+ "a2": "Yes. The 18th-century masseria hosts weddings, civil and symbolic ceremonies, baptisms, birthdays, private parties and corporate dinners both in the historic vaulted hall and in the outdoor courtyard among ancient olive trees.",
+ "q3": "Are vegetarian, vegan or gluten-free menus available?",
+ "a3": "Yes, on request we prepare dedicated vegetarian, vegan, gluten-free and children's menus to meet guests' needs.",
+ "q4": "Does the masseria breed and sell Murgese horses?",
+ "a4": "Yes. The Giunta family breeds registered Murgese horses (T.A. suffix), organises equestrian experiences, Historic Carriage Parades and offers international sales with shipping to Europe, Russia and China.",
+ "q5": "Can I arrive by historic carriage at a ceremony?",
+ "a5": "Yes, on request the ceremony entrance can open with a historic carriage drawn by the masseria's own Murgese horses.",
+ "q6": "Where exactly is the masseria?",
+ "a6": "It is located at Strada Vicinale per Massafra, Zona E n. 49, 70015 Noci (BA), in the heart of the Trulli Valley and Valle d'Itria, about 12 minutes from Putignano and Alberobello.",
+ "q7": "Is parking available?",
+ "a7": "Yes, ample free parking inside the property, directly accessible from the vicinal road. Reserved spaces for guests with reduced mobility.",
+ "q8": "What is the maximum event capacity?",
+ "a8": "The masseria can host up to 250 guests between the historic hall and outdoor courtyard, with customisable setups depending on the event type.",
+ "q9": "How can I request a quote?",
+ "a9": "Contact us via WhatsApp or fill in the contact form on the Events page. We reply within 24 hours.",
+ "q10": "Can Murgese horses be exported abroad?",
+ "a10": "Yes. We handle all export documentation: EU passport, health certificates, CITES for non-EU countries, land and air transport. We serve Europe, Russia/CIS and China/Asia."
+ },
+ "gallery": {
+ "eyebrow": "Our world in pictures",
+ "title": "Photo gallery",
+ "subtitle": "Events, cuisine, Murgese horses and the beauty of the Trulli Valley: discover Masseria Torre Abbondanza through images."
+ },
+ "doveSiamo": {
+ "eyebrow": "How to reach us",
+ "title": "Where we are",
+ "subtitle": "Masseria Torre Abbondanza is in the heart of the Trulli Valley, just minutes from Noci, Alberobello and Putignano.",
+ "indirizzo": "Address",
+ "apriMaps": "Open in Google Maps",
+ "chiama": "Call",
+ "indicazioni": "Driving directions",
+ "daBari": "From Bari (55 km, ~50 min)",
+ "daBariDesc": "Take SS16 south towards Brindisi → Noci exit → follow SP211 to Massafra → Strada Vicinale per Massafra, Zona E n. 49.",
+ "daBrindisi": "From Brindisi (65 km, ~55 min)",
+ "daBrindisiDesc": "Take SS16 north towards Bari → Noci exit → follow SP211 to Massafra → Strada Vicinale per Massafra, Zona E n. 49.",
+ "daTaranto": "From Taranto (45 km, ~40 min)",
+ "daTarantoDesc": "Take SS172 dir towards Martina Franca → continue on SP211 to Noci → Strada Vicinale per Massafra, Zona E n. 49.",
+ "daAlberobello": "From Alberobello (12 km, ~15 min)",
+ "daAlberobelloDesc": "Follow SP211 to Noci → Strada Vicinale per Massafra, Zona E n. 49.",
+ "gps": "GPS coordinates",
+ "gpsNote": "Usable with satellite navigators and offline navigation apps.",
+ "parcheggio": "Parking",
+ "parcheggioDesc": "Ample free parking inside the property, directly accessible from the vicinal road. Reserved spaces for guests with reduced mobility."
+ },
+ "visit": {
+ "title": "Come visit us",
+ "subtitle": "Book a visit, an event or discover our Murgese horses.",
+ "cta": "Contact us"
+ },
+ "footer": {
+ "tagline": "18th-century masseria in the heart of the Trulli Valley.",
+ "diritti": "All rights reserved.",
+ "privacy": "Privacy Policy",
+ "cookie": "Cookie Policy"
+ }
+}

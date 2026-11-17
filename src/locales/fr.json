@@ -1,0 +1,133 @@
+{
+  "nav": {
+    "masseria": "Le Masseria",
+    "cucina": "Cuisine",
+    "cavalli": "Chevaux",
+    "eventi": "Événements",
+    "contatti": "Contact",
+    "gallery": "Galerie",
+    "faq": "FAQ",
+    "doveSiamo": "Accès"
+  },
+  "cta": {
+    "whatsapp": "WhatsApp",
+    "whatsappFull": "Écrivez-nous sur WhatsApp",
+    "prenota": "Réserver maintenant",
+    "scopri": "En savoir plus",
+    "contattaci": "Nous contacter",
+    "preventivo": "Demander un devis",
+    "menu": "Ouvrir le menu",
+    "chiudiMenu": "Fermer le menu"
+  },
+  "hero": {
+    "eyebrow": "Masseria du XVIIIe siècle · Noci, Pouilles",
+    "title": "Torre Abbondanza",
+    "subtitle": "Là où la pierre rencontre le galop. Cuisine traditionnelle, événements exclusifs et chevaux Murgese au cœur de la Vallée des Trulli."
+  },
+  "masseria": {
+    "eyebrow": "Du XVIIIe siècle à aujourd'hui",
+    "title": "Masseria Torre Abbondanza",
+    "subtitle": "Un domaine rural du XVIIIe siècle niché dans la Vallée des Trulli, où l'histoire de la pierre rencontre l'hospitalité de la famille Giunta.",
+    "storiaTitle": "Une histoire de terre et de tradition",
+    "storia1": "Masseria Torre Abbondanza est née comme domaine rural au cœur de la Vallée des Trulli, entre Noci et Alberobello. Ses murs de pierre blanche racontent des siècles de vie paysanne, quand les masserie étaient le cœur battant de l'économie agricole des Pouilles.",
+    "storia2": "Depuis 2005, la famille Giunta a transformé ce lieu en référence d'une hospitalité authentique : la salle historique aux voûtes de pierre du XVIIIe siècle accueille mariages et cérémonies, la cuisine propose les saveurs de la tradition apulienne sur réservation, et l'élevage de chevaux Murgese maintient vivante l'une des races les plus anciennes d'Italie.",
+    "storia3": "Aujourd'hui, la masseria vit avec deux âmes en équilibre : la table et le galop, la pierre et la terre, la mémoire et l'accueil. Chaque invité qui franchit le seuil entre dans une histoire qui continue.",
+    "fondazione": "Année de fondation",
+    "fondazioneVal": "XVIIIe s.",
+    "gestione": "Gestion familiale depuis",
+    "capacita": "Capacité événements",
+    "capacitaVal": "Jusqu'à 250 invités",
+    "razza": "Race élevée",
+    "razzaVal": "Cheval Murgese",
+    "vieniTitle": "Venez nous rendre visite",
+    "vieniDesc": "Réservez une visite à la masseria ou découvrez nos services pour les événements, la cuisine et les chevaux.",
+    "scopriEventi": "Découvrir les événements"
+  },
+  "cucina": {
+    "eyebrow": "Saveurs traditionnelles",
+    "title": "Notre cuisine",
+    "subtitle": "Cuisine authentique des Pouilles préparée avec des ingrédients locaux et des recettes transmises de génération en génération. Sur réservation pour les groupes de 20 personnes minimum."
+  },
+  "cavalli": {
+    "eyebrow": "Élevage Murgese",
+    "title": "Nos chevaux",
+    "subtitle": "Élevage de chevaux Murgese enregistrés. Expériences équestres, parades d'attelage historique et vente internationale.",
+    "venditaTitle": "Chevaux Murgese à vendre",
+    "venditaSubtitle": "Reproducteurs enregistrés. Export UE, Russie et Chine disponible.",
+    "exportEU": "Livraison Europe",
+    "exportRU": "Russie & CEI",
+    "exportCN": "Chine & Asie",
+    "pedigree": "Pedigree certifié",
+    "dressage": "Dressage",
+    "attacchi": "Attelage historique"
+  },
+  "eventi": {
+    "eyebrow": "Célébrations uniques",
+    "title": "Événements & cérémonies",
+    "subtitle": "Mariages, cérémonies, fêtes privées et dîners d'entreprise dans la cour historique et la salle voûtée du XVIIIe siècle."
+  },
+  "faq": {
+    "eyebrow": "Informations utiles",
+    "title": "Questions fréquentes",
+    "subtitle": "Tout ce que vous devez savoir sur Masseria Torre Abbondanza : réservations, événements, cuisine, chevaux et comment nous rejoindre.",
+    "noAnswer": "Vous n'avez pas trouvé de réponse ?",
+    "noAnswerDesc": "Écrivez-nous directement : nous répondons sous 24 heures.",
+    "q1": "Comment fonctionne la réservation du restaurant ?",
+    "a1": "La cuisine ouvre sur réservation pour les groupes d'au moins 20 personnes avec un préavis de deux jours minimum. Le menu est composé ensemble selon la tradition apulienne, à partir de 50 euros par personne.",
+    "q2": "Peut-on organiser des mariages ou cérémonies à la masseria ?",
+    "a2": "Oui. La masseria du XVIIIe siècle accueille mariages, cérémonies civiles et symboliques, baptêmes, anniversaires, fêtes privées et dîners d'entreprise tant dans la salle historique aux voûtes de pierre que dans la cour extérieure parmi les oliviers centenaires.",
+    "q3": "Des menus végétariens, végans ou sans gluten sont-ils disponibles ?",
+    "a3": "Oui, sur demande nous préparons des menus dédiés végétariens, végans, sans gluten et enfants adaptés aux besoins des convives.",
+    "q4": "La masseria élève-t-elle et vend-elle des chevaux Murgese ?",
+    "a4": "Oui. La famille Giunta élève des chevaux Murgese enregistrés (suffixe T.A.), organise des expériences équestres, des Parades d'Attelage Historique et propose la vente internationale avec expédition vers l'Europe, la Russie et la Chine.",
+    "q5": "Peut-on arriver en calèche historique lors d'une cérémonie ?",
+    "a5": "Oui, sur demande l'entrée de la cérémonie peut s'ouvrir avec une calèche historique tirée par les propres chevaux Murgese de la masseria.",
+    "q6": "Où se trouve exactement la masseria ?",
+    "a6": "Elle est située Strada Vicinale per Massafra, Zona E n. 49, 70015 Noci (BA), au cœur de la Vallée des Trulli et de la Valle d'Itria, à environ 12 minutes de Putignano et Alberobello.",
+    "q7": "Y a-t-il un parking ?",
+    "a7": "Oui, vaste parking gratuit au sein de la propriété, accessible directement depuis la route vicinale. Places réservées pour les personnes à mobilité réduite.",
+    "q8": "Quelle est la capacité maximale pour les événements ?",
+    "a8": "La masseria peut accueillir jusqu'à 250 personnes entre la salle historique et la cour extérieure, avec des aménagements personnalisables selon le type d'événement.",
+    "q9": "Comment demander un devis ?",
+    "a9": "Contactez-nous via WhatsApp ou remplissez le formulaire de contact sur la page Événements. Nous répondons sous 24 heures.",
+    "q10": "Les chevaux Murgese peuvent-ils être exportés à l'étranger ?",
+    "a10": "Oui. Nous gérons toute la documentation d'exportation : passeport UE, certificats sanitaires, CITES pour les pays hors UE, transport terrestre et aérien. Nous desservons l'Europe, la Russie/CEI et la Chine/Asie."
+  },
+  "gallery": {
+    "eyebrow": "Notre monde en images",
+    "title": "Galerie photos",
+    "subtitle": "Événements, cuisine, chevaux Murgese et la beauté de la Vallée des Trulli : découvrez Masseria Torre Abbondanza à travers les images."
+  },
+  "doveSiamo": {
+    "eyebrow": "Comment nous rejoindre",
+    "title": "Où sommes-nous",
+    "subtitle": "Masseria Torre Abbondanza est située au cœur de la Vallée des Trulli, à quelques minutes de Noci, Alberobello et Putignano.",
+    "indirizzo": "Adresse",
+    "apriMaps": "Ouvrir dans Google Maps",
+    "chiama": "Appeler",
+    "indicazioni": "Itinéraire routier",
+    "daBari": "De Bari (55 km, ~50 min)",
+    "daBariDesc": "Prendre la SS16 sud vers Brindisi → sortie Noci → suivre SP211 vers Massafra → Strada Vicinale per Massafra, Zona E n. 49.",
+    "daBrindisi": "De Brindisi (65 km, ~55 min)",
+    "daBrindisiDesc": "Prendre la SS16 nord vers Bari → sortie Noci → suivre SP211 vers Massafra → Strada Vicinale per Massafra, Zona E n. 49.",
+    "daTaranto": "De Tarente (45 km, ~40 min)",
+    "daTarantoDesc": "Prendre la SS172 dir vers Martina Franca → continuer sur SP211 vers Noci → Strada Vicinale per Massafra, Zona E n. 49.",
+    "daAlberobello": "D'Alberobello (12 km, ~15 min)",
+    "daAlberobelloDesc": "Suivre SP211 vers Noci → Strada Vicinale per Massafra, Zona E n. 49.",
+    "gps": "Coordonnées GPS",
+    "gpsNote": "Utilisables avec les navigateurs satellites et les applications de navigation hors ligne.",
+    "parcheggio": "Parking",
+    "parcheggioDesc": "Vaste parking gratuit au sein de la propriété, accessible directement depuis la route vicinale. Places réservées pour les personnes à mobilité réduite."
+  },
+  "visit": {
+    "title": "Venez nous rendre visite",
+    "subtitle": "Réservez une visite, un événement ou découvrez nos chevaux Murgese.",
+    "cta": "Nous contacter"
+  },
+  "footer": {
+    "tagline": "Masseria du XVIIIe siècle au cœur de la Vallée des Trulli.",
+    "diritti": "Tous droits réservés.",
+    "privacy": "Politique de confidentialité",
+    "cookie": "Politique relative aux cookies"
+  }
+}

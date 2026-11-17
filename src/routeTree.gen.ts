@@ -10,7 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as LaMasseriaRouteImport } from './routes/la-masseria'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as EventiRouteImport } from './routes/eventi'
+import { Route as DoveSiamoRouteImport } from './routes/dove-siamo'
 import { Route as CucinaRouteImport } from './routes/cucina'
 import { Route as CookieRouteImport } from './routes/cookie'
 import { Route as CavalliRouteImport } from './routes/cavalli'
@@ -22,9 +26,29 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LaMasseriaRoute = LaMasseriaRouteImport.update({
+  id: '/la-masseria',
+  path: '/la-masseria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventiRoute = EventiRouteImport.update({
   id: '/eventi',
   path: '/eventi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DoveSiamoRoute = DoveSiamoRouteImport.update({
+  id: '/dove-siamo',
+  path: '/dove-siamo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CucinaRoute = CucinaRouteImport.update({
@@ -58,7 +82,11 @@ export interface FileRoutesByFullPath {
   '/cavalli': typeof CavalliRouteWithChildren
   '/cookie': typeof CookieRoute
   '/cucina': typeof CucinaRoute
+  '/dove-siamo': typeof DoveSiamoRoute
   '/eventi': typeof EventiRoute
+  '/faq': typeof FaqRoute
+  '/gallery': typeof GalleryRoute
+  '/la-masseria': typeof LaMasseriaRoute
   '/privacy': typeof PrivacyRoute
   '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
@@ -67,7 +95,11 @@ export interface FileRoutesByTo {
   '/cavalli': typeof CavalliRouteWithChildren
   '/cookie': typeof CookieRoute
   '/cucina': typeof CucinaRoute
+  '/dove-siamo': typeof DoveSiamoRoute
   '/eventi': typeof EventiRoute
+  '/faq': typeof FaqRoute
+  '/gallery': typeof GalleryRoute
+  '/la-masseria': typeof LaMasseriaRoute
   '/privacy': typeof PrivacyRoute
   '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
@@ -77,7 +109,11 @@ export interface FileRoutesById {
   '/cavalli': typeof CavalliRouteWithChildren
   '/cookie': typeof CookieRoute
   '/cucina': typeof CucinaRoute
+  '/dove-siamo': typeof DoveSiamoRoute
   '/eventi': typeof EventiRoute
+  '/faq': typeof FaqRoute
+  '/gallery': typeof GalleryRoute
+  '/la-masseria': typeof LaMasseriaRoute
   '/privacy': typeof PrivacyRoute
   '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
@@ -88,7 +124,11 @@ export interface FileRouteTypes {
     | '/cavalli'
     | '/cookie'
     | '/cucina'
+    | '/dove-siamo'
     | '/eventi'
+    | '/faq'
+    | '/gallery'
+    | '/la-masseria'
     | '/privacy'
     | '/cavalli/vetrina'
   fileRoutesByTo: FileRoutesByTo
@@ -97,7 +137,11 @@ export interface FileRouteTypes {
     | '/cavalli'
     | '/cookie'
     | '/cucina'
+    | '/dove-siamo'
     | '/eventi'
+    | '/faq'
+    | '/gallery'
+    | '/la-masseria'
     | '/privacy'
     | '/cavalli/vetrina'
   id:
@@ -106,7 +150,11 @@ export interface FileRouteTypes {
     | '/cavalli'
     | '/cookie'
     | '/cucina'
+    | '/dove-siamo'
     | '/eventi'
+    | '/faq'
+    | '/gallery'
+    | '/la-masseria'
     | '/privacy'
     | '/cavalli/vetrina'
   fileRoutesById: FileRoutesById
@@ -116,7 +164,11 @@ export interface RootRouteChildren {
   CavalliRoute: typeof CavalliRouteWithChildren
   CookieRoute: typeof CookieRoute
   CucinaRoute: typeof CucinaRoute
+  DoveSiamoRoute: typeof DoveSiamoRoute
   EventiRoute: typeof EventiRoute
+  FaqRoute: typeof FaqRoute
+  GalleryRoute: typeof GalleryRoute
+  LaMasseriaRoute: typeof LaMasseriaRoute
   PrivacyRoute: typeof PrivacyRoute
 }
 
@@ -129,11 +181,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/la-masseria': {
+      id: '/la-masseria'
+      path: '/la-masseria'
+      fullPath: '/la-masseria'
+      preLoaderRoute: typeof LaMasseriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/eventi': {
       id: '/eventi'
       path: '/eventi'
       fullPath: '/eventi'
       preLoaderRoute: typeof EventiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dove-siamo': {
+      id: '/dove-siamo'
+      path: '/dove-siamo'
+      fullPath: '/dove-siamo'
+      preLoaderRoute: typeof DoveSiamoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cucina': {
@@ -190,7 +270,11 @@ const rootRouteChildren: RootRouteChildren = {
   CavalliRoute: CavalliRouteWithChildren,
   CookieRoute: CookieRoute,
   CucinaRoute: CucinaRoute,
+  DoveSiamoRoute: DoveSiamoRoute,
   EventiRoute: EventiRoute,
+  FaqRoute: FaqRoute,
+  GalleryRoute: GalleryRoute,
+  LaMasseriaRoute: LaMasseriaRoute,
   PrivacyRoute: PrivacyRoute,
 }
 export const routeTree = rootRouteImport

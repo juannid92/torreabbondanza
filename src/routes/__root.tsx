@@ -8,6 +8,10 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
+
+// Side-effect: inizializza i18n all'avvio dell'app
+import "@/lib/i18n";
 
 import appCss from "../styles.css?url";
 import ogImage from "../assets/hero-masseria.jpg";
@@ -125,8 +129,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 const GTM_INIT_SCRIPT = `(function(){window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});try{var raw=localStorage.getItem('torreabbondanza.cookieConsent');if(raw){var parsed=JSON.parse(raw);if(parsed&&parsed.version===1&&parsed.categories){gtag('consent','update',{analytics_storage:parsed.categories.analytics?'granted':'denied',ad_storage:parsed.categories.marketing?'granted':'denied',ad_user_data:parsed.categories.marketing?'granted':'denied',ad_personalization:parsed.categories.marketing?'granted':'denied'});}}}catch(e){}gtag('js',new Date());window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});})();`;
 
 function RootShell({ children }: { children: ReactNode }) {
+  const { i18n } = useTranslation();
+  const lang = i18n.language || "it";
+
   return (
-    <html lang="it">
+    <html lang={lang}>
       <head>
         <HeadContent />
         <script dangerouslySetInnerHTML={{ __html: GTM_INIT_SCRIPT }} />

@@ -5,6 +5,7 @@ import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 import { SITE_URL, BUSINESS, absoluteUrl, buildBreadcrumbJsonLd } from "@/lib/site";
+import { buildHreflangLinks } from "@/lib/hreflang";
 import horseGallopImg from "@/assets/horse-gallop.jpg";
 
 /* -------------------------------------------------------------------------- */
@@ -146,7 +147,7 @@ export const Route = createFileRoute("/cavalli/vetrina")({
       },
       { name: "twitter:image", content: absoluteUrl(horseGallopImg) },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/cavalli/vetrina` }],
+    links: buildHreflangLinks("/cavalli/vetrina"),
     scripts: [
       {
         type: "application/ld+json",

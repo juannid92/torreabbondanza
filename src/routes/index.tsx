@@ -16,6 +16,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 import heroImage from "@/assets/hero-masseria.jpg";
 import { BUSINESS, SITE_URL, absoluteUrl, buildRestaurantJsonLd } from "@/lib/site";
+import { buildHreflangLinks } from "@/lib/hreflang";
 
 const HOME_TITLE = `${BUSINESS.name} — Masseria del '700, Matrimoni, Cucina & Cavalli Murgesi | Noci, Puglia`;
 const HOME_DESCRIPTION =
@@ -39,7 +40,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:description", content: HOME_DESCRIPTION },
       { name: "twitter:image", content: absoluteUrl(heroImage) },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/` }],
+    links: buildHreflangLinks("/"),
     scripts: [
       {
         type: "application/ld+json",

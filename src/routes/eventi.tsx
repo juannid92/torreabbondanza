@@ -6,6 +6,7 @@ import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 import { SITE_URL, absoluteUrl, buildEventsJsonLd } from "@/lib/site";
+import { buildHreflangLinks } from "@/lib/hreflang";
 import eventsImg from "@/assets/events-space-day.jpg";
 
 const PAGE_TITLE = "Eventi, Matrimoni e Cerimonie — Masseria Torre Abbondanza | Noci, Puglia";
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/eventi")({
       { name: "twitter:description", content: PAGE_DESCRIPTION },
       { name: "twitter:image", content: absoluteUrl(eventsImg) },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/eventi` }],
+    links: buildHreflangLinks("/eventi"),
     scripts: [
       {
         type: "application/ld+json",

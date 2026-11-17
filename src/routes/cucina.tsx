@@ -6,6 +6,7 @@ import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 import { SITE_URL, absoluteUrl, buildKitchenJsonLd } from "@/lib/site";
+import { buildHreflangLinks } from "@/lib/hreflang";
 import kitchenImg from "@/assets/kitchen-antipasti.jpg";
 
 const PAGE_TITLE = "La Cucina Pugliese su Prenotazione — Masseria Torre Abbondanza | Noci";
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/cucina")({
       { name: "twitter:description", content: PAGE_DESCRIPTION },
       { name: "twitter:image", content: absoluteUrl(kitchenImg) },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/cucina` }],
+    links: buildHreflangLinks("/cucina"),
     scripts: [
       {
         type: "application/ld+json",

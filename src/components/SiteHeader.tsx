@@ -3,6 +3,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { BUSINESS } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 const NAV_ITEMS: {
   label: string;
@@ -81,8 +82,9 @@ export function SiteHeader() {
           })}
         </nav>
 
-        {/* CTA + Mobile toggle */}
+        {/* CTA + Language + Mobile toggle */}
         <div className="flex items-center gap-3">
+          <LanguageSwitcher className={cn(scrolled || mobileOpen ? "text-ivory" : "text-ink")} />
           <a
             href={BUSINESS.whatsappUrl}
             target="_blank"

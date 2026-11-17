@@ -5,6 +5,7 @@ import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 import { SITE_URL, absoluteUrl, buildHorsesJsonLd } from "@/lib/site";
+import { buildHreflangLinks } from "@/lib/hreflang";
 import murgeseImg from "@/assets/murgese-studio.jpg";
 
 const PAGE_TITLE = "I Cavalli Murgesi — Allevamento ed Esperienze | Masseria Torre Abbondanza";
@@ -29,7 +30,7 @@ export const Route = createFileRoute("/cavalli")({
       { name: "twitter:description", content: PAGE_DESCRIPTION },
       { name: "twitter:image", content: absoluteUrl(murgeseImg) },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/cavalli` }],
+    links: buildHreflangLinks("/cavalli"),
     scripts: [
       {
         type: "application/ld+json",
