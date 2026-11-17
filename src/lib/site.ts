@@ -11,7 +11,7 @@
  * social (Open Graph non accetta percorsi relativi).
  * Se il dominio definitivo dovesse essere diverso, si cambia solo questa riga.
  */
-export const SITE_URL = "https://torreabbondanza.com";
+export const SITE_URL = "https://www.masseriatorreabbondanza.it";
 
 /**
  * Google Tag Manager Container ID (`GTM-W34HZK8C`).

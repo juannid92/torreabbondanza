@@ -31,7 +31,7 @@ const WHATSAPP_URL = BUSINESS.whatsappUrl;
 const WHATSAPP_DIRECT_CTA = `${BUSINESS.whatsappUrl}?text=${encodeURIComponent(
   "Ciao Masseria Torre Abbondanza, vorrei ricevere informazioni per organizzare un'occasione da voi.",
 )}`;
-const SITE = "torreabbondanza.com";
+const SITE = "www.masseriatorreabbondanza.it";
 const ADDRESS_LINE1 = BUSINESS.address.line1;
 const ADDRESS_LINE2 = BUSINESS.address.line2;
 const IG_URL = BUSINESS.instagram.url;

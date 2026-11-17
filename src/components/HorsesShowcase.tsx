@@ -594,7 +594,7 @@ export function HorsesShowcase() {
               Contattaci su WhatsApp →
             </MagneticButton>
             <a
-              href="mailto:info@torreabbondanza.com?subject=Informazioni%20vendita%20cavalli%20Murgesi"
+              href="mailto:info@masseriatorreabbondanza.it?subject=Informazioni%20vendita%20cavalli%20Murgesi"
               className="inline-flex w-full items-center justify-center rounded-full border border-ivory/30 px-8 py-4 text-sm font-medium tracking-wide text-ivory transition-colors hover:border-ivory hover:bg-ivory/10 sm:w-auto"
             >
               Scrivi un'email

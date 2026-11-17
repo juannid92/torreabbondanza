@@ -32,4 +32,4 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://torreabbondanza.com/sitemap.xml
+Sitemap: https://www.masseriatorreabbondanza.it/sitemap.xml
