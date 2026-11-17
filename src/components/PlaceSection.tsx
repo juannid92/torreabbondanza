@@ -34,17 +34,21 @@ export function PlaceSection() {
 
     const ctx = gsap.context(() => {
       const layers = gsap.utils.toArray<HTMLElement>("[data-parallax]", scene);
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
       layers.forEach((layer) => {
         const speed = parseFloat(layer.dataset.speed ?? "0");
         const scaleBoost = parseFloat(layer.dataset.scaleBoost ?? "0");
-        // y: layer lenti scendono di più al ribasso. Range complessivo ~ -150..+150
-        const yShift = speed * 180;
+        // Usiamo pixel contenuti invece di yPercent enormi su contenitori 100svh,
+        // mantenendo il muretto a secco (speed < 0) ancorato in basso senza mai scoprire il bordo.
+        const maxShiftPx = isMobile ? 36 : 70;
+        const yFrom = speed > 0 ? -speed * maxShiftPx * 0.4 : 0;
+        const yTo = speed > 0 ? speed * maxShiftPx * 0.6 : speed * maxShiftPx * 0.35;
         gsap.fromTo(
           layer,
-          { yPercent: -yShift * 0.3, scale: 1 },
+          { y: yFrom, scale: 1 },
           {
-            yPercent: yShift * 0.5,
+            y: yTo,
             scale: 1 + scaleBoost,
             ease: "none",
             scrollTrigger: {
@@ -62,23 +66,20 @@ export function PlaceSection() {
       const title = titleRef.current;
       if (title) {
         const words = title.querySelectorAll<HTMLElement>("[data-word-inner]");
+        gsap.set(words, { yPercent: 110 });
         ScrollTrigger.create({
           trigger: title,
           start: "top 80%",
           once: true,
           invalidateOnRefresh: true,
           onEnter: () => {
-            gsap.fromTo(
-              words,
-              { yPercent: 110 },
-              {
-                yPercent: 0,
-                ease: "power3.out",
-                duration: 1,
-                stagger: 0.08,
-                overwrite: true,
-              },
-            );
+            gsap.to(words, {
+              yPercent: 0,
+              ease: "power3.out",
+              duration: 1,
+              stagger: 0.08,
+              overwrite: true,
+            });
           },
         });
       }
@@ -193,7 +194,7 @@ export function PlaceSection() {
         {/* L5 Muretto a secco (CSS band) */}
         <ParallaxLayer speed={-0.6} scaleBoost={0.12} zIndex={6}>
           <div
-            className="absolute inset-x-0 bottom-0 h-[14%]"
+            className="absolute inset-x-0 bottom-[-4%] h-[18%]"
             style={{
               background:
                 "linear-gradient(to top, color-mix(in oklab, var(--stone) 90%, var(--ink) 10%), color-mix(in oklab, var(--stone) 70%, var(--ivory) 30%) 60%, transparent)",
@@ -204,7 +205,7 @@ export function PlaceSection() {
           {/* Texture pietre */}
           <svg
             aria-hidden
-            className="absolute inset-x-0 bottom-0 h-[14%] w-full opacity-50"
+            className="absolute inset-x-0 bottom-[-4%] h-[18%] w-full opacity-50"
             viewBox="0 0 1200 120"
             preserveAspectRatio="none"
           >

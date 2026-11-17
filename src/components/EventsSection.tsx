@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, type CSSProperties } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
@@ -8,6 +8,10 @@ import dayImg from "@/assets/events-space-day.jpg";
 import nightImg from "@/assets/events-space-night.jpg";
 import tablePanoImg from "@/assets/events-table-pano.jpg";
 import carriageImg from "@/assets/events-carriage.jpg";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /* -------------------------------------------------------------------------- */
 /* Costanti: punti luce delle "lucine" (3 stringhe ad arco)                   */
@@ -88,53 +92,82 @@ export function EventsSection() {
     const cleanupReveal = observeRevealElements(root);
 
     const ctx = gsap.context(() => {
+      /* ---------- Stato viewport per mettere in pausa animazioni CSS offscreen ---------- */
+      ScrollTrigger.create({
+        trigger: root,
+        start: "top bottom",
+        end: "bottom top",
+        onToggle: (self) => {
+          root.toggleAttribute("data-in-viewport", self.isActive);
+        },
+      });
+
       /* ---------- Titoli con mask-reveal per parola ---------- */
       const titles = root.querySelectorAll<HTMLElement>("[data-mask-title]");
       titles.forEach((title) => {
         const words = splitWords(title);
+        gsap.set(words, { yPercent: reduced ? 0 : 110 });
         ScrollTrigger.create({
           trigger: title,
           start: "top 85%",
           once: true,
           invalidateOnRefresh: true,
           onEnter: () => {
-            gsap.fromTo(
-              words,
-              { yPercent: 110 },
-              {
-                yPercent: 0,
-                duration: reduced ? 0.2 : 1.1,
-                ease: "power3.out",
-                stagger: reduced ? 0 : 0.06,
-                overwrite: true,
-              },
-            );
+            gsap.to(words, {
+              yPercent: 0,
+              duration: reduced ? 0.2 : 1.0,
+              ease: "power3.out",
+              stagger: reduced ? 0 : 0.06,
+              overwrite: true,
+            });
           },
         });
       });
 
-      /* ---------- Opener title: mask-reveal manuale (rispetta l'accento) ---------- */
+      /* ---------- Opener title: mask-reveal allo scroll ---------- */
+      const sceneB = root.querySelector<HTMLElement>("[data-scene-b]");
       const openerWords = root.querySelectorAll<HTMLElement>("[data-opener-word]");
-      if (openerWords.length) {
-        gsap.set(openerWords, { yPercent: 110 });
-        gsap.to(openerWords, {
-          yPercent: 0,
-          duration: reduced ? 0.2 : 1.1,
-          ease: "power3.out",
-          stagger: reduced ? 0 : 0.08,
-          delay: 0.2,
+      if (openerWords.length && sceneB) {
+        gsap.set(openerWords, { yPercent: reduced ? 0 : 110 });
+        ScrollTrigger.create({
+          trigger: sceneB,
+          start: "top 80%",
+          once: true,
+          invalidateOnRefresh: true,
+          onEnter: () => {
+            gsap.to(openerWords, {
+              yPercent: 0,
+              duration: reduced ? 0.2 : 1.0,
+              ease: "power3.out",
+              stagger: reduced ? 0 : 0.07,
+              overwrite: true,
+            });
+          },
         });
       }
 
       if (reduced) return;
 
-      /* ---------- MOMENTO A — ken burns lento sulla foto giorno ---------- */
+      /* ---------- MOMENTO A — ken burns lento sulla foto giorno (solo in viewport) ---------- */
       const openerImg = root.querySelector<HTMLElement>("[data-opener-img]");
       if (openerImg) {
         gsap.fromTo(
           openerImg,
           { scale: 1.02, xPercent: 0 },
-          { scale: 1.1, xPercent: -2, duration: 22, ease: "none", repeat: -1, yoyo: true },
+          {
+            scale: 1.1,
+            xPercent: -2,
+            duration: 22,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+            scrollTrigger: {
+              trigger: openerImg,
+              start: "top bottom",
+              end: "bottom top",
+              toggleActions: "play pause resume pause",
+            },
+          },
         );
       }
 
@@ -264,79 +297,134 @@ export function EventsSection() {
             const word = occ.querySelector<HTMLElement>("[data-occ-word]");
             const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
             if (!word || !phrase) return;
-            const wordChars = splitWords(word);
+
+            gsap.set(word, { opacity: 0, y: 28 });
+            gsap.set(phrase, { opacity: 0, y: 20 });
+
             ScrollTrigger.create({
               trigger: occ,
               containerAnimation: masterTimeline,
-              start: "left center",
-              end: "right center",
-              onEnter: () => {
-                gsap.fromTo(
-                  wordChars,
-                  { yPercent: 110 },
-                  {
-                    yPercent: 0,
-                    duration: 0.9,
-                    ease: "power3.out",
-                    stagger: 0.05,
-                    overwrite: true,
-                  },
-                );
-                gsap.fromTo(
-                  phrase,
-                  { opacity: 0, y: 20 },
-                  {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.7,
-                    ease: "power3.out",
-                    delay: 0.15,
-                    overwrite: true,
-                  },
-                );
-              },
+              start: "left 86%",
               once: true,
               horizontal: true,
+              onEnter: () => {
+                gsap.to(word, {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.8,
+                  ease: "power3.out",
+                  overwrite: true,
+                });
+                gsap.to(phrase, {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.7,
+                  ease: "power3.out",
+                  delay: 0.1,
+                  overwrite: true,
+                });
+              },
             });
           });
         }
       });
 
-      // MOBILE (< 768px) — scena B/C statiche e verticali, fail-safe sempre visibile
+      // MOBILE (< 768px) — giorno → notte scroll-scrubbed + apparizione verticale fluida
       mm.add("(max-width: 767px)", () => {
-        gsap.set(dayLayer, { autoAlpha: 0.25, clearProps: "transform" });
+        const firstPanel = root.querySelector<HTMLElement>("[data-events-first-panel]");
+        const mobileLights = Array.from(lightEls).slice(0, 36);
+
+        gsap.set(dayLayer, { autoAlpha: 1, clearProps: "transform" });
         gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), {
-          autoAlpha: 1,
+          autoAlpha: 0,
           clearProps: "transform",
         });
-        gsap.set(lightEls, { opacity: 1, scale: 1, clearProps: "transform" });
-        gsap.set(candleEls, { opacity: 1 });
-        if (kineticB) gsap.set(kineticB, { yPercent: 0, opacity: 0.7 });
+        gsap.set(lightEls, { opacity: 0, scale: 0.6, transformOrigin: "center center" });
+        gsap.set(candleEls, { opacity: 0 });
+        if (kineticB) gsap.set(kineticB, { yPercent: 20, opacity: 0 });
         if (cTrack) gsap.set(cTrack, { clearProps: "transform,x" });
         [cBg, cMid, cFg].forEach((el) => {
           if (el) gsap.set(el, { clearProps: "transform,x" });
         });
 
+        if (firstPanel) {
+          const mobileDayNightTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: firstPanel,
+              start: "top 65%",
+              end: "bottom 35%",
+              scrub: 0.5,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          if (dayLayer) {
+            mobileDayNightTl.to(dayLayer, { autoAlpha: 0.25, ease: "none", duration: 1 }, 0);
+          }
+          if (nightLayer) {
+            mobileDayNightTl.to(nightLayer, { autoAlpha: 1, ease: "none", duration: 1 }, 0);
+          }
+          if (skyLayer) {
+            mobileDayNightTl.to(skyLayer, { autoAlpha: 1, ease: "none", duration: 1 }, 0);
+          }
+          mobileLights.forEach((el) => {
+            const delay = parseFloat(el.dataset.delay ?? "0");
+            mobileDayNightTl.to(
+              el,
+              { opacity: 1, scale: 1, duration: 0.15, ease: "power2.out" },
+              0.1 + delay * 0.65,
+            );
+          });
+          candleEls.forEach((el, i) => {
+            mobileDayNightTl.to(
+              el,
+              { opacity: 1, duration: 0.15, ease: "power2.out" },
+              0.35 + (i / Math.max(1, candleEls.length)) * 0.45,
+            );
+          });
+          if (bokehLayer) {
+            mobileDayNightTl.to(
+              bokehLayer,
+              { autoAlpha: 0.85, duration: 0.85, ease: "none" },
+              0.15,
+            );
+          }
+          if (kineticB) {
+            mobileDayNightTl.to(
+              kineticB,
+              { yPercent: -10, opacity: 0.85, duration: 0.9, ease: "none" },
+              0.1,
+            );
+          }
+        }
+
         cOccs.forEach((occ) => {
           const word = occ.querySelector<HTMLElement>("[data-occ-word]");
           const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
           if (!word || !phrase) return;
+
+          gsap.set([word, phrase], { opacity: 0, y: 22 });
           ScrollTrigger.create({
             trigger: occ,
-            start: "top 86%",
+            start: "top 88%",
             once: true,
             invalidateOnRefresh: true,
             onEnter: () => {
-              gsap.fromTo(
-                word,
-                { y: 18 },
-                { y: 0, duration: 0.75, ease: "power3.out", overwrite: true },
-              );
-              gsap.fromTo(
-                phrase,
-                { y: 14 },
-                { y: 0, duration: 0.65, ease: "power3.out", delay: 0.08, overwrite: true },
-              );
+              gsap.to(word, {
+                opacity: 1,
+                y: 0,
+                duration: 0.7,
+                ease: "power3.out",
+                overwrite: true,
+              });
+              gsap.to(phrase, {
+                opacity: 1,
+                y: 0,
+                duration: 0.65,
+                ease: "power3.out",
+                delay: 0.08,
+                overwrite: true,
+              });
             },
           });
         });
@@ -471,12 +559,9 @@ export function EventsSection() {
         {/* Layer parallax di sfondo: panorama tavola */}
         <div
           data-scene-c-bg
-          className="absolute inset-0 -z-10 w-full md:inset-y-0 md:left-0 md:w-[800%]"
+          className="absolute inset-0 z-0 w-full bg-cover bg-center bg-no-repeat md:inset-y-0 md:left-0 md:w-[800%] md:bg-[length:auto_110%] md:bg-repeat-x md:bg-left"
           style={{
             backgroundImage: `url(${tablePanoImg})`,
-            backgroundSize: "auto 110%",
-            backgroundRepeat: "repeat-x",
-            backgroundPosition: "left center",
             opacity: 0.95,
             willChange: "transform",
           }}
@@ -484,7 +569,7 @@ export function EventsSection() {
         {/* Velatura per leggibilità */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
+          className="pointer-events-none absolute inset-0 z-0"
           style={{
             background:
               "linear-gradient(180deg, color-mix(in oklab, var(--murgese) 55%, transparent) 0%, transparent 35%, color-mix(in oklab, var(--murgese) 70%, transparent) 100%)",
@@ -493,7 +578,7 @@ export function EventsSection() {
         {/* Lucine midground (parallax intermedio) */}
         <div
           data-scene-c-mid
-          className="absolute inset-0 -z-10 w-full md:inset-y-0 md:left-0 md:w-[800%]"
+          className="absolute inset-0 z-0 w-full md:inset-y-0 md:left-0 md:w-[800%]"
           style={{ willChange: "transform" }}
         >
           {Array.from({ length: 120 }).map((_, i) => {
@@ -503,16 +588,19 @@ export function EventsSection() {
               <span
                 key={i}
                 className={`absolute block rounded-full ${i >= 40 ? "max-md:hidden" : ""}`}
-                style={{
-                  left: `${x}%`,
-                  top: `${y}%`,
-                  width: 10,
-                  height: 10,
-                  background:
-                    "radial-gradient(circle, rgba(255,228,170,0.95) 0%, rgba(255,228,170,0) 70%)",
-                  filter: "blur(0.5px)",
-                  animation: `candle-flicker ${2 + (i % 4) * 0.4}s ease-in-out ${i * 0.07}s infinite`,
-                }}
+                style={
+                  {
+                    left: `${x}%`,
+                    top: `${y}%`,
+                    width: 10,
+                    height: 10,
+                    background:
+                      "radial-gradient(circle, rgba(255,228,170,0.95) 0%, rgba(255,228,170,0) 70%)",
+                    filter: "blur(0.5px)",
+                    "--flicker-dur": `${2 + (i % 4) * 0.4}s`,
+                    "--flicker-delay": `${i * 0.07}s`,
+                  } as CSSProperties
+                }
               />
             );
           })}
@@ -521,7 +609,7 @@ export function EventsSection() {
         {/* Track orizzontale con le occasioni */}
         <div
           data-scene-c-track
-          className="relative z-10 flex min-h-[100svh] flex-col items-start justify-center gap-10 px-6 py-20 md:absolute md:inset-y-0 md:left-0 md:flex-row md:items-center md:justify-start md:gap-0 md:px-0 md:py-0"
+          className="relative z-10 flex min-h-[100svh] flex-col items-start justify-center gap-14 pb-20 pt-0 md:absolute md:inset-y-0 md:left-0 md:flex-row md:items-center md:justify-start md:gap-0 md:py-0"
           style={{ willChange: "transform" }}
         >
           {/* Primo pannello: giorno → notte integrato nella timeline pinned */}
@@ -565,7 +653,7 @@ export function EventsSection() {
             <svg
               aria-hidden
               viewBox="0 0 100 100"
-              preserveAspectRatio="none"
+              preserveAspectRatio="xMidYMid slice"
               className="pointer-events-none absolute inset-0 h-full w-full"
             >
               <defs>
@@ -600,7 +688,7 @@ export function EventsSection() {
                   style={{
                     opacity: 0,
                     transform: "scale(0.6)",
-                    transformOrigin: `${l.x}% ${l.y}%`,
+                    transformOrigin: "50% 50%",
                     transformBox: "fill-box",
                     willChange: "opacity, transform",
                   }}
@@ -618,18 +706,21 @@ export function EventsSection() {
                   key={i}
                   data-candle
                   className="absolute block"
-                  style={{
-                    left: `${6 + (i / 11) * 88}%`,
-                    width: 14,
-                    height: 14,
-                    borderRadius: "50%",
-                    background:
-                      "radial-gradient(circle at 50% 45%, #FFF3BE 0%, #F2B95C 35%, rgba(169,128,46,0) 75%)",
-                    filter: "blur(1px)",
-                    opacity: 0,
-                    animation: `candle-flicker ${1.8 + (i % 5) * 0.3}s ease-in-out ${i * 0.1}s infinite`,
-                    willChange: "opacity, transform",
-                  }}
+                  style={
+                    {
+                      left: `${6 + (i / 11) * 88}%`,
+                      width: 14,
+                      height: 14,
+                      borderRadius: "50%",
+                      background:
+                        "radial-gradient(circle at 50% 45%, #FFF3BE 0%, #F2B95C 35%, rgba(169,128,46,0) 75%)",
+                      filter: "blur(1px)",
+                      opacity: 0,
+                      "--flicker-dur": `${1.8 + (i % 5) * 0.3}s`,
+                      "--flicker-delay": `${i * 0.1}s`,
+                      willChange: "opacity, transform",
+                    } as CSSProperties
+                  }
                 />
               ))}
             </div>
@@ -650,17 +741,20 @@ export function EventsSection() {
                   <span
                     key={i}
                     className="absolute block rounded-full"
-                    style={{
-                      left: `${x}%`,
-                      top: `${y}%`,
-                      width: size,
-                      height: size,
-                      background:
-                        "radial-gradient(circle at 50% 50%, rgba(255,213,138,0.9) 0%, rgba(255,213,138,0) 70%)",
-                      opacity,
-                      transform: "translate(-50%, -50%)",
-                      animation: `bokeh-drift ${10 + (i % 5) * 3}s ease-in-out ${i * 0.4}s infinite`,
-                    }}
+                    style={
+                      {
+                        left: `${x}%`,
+                        top: `${y}%`,
+                        width: size,
+                        height: size,
+                        background:
+                          "radial-gradient(circle at 50% 50%, rgba(255,213,138,0.9) 0%, rgba(255,213,138,0) 70%)",
+                        opacity,
+                        transform: "translate(-50%, -50%)",
+                        "--bokeh-dur": `${10 + (i % 5) * 3}s`,
+                        "--bokeh-delay": `${i * 0.4}s`,
+                      } as CSSProperties
+                    }
                   />
                 );
               })}
@@ -712,7 +806,7 @@ export function EventsSection() {
           {/* Eyebrow di apertura del momento C */}
           <div
             data-reveal="soft"
-            className="w-full max-w-[28rem] flex-shrink-0 md:w-[50vw] md:pr-12"
+            className="w-full max-w-[28rem] flex-shrink-0 px-6 md:w-[50vw] md:px-0 md:pr-12"
           >
             <p className="text-eyebrow text-ivory/65">II · Dentro la festa</p>
             <p
@@ -732,17 +826,16 @@ export function EventsSection() {
             <article
               key={occ.word}
               data-occasion
-              data-reveal="soft"
-              className="relative flex w-full flex-shrink-0 items-center justify-start md:w-[80vw] md:justify-center md:px-[8vw]"
-              style={{ minHeight: undefined }}
+              className="relative flex w-full flex-shrink-0 items-center justify-start px-6 md:w-[80vw] md:justify-center md:px-[8vw]"
             >
               <div className="flex max-w-full flex-col items-start gap-6">
                 <h3
                   data-occ-word
                   className="font-display font-semibold leading-[0.95] tracking-[-0.04em] text-ivory"
                   style={{
-                    fontSize: "clamp(3rem, 9vw, 9rem)",
+                    fontSize: "clamp(2.4rem, 9vw, 9rem)",
                     textShadow: "0 6px 30px rgba(0,0,0,0.55), 0 0 60px rgba(242,185,92,0.25)",
+                    willChange: "opacity, transform",
                   }}
                 >
                   {occ.word}
@@ -750,7 +843,10 @@ export function EventsSection() {
                 <p
                   data-occ-phrase
                   className="max-w-md font-display text-lg italic leading-snug text-ivory/85 md:text-xl"
-                  style={{ textShadow: "0 3px 18px rgba(0,0,0,0.5)" }}
+                  style={{
+                    textShadow: "0 3px 18px rgba(0,0,0,0.5)",
+                    willChange: "opacity, transform",
+                  }}
                 >
                   {occ.phrase}
                 </p>
@@ -761,7 +857,7 @@ export function EventsSection() {
           {/* Chiusura: spazi */}
           <div
             data-reveal="soft"
-            className="flex w-full flex-shrink-0 items-center md:w-[80vw] md:px-[8vw]"
+            className="flex w-full flex-shrink-0 items-center px-6 md:w-[80vw] md:px-[8vw]"
           >
             <div className="flex max-w-md flex-col gap-5">
               <p className="text-eyebrow text-gold">Gli spazi</p>
@@ -788,8 +884,8 @@ export function EventsSection() {
         <div
           data-scene-c-fg
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-20"
-          style={{ width: "220%", willChange: "transform" }}
+          className="pointer-events-none absolute inset-0 z-20 w-full md:w-[220%]"
+          style={{ willChange: "transform" }}
         >
           {Array.from({ length: 16 }).map((_, i) => {
             const x = (i / 15) * 100;
@@ -868,7 +964,7 @@ export function EventsSection() {
               <h3
                 id="events-carriage-title"
                 data-mask-title
-                className="font-display font-medium leading-[1.08] text-ivory"
+                className="overflow-hidden font-display font-medium leading-[1.08] text-ivory"
                 style={{
                   fontSize: "clamp(1.6rem, 2.8vw, 2.2rem)",
                   letterSpacing: "-0.015em",
@@ -920,8 +1016,20 @@ export function EventsSection() {
         />
       </div>
 
-      {/* Keyframes locali per flicker candele e bokeh */}
+      {/* Keyframes locali per flicker candele e bokeh (attivi solo in viewport) */}
       <style>{`
+        [data-scene-c-mid] span,
+        [data-candle] {
+          animation: candle-flicker var(--flicker-dur, 2.2s) ease-in-out var(--flicker-delay, 0s) infinite paused;
+        }
+        [data-bokeh-layer] span {
+          animation: bokeh-drift var(--bokeh-dur, 12s) ease-in-out var(--bokeh-delay, 0s) infinite paused;
+        }
+        section[data-in-viewport] [data-scene-c-mid] span,
+        section[data-in-viewport] [data-candle],
+        section[data-in-viewport] [data-bokeh-layer] span {
+          animation-play-state: running;
+        }
         @keyframes candle-flicker {
           0%, 100% { opacity: 0.85; transform: scale(1); }
           25% { opacity: 1; transform: scale(1.08); }
@@ -933,7 +1041,10 @@ export function EventsSection() {
           50% { transform: translate(-50%, -50%) translateY(-14px); }
         }
         @media (prefers-reduced-motion: reduce) {
-          [data-candle], [data-light] { animation: none !important; opacity: 1 !important; transform: none !important; }
+          [data-scene-c-mid] span, [data-candle], [data-light], [data-bokeh-layer] span {
+            animation: none !important;
+          }
+          [data-candle], [data-light] { opacity: 1 !important; transform: none !important; }
         }
       `}</style>
     </section>

@@ -45,6 +45,7 @@ export function StylizedMap() {
           start: "top 80%",
           end: "bottom 50%",
           scrub: true,
+          invalidateOnRefresh: true,
         },
       });
 
@@ -61,6 +62,7 @@ export function StylizedMap() {
               trigger: svg,
               start: "top 50%",
               toggleActions: "play none none reverse",
+              invalidateOnRefresh: true,
             },
           },
         );

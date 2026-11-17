@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { KitchenSection } from "@/components/KitchenSection";
 import { MenuSection } from "@/components/MenuSection";
+import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 import { SITE_URL, absoluteUrl, buildKitchenJsonLd } from "@/lib/site";
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/cucina")({
           "Tradizione pugliese e materie prime fresche del territorio. Menù su misura per cerimonie ed eventi alla Masseria Torre Abbondanza.",
       },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}cucina` }],
+    links: [{ rel: "canonical", href: `${SITE_URL}/cucina` }],
     scripts: [
       {
         type: "application/ld+json",
@@ -31,10 +32,11 @@ export const Route = createFileRoute("/cucina")({
 function Cucina() {
   useLenis();
   return (
-    <main className="bg-background text-foreground">
+    <main id="main-content" className="bg-background text-foreground">
       <SiteHeader />
       <KitchenSection />
       <MenuSection />
+      <VisitSection />
       <SiteFooter />
     </main>
   );

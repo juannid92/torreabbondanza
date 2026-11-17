@@ -16,6 +16,7 @@ import {
   Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { scrollToSection } from "@/hooks/use-lenis";
 import { BUSINESS, SITE_URL } from "@/lib/site";
 import closingArchImg from "@/assets/fiocco-quinta/cavallo-dettaglio.jpg";
 
@@ -40,25 +41,19 @@ const FB_URL = BUSINESS.facebook.url;
 // [K1] Rimosso "Manifesto": nessuna sezione con id="manifesto" in tutto il sito.
 // Le altre voci sono state riallacciate: #stagioni → #esperienze, #visita → #contatti.
 const NAV: { label: string; href: string }[] = [
-  { label: "Storia", href: "#storia" },
-  { label: "Il Luogo", href: "#luogo" },
-  { label: "Cucina", href: "#cucina" },
-  { label: "I Sapori", href: "#menu" },
-  { label: "I Cavalli", href: "#cavalli" },
-  { label: "Eventi", href: "#eventi" },
-  { label: "Esperienze", href: "#esperienze" },
-  { label: "Recensioni", href: "#recensioni" },
-  { label: "Contatti", href: "#contatti" },
+  { label: "Storia", href: "/#storia" },
+  { label: "Il Luogo", href: "/#luogo" },
+  { label: "Cucina", href: "/#cucina" },
+  { label: "I Sapori", href: "/#menu" },
+  { label: "I Cavalli", href: "/#cavalli" },
+  { label: "Eventi", href: "/#eventi" },
+  { label: "Esperienze", href: "/#esperienze" },
+  { label: "Recensioni", href: "/#recensioni" },
+  { label: "Contatti", href: "/#contatti" },
 ];
 
 function smoothScrollTo(href: string) {
-  if (href === "#top") {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    return;
-  }
-  const id = href.replace("#", "");
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToSection(href);
 }
 
 /* ---------------- Condivisione nativa iOS / WhatsApp ---------------- */
@@ -153,7 +148,7 @@ function FloatingConciergeAndTop() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 24 }}
             transition={{ duration: reduced ? 0.15 : 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-4 bottom-4 z-40 flex items-center justify-between gap-1.5 rounded-full border border-gold/40 bg-[color:var(--murgese)]/95 p-1.5 text-ivory shadow-[0_16px_40px_-10px_rgba(20,14,10,0.65)] backdrop-blur-md md:hidden"
+            className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex items-center justify-between gap-1.5 rounded-full border border-gold/40 bg-[color:var(--murgese)]/95 p-1.5 text-ivory shadow-[0_16px_40px_-10px_rgba(20,14,10,0.65)] backdrop-blur-md md:hidden"
             aria-label="Contatto rapido Masseria"
           >
             <a
@@ -246,7 +241,9 @@ function FloatingConciergeAndTop() {
             transition={{ duration: reduced ? 0.15 : 0.35, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
               "fixed right-4 z-50 inline-flex h-11 w-11 items-center justify-center md:bottom-6 md:right-6 md:h-12 md:w-12",
-              showConcierge ? "bottom-20" : "bottom-6",
+              showConcierge
+                ? "bottom-[calc(4.5rem+env(safe-area-inset-bottom))]"
+                : "bottom-[max(1.5rem,env(safe-area-inset-bottom))]",
               "rounded-full border border-ivory/30 bg-[color:var(--murgese)]/85 text-ivory backdrop-blur transition-all",
               "hover:bg-terracotta hover:border-terracotta",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-ivory",
@@ -286,7 +283,12 @@ function ClosingClaim() {
           duration: 1.1,
           ease: "power3.out",
           stagger: 0.08,
-          scrollTrigger: { trigger: ref.current, start: "top 85%" },
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top 85%",
+            once: true,
+            invalidateOnRefresh: true,
+          },
         },
       );
       if (arch) {
@@ -299,7 +301,12 @@ function ClosingClaim() {
             scale: 1,
             duration: 1.15,
             ease: "power3.out",
-            scrollTrigger: { trigger: ref.current, start: "top 80%" },
+            scrollTrigger: {
+              trigger: ref.current,
+              start: "top 80%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
           },
         );
       }
@@ -484,7 +491,12 @@ export function SiteFooter() {
           duration: 0.8,
           ease: "power2.out",
           stagger: 0.08,
-          scrollTrigger: { trigger: footerRef.current, start: "top 75%" },
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: "top 75%",
+            once: true,
+            invalidateOnRefresh: true,
+          },
         },
       );
     }, footerRef);

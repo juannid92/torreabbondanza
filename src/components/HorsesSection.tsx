@@ -1,23 +1,28 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useReducedMotion } from "framer-motion";
 import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
 import murgeseStudioImg from "@/assets/murgese-studio.jpg";
+import horsesTraditionImg from "@/assets/horses-tradition.jpg";
 import gallopImg from "@/assets/horse-gallop.jpg";
-import horsesSkyImg from "@/assets/horses-sky.jpg";
-import horsesHillsImg from "@/assets/horses-hills.webp";
-import horsesGrazingImg from "@/assets/horses-grazing.webp";
 import murgeseRiderImg from "@/assets/murgese-rider.jpg";
-import murgesePrairieBg from "@/assets/murgese-prairie-bg.png";
 import murgeseTrottingImg from "@/assets/murgese-trotting.jpg";
 
-const MICRO_LABELS = [
-  { text: "MANTO CORVINO", x: "8%", y: "22%", delay: 0.1 },
-  { text: "RAZZA AUTOCTONA", x: "72%", y: "18%", delay: 0.3 },
-  { text: "L'ANTICA MURGIA EQUESTRE", x: "12%", y: "78%", delay: 0.5 },
-  { text: "STIRPE DI PUGLIA", x: "68%", y: "82%", delay: 0.7 },
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+const MICRO_LABELS: {
+  text: string;
+  pos: Pick<CSSProperties, "left" | "right" | "top">;
+  delay: number;
+}[] = [
+  { text: "MANTO CORVINO", pos: { left: "6%", top: "20%" }, delay: 0.1 },
+  { text: "RAZZA AUTOCTONA", pos: { right: "6%", top: "16%" }, delay: 0.3 },
+  { text: "L'ANTICA MURGIA EQUESTRE", pos: { left: "6%", top: "78%" }, delay: 0.5 },
+  { text: "STIRPE DI PUGLIA", pos: { right: "6%", top: "84%" }, delay: 0.7 },
 ];
 
 export function HorsesSection() {
@@ -43,6 +48,7 @@ export function HorsesSection() {
           trigger: el,
           start: "top 82%",
           once: true,
+          invalidateOnRefresh: true,
           onEnter: () => {
             if (isReduced) {
               gsap.set(words, { yPercent: 0 });
@@ -65,12 +71,13 @@ export function HorsesSection() {
           trigger: el,
           start: "top 85%",
           once: true,
+          invalidateOnRefresh: true,
           onEnter: () => {
             gsap.to(el, {
               opacity: 1,
               y: 0,
               duration: isReduced ? 0.3 : 0.9,
-              delay: isReduced ? 0 : i * 0.04,
+              delay: isReduced ? 0 : Math.min(i * 0.04, 0.2),
               ease: "power3.out",
             });
           },
@@ -93,31 +100,34 @@ export function HorsesSection() {
               start: "top 80%",
               end: "top 30%",
               scrub: 1,
+              invalidateOnRefresh: true,
             },
           },
         );
       }
 
-      // MOMENTO B — Galoppo scroll-scrubbed: pin + traslazione orizzontale
+      // MOMENTO B — Galoppo scroll-scrubbed: pin + traslazione orizzontale (margini sicuri senza bande nere)
       const gallopScene = gallopSceneRef.current;
       const gallopEl = gallopImgRef.current;
       const gallopWord = gallopWordRef.current;
       const dust = dustRef.current;
       if (gallopScene && gallopEl && !isReduced) {
+        const isMobile = window.matchMedia("(max-width: 767px)").matches;
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: gallopScene,
             start: "top top",
-            end: "+=180%",
+            end: isMobile ? "+=110%" : "+=180%",
             pin: true,
             scrub: 1,
             anticipatePin: 1,
+            invalidateOnRefresh: true,
           },
         });
         tl.fromTo(
           gallopEl,
-          { xPercent: -22, scale: 1.18 },
-          { xPercent: 12, scale: 1.05, ease: "none" },
+          { xPercent: -8, scale: 1.24 },
+          { xPercent: 8, scale: 1.18, ease: "none" },
           0,
         );
         if (gallopWord) {
@@ -137,26 +147,46 @@ export function HorsesSection() {
       const prairie = prairieSceneRef.current;
       if (prairie && !isReduced) {
         prairie.querySelectorAll<HTMLElement>("[data-p-layer]").forEach((layer) => {
+          const isGrass = layer.hasAttribute("data-p-grass");
+          if (isGrass) {
+            gsap.fromTo(
+              layer,
+              { scale: 1.04 },
+              {
+                scale: 1.08,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: prairie,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: 1,
+                  invalidateOnRefresh: true,
+                },
+              },
+            );
+            return;
+          }
           const speed = Number(layer.dataset.speed ?? "0.2");
-          const scale = Number(layer.dataset.scale ?? "0");
+          const scale = Number(layer.dataset.scaleBoost ?? "0");
           gsap.fromTo(
             layer,
-            { y: 80 * speed, scale: 1 + scale * 0.04 },
+            { y: 60 * speed, scale: 1.04 + scale * 0.2 },
             {
-              y: -80 * speed,
-              scale: 1 + scale * 0.12,
+              y: -60 * speed,
+              scale: 1.04 + scale * 0.8,
               ease: "none",
               scrollTrigger: {
                 trigger: prairie,
                 start: "top bottom",
                 end: "bottom top",
                 scrub: 1,
+                invalidateOnRefresh: true,
               },
             },
           );
         });
 
-        // Erba che ondeggia
+        // Erba che ondeggia (attiva solo quando in viewport)
         const grass = prairie.querySelector<HTMLElement>("[data-p-grass]");
         if (grass) {
           gsap.to(grass, {
@@ -166,6 +196,12 @@ export function HorsesSection() {
             yoyo: true,
             repeat: -1,
             ease: "sine.inOut",
+            scrollTrigger: {
+              trigger: prairie,
+              start: "top bottom",
+              end: "bottom top",
+              toggleActions: "play pause resume pause",
+            },
           });
         }
       }
@@ -286,7 +322,7 @@ export function HorsesSection() {
       {/* ────────── MOMENTO B — IL GALOPPO (scroll-scrubbed) ────────── */}
       <div
         ref={gallopSceneRef}
-        className="relative mt-32 h-screen w-full overflow-hidden md:mt-48"
+        className="relative mt-32 h-[100svh] w-full overflow-hidden md:mt-48"
         style={{
           backgroundColor: "color-mix(in oklab, var(--murgese) 92%, black)",
         }}
@@ -372,7 +408,10 @@ export function HorsesSection() {
       </div>
 
       {/* ────────── MOMENTO C — LA PRATERIA ────────── */}
-      <div ref={prairieSceneRef} className="relative mt-0 h-[110vh] w-full overflow-hidden">
+      <div
+        ref={prairieSceneRef}
+        className="relative mt-0 h-[100svh] w-full overflow-hidden md:h-[110vh]"
+      >
         {/* Sfondo unico: cavallo al trotto a tutto schermo */}
         <div
           data-p-layer
@@ -405,7 +444,7 @@ export function HorsesSection() {
           data-p-grass
           data-speed="0.55"
           data-scale-boost="1"
-          className="absolute inset-x-0 bottom-0 h-[22%]"
+          className="absolute inset-x-0 bottom-[-2%] h-[24%]"
           style={{ willChange: "transform" }}
         >
           <svg
@@ -427,12 +466,15 @@ export function HorsesSection() {
           </svg>
         </div>
 
-        {/* Type-as-mask: MURGESE con prateria visibile dentro */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-4">
+        {/* Type-as-mask: MURGESE con prateria visibile dentro (drop-shadow sul wrapper per evitare offuscamento su Safari iOS) */}
+        <div
+          className="pointer-events-none absolute inset-0 flex items-center justify-center px-4"
+          style={{ filter: "drop-shadow(0 12px 36px rgba(21,17,15,0.65))" }}
+        >
           <span
             className="block font-display font-bold"
             style={{
-              fontSize: "clamp(5rem, 22vw, 22rem)",
+              fontSize: "clamp(3.6rem, 17vw, 22rem)",
               letterSpacing: "-0.04em",
               lineHeight: 0.85,
               backgroundImage: `url(${murgeseRiderImg})`,
@@ -442,7 +484,6 @@ export function HorsesSection() {
               backgroundClip: "text",
               WebkitTextFillColor: "transparent",
               color: "transparent",
-              textShadow: "0 0 60px color-mix(in oklab, var(--murgese) 60%, transparent)",
             }}
           >
             MURGESE
@@ -453,12 +494,10 @@ export function HorsesSection() {
         {MICRO_LABELS.map((l) => (
           <motion.span
             key={l.text}
-            className="pointer-events-none absolute text-eyebrow"
+            className="pointer-events-none absolute text-eyebrow tracking-[0.22em] md:tracking-[0.32em]"
             style={{
-              left: l.x,
-              top: l.y,
-              color: "color-mix(in oklab, var(--ivory) 80%, transparent)",
-              letterSpacing: "0.32em",
+              ...l.pos,
+              color: "color-mix(in oklab, var(--ivory) 82%, transparent)",
             }}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -472,7 +511,7 @@ export function HorsesSection() {
             >
               <span
                 aria-hidden
-                className="block h-px w-6"
+                className="block h-px w-5 md:w-6"
                 style={{ backgroundColor: "color-mix(in oklab, var(--gold) 70%, transparent)" }}
               />
               {l.text}
@@ -495,11 +534,11 @@ export function HorsesSection() {
               }}
             >
               <img
-                src={murgeseStudioImg}
+                src={horsesTraditionImg}
                 alt="Carrozza d'epoca con due cavalli Murgesi nella tradizione equestre della Murgia, al tramonto presso la masseria"
                 loading="lazy"
-                width={1408}
-                height={1216}
+                width={1800}
+                height={1198}
                 className="absolute inset-0 h-full w-full object-cover"
               />
               <div
@@ -556,9 +595,16 @@ export function HorsesSection() {
               occasione di eventi e visite guidate.
             </p>
 
-            <div className="mt-12">
-              <MagneticButton href="#contatti" variant="pill-murgese">
+            <div className="mt-12 flex flex-wrap items-center gap-6">
+              <MagneticButton href="#contatti" variant="pill-ivory">
                 Vivi l&apos;esperienza equestre →
+              </MagneticButton>
+              <MagneticButton
+                href="/cavalli/vetrina"
+                variant="link"
+                className="text-ivory/80 hover:text-gold"
+              >
+                Esemplari in vetrina
               </MagneticButton>
             </div>
           </div>

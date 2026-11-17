@@ -15,6 +15,7 @@ import { Route as CucinaRouteImport } from './routes/cucina'
 import { Route as CookieRouteImport } from './routes/cookie'
 import { Route as CavalliRouteImport } from './routes/cavalli'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CavalliVetrinaRouteImport } from './routes/cavalli.vetrina'
 
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
@@ -46,37 +47,59 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CavalliVetrinaRoute = CavalliVetrinaRouteImport.update({
+  id: '/vetrina',
+  path: '/vetrina',
+  getParentRoute: () => CavalliRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/cavalli': typeof CavalliRoute
+  '/cavalli': typeof CavalliRouteWithChildren
   '/cookie': typeof CookieRoute
   '/cucina': typeof CucinaRoute
   '/eventi': typeof EventiRoute
   '/privacy': typeof PrivacyRoute
+  '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/cavalli': typeof CavalliRoute
+  '/cavalli': typeof CavalliRouteWithChildren
   '/cookie': typeof CookieRoute
   '/cucina': typeof CucinaRoute
   '/eventi': typeof EventiRoute
   '/privacy': typeof PrivacyRoute
+  '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/cavalli': typeof CavalliRoute
+  '/cavalli': typeof CavalliRouteWithChildren
   '/cookie': typeof CookieRoute
   '/cucina': typeof CucinaRoute
   '/eventi': typeof EventiRoute
   '/privacy': typeof PrivacyRoute
+  '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cavalli' | '/cookie' | '/cucina' | '/eventi' | '/privacy'
+  fullPaths:
+    | '/'
+    | '/cavalli'
+    | '/cookie'
+    | '/cucina'
+    | '/eventi'
+    | '/privacy'
+    | '/cavalli/vetrina'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cavalli' | '/cookie' | '/cucina' | '/eventi' | '/privacy'
+  to:
+    | '/'
+    | '/cavalli'
+    | '/cookie'
+    | '/cucina'
+    | '/eventi'
+    | '/privacy'
+    | '/cavalli/vetrina'
   id:
     | '__root__'
     | '/'
@@ -85,11 +108,12 @@ export interface FileRouteTypes {
     | '/cucina'
     | '/eventi'
     | '/privacy'
+    | '/cavalli/vetrina'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CavalliRoute: typeof CavalliRoute
+  CavalliRoute: typeof CavalliRouteWithChildren
   CookieRoute: typeof CookieRoute
   CucinaRoute: typeof CucinaRoute
   EventiRoute: typeof EventiRoute
@@ -140,12 +164,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cavalli/vetrina': {
+      id: '/cavalli/vetrina'
+      path: '/vetrina'
+      fullPath: '/cavalli/vetrina'
+      preLoaderRoute: typeof CavalliVetrinaRouteImport
+      parentRoute: typeof CavalliRoute
+    }
   }
 }
 
+interface CavalliRouteChildren {
+  CavalliVetrinaRoute: typeof CavalliVetrinaRoute
+}
+
+const CavalliRouteChildren: CavalliRouteChildren = {
+  CavalliVetrinaRoute: CavalliVetrinaRoute,
+}
+
+const CavalliRouteWithChildren =
+  CavalliRoute._addFileChildren(CavalliRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CavalliRoute: CavalliRoute,
+  CavalliRoute: CavalliRouteWithChildren,
   CookieRoute: CookieRoute,
   CucinaRoute: CucinaRoute,
   EventiRoute: EventiRoute,

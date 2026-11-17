@@ -4,13 +4,17 @@ import { Menu, X, MessageCircle } from "lucide-react";
 import { BUSINESS } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS = [
-  { label: "La Masseria", href: "/#luogo" },
-  { label: "Cucina", href: "/cucina" },
-  { label: "Cavalli", href: "/cavalli" },
-  { label: "Eventi", href: "/eventi" },
-  { label: "Contatti", href: "/#contatti" },
-] as const;
+const NAV_ITEMS: {
+  label: string;
+  to: "/" | "/cucina" | "/cavalli" | "/eventi";
+  hash?: string;
+}[] = [
+  { label: "La Masseria", to: "/", hash: "luogo" },
+  { label: "Cucina", to: "/cucina" },
+  { label: "Cavalli", to: "/cavalli" },
+  { label: "Eventi", to: "/eventi" },
+  { label: "Contatti", to: "/", hash: "contatti" },
+];
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -31,12 +35,14 @@ export function SiteHeader() {
   }, [location.pathname]);
 
   const isHome = location.pathname === "/";
+  const hideOnHeroTop = isHome && !scrolled && !mobileOpen;
 
   return (
     <header
       ref={headerRef}
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        hideOnHeroTop && "pointer-events-none -translate-y-2 opacity-0",
         scrolled || mobileOpen
           ? "bg-[color:var(--murgese)]/95 backdrop-blur-md shadow-sm"
           : "bg-transparent",
@@ -57,11 +63,12 @@ export function SiteHeader() {
         {/* Desktop nav */}
         <nav className="hidden items-center gap-8 md:flex" aria-label="Principale">
           {NAV_ITEMS.map((item) => {
-            const isActive = location.pathname === item.href;
+            const isActive = location.pathname === item.to && !item.hash;
             return (
               <Link
-                key={item.href}
-                to={item.href}
+                key={item.label}
+                to={item.to}
+                hash={item.hash}
                 className={cn(
                   "text-sm tracking-wide transition-colors hover:text-gold",
                   scrolled ? "text-ivory/80" : "text-ink/80",
@@ -80,12 +87,7 @@ export function SiteHeader() {
             href={BUSINESS.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(
-              "hidden items-center gap-2 rounded-full px-4 py-2 text-xs font-medium tracking-widest uppercase transition-colors sm:inline-flex",
-              scrolled || mobileOpen
-                ? "bg-terracotta text-ivory hover:bg-gold hover:text-ink"
-                : "bg-terracotta text-ivory hover:bg-gold hover:text-ink",
-            )}
+            className="hidden items-center gap-2 rounded-full bg-terracotta px-4 py-2 text-xs font-medium tracking-widest uppercase text-ivory transition-colors hover:bg-gold hover:text-ink sm:inline-flex"
           >
             <MessageCircle className="h-3.5 w-3.5" />
             WhatsApp
@@ -111,11 +113,12 @@ export function SiteHeader() {
         <div className="border-t border-ivory/10 bg-[color:var(--murgese)]/98 backdrop-blur-lg md:hidden">
           <nav className="flex flex-col gap-1 px-6 py-6" aria-label="Mobile">
             {NAV_ITEMS.map((item) => {
-              const isActive = location.pathname === item.href;
+              const isActive = location.pathname === item.to && !item.hash;
               return (
                 <Link
-                  key={item.href}
-                  to={item.href}
+                  key={item.label}
+                  to={item.to}
+                  hash={item.hash}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
                     "rounded-lg px-4 py-3 text-base tracking-wide transition-colors",

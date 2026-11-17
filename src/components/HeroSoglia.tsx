@@ -5,7 +5,6 @@ import { SplitText } from "@/lib/split-text";
 import { KineticMarquee } from "./KineticMarquee";
 import { VerticalWord } from "./VerticalWord";
 import { MagneticButton } from "./MagneticButton";
-import heroPoster from "@/assets/hero-masseria.jpg";
 gsap.registerPlugin(ScrollTrigger);
 
 const MARQUEE_ITEMS = [
@@ -19,8 +18,10 @@ const MARQUEE_ITEMS = [
   "MURGIA · NOCI",
 ];
 
-// Video hero locale convertito da IMG_0664.MOV (48 MB originale, ottimizzato per web)
-const HERO_VIDEO_URL = "/hero-video.mp4";
+// Video intro hero convertito senza traccia audio (WebM VP9 primario + MP4 fallback + poster WebP)
+const HERO_VIDEO_WEBM = "/hero-video.webm";
+const HERO_VIDEO_MP4 = "/hero-video.mp4";
+const HERO_POSTER_WEBP = "/hero-poster.webp";
 
 /**
  * Hero "La Soglia delle Due Anime" — dittico di archi gemelli.
@@ -60,7 +61,8 @@ export function HeroSoglia() {
         return;
       }
 
-      // === Media full-bleed: video immediato ===
+      // === Media full-bleed: video immediato (con pausa automatica offscreen) ===
+      let kenBurnsTween: gsap.core.Tween | null = null;
       if (video) {
         gsap.set(video, { opacity: 1, scale: 1.02, transformOrigin: "center center" });
         video.play().catch(() => {
@@ -68,7 +70,7 @@ export function HeroSoglia() {
         });
         gsap.to(video, { scale: 1.0, duration: 1.6, ease: "power3.out", delay: 0.2 });
         // Ken Burns continuo sul video
-        gsap.to(video, {
+        kenBurnsTween = gsap.to(video, {
           scale: 1.05,
           duration: 16,
           ease: "sine.inOut",
@@ -77,6 +79,21 @@ export function HeroSoglia() {
           delay: 2.0,
         });
       }
+
+      ScrollTrigger.create({
+        trigger: root.current,
+        start: "top bottom",
+        end: "bottom top",
+        onToggle: (self) => {
+          if (self.isActive) {
+            video?.play().catch(() => {});
+            kenBurnsTween?.play();
+          } else {
+            video?.pause();
+            kenBurnsTween?.pause();
+          }
+        },
+      });
 
       // Split "ABBONDANZA" per lettere (back e front sincronizzati)
       const splitBack = new SplitText(back, { type: "chars" });
@@ -159,15 +176,18 @@ export function HeroSoglia() {
           loop
           playsInline
           autoPlay
-          preload="auto"
-          poster={heroPoster}
+          preload="metadata"
+          poster={HERO_POSTER_WEBP}
           aria-hidden
           onCanPlay={(e) => {
-            e.currentTarget.play().catch(() => {});
+            if (root.current && root.current.getBoundingClientRect().bottom > 0) {
+              e.currentTarget.play().catch(() => {});
+            }
           }}
           className="absolute inset-0 h-full w-full object-cover will-change-transform"
         >
-          <source src={HERO_VIDEO_URL} type="video/mp4" />
+          <source src={HERO_VIDEO_WEBM} type="video/webm" />
+          <source src={HERO_VIDEO_MP4} type="video/mp4" />
         </video>
       </div>
 
@@ -232,7 +252,7 @@ export function HeroSoglia() {
       </div>
 
       {/* === Layer 10: ABBONDANZA back — watermark sopra il video === */}
-      <div className="pointer-events-none absolute inset-x-0 z-10 flex justify-center px-3 md:bottom-[18%] bottom-[6%]">
+      <div className="pointer-events-none absolute inset-x-0 top-[34%] z-10 flex justify-center px-3 md:top-auto md:bottom-[18%]">
         <span
           data-abbondanza-back
           className="block max-w-full font-display font-bold leading-[0.85] text-ink/20 whitespace-nowrap select-none text-center"
@@ -246,7 +266,7 @@ export function HeroSoglia() {
       </div>
 
       {/* === Layer 30: ABBONDANZA accento terracotta — sopra il watermark === */}
-      <div className="pointer-events-none absolute inset-x-0 z-30 flex justify-center px-3 md:bottom-[18%] bottom-[6%]">
+      <div className="pointer-events-none absolute inset-x-0 top-[34%] z-30 flex justify-center px-3 md:top-auto md:bottom-[18%]">
         <span
           data-abbondanza-front
           aria-hidden
@@ -284,7 +304,7 @@ export function HeroSoglia() {
       </div>
 
       {/* TORRE kicker + meta su mobile */}
-      <div className="absolute left-6 right-6 z-30 md:hidden" style={{ top: "7%" }}>
+      <div className="absolute left-6 right-6 top-16 z-30 md:hidden">
         <span
           data-torre
           className="block font-display font-semibold text-ink"
@@ -302,7 +322,7 @@ export function HeroSoglia() {
       </div>
 
       {/* === Sottotitolo + CTA (equità: due pill di pari peso + link terziario) === */}
-      <div className="absolute left-6 right-6 z-40 flex flex-col gap-5 md:gap-6 md:left-24 md:right-auto md:max-w-[560px] bottom-[14%] md:bottom-[8%]">
+      <div className="absolute left-6 right-6 z-40 flex flex-col gap-4 md:gap-6 md:left-24 md:right-auto md:max-w-[560px] bottom-[12%] md:bottom-[8%]">
         <p data-subtitle className="font-sans text-base md:text-lg leading-relaxed text-ink/85">
           Due anime, una masseria del Settecento: la cucina di Puglia per eventi e cerimonie e
           l'antica arte dei cavalli Murgesi, nel cuore della Murgia.

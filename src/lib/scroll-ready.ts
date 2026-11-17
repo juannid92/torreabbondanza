@@ -15,20 +15,9 @@ export function observeRevealElements(root: ParentNode = document): () => void {
   const elements = Array.from(root.querySelectorAll<HTMLElement>(REVEAL_SELECTOR));
   if (!elements.length) return () => undefined;
 
-  const pending = new Set(elements);
-
   const reveal = (el: HTMLElement) => {
     el.classList.add("in-view");
     el.removeAttribute("data-reveal-pending");
-    pending.delete(el);
-  };
-
-  const isInRevealZone = (el: HTMLElement) => {
-    const rect = el.getBoundingClientRect();
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    const style = window.getComputedStyle(el);
-    if (style.display === "none" || style.visibility === "hidden") return false;
-    return rect.top <= vh * 0.92 && rect.bottom >= vh * 0.04;
   };
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -52,49 +41,27 @@ export function observeRevealElements(root: ParentNode = document): () => void {
         observer.unobserve(el);
       });
     },
-    { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+    { rootMargin: "0px 0px -8% 0px", threshold: 0.05 },
   );
 
   elements.forEach((el) => observer.observe(el));
 
-  let raf = 0;
-  const checkVisible = () => {
-    raf = 0;
-    pending.forEach((el) => {
-      if (!document.documentElement.contains(el)) {
-        pending.delete(el);
-        return;
+  const raf = requestAnimationFrame(() => {
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    elements.forEach((el) => {
+      if (el.classList.contains("in-view") || !document.documentElement.contains(el)) return;
+      const style = window.getComputedStyle(el);
+      if (style.display === "none" || style.visibility === "hidden") return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top < vh * 0.92) {
+        reveal(el);
+        observer.unobserve(el);
       }
-      if (!isInRevealZone(el)) return;
-      reveal(el);
-      observer.unobserve(el);
     });
-  };
-
-  const scheduleCheck = () => {
-    if (raf) return;
-    raf = requestAnimationFrame(checkVisible);
-  };
-
-  scheduleCheck();
-  window.addEventListener("scroll", scheduleCheck, { passive: true });
-  window.addEventListener("resize", scheduleCheck);
-  window.addEventListener("orientationchange", scheduleCheck);
-  window.addEventListener("load", scheduleCheck, { once: true });
-
-  // Fail-safe: se l'observer non scatta per desync/layout, nessun contenuto resta vuoto.
-  const fallback = window.setTimeout(() => {
-    elements.forEach(reveal);
-    observer.disconnect();
-  }, 1800);
+  });
 
   return () => {
-    if (raf) cancelAnimationFrame(raf);
-    window.clearTimeout(fallback);
-    window.removeEventListener("scroll", scheduleCheck);
-    window.removeEventListener("resize", scheduleCheck);
-    window.removeEventListener("orientationchange", scheduleCheck);
-    window.removeEventListener("load", scheduleCheck);
+    cancelAnimationFrame(raf);
     observer.disconnect();
   };
 }

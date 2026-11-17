@@ -184,22 +184,18 @@ export function StorySection() {
           const body = panel.querySelector<HTMLElement>("[data-panel-body]");
 
           if (arch) {
-            gsap.fromTo(
-              arch,
-              { clipPath: "inset(100% 0% 0% 0%)" },
-              {
-                clipPath: "inset(0% 0% 0% 0%)",
-                ease: "power3.out",
-                duration: 1.1,
-                immediateRender: false,
-                scrollTrigger: {
-                  trigger: panel,
-                  start: "top 80%",
-                  once: true,
-                  invalidateOnRefresh: true,
-                },
+            gsap.set(arch, { clipPath: "inset(100% 0% 0% 0%)" });
+            gsap.to(arch, {
+              clipPath: "inset(0% 0% 0% 0%)",
+              ease: "power3.out",
+              duration: 1.0,
+              scrollTrigger: {
+                trigger: panel,
+                start: "top 80%",
+                once: true,
+                invalidateOnRefresh: true,
               },
-            );
+            });
           }
           if (img) {
             gsap.fromTo(
@@ -221,25 +217,21 @@ export function StorySection() {
 
           const reveals = [eyebrow, title, body].filter(Boolean) as HTMLElement[];
           if (reveals.length) {
-            gsap.fromTo(
-              reveals,
-              { y: 24, opacity: 0 },
-              {
-                y: 0,
-                opacity: 1,
-                duration: 0.7,
-                ease: "power2.out",
-                stagger: 0.08,
-                immediateRender: false,
-                scrollTrigger: {
-                  trigger: panel,
-                  start: "top 75%",
-                  toggleActions: "play none none none",
-                  once: true,
-                  invalidateOnRefresh: true,
-                },
+            gsap.set(reveals, { y: 24, opacity: 0 });
+            gsap.to(reveals, {
+              y: 0,
+              opacity: 1,
+              duration: 0.7,
+              ease: "power2.out",
+              stagger: 0.08,
+              scrollTrigger: {
+                trigger: panel,
+                start: "top 75%",
+                toggleActions: "play none none none",
+                once: true,
+                invalidateOnRefresh: true,
               },
-            );
+            });
           }
 
           ScrollTrigger.create({
@@ -306,7 +298,7 @@ export function StorySection() {
       }
 
       // Per ogni pannello: arch reveal + parallax interno
-      panels.forEach((panel) => {
+      panels.forEach((panel, idx) => {
         const arch = panel.querySelector<HTMLElement>("[data-arch-reveal]");
         const img = panel.querySelector<HTMLElement>("[data-arch-image]");
         const eyebrow = panel.querySelector<HTMLElement>("[data-panel-eyebrow]");
@@ -315,23 +307,19 @@ export function StorySection() {
         const ghost = panel.querySelector<HTMLElement>("[data-ghost]");
 
         if (arch) {
-          gsap.fromTo(
-            arch,
-            { clipPath: "inset(100% 0% 0% 0%)" },
-            {
-              clipPath: "inset(0% 0% 0% 0%)",
-              ease: "power3.out",
-              duration: 1.1,
-              immediateRender: false,
-              scrollTrigger: {
-                trigger: panel,
-                containerAnimation: tl,
-                start: "left 75%",
-                toggleActions: "play none none none",
-                once: true,
-              },
+          gsap.set(arch, { clipPath: "inset(100% 0% 0% 0%)" });
+          gsap.to(arch, {
+            clipPath: "inset(0% 0% 0% 0%)",
+            ease: "power3.out",
+            duration: 1.1,
+            scrollTrigger: {
+              trigger: panel,
+              containerAnimation: tl,
+              start: "left 75%",
+              toggleActions: "play none none none",
+              once: true,
             },
-          );
+          });
         }
         if (img) {
           gsap.fromTo(
@@ -371,25 +359,30 @@ export function StorySection() {
 
         const reveals = [eyebrow, title, body].filter(Boolean) as HTMLElement[];
         if (reveals.length) {
-          gsap.fromTo(
-            reveals,
-            { y: 24, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.7,
-              ease: "power2.out",
-              stagger: 0.08,
-              immediateRender: false,
-              scrollTrigger: {
-                trigger: panel,
-                containerAnimation: tl,
-                start: "left 65%",
-                toggleActions: "play none none none",
-                once: true,
-              },
-            },
-          );
+          gsap.set(reveals, { y: 24, opacity: 0 });
+          gsap.to(reveals, {
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            ease: "power2.out",
+            stagger: 0.08,
+            scrollTrigger:
+              idx === 0
+                ? {
+                    trigger: section,
+                    start: "top 75%",
+                    toggleActions: "play none none none",
+                    once: true,
+                    invalidateOnRefresh: true,
+                  }
+                : {
+                    trigger: panel,
+                    containerAnimation: tl,
+                    start: "left 72%",
+                    toggleActions: "play none none none",
+                    once: true,
+                  },
+          });
         }
       });
     }, section);
@@ -405,7 +398,7 @@ export function StorySection() {
       ref={sectionRef}
       id="storia"
       aria-labelledby="story-title"
-      className="relative w-full overflow-hidden bg-stone text-ink"
+      className="relative w-full overflow-x-clip bg-stone text-ink"
       style={{ minHeight: "100svh" }}
     >
       <div className="grain-overlay" aria-hidden />

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { EventsSection } from "@/components/EventsSection";
 import { SeasonsSection } from "@/components/SeasonsSection";
+import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 import { SITE_URL, absoluteUrl, buildEventsJsonLd } from "@/lib/site";
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/eventi")({
           "Matrimoni, cerimonie e feste private nella masseria del Settecento. Esperienze stagionali tra natura e tradizione pugliese.",
       },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}eventi` }],
+    links: [{ rel: "canonical", href: `${SITE_URL}/eventi` }],
     scripts: [
       {
         type: "application/ld+json",
@@ -31,10 +32,11 @@ export const Route = createFileRoute("/eventi")({
 function Eventi() {
   useLenis();
   return (
-    <main className="bg-background text-foreground">
+    <main id="main-content" className="bg-background text-foreground">
       <SiteHeader />
       <EventsSection />
       <SeasonsSection />
+      <VisitSection />
       <SiteFooter />
     </main>
   );

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { HorsesShowcase } from "@/components/HorsesShowcase";
+import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 import { SITE_URL, BUSINESS } from "@/lib/site";
@@ -122,9 +123,17 @@ export const Route = createFileRoute("/cavalli/vetrina")({
         content:
           "Allevamento e vendita cavalli Murgesi iscritti al Registro Anagrafico. Soggetti per dressage, attacchi d'epoca e turismo equestre. Export in Europa, Russia, Cina. Video, foto e pedigree disponibili.",
       },
-      { name: "keywords", content: "cavalli murgesi vendita, murgese horse for sale, купить мурадскую лошадь, 穆尔杰斯马出售, cavalli puglia, allevamento murgese, export horses italy" },
+      {
+        name: "keywords",
+        content:
+          "cavalli murgesi vendita, murgese horse for sale, купить мурадскую лошадь, 穆尔杰斯马出售, cavalli puglia, allevamento murgese, export horses italy",
+      },
       { property: "og:title", content: "Vendita Cavalli Murgesi — Torre Abbondanza" },
-      { property: "og:description", content: "Murgese horses for sale. Registered breeding stock. EU, Russia, China export available." },
+      {
+        property: "og:description",
+        content:
+          "Murgese horses for sale. Registered breeding stock. EU, Russia, China export available.",
+      },
       { property: "og:type", content: "product.group" },
       { property: "og:url", content: `${SITE_URL}/cavalli/vetrina` },
     ],
@@ -142,9 +151,10 @@ export const Route = createFileRoute("/cavalli/vetrina")({
 function CavalliVetrina() {
   useLenis();
   return (
-    <main className="bg-background text-foreground">
+    <main id="main-content" className="bg-background text-foreground">
       <SiteHeader />
       <HorsesShowcase />
+      <VisitSection />
       <SiteFooter />
     </main>
   );

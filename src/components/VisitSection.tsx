@@ -3,7 +3,16 @@ import { Link } from "@tanstack/react-router";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Instagram, Facebook, Phone, MessageCircle, MapPin, Globe, Check, ArrowRight } from "lucide-react";
+import {
+  Instagram,
+  Facebook,
+  Phone,
+  MessageCircle,
+  MapPin,
+  Globe,
+  Check,
+  ArrowRight,
+} from "lucide-react";
 import { StylizedMap } from "@/components/StylizedMap";
 import { cn } from "@/lib/utils";
 import { BUSINESS, SITE_URL } from "@/lib/site";
@@ -539,7 +548,12 @@ export function VisitSection() {
             duration: 0.95,
             ease: "power3.out",
             stagger: 0.08,
-            scrollTrigger: { trigger: titleRef.current, start: "top 85%" },
+            scrollTrigger: {
+              trigger: titleRef.current,
+              start: "top 85%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
           },
         );
       }
@@ -553,29 +567,54 @@ export function VisitSection() {
             opacity: 1,
             duration: 0.7,
             ease: "power2.out",
-            delay: Math.min(i * 0.04, 0.4),
-            scrollTrigger: { trigger: el, start: "top 90%" },
+            delay: Math.min(i * 0.03, 0.25),
+            scrollTrigger: {
+              trigger: el,
+              start: "top 90%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
           },
         );
       });
 
-      // Parallax dolce tra colonne
-      gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
-        const speed = Number(el.dataset.parallax ?? 0);
-        gsap.to(el, {
-          y: speed,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
+      // Parallax dolce tra colonne (solo su layout desktop affiancato)
+      if (window.matchMedia("(min-width: 1024px)").matches) {
+        gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
+          const speed = Number(el.dataset.parallax ?? 0);
+          gsap.to(el, {
+            y: speed,
+            ease: "none",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          });
+        });
+      }
+
+      // Marker "atterra" + pulse (in pausa quando offscreen)
+      if (markerRef.current && mapRef.current) {
+        let pulseTween: gsap.core.Tween | null = null;
+        let isMapVisible = true;
+
+        ScrollTrigger.create({
+          trigger: mapRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          onToggle: (self) => {
+            isMapVisible = self.isActive;
+            if (self.isActive) {
+              pulseTween?.play();
+            } else {
+              pulseTween?.pause();
+            }
           },
         });
-      });
 
-      // Marker "atterra" + pulse
-      if (markerRef.current && mapRef.current) {
         gsap.fromTo(
           markerRef.current,
           { y: -36, opacity: 0, scale: 0.6 },
@@ -585,14 +624,20 @@ export function VisitSection() {
             scale: 1,
             duration: 0.9,
             ease: "back.out(2)",
-            scrollTrigger: { trigger: mapRef.current, start: "top 80%" },
+            scrollTrigger: {
+              trigger: mapRef.current,
+              start: "top 80%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
             onComplete: () => {
-              gsap.to(markerRef.current, {
+              pulseTween = gsap.to(markerRef.current, {
                 scale: 1.08,
                 duration: 1.2,
                 repeat: -1,
                 yoyo: true,
                 ease: "sine.inOut",
+                paused: !isMapVisible,
               });
             },
           },
