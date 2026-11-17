@@ -5,6 +5,7 @@ import { SplitText } from "@/lib/split-text";
 import { KineticMarquee } from "./KineticMarquee";
 import { VerticalWord } from "./VerticalWord";
 import { MagneticButton } from "./MagneticButton";
+import heroPoster from "@/assets/hero-masseria.jpg";
 gsap.registerPlugin(ScrollTrigger);
 
 const MARQUEE_ITEMS = [
@@ -18,10 +19,8 @@ const MARQUEE_ITEMS = [
   "MURGIA · NOCI",
 ];
 
-// Video intro hero convertito senza traccia audio (WebM VP9 primario + MP4 fallback + poster WebP)
-const HERO_VIDEO_WEBM = "/hero-video.webm";
-const HERO_VIDEO_MP4 = "/hero-video.mp4";
-const HERO_POSTER_WEBP = "/hero-poster.webp";
+// Video hero locale convertito da IMG_0664.MOV (48 MB originale, ottimizzato per web)
+const HERO_VIDEO_URL = "/hero-video.mp4";
 
 /**
  * Hero "La Soglia delle Due Anime" — dittico di archi gemelli.
@@ -177,7 +176,7 @@ export function HeroSoglia() {
           playsInline
           autoPlay
           preload="metadata"
-          poster={HERO_POSTER_WEBP}
+          poster={heroPoster}
           aria-hidden
           onCanPlay={(e) => {
             if (root.current && root.current.getBoundingClientRect().bottom > 0) {
@@ -186,8 +185,7 @@ export function HeroSoglia() {
           }}
           className="absolute inset-0 h-full w-full object-cover will-change-transform"
         >
-          <source src={HERO_VIDEO_WEBM} type="video/webm" />
-          <source src={HERO_VIDEO_MP4} type="video/mp4" />
+          <source src={HERO_VIDEO_URL} type="video/mp4" />
         </video>
       </div>
 

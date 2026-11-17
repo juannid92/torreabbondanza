@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { IntroOverlay } from "@/components/IntroOverlay";
 import { SiteHeader } from "@/components/SiteHeader";
 import { HeroSoglia } from "@/components/HeroSoglia";
 import { ManifestoSection } from "@/components/ManifestoSection";
@@ -35,6 +36,7 @@ function Index() {
   useLenis();
   return (
     <main id="main-content" className="bg-background text-foreground">
+      <IntroOverlay />
       <SiteHeader />
       <HeroSoglia />
       <ManifestoSection />
