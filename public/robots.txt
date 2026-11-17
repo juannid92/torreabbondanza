@@ -1,35 +1,203 @@
+# ==============================================================================
+# Masseria Torre Abbondanza — robots.txt
+# Canonical Domain: https://www.masseriatorreabbondanza.it
+# Last Updated: 2026-11-17
+# ==============================================================================
+
+# Regola generale per tutti i crawler
 User-agent: *
+Allow: /
+Allow: /eventi
+Allow: /cucina
+Allow: /cavalli
+Allow: /cavalli/vetrina
+Allow: /seo/
+Allow: /assets/
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /sitemap.xml
+Disallow: /api/
+Disallow: /_build/
+Disallow: /_server/
+Disallow: /_ssr/
+Disallow: /.output/
+Disallow: /.wrangler/
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*?*utm_*
+Disallow: /*?*fbclid=*
+Disallow: /*?*gclid=*
+
+# ------------------------------------------------------------------------------
+# Motori di ricerca tradizionali (Web, Immagini, Video & Ads)
+# ------------------------------------------------------------------------------
+User-agent: Googlebot
 Allow: /
 Disallow: /api/
 Disallow: /_build/
+Disallow: /_server/
 
-# Search engines
-User-agent: Googlebot
+User-agent: Googlebot-Image
+Allow: /
+Allow: /seo/
+Allow: /assets/
+
+User-agent: Googlebot-Video
+Allow: /
+Allow: /hero-video.mp4
+Allow: /intro-video.mp4
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: Mediapartners-Google
 Allow: /
 
 User-agent: Bingbot
 Allow: /
+Disallow: /api/
+Disallow: /_build/
 
-# AI & Generative Search crawlers (GEO)
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+# ------------------------------------------------------------------------------
+# Crawler Social & Anteprime Rich Link (Open Graph / WhatsApp / Telegram)
+# ------------------------------------------------------------------------------
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Facebot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: Pinterestbot
+Allow: /
+
+# ------------------------------------------------------------------------------
+# Crawler AI & Generative Search Optimization (GEO)
+# ------------------------------------------------------------------------------
 User-agent: OAI-SearchBot
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 User-agent: ChatGPT-User
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 User-agent: GPTBot
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 User-agent: ClaudeBot
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Claude-Web
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: anthropic-ai
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 User-agent: PerplexityBot
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Perplexity-User
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 User-agent: Google-Extended
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 User-agent: Applebot-Extended
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
+User-agent: meta-externalagent
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: YouBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Amazonbot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: cohere-ai
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+# ------------------------------------------------------------------------------
+# Tool di audit SEO (crawl limitato) & Blocco scraper aggressivi
+# ------------------------------------------------------------------------------
+User-agent: AhrefsBot
+Allow: /
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Allow: /
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+# ------------------------------------------------------------------------------
+# Host canonico & Sitemap XML
+# ------------------------------------------------------------------------------
+Host: https://www.masseriatorreabbondanza.it
 Sitemap: https://www.masseriatorreabbondanza.it/sitemap.xml
