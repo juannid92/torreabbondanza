@@ -1,4 +1,4 @@
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useReducedMotion } from "framer-motion";
@@ -7,22 +7,18 @@ import { splitWords } from "@/lib/split-text";
 import murgeseStudioImg from "@/assets/murgese-studio.jpg";
 import horsesTraditionImg from "@/assets/horses-tradition.jpg";
 import gallopImg from "@/assets/horse-gallop.jpg";
+import horsesSkyImg from "@/assets/horses-sky.jpg";
+import horsesHillsImg from "@/assets/horses-hills.webp";
+import horsesGrazingImg from "@/assets/horses-grazing.webp";
 import murgeseRiderImg from "@/assets/murgese-rider.jpg";
+import murgesePrairieBg from "@/assets/murgese-prairie-bg.png";
 import murgeseTrottingImg from "@/assets/murgese-trotting.jpg";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-const MICRO_LABELS: {
-  text: string;
-  pos: Pick<CSSProperties, "left" | "right" | "top">;
-  delay: number;
-}[] = [
-  { text: "MANTO CORVINO", pos: { left: "6%", top: "20%" }, delay: 0.1 },
-  { text: "RAZZA AUTOCTONA", pos: { right: "6%", top: "16%" }, delay: 0.3 },
-  { text: "L'ANTICA MURGIA EQUESTRE", pos: { left: "6%", top: "78%" }, delay: 0.5 },
-  { text: "STIRPE DI PUGLIA", pos: { right: "6%", top: "84%" }, delay: 0.7 },
+const MICRO_LABELS = [
+  { text: "MANTO CORVINO", x: "8%", y: "22%", delay: 0.1 },
+  { text: "RAZZA AUTOCTONA", x: "72%", y: "18%", delay: 0.3 },
+  { text: "L'ANTICA MURGIA EQUESTRE", x: "12%", y: "78%", delay: 0.5 },
+  { text: "STIRPE DI PUGLIA", x: "68%", y: "82%", delay: 0.7 },
 ];
 
 export function HorsesSection() {
@@ -48,7 +44,6 @@ export function HorsesSection() {
           trigger: el,
           start: "top 82%",
           once: true,
-          invalidateOnRefresh: true,
           onEnter: () => {
             if (isReduced) {
               gsap.set(words, { yPercent: 0 });
@@ -71,13 +66,12 @@ export function HorsesSection() {
           trigger: el,
           start: "top 85%",
           once: true,
-          invalidateOnRefresh: true,
           onEnter: () => {
             gsap.to(el, {
               opacity: 1,
               y: 0,
               duration: isReduced ? 0.3 : 0.9,
-              delay: isReduced ? 0 : Math.min(i * 0.04, 0.2),
+              delay: isReduced ? 0 : i * 0.04,
               ease: "power3.out",
             });
           },
@@ -100,34 +94,31 @@ export function HorsesSection() {
               start: "top 80%",
               end: "top 30%",
               scrub: 1,
-              invalidateOnRefresh: true,
             },
           },
         );
       }
 
-      // MOMENTO B — Galoppo scroll-scrubbed: pin + traslazione orizzontale (margini sicuri senza bande nere)
+      // MOMENTO B — Galoppo scroll-scrubbed: pin + traslazione orizzontale
       const gallopScene = gallopSceneRef.current;
       const gallopEl = gallopImgRef.current;
       const gallopWord = gallopWordRef.current;
       const dust = dustRef.current;
       if (gallopScene && gallopEl && !isReduced) {
-        const isMobile = window.matchMedia("(max-width: 767px)").matches;
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: gallopScene,
             start: "top top",
-            end: isMobile ? "+=110%" : "+=180%",
+            end: "+=180%",
             pin: true,
             scrub: 1,
             anticipatePin: 1,
-            invalidateOnRefresh: true,
           },
         });
         tl.fromTo(
           gallopEl,
-          { xPercent: -8, scale: 1.24 },
-          { xPercent: 8, scale: 1.18, ease: "none" },
+          { xPercent: -22, scale: 1.18 },
+          { xPercent: 12, scale: 1.05, ease: "none" },
           0,
         );
         if (gallopWord) {
@@ -147,46 +138,26 @@ export function HorsesSection() {
       const prairie = prairieSceneRef.current;
       if (prairie && !isReduced) {
         prairie.querySelectorAll<HTMLElement>("[data-p-layer]").forEach((layer) => {
-          const isGrass = layer.hasAttribute("data-p-grass");
-          if (isGrass) {
-            gsap.fromTo(
-              layer,
-              { scale: 1.04 },
-              {
-                scale: 1.08,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: prairie,
-                  start: "top bottom",
-                  end: "bottom top",
-                  scrub: 1,
-                  invalidateOnRefresh: true,
-                },
-              },
-            );
-            return;
-          }
           const speed = Number(layer.dataset.speed ?? "0.2");
-          const scale = Number(layer.dataset.scaleBoost ?? "0");
+          const scale = Number(layer.dataset.scale ?? "0");
           gsap.fromTo(
             layer,
-            { y: 60 * speed, scale: 1.04 + scale * 0.2 },
+            { y: 80 * speed, scale: 1 + scale * 0.04 },
             {
-              y: -60 * speed,
-              scale: 1.04 + scale * 0.8,
+              y: -80 * speed,
+              scale: 1 + scale * 0.12,
               ease: "none",
               scrollTrigger: {
                 trigger: prairie,
                 start: "top bottom",
                 end: "bottom top",
                 scrub: 1,
-                invalidateOnRefresh: true,
               },
             },
           );
         });
 
-        // Erba che ondeggia (attiva solo quando in viewport)
+        // Erba che ondeggia
         const grass = prairie.querySelector<HTMLElement>("[data-p-grass]");
         if (grass) {
           gsap.to(grass, {
@@ -196,12 +167,6 @@ export function HorsesSection() {
             yoyo: true,
             repeat: -1,
             ease: "sine.inOut",
-            scrollTrigger: {
-              trigger: prairie,
-              start: "top bottom",
-              end: "bottom top",
-              toggleActions: "play pause resume pause",
-            },
           });
         }
       }
@@ -322,7 +287,7 @@ export function HorsesSection() {
       {/* ────────── MOMENTO B — IL GALOPPO (scroll-scrubbed) ────────── */}
       <div
         ref={gallopSceneRef}
-        className="relative mt-32 h-[100svh] w-full overflow-hidden md:mt-48"
+        className="relative mt-32 h-screen w-full overflow-hidden md:mt-48"
         style={{
           backgroundColor: "color-mix(in oklab, var(--murgese) 92%, black)",
         }}
@@ -408,10 +373,7 @@ export function HorsesSection() {
       </div>
 
       {/* ────────── MOMENTO C — LA PRATERIA ────────── */}
-      <div
-        ref={prairieSceneRef}
-        className="relative mt-0 h-[100svh] w-full overflow-hidden md:h-[110vh]"
-      >
+      <div ref={prairieSceneRef} className="relative mt-0 h-[110vh] w-full overflow-hidden">
         {/* Sfondo unico: cavallo al trotto a tutto schermo */}
         <div
           data-p-layer
@@ -444,7 +406,7 @@ export function HorsesSection() {
           data-p-grass
           data-speed="0.55"
           data-scale-boost="1"
-          className="absolute inset-x-0 bottom-[-2%] h-[24%]"
+          className="absolute inset-x-0 bottom-0 h-[22%]"
           style={{ willChange: "transform" }}
         >
           <svg
@@ -466,15 +428,12 @@ export function HorsesSection() {
           </svg>
         </div>
 
-        {/* Type-as-mask: MURGESE con prateria visibile dentro (drop-shadow sul wrapper per evitare offuscamento su Safari iOS) */}
-        <div
-          className="pointer-events-none absolute inset-0 flex items-center justify-center px-4"
-          style={{ filter: "drop-shadow(0 12px 36px rgba(21,17,15,0.65))" }}
-        >
+        {/* Type-as-mask: MURGESE con prateria visibile dentro */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-4">
           <span
             className="block font-display font-bold"
             style={{
-              fontSize: "clamp(3.6rem, 17vw, 22rem)",
+              fontSize: "clamp(5rem, 22vw, 22rem)",
               letterSpacing: "-0.04em",
               lineHeight: 0.85,
               backgroundImage: `url(${murgeseRiderImg})`,
@@ -484,6 +443,7 @@ export function HorsesSection() {
               backgroundClip: "text",
               WebkitTextFillColor: "transparent",
               color: "transparent",
+              textShadow: "0 0 60px color-mix(in oklab, var(--murgese) 60%, transparent)",
             }}
           >
             MURGESE
@@ -494,10 +454,12 @@ export function HorsesSection() {
         {MICRO_LABELS.map((l) => (
           <motion.span
             key={l.text}
-            className="pointer-events-none absolute text-eyebrow tracking-[0.22em] md:tracking-[0.32em]"
+            className="pointer-events-none absolute text-eyebrow"
             style={{
-              ...l.pos,
-              color: "color-mix(in oklab, var(--ivory) 82%, transparent)",
+              left: l.x,
+              top: l.y,
+              color: "color-mix(in oklab, var(--ivory) 80%, transparent)",
+              letterSpacing: "0.32em",
             }}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -511,7 +473,7 @@ export function HorsesSection() {
             >
               <span
                 aria-hidden
-                className="block h-px w-5 md:w-6"
+                className="block h-px w-6"
                 style={{ backgroundColor: "color-mix(in oklab, var(--gold) 70%, transparent)" }}
               />
               {l.text}

@@ -183,9 +183,9 @@ export function ManifestoSection() {
         return Math.max(0, textH - bandH);
       };
 
-      // Durata in scroll-px: proporzionale al numero di parole e calibrata per fluidità.
-      const pxPerWord = isMobile ? 26 : 38;
-      const exitPx = isMobile ? 200 : 320;
+      // Durata in scroll-px: proporzionale al numero di parole.
+      const pxPerWord = isMobile ? 80 : 90;
+      const exitPx = 600;
       const totalPx = words.length * pxPerWord + exitPx;
 
       const tl = gsap.timeline({
@@ -343,26 +343,23 @@ export function ManifestoSection() {
           <blockquote
             ref={blockquoteRef}
             aria-hidden
-            className="w-full max-w-full font-display font-normal leading-[1.22] text-ink md:max-w-[min(70ch,82%)]"
+            className="font-display font-normal leading-[1.2] text-ink"
             style={{
-              fontSize: "clamp(1.45rem, 3.6vw, 3rem)",
+              fontSize: "clamp(1.5rem, 3.6vw, 3rem)",
+              maxWidth: "min(70ch, 80%)",
               willChange: "transform",
             }}
           >
             {LINES.map((line, li) => {
               const indent = LINE_INDENT[li] ?? 0;
-              const indentClass =
-                [
-                  "pl-0 md:pl-0",
-                  "pl-[3%] md:pl-[8%]",
-                  "pl-[6%] md:pl-[16%]",
-                  "pl-[9%] md:pl-[24%]",
-                ][indent] ?? "pl-0";
+              // mobile: rientri ridotti
+              const desktopPad = ["0", "8%", "16%", "24%"][indent];
               return (
                 <span
                   key={li}
-                  className={`block ${indentClass}`}
+                  className="block"
                   style={{
+                    paddingLeft: desktopPad,
                     marginTop: li === 0 ? 0 : "0.15em",
                   }}
                 >
@@ -398,7 +395,10 @@ export function ManifestoSection() {
           </blockquote>
 
           {/* Firma */}
-          <div ref={signatureRef} className="absolute bottom-2 right-0 z-10">
+          <div
+            ref={signatureRef}
+            className="mt-[8vh] flex justify-end md:absolute md:bottom-0 md:right-0 md:mt-0"
+          >
             <span className="text-eyebrow text-ink/60">— Masseria Torre Abbondanza, Noci</span>
           </div>
         </div>

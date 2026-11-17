@@ -10,10 +10,6 @@ import murgeseTrotting from "@/assets/murgese-trotting.jpg";
 import horseGallop from "@/assets/horse-gallop.jpg";
 import horsesTradition from "@/assets/horses-tradition.jpg";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 /* -------------------------------------------------------------------------- */
 /* Catalogo cavalli in vendita (dati placeholder — aggiornare con dati reali) */
 /* -------------------------------------------------------------------------- */
@@ -85,20 +81,23 @@ export function HorsesShowcase() {
       /* Mask-reveal titoli */
       root.querySelectorAll<HTMLElement>("[data-mask-title]").forEach((title) => {
         const words = splitWords(title);
-        gsap.set(words, { yPercent: reduced ? 0 : 110 });
         ScrollTrigger.create({
           trigger: title,
           start: "top 85%",
           once: true,
           invalidateOnRefresh: true,
           onEnter: () => {
-            gsap.to(words, {
-              yPercent: 0,
-              duration: reduced ? 0.2 : 0.65,
-              ease: "power2.out",
-              stagger: reduced ? 0 : 0.06,
-              overwrite: true,
-            });
+            gsap.fromTo(
+              words,
+              { yPercent: 110 },
+              {
+                yPercent: 0,
+                duration: reduced ? 0.2 : 0.55,
+                ease: "power2.out",
+                stagger: reduced ? 0 : 0.06,
+                overwrite: true,
+              },
+            );
           },
         });
       });
@@ -128,20 +127,23 @@ export function HorsesShowcase() {
 
       /* Card reveal stagger */
       root.querySelectorAll<HTMLElement>("[data-horse-card]").forEach((card) => {
-        gsap.set(card, { opacity: 0, y: 40 });
         ScrollTrigger.create({
           trigger: card,
-          start: "top 82%",
+          start: "top 80%",
           once: true,
           invalidateOnRefresh: true,
           onEnter: () => {
-            gsap.to(card, {
-              opacity: 1,
-              y: 0,
-              duration: 0.7,
-              ease: "power2.out",
-              overwrite: true,
-            });
+            gsap.fromTo(
+              card,
+              { opacity: 0, y: 40 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.7,
+                ease: "power2.out",
+                overwrite: true,
+              },
+            );
           },
         });
       });
@@ -186,7 +188,7 @@ export function HorsesShowcase() {
             <h1
               id="showcase-title"
               data-mask-title
-              className="mt-6 overflow-hidden font-display font-semibold leading-[1.02] text-ivory"
+              className="mt-6 font-display font-semibold leading-[1.02] text-ivory"
               style={{
                 fontSize: "clamp(2.4rem, 7vw, 5.8rem)",
                 letterSpacing: "-0.025em",
@@ -216,7 +218,7 @@ export function HorsesShowcase() {
             <span className="text-eyebrow text-terracotta">La Razza · The Breed · Порода</span>
             <h2
               data-mask-title
-              className="mt-4 overflow-hidden font-display font-medium leading-[1.08] text-ink"
+              className="mt-4 font-display font-medium leading-[1.08] text-ink"
               style={{ fontSize: "clamp(1.6rem, 2.8vw, 2.2rem)" }}
             >
               Il Cavallo Murgese: anima nera della Puglia
@@ -264,7 +266,7 @@ export function HorsesShowcase() {
           </p>
           <h2
             data-mask-title
-            className="mt-4 overflow-hidden font-display font-medium leading-[1.08] text-ivory"
+            className="mt-4 font-display font-medium leading-[1.08] text-ivory"
             style={{ fontSize: "clamp(1.6rem, 2.8vw, 2.2rem)" }}
           >
             I nostri soggetti
@@ -305,7 +307,7 @@ export function HorsesShowcase() {
         </p>
         <h2
           data-mask-title
-          className="mt-4 overflow-hidden font-display font-medium leading-[1.08] text-ink"
+          className="mt-4 font-display font-medium leading-[1.08] text-ink"
           style={{ fontSize: "clamp(1.6rem, 2.8vw, 2.2rem)" }}
         >
           Guarda i nostri cavalli in movimento
@@ -374,7 +376,7 @@ export function HorsesShowcase() {
           </p>
           <h2
             data-mask-title
-            className="mt-4 overflow-hidden font-display font-medium leading-[1.08] text-ivory"
+            className="mt-4 font-display font-medium leading-[1.08] text-ivory"
             style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)" }}
           >
             Soggetti disponibili
@@ -394,6 +396,7 @@ export function HorsesShowcase() {
                 key={horse.id}
                 data-horse-card
                 className="group flex flex-col overflow-hidden rounded-xl bg-ivory shadow-soft transition-shadow hover:shadow-xl"
+                style={{ opacity: 0 }}
               >
                 {/* Image */}
                 <div className="relative overflow-hidden" style={{ aspectRatio: "4 / 3" }}>
@@ -476,7 +479,7 @@ export function HorsesShowcase() {
             </span>
             <h2
               data-mask-title
-              className="mt-4 overflow-hidden font-display font-medium leading-[1.08] text-ink"
+              className="mt-4 font-display font-medium leading-[1.08] text-ink"
               style={{ fontSize: "clamp(1.4rem, 2.4vw, 1.8rem)" }}
             >
               Perché scegliere un Murgese di Torre Abbondanza
@@ -526,7 +529,7 @@ export function HorsesShowcase() {
             </span>
             <h2
               data-mask-title
-              className="mt-4 overflow-hidden font-display font-medium leading-[1.08] text-ink"
+              className="mt-4 font-display font-medium leading-[1.08] text-ink"
               style={{ fontSize: "clamp(1.4rem, 2.4vw, 1.8rem)" }}
             >
               Spedizione internazionale
@@ -573,7 +576,7 @@ export function HorsesShowcase() {
         <div className="mx-auto max-w-3xl px-6 text-center md:px-12">
           <h2
             data-mask-title
-            className="overflow-hidden font-display font-medium leading-[1.08] text-ivory"
+            className="font-display font-medium leading-[1.08] text-ivory"
             style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}
           >
             Interessato a uno dei nostri cavalli?

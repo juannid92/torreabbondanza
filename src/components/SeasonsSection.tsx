@@ -3,10 +3,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
 import { observeRevealElements } from "@/lib/scroll-ready";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 import winterBg from "@/assets/season-winter.jpg";
 import springBg from "@/assets/season-spring.jpg";
 import summerBg from "@/assets/season-may.jpg";
@@ -196,15 +192,11 @@ function StageContent({ stage }: { stage: SeasonStage }) {
       data-stage-content
       data-stage={stage.key}
       className="pointer-events-none absolute inset-0 flex items-center justify-center"
-      style={{
-        opacity: stage.index === 0 ? 1 : 0,
-        visibility: stage.index === 0 ? "visible" : "hidden",
-        willChange: "opacity, transform",
-      }}
+      style={{ opacity: stage.index === 0 ? 1 : 0, willChange: "opacity, transform" }}
       aria-hidden={false}
     >
-      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-8 px-6 py-12 md:px-12 lg:grid-cols-12 lg:gap-10 lg:pr-44">
-        <div className="lg:col-span-5">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-10 px-6 py-16 md:grid-cols-12 md:gap-12 md:px-12 md:py-20">
+        <div className="md:col-span-12">
           <p
             data-stage-eyebrow
             className="text-eyebrow mb-3"
@@ -215,53 +207,45 @@ function StageContent({ stage }: { stage: SeasonStage }) {
           </p>
           <h3
             data-stage-title
-            className="font-display font-medium leading-[0.95]"
+            className="font-display font-medium leading-[0.9]"
             style={{
-              fontSize: "clamp(2.4rem, 5vw, 5rem)",
+              fontSize: "clamp(3rem, 11vw, 9rem)",
               color: stage.palette.fg,
               letterSpacing: "-0.02em",
             }}
           >
-            <span className="inline-block overflow-hidden pb-[0.08em] align-bottom">
-              <span data-title-word style={{ display: "inline-block" }}>
-                {stage.label}
-              </span>
+            <span data-title-word style={{ display: "inline-block" }}>
+              {stage.label}
             </span>{" "}
-            <span className="inline-block overflow-hidden pb-[0.08em] align-bottom">
-              <em
-                data-title-word
-                style={{
-                  display: "inline-block",
-                  color: stage.palette.accent,
-                  fontStyle: "italic",
-                }}
-              >
-                {stage.italic}
-              </em>
-            </span>
+            <em
+              data-title-word
+              style={{ display: "inline-block", color: stage.palette.accent, fontStyle: "italic" }}
+            >
+              {stage.italic}
+            </em>
           </h3>
           <p
             data-stage-kicker
-            className="font-display mt-5 max-w-md text-lg italic leading-relaxed"
+            className="font-display mt-6 max-w-2xl text-lg italic leading-relaxed md:text-xl"
             style={{ color: `color-mix(in oklab, ${stage.palette.fg} 85%, transparent)` }}
           >
             {stage.kicker}
           </p>
         </div>
 
-        <div className="pointer-events-auto grid grid-cols-2 gap-6 lg:col-span-7">
+        <div className="pointer-events-auto md:col-span-12 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
           {stage.experiences.map((exp) => (
             <figure
               key={exp.title}
               data-stage-exp
-              className="flex flex-col gap-3"
+              className="flex flex-col gap-4"
               style={{ transform: "translateY(0)", opacity: 1 }}
             >
               <div
                 className="relative overflow-hidden"
                 style={{
                   borderRadius: "10px",
-                  aspectRatio: "16 / 10",
+                  aspectRatio: "5 / 4",
                   border: `1px solid color-mix(in oklab, ${stage.palette.fg} 18%, transparent)`,
                   boxShadow: `0 30px 70px -40px color-mix(in oklab, ${stage.palette.fg} 55%, transparent)`,
                 }}
@@ -271,12 +255,12 @@ function StageContent({ stage }: { stage: SeasonStage }) {
                   alt={exp.alt}
                   loading="lazy"
                   width={1024}
-                  height={640}
+                  height={820}
                   className="absolute inset-0 h-[112%] w-full object-cover"
                   style={{ top: "-6%" }}
                 />
                 <span
-                  className="text-eyebrow absolute left-3 top-3 rounded-full px-3 py-1"
+                  className="text-eyebrow absolute left-4 top-4 rounded-full px-3 py-1"
                   style={{
                     background: SOUL_ACCENT[exp.soul],
                     color: exp.soul === "equestre" ? "#E7DDCF" : "#F7F3EC",
@@ -287,15 +271,15 @@ function StageContent({ stage }: { stage: SeasonStage }) {
                   {SOUL_LABEL[exp.soul]}
                 </span>
               </div>
-              <figcaption className="flex flex-col gap-1.5">
+              <figcaption className="flex flex-col gap-2">
                 <h4
                   className="font-display font-medium leading-tight"
-                  style={{ fontSize: "clamp(1.1rem, 1.5vw, 1.4rem)", color: stage.palette.fg }}
+                  style={{ fontSize: "clamp(1.2rem, 1.8vw, 1.55rem)", color: stage.palette.fg }}
                 >
                   {exp.title}
                 </h4>
                 <p
-                  className="max-w-md text-sm leading-relaxed"
+                  className="max-w-md text-sm leading-relaxed md:text-base"
                   style={{ color: `color-mix(in oklab, ${stage.palette.fg} 78%, transparent)` }}
                 >
                   {exp.text}
@@ -403,14 +387,8 @@ function StaticFallback() {
                   />
                   <figcaption>
                     <p
-                      className="text-eyebrow mb-2 inline-block rounded-full px-3 py-1"
-                      style={{
-                        background: SOUL_ACCENT[exp.soul],
-                        color: exp.soul === "equestre" ? "#E7DDCF" : "#F7F3EC",
-                        border: `1px solid color-mix(in oklab, ${s.palette.fg} 20%, transparent)`,
-                        letterSpacing: "0.2em",
-                        fontSize: "0.62rem",
-                      }}
+                      className="text-eyebrow mb-1"
+                      style={{ color: SOUL_ACCENT[exp.soul], letterSpacing: "0.2em" }}
                     >
                       {SOUL_LABEL[exp.soul]}
                     </p>
@@ -471,10 +449,9 @@ export function SeasonsSection() {
       ScrollTrigger.create({
         trigger: stage,
         start: "top top",
-        end: () => `+=${window.innerHeight * 4.5}`,
+        end: () => `+=${window.innerHeight * (isMobile ? 3 : 5)}`,
         pin: true,
         scrub: 0.5,
-        anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const p = self.progress * (STAGES.length - 1);
@@ -486,7 +463,6 @@ export function SeasonsSection() {
             if (idx === i) op = 1 - f;
             else if (idx === i + 1) op = f;
             el.style.opacity = op.toFixed(3);
-            el.style.visibility = op > 0.005 ? "visible" : "hidden";
           });
           contents.forEach((el, idx) => {
             let op = 0;
@@ -499,7 +475,6 @@ export function SeasonsSection() {
               ty = (1 - f) * 24;
             }
             el.style.opacity = op.toFixed(3);
-            el.style.visibility = op > 0.005 ? "visible" : "hidden";
             el.style.transform = `translateY(${ty.toFixed(2)}px)`;
           });
 
@@ -527,42 +502,49 @@ export function SeasonsSection() {
         },
       });
 
-      // Ingresso iniziale per Primavera; gli stage successivi (1..3) restano già
-      // renderizzati così il crossfade guidato dallo scroll è fluido e bidirezionale.
-      const firstStage = contents[0];
-      if (firstStage) {
-        const titleWords = firstStage.querySelectorAll<HTMLElement>("[data-title-word]");
-        const kicker = firstStage.querySelector<HTMLElement>("[data-stage-kicker]");
-        const exps = firstStage.querySelectorAll<HTMLElement>("[data-stage-exp]");
+      // Reveal kinetic ad ogni stage
+      contents.forEach((c, idx) => {
+        const titleWords = c.querySelectorAll<HTMLElement>("[data-title-word]");
+        const kicker = c.querySelector<HTMLElement>("[data-stage-kicker]");
+        const exps = c.querySelectorAll<HTMLElement>("[data-stage-exp]");
 
-        gsap.set(titleWords, { yPercent: 110 });
-        if (kicker) gsap.set(kicker, { opacity: 0, y: 14 });
-        gsap.set(exps, { opacity: 0, y: 24 });
+        const tl = gsap.timeline({ paused: true });
+        tl.fromTo(
+          titleWords,
+          { yPercent: 110 },
+          {
+            yPercent: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            stagger: 0.08,
+          },
+        );
+        if (kicker) {
+          tl.fromTo(
+            kicker,
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+            0.3,
+          );
+        }
+        tl.fromTo(
+          exps,
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.12 },
+          0.4,
+        );
 
+        const enterT = idx / (STAGES.length - 1);
         ScrollTrigger.create({
           trigger: stage,
-          start: "top 80%",
+          start: () =>
+            `top+=${Math.max(0, enterT * window.innerHeight * (isMobile ? 3 : 5) - 100)} top`,
+          onEnter: () => tl.play(),
+          onEnterBack: () => tl.play(),
           once: true,
           invalidateOnRefresh: true,
-          onEnter: () => {
-            const tl = gsap.timeline();
-            tl.to(titleWords, {
-              yPercent: 0,
-              duration: 0.85,
-              ease: "power3.out",
-              stagger: 0.08,
-            });
-            if (kicker) {
-              tl.to(kicker, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.2);
-            }
-            tl.to(
-              exps,
-              { opacity: 1, y: 0, duration: 0.65, ease: "power3.out", stagger: 0.1 },
-              0.25,
-            );
-          },
         });
-      }
+      });
     }, root);
 
     return () => {

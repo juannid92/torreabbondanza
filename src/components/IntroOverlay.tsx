@@ -1,4 +1,10 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const INTRO_STORAGE_KEY = "torreabbondanza.introSeen";
 const INTRO_FALLBACK_MS = 10_800;
@@ -22,12 +28,13 @@ export function IntroOverlay() {
     dismissedRef.current = true;
     setFading(true);
     document.documentElement.classList.remove("intro-pending");
-    document.documentElement.style.overflow = "";
     try {
       sessionStorage.setItem(INTRO_STORAGE_KEY, "1");
     } catch {
       /* sessionStorage non disponibile */
     }
+    ScrollTrigger.refresh(true);
+    requestAnimationFrame(() => ScrollTrigger.refresh());
     window.setTimeout(() => {
       setMounted(false);
     }, FADE_DURATION_MS);
@@ -52,7 +59,6 @@ export function IntroOverlay() {
       /* noop */
     }
 
-    document.documentElement.style.overflow = "hidden";
     setMounted(true);
   }, []);
 
@@ -62,6 +68,8 @@ export function IntroOverlay() {
     // Rimuove intro-pending solo dopo che l'overlay z-[80] è già dipinto sullo schermo
     const raf = requestAnimationFrame(() => {
       document.documentElement.classList.remove("intro-pending");
+      ScrollTrigger.refresh(true);
+      requestAnimationFrame(() => ScrollTrigger.refresh());
     });
 
     const video = videoRef.current;
@@ -79,7 +87,6 @@ export function IntroOverlay() {
       cancelAnimationFrame(raf);
       window.clearTimeout(fallbackTimer);
       document.documentElement.classList.remove("intro-pending");
-      document.documentElement.style.overflow = "";
     };
   }, [mounted, dismiss]);
 
@@ -90,7 +97,7 @@ export function IntroOverlay() {
       data-intro-overlay
       role="region"
       aria-label="Intro Masseria Torre Abbondanza"
-      className={`fixed inset-0 z-[80] overflow-hidden bg-murgese transition-opacity duration-700 ease-out ${
+      className={`fixed inset-0 z-[80] touch-none overscroll-none select-none overflow-hidden bg-murgese transition-opacity duration-700 ease-out ${
         fading ? "pointer-events-none opacity-0" : "opacity-100"
       }`}
     >

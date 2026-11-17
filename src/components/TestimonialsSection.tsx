@@ -3,10 +3,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { observeRevealElements } from "@/lib/scroll-ready";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 interface GuestNote {
   text: string;
   signature: string;
@@ -77,53 +73,63 @@ function GuestPage({ note, index }: { note: GuestNote; index: number }) {
       return;
     }
 
-    const ctx = gsap.context(() => {
-      gsap.set(quote, { clipPath: "inset(0 100% 0 0)" });
-      gsap.set(sign, { opacity: 0, y: 6 });
-      if (stroke) {
-        const len = stroke.getTotalLength();
-        gsap.set(stroke, { strokeDasharray: len, strokeDashoffset: len });
-      }
+    let played = false;
+    const trigger = ScrollTrigger.create({
+      trigger: root,
+      start: "top 80%",
+      once: true,
+      invalidateOnRefresh: true,
+      onEnter: () => {
+        if (played) return;
+        played = true;
 
-      ScrollTrigger.create({
-        trigger: root,
-        start: "top 82%",
-        once: true,
-        invalidateOnRefresh: true,
-        onEnter: () => {
-          const tl = gsap.timeline();
-          tl.to(quote, {
+        if (stroke) {
+          const len = stroke.getTotalLength();
+          stroke.style.strokeDasharray = `${len}`;
+          stroke.style.strokeDashoffset = `${len}`;
+        }
+
+        const tl = gsap.timeline();
+        tl.fromTo(
+          quote,
+          { clipPath: "inset(0 100% 0 0)" },
+          {
             clipPath: "inset(0 0% 0 0)",
-            duration: 1.5,
+            duration: 1.6,
             ease: "power1.inOut",
             overwrite: true,
-          }).to(
-            sign,
-            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", overwrite: true },
-            "-=0.25",
-          );
+          },
+        ).fromTo(
+          sign,
+          { y: 6 },
+          { y: 0, duration: 0.5, ease: "power2.out", overwrite: true, immediateRender: false },
+          "-=0.25",
+        );
 
-          if (stroke) {
-            tl.to(stroke, { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" }, "-=0.35");
-          }
-        },
-      });
+        if (stroke) {
+          tl.to(stroke, { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" }, "-=0.35");
+        }
+      },
+    });
 
-      // parallax leggero (senza conflitto con data-reveal)
-      gsap.to(root, {
-        yPercent: index % 2 === 0 ? -6 : -10,
-        ease: "none",
-        scrollTrigger: {
-          trigger: root,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-          invalidateOnRefresh: true,
-        },
-      });
-    }, ref);
+    // parallax leggero
+    const pTween = gsap.to(root, {
+      yPercent: index % 2 === 0 ? -6 : -10,
+      ease: "none",
+      scrollTrigger: {
+        trigger: root,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+    });
 
-    return () => ctx.revert();
+    return () => {
+      trigger.kill();
+      pTween.scrollTrigger?.kill();
+      pTween.kill();
+    };
   }, [index]);
 
   const accent = note.soul === "tavola" ? "var(--terracotta, #b65a3c)" : "var(--murgese, #15110F)";
@@ -131,10 +137,10 @@ function GuestPage({ note, index }: { note: GuestNote; index: number }) {
   return (
     <figure
       ref={ref}
+      data-reveal="soft"
       className={`relative ${note.width} mx-auto md:mx-0`}
       style={{
         transform: `rotate(${note.rotate}deg) translateX(${note.offsetX}%)`,
-        willChange: "transform",
       }}
     >
       <blockquote>

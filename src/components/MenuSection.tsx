@@ -5,10 +5,6 @@ import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
 import convivioImg from "@/assets/sapori-convivio.jpg";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 const KINETIC_WORDS: { label: string; tone: "warm" | "ink"; size: string; offset: string }[] = [
   { label: "convivio", tone: "warm", size: "clamp(3.2rem, 9vw, 8.5rem)", offset: "left" },
   { label: "tradizione", tone: "ink", size: "clamp(2.6rem, 7vw, 6.5rem)", offset: "right" },
@@ -35,7 +31,6 @@ export function MenuSection() {
           trigger: el,
           start: "top 80%",
           once: true,
-          invalidateOnRefresh: true,
           onEnter: () => {
             if (reduced) {
               gsap.set(words, { yPercent: 0 });
@@ -51,24 +46,22 @@ export function MenuSection() {
         });
       });
 
-      // Intro generico (ciascuno sul proprio trigger per includere il ponte finale)
-      root.querySelectorAll<HTMLElement>("[data-menu-intro]").forEach((el) => {
-        gsap.set(el, { opacity: 0, y: 24 });
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top 86%",
-          once: true,
-          invalidateOnRefresh: true,
-          onEnter: () => {
-            gsap.to(el, {
-              opacity: 1,
-              y: 0,
-              duration: reduced ? 0.3 : 0.85,
-              ease: "power3.out",
-              overwrite: true,
-            });
-          },
-        });
+      // Intro generico
+      const intro = root.querySelectorAll<HTMLElement>("[data-menu-intro]");
+      gsap.set(intro, { opacity: 0, y: 24 });
+      ScrollTrigger.create({
+        trigger: root,
+        start: "top 70%",
+        once: true,
+        onEnter: () => {
+          gsap.to(intro, {
+            opacity: 1,
+            y: 0,
+            duration: reduced ? 0.3 : 0.9,
+            ease: "power3.out",
+            stagger: 0.08,
+          });
+        },
       });
 
       // Parallax foto + Ken Burns
@@ -87,13 +80,12 @@ export function MenuSection() {
               start: "top bottom",
               end: "bottom top",
               scrub: 1,
-              invalidateOnRefresh: true,
             },
           },
         );
       }
 
-      // Parole kinetic: mask-reveal per parola + parallax sul contenitore padre (evita tagli su overflow-hidden)
+      // Parole kinetic: mask-reveal per lettera + parallax layering
       root.querySelectorAll<HTMLElement>("[data-kinetic]").forEach((el) => {
         const words = splitWords(el);
         gsap.set(words, { yPercent: 105 });
@@ -101,7 +93,6 @@ export function MenuSection() {
           trigger: el,
           start: "top 85%",
           once: true,
-          invalidateOnRefresh: true,
           onEnter: () => {
             if (reduced) {
               gsap.set(words, { yPercent: 0 });
@@ -109,28 +100,26 @@ export function MenuSection() {
             }
             gsap.to(words, {
               yPercent: 0,
-              duration: 1.05,
+              duration: 1.1,
               ease: "power4.out",
               stagger: 0.05,
             });
           },
         });
 
-        const speedAttr = el.dataset.speed;
-        if (!reduced && speedAttr && el.parentElement) {
-          const speed = Number(speedAttr);
+        if (!reduced) {
+          const speed = Number(el.dataset.speed ?? "0.15");
           gsap.fromTo(
-            el.parentElement,
-            { y: 60 * speed },
+            el,
+            { y: 80 * speed },
             {
-              y: -60 * speed,
+              y: -80 * speed,
               ease: "none",
               scrollTrigger: {
-                trigger: el.parentElement,
+                trigger: el,
                 start: "top bottom",
                 end: "bottom top",
                 scrub: 1,
-                invalidateOnRefresh: true,
               },
             },
           );
@@ -144,7 +133,6 @@ export function MenuSection() {
           trigger: el,
           start: "top 82%",
           once: true,
-          invalidateOnRefresh: true,
           onEnter: () => {
             gsap.to(el, {
               opacity: 1,

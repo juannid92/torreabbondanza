@@ -50,9 +50,8 @@ export function scrollToSection(target: string): void {
 }
 
 /**
- * Inizializza Lenis su desktop e sincronizza con GSAP ScrollTrigger.
- * Su dispositivi touch (mobile/tablet senza puntatore fine) lascia lo scroll
- * nativo puro al compositor thread per evitare competizione col main thread.
+ * Inizializza Lenis a livello app e sincronizza con GSAP ScrollTrigger.
+ * Disabilitato se l'utente ha prefers-reduced-motion attivo.
  * Gestisce anche i click sulle ancore `#...` cross-page in modo uniforme.
  */
 export function useLenis() {
@@ -98,11 +97,7 @@ export function useLenis() {
     document.addEventListener("click", onAnchorClick);
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isCoarseOnly =
-      window.matchMedia("(pointer: coarse)").matches &&
-      !window.matchMedia("(pointer: fine)").matches;
-
-    if (reduced || isCoarseOnly) {
+    if (reduced) {
       window.__lenis = null;
       return () => {
         document.removeEventListener("click", onAnchorClick);
@@ -110,9 +105,11 @@ export function useLenis() {
     }
 
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 1.2,
+      lerp: 0.08,
       smoothWheel: true,
       wheelMultiplier: 1,
+      touchMultiplier: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
     lenisRef.current = lenis;
@@ -126,7 +123,7 @@ export function useLenis() {
       lenis.raf(time * 1000);
     };
     gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(500, 33);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       document.removeEventListener("click", onAnchorClick);

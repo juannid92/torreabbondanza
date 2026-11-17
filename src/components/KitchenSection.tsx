@@ -7,10 +7,6 @@ import primiImg from "@/assets/kitchen-primi.jpg";
 import secondiImg from "@/assets/kitchen-secondi.jpg";
 import dolciImg from "@/assets/kitchen-dolci.jpg";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 const WA_PHONE = "393384834318";
 const TEL_HREF = "tel:+393384834318";
 const WA_MSG = encodeURIComponent(
@@ -94,44 +90,40 @@ export function KitchenSection() {
 
     const ctx = gsap.context(() => {
       const intro = root.querySelectorAll<HTMLElement>("[data-intro]");
-      intro.forEach((el) => {
-        gsap.set(el, { opacity: 0, y: 24 });
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top 86%",
-          once: true,
-          invalidateOnRefresh: true,
-          onEnter: () => {
-            gsap.to(el, {
-              opacity: 1,
-              y: 0,
-              duration: 0.85,
-              ease: "power3.out",
-              overwrite: true,
-            });
-          },
-        });
+      gsap.set(intro, { opacity: 0, y: 30 });
+      ScrollTrigger.create({
+        trigger: root,
+        start: "top 75%",
+        once: true,
+        onEnter: () => {
+          gsap.to(intro, {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            stagger: 0.08,
+          });
+        },
       });
 
       // Reveal fluido per ciascuna delle 4 portate (Antipasti, Primi, Secondi, Dolci)
       const rows = root.querySelectorAll<HTMLElement>("[data-course-row]");
       rows.forEach((row) => {
-        gsap.set(row, { opacity: 0, y: 40 });
-        ScrollTrigger.create({
-          trigger: row,
-          start: "top 82%",
-          once: true,
-          invalidateOnRefresh: true,
-          onEnter: () => {
-            gsap.to(row, {
-              opacity: 1,
-              y: 0,
-              duration: 0.9,
-              ease: "power3.out",
-              overwrite: true,
-            });
+        gsap.fromTo(
+          row,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: row,
+              start: "top 82%",
+              once: true,
+            },
           },
-        });
+        );
       });
     }, root);
 
