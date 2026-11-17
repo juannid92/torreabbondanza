@@ -1,4 +1,4 @@
--- Contact form leads from torreabbondanza.com
+-- Contact form leads from www.masseriatorreabbondanza.it
 create table public.contact_submissions (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),

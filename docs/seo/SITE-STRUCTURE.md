@@ -182,13 +182,13 @@ COLONNA 4: Risorse
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://torreabbondanza.com/</loc>
+    <loc>https://www.masseriatorreabbondanza.it/</loc>
     <lastmod>2026-11-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://torreabbondanza.com/eventi</loc>
+    <loc>https://www.masseriatorreabbondanza.it/eventi</loc>
     <lastmod>2026-11-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -227,19 +227,19 @@ Home > [Category] > [Page]
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://torreabbondanza.com/"
+      "item": "https://www.masseriatorreabbondanza.it/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Eventi",
-      "item": "https://torreabbondanza.com/eventi"
+      "item": "https://www.masseriatorreabbondanza.it/eventi"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "Matrimoni",
-      "item": "https://torreabbondanza.com/eventi/matrimoni"
+      "item": "https://www.masseriatorreabbondanza.it/eventi/matrimoni"
     }
   ]
 }
