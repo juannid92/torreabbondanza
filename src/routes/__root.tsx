@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import ogImage from "../assets/hero-masseria.jpg";
 import { BUSINESS, SITE_URL, absoluteUrl } from "../lib/site";
 import { CookieBanner } from "../components/CookieBanner";
+import { GoogleTag } from "../components/GoogleTag";
 
 const PAGE_TITLE = `${BUSINESS.name} — Noci, Puglia`;
 const OG_IMAGE = absoluteUrl(ogImage);
@@ -83,7 +84,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: PAGE_TITLE },
       { name: "description", content: BUSINESS.description },
       { name: "author", content: BUSINESS.name },
-      { name: "robots", content: "index, follow" },
+      {
+        name: "robots",
+        content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      },
+      { name: "geo.region", content: "IT-BA" },
+      { name: "geo.placename", content: "Noci (BA), Puglia" },
+      { name: "geo.position", content: `${BUSINESS.geo.lat};${BUSINESS.geo.lon}` },
+      { name: "ICBM", content: `${BUSINESS.geo.lat}, ${BUSINESS.geo.lon}` },
+      { name: "theme-color", content: "#15110F" },
 
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: BUSINESS.name },
@@ -104,6 +113,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "alternate", type: "text/plain", href: "/llms.txt", title: "LLMs.txt" },
     ],
   }),
   shellComponent: RootShell,
@@ -144,6 +154,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <GoogleTag />
       <CookieBanner />
     </QueryClientProvider>
   );

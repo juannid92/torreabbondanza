@@ -1,45 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+>
   <url>
     <loc>https://torreabbondanza.com/</loc>
     <lastmod>2026-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://torreabbondanza.com/cucina</loc>
-    <lastmod>2026-11-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://torreabbondanza.com/cavalli</loc>
-    <lastmod>2026-11-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://torreabbondanza.com/cavalli/vetrina</loc>
-    <lastmod>2026-11-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://torreabbondanza.com/seo/masseria-torre-abbondanza.jpg</image:loc>
+      <image:title>Masseria Torre Abbondanza — Noci, Puglia</image:title>
+      <image:caption>Masseria del Settecento immersa nella Murgia dei Trulli: ristorante su prenotazione, eventi e cavalli Murgesi.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://torreabbondanza.com/eventi</loc>
     <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://torreabbondanza.com/seo/eventi-matrimoni-masseria.jpg</image:loc>
+      <image:title>Matrimoni ed Eventi in Masseria — Torre Abbondanza</image:title>
+      <image:caption>Corte e sala storica in pietra per matrimoni, cerimonie e feste private a Noci, Puglia.</image:caption>
+    </image:image>
   </url>
   <url>
-    <loc>https://torreabbondanza.com/privacy</loc>
+    <loc>https://torreabbondanza.com/cucina</loc>
     <lastmod>2026-11-17</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://torreabbondanza.com/seo/cucina-pugliese-masseria.jpg</image:loc>
+      <image:title>Cucina Pugliese su Prenotazione — Masseria Torre Abbondanza</image:title>
+      <image:caption>Antipasti di terra, pasta fresca fatta a mano e cucina tradizionale pugliese su misura.</image:caption>
+    </image:image>
   </url>
   <url>
-    <loc>https://torreabbondanza.com/cookie</loc>
+    <loc>https://torreabbondanza.com/cavalli</loc>
     <lastmod>2026-11-17</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://torreabbondanza.com/seo/cavalli-murgesi-allevamento.jpg</image:loc>
+      <image:title>Allevamento Cavalli Murgesi — Masseria Torre Abbondanza</image:title>
+      <image:caption>Allevamento della famiglia Giunta: cavalli Murgesi dal manto corvino e Sfilata di Attacchi d'Epoca.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://torreabbondanza.com/cavalli/vetrina</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://torreabbondanza.com/seo/vendita-cavalli-murgesi.jpg</image:loc>
+      <image:title>Vendita Cavalli Murgesi — Export Internazionale</image:title>
+      <image:caption>Cavalli Murgesi iscritti al Registro Anagrafico disponibili per la vendita in Italia, Europa, Russia e Asia.</image:caption>
+    </image:image>
   </url>
 </urlset>

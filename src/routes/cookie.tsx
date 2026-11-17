@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { BUSINESS, SITE_URL } from "@/lib/site";
 
 /** Ultimo aggiornamento dell'informativa (formato IT gg/mm/aaaa). */
-const LAST_UPDATED = "20 ottobre 2026";
+const LAST_UPDATED = "17 novembre 2026";
 
 /**
  * Cookie Policy — il sito non installa cookie opzionali.
@@ -55,12 +55,15 @@ function CookiePage() {
 
         <Section title="Cookie utilizzati da questo sito">
           <p>
-            Questo sito{" "}
-            <strong>non utilizza cookie di profilazione, tracciamento o marketing</strong>. Non sono
-            presenti strumenti di analisi delle visite (Google Analytics o equivalenti), né embed di
-            terze parti (YouTube, Facebook, Instagram widget) né pixel di tracciamento. I caratteri
-            tipografici sono serviti direttamente dal sito (self-hosted) e non generano cookie né
-            trasferimenti verso terzi.
+            Questo sito utilizza cookie tecnici strettamente necessari al funzionamento e,{" "}
+            <strong>esclusivamente previo consenso esplicito</strong> tramite il banner cookie,
+            cookie statistici e di misurazione tramite{" "}
+            <strong>Google Tag / Google Analytics 4</strong> con anonimizzazione IP e integrazione{" "}
+            <strong>Google Consent Mode v2</strong>. Senza il tuo consenso esplicito, lo storage
+            analitico e pubblicitario resta su <code>denied</code>. I caratteri tipografici sono
+            serviti direttamente dal sito (self-hosted) e non generano cookie né trasferimenti verso
+            terzi. Puoi modificare o revocare le preferenze in qualsiasi momento tramite la voce{" "}
+            <em>Preferenze cookie</em> nel footer.
           </p>
         </Section>
 

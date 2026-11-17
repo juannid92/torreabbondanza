@@ -15,13 +15,31 @@ import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 import heroImage from "@/assets/hero-masseria.jpg";
-import { SITE_URL, absoluteUrl, buildRestaurantJsonLd } from "@/lib/site";
+import { BUSINESS, SITE_URL, absoluteUrl, buildRestaurantJsonLd } from "@/lib/site";
 
-// I meta tag comuni sono definiti una sola volta in __root.tsx.
-// Qui resta solo ciò che è specifico della home: canonical e dati strutturati.
+const HOME_TITLE = `${BUSINESS.name} — Masseria del '700, Matrimoni, Cucina & Cavalli Murgesi | Noci, Puglia`;
+const HOME_DESCRIPTION =
+  "Masseria storica del Settecento a Noci (BA), nel cuore della Murgia dei Trulli: location matrimoni ed eventi, cucina pugliese su prenotazione per gruppi e allevamento di cavalli Murgesi.";
+
 export const Route = createFileRoute("/")({
   head: () => ({
-    links: [{ rel: "canonical", href: SITE_URL }],
+    meta: [
+      { title: HOME_TITLE },
+      { name: "description", content: HOME_DESCRIPTION },
+      {
+        name: "keywords",
+        content:
+          "masseria torre abbondanza, masseria noci, matrimonio in masseria puglia, location eventi valle d'itria, cucina pugliese su prenotazione, cavalli murgesi noci, attacchi d'epoca murgia",
+      },
+      { property: "og:title", content: HOME_TITLE },
+      { property: "og:description", content: HOME_DESCRIPTION },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:image", content: absoluteUrl(heroImage) },
+      { name: "twitter:title", content: HOME_TITLE },
+      { name: "twitter:description", content: HOME_DESCRIPTION },
+      { name: "twitter:image", content: absoluteUrl(heroImage) },
+    ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/` }],
     scripts: [
       {
         type: "application/ld+json",

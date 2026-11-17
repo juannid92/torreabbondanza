@@ -8,15 +8,27 @@ import { useLenis } from "@/hooks/use-lenis";
 import { SITE_URL, absoluteUrl, buildKitchenJsonLd } from "@/lib/site";
 import kitchenImg from "@/assets/kitchen-antipasti.jpg";
 
+const PAGE_TITLE = "La Cucina Pugliese su Prenotazione — Masseria Torre Abbondanza | Noci";
+const PAGE_DESCRIPTION =
+  "Tradizione pugliese e materie prime della Murgia: menù su misura da €50 a persona per gruppi di almeno 20 ospiti, cerimonie ed eventi a Noci (BA).";
+
 export const Route = createFileRoute("/cucina")({
   head: () => ({
     meta: [
-      { title: "La Cucina - Torre Abbondanza" },
+      { title: PAGE_TITLE },
+      { name: "description", content: PAGE_DESCRIPTION },
       {
-        name: "description",
+        name: "keywords",
         content:
-          "Tradizione pugliese e materie prime fresche del territorio. Menù su misura per cerimonie ed eventi alla Masseria Torre Abbondanza.",
+          "cucina pugliese noci, ristorante su prenotazione puglia, menu cerimonie masseria, pasta fatta a mano murgia, pranzo gruppi valle d'itria",
       },
+      { property: "og:title", content: PAGE_TITLE },
+      { property: "og:description", content: PAGE_DESCRIPTION },
+      { property: "og:url", content: `${SITE_URL}/cucina` },
+      { property: "og:image", content: absoluteUrl(kitchenImg) },
+      { name: "twitter:title", content: PAGE_TITLE },
+      { name: "twitter:description", content: PAGE_DESCRIPTION },
+      { name: "twitter:image", content: absoluteUrl(kitchenImg) },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}/cucina` }],
     scripts: [

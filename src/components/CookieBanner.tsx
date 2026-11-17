@@ -4,22 +4,17 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Cookie, Settings2, X, Check } from "lucide-react";
 
 /**
- * Banner cookie GDPR-compliant (Provv. Garante 10 giugno 2021 + art. 13 GDPR).
+ * Banner cookie GDPR-compliant (Provv. Garante 10 giugno 2021 + Google Consent Mode v2).
  *
  * Regole rispettate:
  * - Visibilità: compare al primo accesso, full-width in basso su mobile e desktop.
- * - Scelta esplicita: due pulsanti equivalenti ("Rifiuta" e "Accetta") + link
- *   "Personalizza" per la gestione puntuale. Nessun dark pattern.
- * - Granularità: cookie tecnici (sempre attivi, non richiedono consenso),
- *   cookie analitici / marketing (placeholder, oggi non presenti: marcati OFF).
+ * - Scelta esplicita: due pulsanti equivalenti ("Rifiuta tutti" e "Accetta tutti") +
+ *   "Personalizza" per la gestione granulare delle singole categorie.
+ * - Granularità: cookie tecnici (sempre attivi), analitici (Google Tag / GA4) e marketing
+ *   (Google Consent Mode v2), disattivati per default fino a consenso esplicito.
  * - Revoca: il visitatore può riaprire il pannello in qualsiasi momento tramite
- *   l'azione "Preferenze cookie" presente nel footer e in qualsiasi punto
- *   della pagina tramite l'evento globale "open-cookie-preferences".
- * - Persistenza: localStorage "torreabbondanza.cookieConsent" con
- *   versione policy, timestamp e categorie; il banner ricompare se l'utente
- *   riapre le preferenze o se la versione di policy cambia.
- * - Skip automatico sulle pagine policy (/privacy, /cookie) per non disturbare
- *   chi sta già leggendo l'informativa.
+ *   l'azione "Preferenze cookie" presente nel footer tramite l'evento globale
+ *   "open-cookie-preferences".
  */
 
 const STORAGE_KEY = "torreabbondanza.cookieConsent";
@@ -69,7 +64,6 @@ function writeConsent(categories: Categories) {
   } catch {
     /* localStorage disabilitato: il banner ricomparirà, accettabile */
   }
-  // Notifica eventuali listener (es. blocco analytics)
   window.dispatchEvent(
     new CustomEvent<Categories>("cookie-consent-change", { detail: categories }),
   );
@@ -85,7 +79,6 @@ export function CookieBanner() {
   const [categories, setCategories] = useState<Categories>(DEFAULT_CATEGORIES);
   const reduced = useReducedMotion();
 
-  // Mostra il banner al primo accesso, oppure se l'utente chiede le preferenze.
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (SKIP_PATHS.includes(window.location.pathname)) return;
@@ -94,6 +87,8 @@ export function CookieBanner() {
     if (!stored) {
       setOpen(true);
       setPanel("banner");
+    } else {
+      setCategories(stored.categories);
     }
 
     const onOpenPrefs = () => {
@@ -147,7 +142,12 @@ export function CookieBanner() {
                 onClose={rejectAll}
               />
             ) : (
-              <PrefsView onSave={savePrefs} onClose={() => setOpen(false)} />
+              <PrefsView
+                categories={categories}
+                onChange={setCategories}
+                onSave={savePrefs}
+                onClose={() => setOpen(false)}
+              />
             )}
           </div>
         </motion.div>
@@ -180,12 +180,12 @@ function BannerView({
             id="cookie-banner-title"
             className="font-display text-base font-semibold text-ink md:text-lg"
           >
-            Informativa sui cookie tecnici
+            Preferenze sui cookie e misurazione
           </h2>
           <p className="mt-1 text-xs leading-relaxed text-ink/80 md:text-sm">
-            Questo sito utilizza esclusivamente cookie tecnici necessari al funzionamento e non
-            impiega cookie di profilazione o tracciamento. Puoi rifiutare i cookie non tecnici senza
-            alcuna conseguenza per la navigazione. Per i dettagli consulta la{" "}
+            Questo sito utilizza cookie tecnici necessari al funzionamento e, previo consenso,
+            cookie analitici (Google Tag / GA4) per migliorare l'esperienza di navigazione. Puoi
+            rifiutare o personalizzare le scelte senza alcuna conseguenza. Consulta la{" "}
             <Link
               to="/cookie"
               className="font-medium text-ink underline underline-offset-4 hover:text-terracotta"
@@ -235,7 +235,17 @@ function BannerView({
 }
 
 /* ---------------- Pannello Preferenze ---------------- */
-function PrefsView({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
+function PrefsView({
+  categories,
+  onChange,
+  onSave,
+  onClose,
+}: {
+  categories: Categories;
+  onChange: (next: Categories) => void;
+  onSave: () => void;
+  onClose: () => void;
+}) {
   return (
     <div className="relative p-5 md:p-7">
       <button
@@ -251,26 +261,31 @@ function PrefsView({ onSave, onClose }: { onSave: () => void; onClose: () => voi
         id="cookie-banner-title"
         className="font-display text-lg font-semibold text-ink md:text-xl"
       >
-        Stato dei cookie sul sito
+        Gestisci le preferenze cookie
       </h2>
       <p className="mt-2 text-sm text-ink/80">
-        Ai sensi del Provvedimento del Garante per la protezione dei dati personali del 10 giugno
-        2021, questo sito utilizza soltanto cookie tecnici strettamente necessari all'erogazione del
-        servizio.
+        Ai sensi del Provvedimento del Garante del 10 giugno 2021 e del GDPR, puoi scegliere quali
+        categorie attivare oltre ai cookie tecnici essenziali.
       </p>
 
       <ul className="mt-5 grid gap-3">
         <CookieRow
           name="Cookie tecnici (sempre attivi)"
-          description="Necessari al funzionamento della rete di distribuzione e alla sicurezza del sito (Cloudflare). Non profilano l'utente."
+          description="Necessari al funzionamento della rete di distribuzione, alla sicurezza (Cloudflare) e alla memorizzazione delle tue preferenze di consenso."
           required
           checked
         />
         <CookieRow
-          name="Cookie analitici e di marketing (assenti)"
-          description="Questo sito non installa cookie analitici di terze parti né pixel pubblicitari o di profilazione."
-          required
-          checked={false}
+          name="Cookie analitici (Google Tag / GA4)"
+          description="Raccolgono statistiche aggregate e anonimizzate sulle visite tramite Google Tag con Google Consent Mode v2."
+          checked={categories.analytics}
+          onChange={(checked) => onChange({ ...categories, analytics: checked })}
+        />
+        <CookieRow
+          name="Cookie di marketing e misurazione conversioni"
+          description="Consentono a Google Tag di misurare le conversioni e l'efficacia delle campagne solo previo tuo consenso."
+          checked={categories.marketing}
+          onChange={(checked) => onChange({ ...categories, marketing: checked })}
         />
       </ul>
 
@@ -288,7 +303,7 @@ function PrefsView({ onSave, onClose }: { onSave: () => void; onClose: () => voi
           className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[11px] tracking-[0.18em] uppercase text-ivory transition-colors hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
         >
           <Check className="h-3.5 w-3.5" />
-          Chiudi e salva
+          Salva preferenze
         </button>
       </div>
     </div>
@@ -300,11 +315,13 @@ function CookieRow({
   description,
   checked,
   required,
+  onChange,
 }: {
   name: string;
   description: string;
   checked: boolean;
   required?: boolean;
+  onChange?: (checked: boolean) => void;
 }) {
   return (
     <li className="flex items-start justify-between gap-4 rounded-md border border-stone/40 p-4">
@@ -312,12 +329,15 @@ function CookieRow({
         <p className="font-medium text-ink">{name}</p>
         <p className="mt-1 text-xs leading-relaxed text-ink/70">{description}</p>
       </div>
-      <label className="relative inline-flex h-6 w-11 shrink-0 items-center">
+      <label
+        className={`relative inline-flex h-6 w-11 shrink-0 items-center ${required ? "cursor-not-allowed" : "cursor-pointer"}`}
+      >
         <input
           type="checkbox"
           checked={checked}
           disabled={required}
-          readOnly
+          readOnly={required}
+          onChange={required ? undefined : (e) => onChange?.(e.target.checked)}
           className="peer sr-only"
           aria-label={name}
         />

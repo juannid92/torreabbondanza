@@ -4,7 +4,8 @@ import { HorsesShowcase } from "@/components/HorsesShowcase";
 import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
-import { SITE_URL, BUSINESS } from "@/lib/site";
+import { SITE_URL, BUSINESS, absoluteUrl, buildBreadcrumbJsonLd } from "@/lib/site";
+import horseGallopImg from "@/assets/horse-gallop.jpg";
 
 /* -------------------------------------------------------------------------- */
 /* Schema JSON-LD: Product + Offer per vendita cavalli (SEO internazionale)   */
@@ -136,12 +137,31 @@ export const Route = createFileRoute("/cavalli/vetrina")({
       },
       { property: "og:type", content: "product.group" },
       { property: "og:url", content: `${SITE_URL}/cavalli/vetrina` },
+      { property: "og:image", content: absoluteUrl(horseGallopImg) },
+      { name: "twitter:title", content: "Vendita Cavalli Murgesi — Torre Abbondanza" },
+      {
+        name: "twitter:description",
+        content:
+          "Murgese horses for sale. Registered breeding stock. EU, Russia, China export available.",
+      },
+      { name: "twitter:image", content: absoluteUrl(horseGallopImg) },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}/cavalli/vetrina` }],
     scripts: [
       {
         type: "application/ld+json",
         children: JSON.stringify(horsesForSaleSchema),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          ...buildBreadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "I Cavalli Murgesi", path: "/cavalli" },
+            { name: "Vetrina Vendita", path: "/cavalli/vetrina" },
+          ]),
+        }),
       },
     ],
   }),

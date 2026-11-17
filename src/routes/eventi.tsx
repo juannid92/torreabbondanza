@@ -8,15 +8,27 @@ import { useLenis } from "@/hooks/use-lenis";
 import { SITE_URL, absoluteUrl, buildEventsJsonLd } from "@/lib/site";
 import eventsImg from "@/assets/events-space-day.jpg";
 
+const PAGE_TITLE = "Eventi, Matrimoni e Cerimonie — Masseria Torre Abbondanza | Noci, Puglia";
+const PAGE_DESCRIPTION =
+  "Matrimoni, cerimonie civili e simboliche, battesimi e feste private in una masseria del Settecento tra sala storica in pietra e uliveto secolare nella Murgia.";
+
 export const Route = createFileRoute("/eventi")({
   head: () => ({
     meta: [
-      { title: "Eventi e Matrimoni - Torre Abbondanza" },
+      { title: PAGE_TITLE },
+      { name: "description", content: PAGE_DESCRIPTION },
       {
-        name: "description",
+        name: "keywords",
         content:
-          "Matrimoni, cerimonie e feste private nella masseria del Settecento. Esperienze stagionali tra natura e tradizione pugliese.",
+          "matrimonio in masseria puglia, location matrimoni noci, location eventi valle d'itria, cerimonie battesimi masseria puglia, feste private murgia",
       },
+      { property: "og:title", content: PAGE_TITLE },
+      { property: "og:description", content: PAGE_DESCRIPTION },
+      { property: "og:url", content: `${SITE_URL}/eventi` },
+      { property: "og:image", content: absoluteUrl(eventsImg) },
+      { name: "twitter:title", content: PAGE_TITLE },
+      { name: "twitter:description", content: PAGE_DESCRIPTION },
+      { name: "twitter:image", content: absoluteUrl(eventsImg) },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}/eventi` }],
     scripts: [
