@@ -122,6 +122,7 @@ export function PlaceSection() {
             alt=""
             aria-hidden
             loading="lazy"
+            decoding="async"
             width={1920}
             height={1024}
             className="absolute inset-x-0 top-0 h-[70%] w-full object-cover opacity-80 mix-blend-multiply"
@@ -135,10 +136,11 @@ export function PlaceSection() {
             alt=""
             aria-hidden
             loading="lazy"
+            decoding="async"
             width={1920}
             height={700}
             className="absolute inset-x-0 bottom-[30%] h-[35%] w-full object-cover object-bottom opacity-40"
-            style={{ filter: "blur(1px) saturate(0.8)" }}
+            style={{ filter: "saturate(0.8)" }}
           />
           {/* Banda colline supplementare per profondità */}
           <div
@@ -156,9 +158,10 @@ export function PlaceSection() {
             src={masseriaNewImg}
             alt="Masseria Torre Abbondanza nel paesaggio della Murgia"
             loading="lazy"
+            decoding="async"
             width={2400}
             height={1340}
-            className="absolute bottom-[16%] left-[42%] w-[92%] max-w-[1200px] -translate-x-1/2 object-contain drop-shadow-[0_30px_60px_color-mix(in_oklab,var(--ink)_30%,transparent)] md:left-[48%] md:w-[82%]"
+            className="absolute bottom-[16%] left-[42%] w-[92%] max-w-[1200px] -translate-x-1/2 object-contain md:left-[48%] md:w-[82%]"
           />
         </ParallaxLayer>
 
@@ -168,12 +171,10 @@ export function PlaceSection() {
             src={horsesImg}
             alt="Silhouette di cavalli Murgesi dal manto corvino al pascolo nella Murgia"
             loading="lazy"
+            decoding="async"
             width={1920}
             height={768}
             className="absolute inset-x-0 bottom-[14%] h-[28%] w-full object-contain object-bottom opacity-90 md:left-[2%] md:w-[62%]"
-            style={{
-              filter: "drop-shadow(0 18px 20px color-mix(in oklab, var(--ink) 25%, transparent))",
-            }}
           />
         </ParallaxLayer>
 
@@ -184,6 +185,7 @@ export function PlaceSection() {
             alt=""
             aria-hidden
             loading="lazy"
+            decoding="async"
             width={1920}
             height={900}
             className="absolute inset-x-0 bottom-[6%] h-[60%] w-full object-cover opacity-90"

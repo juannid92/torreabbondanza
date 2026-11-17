@@ -170,7 +170,8 @@ function StageBackground({ stage }: { stage: SeasonStage }) {
       <img
         src={stage.bg}
         alt=""
-        loading="lazy"
+        loading="eager"
+        decoding="async"
         width={1920}
         height={1080}
         className="absolute inset-0 h-full w-full object-cover"
@@ -253,7 +254,8 @@ function StageContent({ stage }: { stage: SeasonStage }) {
                 <img
                   src={exp.image}
                   alt={exp.alt}
-                  loading="lazy"
+                  loading="eager"
+                  decoding="async"
                   width={1024}
                   height={820}
                   className="absolute inset-0 h-[112%] w-full object-cover"
@@ -347,6 +349,7 @@ function StaticFallback() {
             src={s.bg}
             alt={s.bgAlt}
             loading="lazy"
+            decoding="async"
             width={1920}
             height={1080}
             className="absolute inset-0 h-full w-full object-cover opacity-30"
@@ -380,6 +383,7 @@ function StaticFallback() {
                     src={exp.image}
                     alt={exp.alt}
                     loading="lazy"
+                    decoding="async"
                     width={1024}
                     height={820}
                     className="w-full rounded-[10px] object-cover"

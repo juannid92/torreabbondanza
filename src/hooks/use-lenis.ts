@@ -123,7 +123,7 @@ export function useLenis() {
       lenis.raf(time * 1000);
     };
     gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.lagSmoothing(500, 33);
 
     return () => {
       document.removeEventListener("click", onAnchorClick);

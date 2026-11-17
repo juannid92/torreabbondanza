@@ -138,7 +138,29 @@ export function HeroSoglia() {
       });
     }, root);
 
-    return () => ctx.revert();
+    const sectionEl = root.current;
+    const videoEl = videoRef.current;
+    let observer: IntersectionObserver | null = null;
+    if (sectionEl && videoEl && "IntersectionObserver" in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (!entry) return;
+          if (entry.isIntersecting) {
+            videoEl.play().catch(() => {});
+          } else {
+            videoEl.pause();
+          }
+        },
+        { threshold: 0.01 },
+      );
+      observer.observe(sectionEl);
+    }
+
+    return () => {
+      observer?.disconnect();
+      ctx.revert();
+    };
   }, []);
 
   return (

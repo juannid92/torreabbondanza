@@ -520,10 +520,10 @@ export function SiteFooter() {
             "linear-gradient(to bottom, var(--ivory) 0%, color-mix(in oklab, var(--murgese) 55%, var(--ivory)) 55%, var(--murgese) 100%)",
         }}
       />
-      {/* Grain leggera */}
+      {/* Grain leggera (desktop only per fluidità scroll mobile) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
+        className="pointer-events-none absolute inset-0 hidden opacity-[0.05] mix-blend-overlay md:block"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96 0 0 0 0 0.93 0 0 0 0 0.85 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",

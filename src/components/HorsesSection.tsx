@@ -11,7 +11,7 @@ import horsesSkyImg from "@/assets/horses-sky.jpg";
 import horsesHillsImg from "@/assets/horses-hills.webp";
 import horsesGrazingImg from "@/assets/horses-grazing.webp";
 import murgeseRiderImg from "@/assets/murgese-rider.jpg";
-import murgesePrairieBg from "@/assets/murgese-prairie-bg.png";
+import murgesePrairieBg from "@/assets/murgese-prairie-bg.webp";
 import murgeseTrottingImg from "@/assets/murgese-trotting.jpg";
 
 const MICRO_LABELS = [
@@ -287,7 +287,7 @@ export function HorsesSection() {
       {/* ────────── MOMENTO B — IL GALOPPO (scroll-scrubbed) ────────── */}
       <div
         ref={gallopSceneRef}
-        className="relative mt-32 h-screen w-full overflow-hidden md:mt-48"
+        className="relative mt-32 h-[100svh] w-full overflow-hidden md:mt-48 md:h-screen"
         style={{
           backgroundColor: "color-mix(in oklab, var(--murgese) 92%, black)",
         }}
@@ -332,6 +332,7 @@ export function HorsesSection() {
           src={gallopImg}
           alt="Cavallo Murgese al galoppo nella Murgia all'ora dorata, criniera al vento, polvere sollevata dagli zoccoli"
           loading="lazy"
+          decoding="async"
           width={1920}
           height={1080}
           className="absolute inset-0 h-full w-full object-cover"
@@ -373,7 +374,10 @@ export function HorsesSection() {
       </div>
 
       {/* ────────── MOMENTO C — LA PRATERIA ────────── */}
-      <div ref={prairieSceneRef} className="relative mt-0 h-[110vh] w-full overflow-hidden">
+      <div
+        ref={prairieSceneRef}
+        className="relative mt-0 h-[100svh] w-full overflow-hidden md:h-[110vh]"
+      >
         {/* Sfondo unico: cavallo al trotto a tutto schermo */}
         <div
           data-p-layer
@@ -386,6 +390,7 @@ export function HorsesSection() {
             src={murgeseTrottingImg}
             alt="Cavallo Murgesi nero al trotto su sentiero erboso con alberi sullo sfondo"
             loading="lazy"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
           />
         </div>

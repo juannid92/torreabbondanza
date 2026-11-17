@@ -533,7 +533,7 @@ export function EventsSection() {
               data-day-layer
               src={dayImg}
               alt=""
-              loading="lazy"
+              loading="eager"
               decoding="async"
               width={1920}
               height={1280}
@@ -544,7 +544,8 @@ export function EventsSection() {
               data-night-layer
               src={nightImg}
               alt=""
-              loading="lazy"
+              loading="eager"
+              decoding="async"
               width={1920}
               height={1280}
               className="absolute inset-0 h-full w-full object-cover opacity-0"
