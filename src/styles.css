@@ -183,6 +183,17 @@ html.js-ready [data-reveal].in-view {
   transform: none;
 }
 
+/* Pre-paint cover: evita che il sito appaia per un istante prima di IntroOverlay */
+html.intro-pending,
+html.intro-pending body {
+  background-color: var(--murgese);
+  overflow: hidden;
+}
+
+html.intro-pending #main-content > *:not([data-intro-overlay]) {
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html.js-ready [data-reveal][data-reveal-pending]:not(.in-view),
   [data-reveal] {

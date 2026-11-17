@@ -1,20 +1,28 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const INTRO_STORAGE_KEY = "torreabbondanza.introSeen";
-const INTRO_DURATION_MS = 10_000;
+const INTRO_FALLBACK_MS = 10_800;
 const FADE_DURATION_MS = 700;
 
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 /**
- * Intro animata full-screen basata su WebP animato senza audio (`/intro-video.webp`).
- * Viene mostrata una volta per sessione all'ingresso sulla Home, con chiusura
- * automatica al termine dei 10s o manuale tramite il pulsante "Salta intro".
+ * Intro animata full-screen basata su MP4 HD senza audio (`/intro-video.mp4`).
+ * Mostrata una volta per sessione all'ingresso sulla Home, senza flash del sito
+ * sottostante (coordinata con `html.intro-pending` in __root.tsx).
  */
 export function IntroOverlay() {
   const [mounted, setMounted] = useState(false);
   const [fading, setFading] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const dismissedRef = useRef(false);
 
   const dismiss = useCallback(() => {
+    if (dismissedRef.current) return;
+    dismissedRef.current = true;
     setFading(true);
+    document.documentElement.classList.remove("intro-pending");
+    document.documentElement.style.overflow = "";
     try {
       sessionStorage.setItem(INTRO_STORAGE_KEY, "1");
     } catch {
@@ -25,45 +33,77 @@ export function IntroOverlay() {
     }, FADE_DURATION_MS);
   }, []);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (typeof window === "undefined") return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    if (reduced) {
+      document.documentElement.classList.remove("intro-pending");
+      return;
+    }
 
     try {
-      if (sessionStorage.getItem(INTRO_STORAGE_KEY) === "1") return;
+      if (sessionStorage.getItem(INTRO_STORAGE_KEY) === "1") {
+        document.documentElement.classList.remove("intro-pending");
+        return;
+      }
       sessionStorage.setItem(INTRO_STORAGE_KEY, "1");
     } catch {
       /* noop */
     }
 
+    document.documentElement.style.overflow = "hidden";
     setMounted(true);
+  }, []);
 
-    const timer = window.setTimeout(() => {
+  useEffect(() => {
+    if (!mounted) return;
+
+    // Rimuove intro-pending solo dopo che l'overlay z-[80] è già dipinto sullo schermo
+    const raf = requestAnimationFrame(() => {
+      document.documentElement.classList.remove("intro-pending");
+    });
+
+    const video = videoRef.current;
+    if (video) {
+      video.play().catch(() => {
+        dismiss();
+      });
+    }
+
+    const fallbackTimer = window.setTimeout(() => {
       dismiss();
-    }, INTRO_DURATION_MS);
+    }, INTRO_FALLBACK_MS);
 
     return () => {
-      window.clearTimeout(timer);
+      cancelAnimationFrame(raf);
+      window.clearTimeout(fallbackTimer);
+      document.documentElement.classList.remove("intro-pending");
+      document.documentElement.style.overflow = "";
     };
-  }, [dismiss]);
+  }, [mounted, dismiss]);
 
   if (!mounted) return null;
 
   return (
     <div
+      data-intro-overlay
       role="region"
       aria-label="Intro Masseria Torre Abbondanza"
       className={`fixed inset-0 z-[80] overflow-hidden bg-murgese transition-opacity duration-700 ease-out ${
         fading ? "pointer-events-none opacity-0" : "opacity-100"
       }`}
     >
-      <img
-        src="/intro-video.webp"
-        alt=""
+      <video
+        ref={videoRef}
+        src="/intro-video.mp4"
+        muted
+        playsInline
+        autoPlay
+        preload="auto"
         aria-hidden
-        decoding="async"
+        onEnded={dismiss}
+        onError={dismiss}
         className="h-full w-full object-cover"
       />
 

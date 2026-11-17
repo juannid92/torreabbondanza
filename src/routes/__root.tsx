@@ -117,6 +117,11 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="it">
       <head>
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{if(location.pathname==="/"&&!matchMedia("(prefers-reduced-motion:reduce)").matches&&sessionStorage.getItem("torreabbondanza.introSeen")!=="1"){document.documentElement.classList.add("intro-pending");setTimeout(function(){document.documentElement.classList.remove("intro-pending")},3500);}}catch(e){}})();`,
+          }}
+        />
       </head>
       <body>
         <a
