@@ -21,5 +21,16 @@ export default defineConfig({
         webp: { quality: 75 },
       }),
     ],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id: string) {
+            if (id.includes("node_modules/gsap")) {
+              return "gsap";
+            }
+          },
+        },
+      },
+    },
   },
 });
