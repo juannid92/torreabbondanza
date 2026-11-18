@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "@/lib/split-text";
@@ -32,6 +32,25 @@ const HERO_VIDEO_URL = "/hero-video.mp4";
 export function HeroSoglia() {
   const root = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoSrc, setVideoSrc] = useState<string | undefined>(undefined);
+
+  // Lazy-load video src when element enters viewport (+200px margin)
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVideoSrc(HERO_VIDEO_URL);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -180,17 +199,15 @@ export function HeroSoglia() {
           muted
           loop
           playsInline
-          autoPlay
-          preload="auto"
+          preload="none"
           poster={heroPoster}
           aria-hidden
+          src={videoSrc}
           onCanPlay={(e) => {
             e.currentTarget.play().catch(() => {});
           }}
           className="absolute inset-0 h-full w-full object-cover will-change-transform"
-        >
-          <source src={HERO_VIDEO_URL} type="video/mp4" />
-        </video>
+        />
       </div>
 
       {/* === Layer 1 (z-[1]): Overlay caldo per leggibilità === */}
