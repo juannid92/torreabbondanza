@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { StoryPanel, type StoryPanelData } from "./StoryPanel";
 import { observeRevealElements } from "@/lib/scroll-ready";
 import storyAgroNoci from "@/assets/story-agro-noci.jpg";
-import storyPietra from "@/assets/story-pietra.jpg";
+import storyCalcePietra from "@/assets/story-calce-pietra.jpg";
 import storyCavalli from "@/assets/primavera-alessio/alessio-cura.webp";
 import storyFamiglia from "@/assets/story-famiglia.jpg";
 import storyOggi from "@/assets/story-oggi.jpg";
@@ -63,8 +63,8 @@ const PANELS: StoryPanelData[] = [
       </>
     ),
     image: {
-      src: storyPietra,
-      alt: "Dettaglio di arco in pietra e tetto in terracotta su muro a calce",
+      src: storyCalcePietra,
+      alt: "Muri a calce, tetti in terracotta e corte della Masseria Torre Abbondanza sotto il cielo della Murgia",
     },
     tone: "warm",
   },
