@@ -254,6 +254,42 @@ export function buildEventsJsonLd(imageUrl: string) {
             value: true,
           },
         ],
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Formati Eventi e Cerimonie in Masseria",
+          itemListElement: [
+            {
+              "@type": "Offer",
+              itemOffered: { "@type": "Service", name: "Matrimoni & Ricevimenti in Masseria" },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Cerimonie di Famiglia (Battesimi, Comunioni, Anniversari)",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: { "@type": "Service", name: "Compleanni & Feste Private" },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: { "@type": "Service", name: "Eventi Aziendali & Team Building" },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: { "@type": "Service", name: "Cene & Convivi di Gruppo su Prenotazione" },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Feste ed Esperienze Equestri con Cavalli Murgesi",
+              },
+            },
+          ],
+        },
         sameAs: [BUSINESS.instagram.url, BUSINESS.facebook.url],
       },
       buildBreadcrumbJsonLd([
@@ -277,7 +313,7 @@ export function buildRestaurantJsonLd(imageUrl: string) {
         url: SITE_URL,
         name: BUSINESS.name,
         description: BUSINESS.description,
-        inLanguage: "it-IT",
+        inLanguage: ["it-IT", "en", "zh-CN", "ru", "de", "fr"],
         publisher: { "@id": `${SITE_URL}/#masseria` },
       },
       {
@@ -323,6 +359,14 @@ export function buildRestaurantJsonLd(imageUrl: string) {
                 "@type": "Service",
                 name: "Cucina pugliese su prenotazione per gruppi (min. 20 persone)",
                 url: `${SITE_URL}/cucina`,
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Appuntamenti a Tavola — Menù delle Ricorrenze, Festività & Pranzi della Domenica",
+                url: `${SITE_URL}/appuntamenti`,
               },
             },
             {

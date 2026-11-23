@@ -26,6 +26,11 @@ export const Route = createFileRoute("/cavalli")({
       { property: "og:description", content: PAGE_DESCRIPTION },
       { property: "og:url", content: `${SITE_URL}/cavalli` },
       { property: "og:image", content: absoluteUrl(murgeseImg) },
+      {
+        property: "og:image:alt",
+        content: "Allevamento cavalli Murgesi della Masseria Torre Abbondanza",
+      },
+      { property: "og:image:alt", content: "Allevamento cavalli Murgesi della Masseria Torre Abbondanza" },
       { name: "twitter:title", content: PAGE_TITLE },
       { name: "twitter:description", content: PAGE_DESCRIPTION },
       { name: "twitter:image", content: absoluteUrl(murgeseImg) },
@@ -52,6 +57,7 @@ function Cavalli() {
   return (
     <main id="main-content" className="bg-background text-foreground">
       <SiteHeader />
+      <h1 className="sr-only">{PAGE_TITLE}</h1>
       <HorsesSection />
       <VisitSection />
       <SiteFooter />

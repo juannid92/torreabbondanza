@@ -62,6 +62,11 @@ export const Route = createFileRoute("/la-masseria")({
         content:
           "Storia della Masseria Torre Abbondanza dal Settecento a oggi: la famiglia Giunta, la corte in pietra, gli ulivi secolari e i cavalli Murgesi nel cuore della Murgia di Noci.",
       },
+      {
+        name: "keywords",
+        content:
+          "storia masseria torre abbondanza, masseria settecento noci, famiglia giunta noci, masseria storica murgia dei trulli, dimora storica puglia",
+      },
       { property: "og:title", content: "La Nostra Storia — Masseria Torre Abbondanza" },
       {
         property: "og:description",
@@ -71,6 +76,17 @@ export const Route = createFileRoute("/la-masseria")({
       { property: "og:type", content: "article" },
       { property: "og:url", content: `${SITE_URL}/la-masseria` },
       { property: "og:image", content: absoluteUrl(heroMasseria) },
+      {
+        property: "og:image:alt",
+        content: "Facciata storica della Masseria Torre Abbondanza a Noci",
+      },
+      { name: "twitter:title", content: "La Nostra Storia — Masseria Torre Abbondanza" },
+      {
+        name: "twitter:description",
+        content:
+          "Masseria del Settecento nella Murgia dei Trulli. Storia, tradizione e ospitalità pugliese dal 2005.",
+      },
+      { name: "twitter:image", content: absoluteUrl(heroMasseria) },
     ],
     links: buildHreflangLinks("/la-masseria"),
     scripts: [{ type: "application/ld+json", children: JSON.stringify(laMasseriaSchema) }],

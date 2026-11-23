@@ -104,6 +104,11 @@ export const Route = createFileRoute("/gallery")({
         content:
           "Foto della Masseria Torre Abbondanza: matrimoni, cerimonie, cucina tradizionale pugliese, cavalli Murgesi e la corte del Settecento nella Murgia.",
       },
+      {
+        name: "keywords",
+        content:
+          "foto masseria torre abbondanza, galleria matrimoni masseria puglia, foto cavalli murgesi noci, immagini corte storica murgia, foto cucina pugliese",
+      },
       { property: "og:title", content: "Galleria Fotografica — Masseria Torre Abbondanza" },
       {
         property: "og:description",
@@ -113,6 +118,14 @@ export const Route = createFileRoute("/gallery")({
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${SITE_URL}/gallery` },
       { property: "og:image", content: absoluteUrl(eventsWedding) },
+      { property: "og:image:alt", content: "Galleria fotografica della Masseria Torre Abbondanza" },
+      { name: "twitter:title", content: "Galleria Fotografica — Masseria Torre Abbondanza" },
+      {
+        name: "twitter:description",
+        content:
+          "Scopri la masseria attraverso le immagini: eventi, cucina, cavalli e il paesaggio della Murgia dei Trulli.",
+      },
+      { name: "twitter:image", content: absoluteUrl(eventsWedding) },
     ],
     links: buildHreflangLinks("/gallery"),
     scripts: [{ type: "application/ld+json", children: JSON.stringify(gallerySchema) }],

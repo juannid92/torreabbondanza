@@ -7,17 +7,22 @@
 - **Coordinate GPS**: `40.730579, 17.1307539`
 - **Telefono & WhatsApp**: `+39 338 483 4318` (https://wa.me/393384834318)
 - **Sito Web**: https://www.masseriatorreabbondanza.it
+- **Lingue supportate**: Italiano (default), Inglese (`?lang=en`), Cinese (`?lang=zh`), Russo (`?lang=ru`), Tedesco (`?lang=de`), Francese (`?lang=fr`)
 - **Dati Societari**: Masseria Torre Abbondanza - Società Agricola Semplice dei Fratelli Giunta · P.IVA / C.F. `06351980724` · REA `BA - 479911`
 - **Valutazioni verificate**: TripAdvisor `4.4 / 5` (213 recensioni) · TheFork `9.7 / 10` (50 recensioni)
 - **Social**: Instagram `@masseria_torre_abbondanza` · Facebook `MasseriaTorreAbbondanza`
 
 ## Pagine principali
 - [Homepage](https://www.masseriatorreabbondanza.it/): Storia dal Settecento, il luogo nella Murgia, cucina, cavalli Murgesi, eventi stagionali, recensioni e modulo di prenotazione WhatsApp.
-- [Eventi e Matrimoni](https://www.masseriatorreabbondanza.it/eventi): Matrimoni, cerimonie civili e simboliche, battesimi, compleanni, feste private e cene aziendali nella sala storica a volte in pietra e nel giardino di ulivi, con arrivo su richiesta in carrozza d'epoca trainata da cavalli Murgesi.
+- [Eventi e Matrimoni](https://www.masseriatorreabbondanza.it/eventi): Matrimoni, cerimonie di famiglia, compleanni e feste private, eventi aziendali, cene di gruppo e feste equestri nella sala storica a volte in pietra e nel giardino di ulivi secolari, con arrivo su richiesta in carrozza d'epoca trainata da cavalli Murgesi.
 - [La Cucina e i Sapori](https://www.masseriatorreabbondanza.it/cucina): Cucina pugliese della tradizione su prenotazione per gruppi di almeno 20 ospiti, con almeno 2 giorni di anticipo, menù su misura a partire da 50 euro a persona (varianti vegetariane, vegane, gluten-free e menù bambini).
-- [Appuntamenti a Tavola — Menù & Ricorrenze](https://www.masseriatorreabbondanza.it/appuntamenti): Appuntamenti stagionali, pranzi della domenica e menù festivi della Masseria Torre Abbondanza con pulsanti diretti di prenotazione via WhatsApp e telefono.
+- [Appuntamenti a Tavola — Menù & Ricorrenze](https://www.masseriatorreabbondanza.it/appuntamenti): Calendario e locandine dei menù stagionali, pranzi della domenica, festività (Pasqua, 1° Maggio, Immacolata, Natale, Santo Stefano) e cene d'estate in corte con prenotazione diretta via WhatsApp e telefono.
 - [I Cavalli Murgesi](https://www.masseriatorreabbondanza.it/cavalli): Allevamento della famiglia Giunta nella Murgia, passeggiate a cavallo tra i muretti a secco, Sfilata di Attacchi d'Epoca con cavalli Murgesi e muli Martinesi.
 - [Vetrina Vendita Cavalli Murgesi](https://www.masseriatorreabbondanza.it/cavalli/vetrina): Catalogo soggetti Murgesi iscritti al Registro Anagrafico disponibili per vendita ed export internazionale (UE, UK, Russia/CSI, Cina/Asia).
+- [La Masseria — La Nostra Storia](https://www.masseriatorreabbondanza.it/la-masseria): Storia della dimora rurale del Settecento, la famiglia Giunta e l'architettura murgiana in pietra viva.
+- [Dove Siamo](https://www.masseriatorreabbondanza.it/dove-siamo): Indicazioni stradali da Bari, Brindisi, Taranto e Valle d'Itria, coordinate GPS, mappa e parcheggio gratuito.
+- [Galleria Fotografica](https://www.masseriatorreabbondanza.it/gallery): Immagini di matrimoni, sala a volte, corte, cucina pugliese e cavalli Murgesi.
+- [Domande Frequenti (FAQ)](https://www.masseriatorreabbondanza.it/faq): Risposte rapide su prenotazioni, menù, capacità eventi, parcheggio ed export cavalli.
 
 ## Risorsa estesa
-- [Documentazione completa per AI e motori di risposta](https://www.masseriatorreabbondanza.it/llms-full.txt): Dettagli su menù, stagioni, distanze geografiche, storia, logistica export cavalli e FAQ complete.
+- [Documentazione completa per AI e motori di risposta](https://www.masseriatorreabbondanza.it/llms-full.txt): Dettagli su menù, appuntamenti stagionali, formati eventi, distanze geografiche, storia, logistica export cavalli e FAQ complete.

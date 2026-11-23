@@ -28,6 +28,11 @@ export const Route = createFileRoute("/eventi")({
       { property: "og:description", content: PAGE_DESCRIPTION },
       { property: "og:url", content: `${SITE_URL}/eventi` },
       { property: "og:image", content: absoluteUrl(eventsImg) },
+      {
+        property: "og:image:alt",
+        content: "Matrimoni ed eventi nella corte della Masseria Torre Abbondanza",
+      },
+      { property: "og:image:alt", content: "Matrimoni ed eventi nella corte della Masseria Torre Abbondanza" },
       { name: "twitter:title", content: PAGE_TITLE },
       { name: "twitter:description", content: PAGE_DESCRIPTION },
       { name: "twitter:image", content: absoluteUrl(eventsImg) },
@@ -48,6 +53,7 @@ function Eventi() {
   return (
     <main id="main-content" className="bg-background text-foreground">
       <SiteHeader />
+      <h1 className="sr-only">{PAGE_TITLE}</h1>
       <EventsSection />
       <SeasonsSection />
       <EventPostersTeaserSection />

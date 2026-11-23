@@ -2,8 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
-import { SITE_URL, BUSINESS, buildBreadcrumbJsonLd } from "@/lib/site";
+import { SITE_URL, BUSINESS, absoluteUrl, buildBreadcrumbJsonLd } from "@/lib/site";
 import { buildHreflangLinks } from "@/lib/hreflang";
+import heroMasseria from "@/assets/hero-masseria.jpg";
 
 const FAQ_ITEMS = [
   {
@@ -79,6 +80,11 @@ export const Route = createFileRoute("/faq")({
         content:
           "Risposte alle domande più frequenti su prenotazioni, eventi, matrimoni, cucina, cavalli Murgesi e come raggiungere la Masseria Torre Abbondanza a Noci (BA).",
       },
+      {
+        name: "keywords",
+        content:
+          "faq masseria torre abbondanza, domande frequenti masseria noci, prenotazione ristorante masseria, capienza matrimoni masseria puglia, export cavalli murgesi info",
+      },
       { property: "og:title", content: "Domande Frequenti — Masseria Torre Abbondanza" },
       {
         property: "og:description",
@@ -87,6 +93,15 @@ export const Route = createFileRoute("/faq")({
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${SITE_URL}/faq` },
+      { property: "og:image", content: absoluteUrl(heroMasseria) },
+      { property: "og:image:alt", content: "Masseria Torre Abbondanza a Noci — Domande Frequenti" },
+      { name: "twitter:title", content: "Domande Frequenti — Masseria Torre Abbondanza" },
+      {
+        name: "twitter:description",
+        content:
+          "Tutto quello che devi sapere su prenotazioni, eventi, cavalli Murgesi e come raggiungerci.",
+      },
+      { name: "twitter:image", content: absoluteUrl(heroMasseria) },
     ],
     links: buildHreflangLinks("/faq"),
     scripts: [{ type: "application/ld+json", children: JSON.stringify(faqSchema) }],

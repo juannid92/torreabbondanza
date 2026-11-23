@@ -28,6 +28,11 @@ export const Route = createFileRoute("/cucina")({
       { property: "og:description", content: PAGE_DESCRIPTION },
       { property: "og:url", content: `${SITE_URL}/cucina` },
       { property: "og:image", content: absoluteUrl(kitchenImg) },
+      {
+        property: "og:image:alt",
+        content: "Cucina pugliese della tradizione alla Masseria Torre Abbondanza",
+      },
+      { property: "og:image:alt", content: "Cucina pugliese della tradizione alla Masseria Torre Abbondanza" },
       { name: "twitter:title", content: PAGE_TITLE },
       { name: "twitter:description", content: PAGE_DESCRIPTION },
       { name: "twitter:image", content: absoluteUrl(kitchenImg) },
@@ -48,6 +53,7 @@ function Cucina() {
   return (
     <main id="main-content" className="bg-background text-foreground">
       <SiteHeader />
+      <h1 className="sr-only">{PAGE_TITLE}</h1>
       <KitchenSection />
       <MenuSection />
       <EventPostersTeaserSection />

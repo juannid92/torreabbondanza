@@ -7,10 +7,15 @@
 >
   <url>
     <loc>https://www.masseriatorreabbondanza.it/</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="it-IT" href="https://www.masseriatorreabbondanza.it/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.masseriatorreabbondanza.it/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.masseriatorreabbondanza.it/?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.masseriatorreabbondanza.it/?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.masseriatorreabbondanza.it/?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.masseriatorreabbondanza.it/?lang=fr" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.masseriatorreabbondanza.it/" />
     <image:image>
       <image:loc>https://www.masseriatorreabbondanza.it/seo/masseria-torre-abbondanza.jpg</image:loc>
@@ -28,23 +33,33 @@
   </url>
   <url>
     <loc>https://www.masseriatorreabbondanza.it/eventi</loc>
-    <lastmod>2026-11-17</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="it-IT" href="https://www.masseriatorreabbondanza.it/eventi" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.masseriatorreabbondanza.it/eventi?lang=en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.masseriatorreabbondanza.it/eventi?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.masseriatorreabbondanza.it/eventi?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.masseriatorreabbondanza.it/eventi?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.masseriatorreabbondanza.it/eventi?lang=fr" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.masseriatorreabbondanza.it/eventi" />
     <image:image>
       <image:loc>https://www.masseriatorreabbondanza.it/seo/eventi-matrimoni-masseria.jpg</image:loc>
       <image:title>Matrimoni ed Eventi in Masseria — Torre Abbondanza</image:title>
-      <image:caption>Corte e sala storica in pietra per matrimoni, cerimonie e feste private a Noci, Puglia.</image:caption>
+      <image:caption>Corte e sala storica in pietra per matrimoni, cerimonie, feste private ed eventi aziendali a Noci, Puglia.</image:caption>
     </image:image>
   </url>
   <url>
     <loc>https://www.masseriatorreabbondanza.it/cucina</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="it-IT" href="https://www.masseriatorreabbondanza.it/cucina" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.masseriatorreabbondanza.it/cucina?lang=en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.masseriatorreabbondanza.it/cucina?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.masseriatorreabbondanza.it/cucina?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.masseriatorreabbondanza.it/cucina?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.masseriatorreabbondanza.it/cucina?lang=fr" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.masseriatorreabbondanza.it/cucina" />
     <image:image>
       <image:loc>https://www.masseriatorreabbondanza.it/seo/cucina-pugliese-masseria.jpg</image:loc>
@@ -58,19 +73,34 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="it-IT" href="https://www.masseriatorreabbondanza.it/appuntamenti" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.masseriatorreabbondanza.it/appuntamenti?lang=en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.masseriatorreabbondanza.it/appuntamenti?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.masseriatorreabbondanza.it/appuntamenti?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.masseriatorreabbondanza.it/appuntamenti?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.masseriatorreabbondanza.it/appuntamenti?lang=fr" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.masseriatorreabbondanza.it/appuntamenti" />
     <image:image>
       <image:loc>https://www.masseriatorreabbondanza.it/seo/cucina-pugliese-masseria.jpg</image:loc>
       <image:title>Appuntamenti a Tavola — Menù &amp; Ricorrenze | Torre Abbondanza</image:title>
-      <image:caption>Appuntamenti a tavola, festività e pranzi della domenica con prenotazione diretta WhatsApp o telefono.</image:caption>
+      <image:caption>Appuntamenti a tavola, festività, cene d'estate in corte e pranzi della domenica con prenotazione diretta WhatsApp o telefono.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.masseriatorreabbondanza.it/seo/eventi-matrimoni-masseria.jpg</image:loc>
+      <image:title>Convivi stagionali e cene nella corte — Masseria Torre Abbondanza</image:title>
+      <image:caption>Tavole imbandite sotto le volte in pietra e nella corte storica di Noci per festività e ricorrenze.</image:caption>
     </image:image>
   </url>
   <url>
     <loc>https://www.masseriatorreabbondanza.it/cavalli</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <xhtml:link rel="alternate" hreflang="it-IT" href="https://www.masseriatorreabbondanza.it/cavalli" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.masseriatorreabbondanza.it/cavalli?lang=en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.masseriatorreabbondanza.it/cavalli?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.masseriatorreabbondanza.it/cavalli?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.masseriatorreabbondanza.it/cavalli?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.masseriatorreabbondanza.it/cavalli?lang=fr" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.masseriatorreabbondanza.it/cavalli" />
     <image:image>
       <image:loc>https://www.masseriatorreabbondanza.it/seo/cavalli-murgesi-allevamento.jpg</image:loc>
@@ -80,16 +110,94 @@
   </url>
   <url>
     <loc>https://www.masseriatorreabbondanza.it/cavalli/vetrina</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <xhtml:link rel="alternate" hreflang="it-IT" href="https://www.masseriatorreabbondanza.it/cavalli/vetrina" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.masseriatorreabbondanza.it/cavalli/vetrina" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.masseriatorreabbondanza.it/cavalli/vetrina?lang=en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.masseriatorreabbondanza.it/cavalli/vetrina?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.masseriatorreabbondanza.it/cavalli/vetrina?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.masseriatorreabbondanza.it/cavalli/vetrina?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.masseriatorreabbondanza.it/cavalli/vetrina?lang=fr" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.masseriatorreabbondanza.it/cavalli/vetrina" />
     <image:image>
       <image:loc>https://www.masseriatorreabbondanza.it/seo/vendita-cavalli-murgesi.jpg</image:loc>
       <image:title>Vendita Cavalli Murgesi — Export Internazionale</image:title>
       <image:caption>Cavalli Murgesi iscritti al Registro Anagrafico disponibili per la vendita in Italia, Europa, Russia e Asia.</image:caption>
     </image:image>
+  </url>
+  <url>
+    <loc>https://www.masseriatorreabbondanza.it/la-masseria</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="it-IT" href="https://www.masseriatorreabbondanza.it/la-masseria" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.masseriatorreabbondanza.it/la-masseria?lang=en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.masseriatorreabbondanza.it/la-masseria?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.masseriatorreabbondanza.it/la-masseria?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.masseriatorreabbondanza.it/la-masseria?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.masseriatorreabbondanza.it/la-masseria?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.masseriatorreabbondanza.it/la-masseria" />
+    <image:image>
+      <image:loc>https://www.masseriatorreabbondanza.it/seo/masseria-torre-abbondanza.jpg</image:loc>
+      <image:title>La Nostra Storia — Masseria Torre Abbondanza dal Settecento</image:title>
+      <image:caption>Complesso rurale del XVIII secolo nella Murgia dei Trulli gestito dalla famiglia Giunta.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.masseriatorreabbondanza.it/dove-siamo</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="it-IT" href="https://www.masseriatorreabbondanza.it/dove-siamo" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.masseriatorreabbondanza.it/dove-siamo?lang=en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.masseriatorreabbondanza.it/dove-siamo?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.masseriatorreabbondanza.it/dove-siamo?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.masseriatorreabbondanza.it/dove-siamo?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.masseriatorreabbondanza.it/dove-siamo?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.masseriatorreabbondanza.it/dove-siamo" />
+    <image:image>
+      <image:loc>https://www.masseriatorreabbondanza.it/seo/masseria-torre-abbondanza.jpg</image:loc>
+      <image:title>Dove Siamo — Come Raggiungere Masseria Torre Abbondanza a Noci</image:title>
+      <image:caption>Indicazioni stradali, coordinate GPS e parcheggio nella Murgia dei Trulli a Noci (BA).</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.masseriatorreabbondanza.it/gallery</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="it-IT" href="https://www.masseriatorreabbondanza.it/gallery" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.masseriatorreabbondanza.it/gallery?lang=en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.masseriatorreabbondanza.it/gallery?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.masseriatorreabbondanza.it/gallery?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.masseriatorreabbondanza.it/gallery?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.masseriatorreabbondanza.it/gallery?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.masseriatorreabbondanza.it/gallery" />
+    <image:image>
+      <image:loc>https://www.masseriatorreabbondanza.it/seo/eventi-matrimoni-masseria.jpg</image:loc>
+      <image:title>Galleria Matrimoni ed Eventi — Masseria Torre Abbondanza</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.masseriatorreabbondanza.it/seo/cucina-pugliese-masseria.jpg</image:loc>
+      <image:title>Galleria Cucina Pugliese — Masseria Torre Abbondanza</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.masseriatorreabbondanza.it/seo/cavalli-murgesi-allevamento.jpg</image:loc>
+      <image:title>Galleria Cavalli Murgesi — Masseria Torre Abbondanza</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.masseriatorreabbondanza.it/faq</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="it-IT" href="https://www.masseriatorreabbondanza.it/faq" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.masseriatorreabbondanza.it/faq?lang=en" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.masseriatorreabbondanza.it/faq?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.masseriatorreabbondanza.it/faq?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.masseriatorreabbondanza.it/faq?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.masseriatorreabbondanza.it/faq?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.masseriatorreabbondanza.it/faq" />
   </url>
 </urlset>

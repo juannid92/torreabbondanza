@@ -43,8 +43,25 @@
 
 ---
 
-## 4. Eventi, Matrimoni e Cerimonie (`/eventi`)
-- **Tipologie ospitate**: matrimoni (con rito civile o simbolico in loco), battesimi, comunioni, compleanni, anniversari, cene aziendali, team building e feste private.
+## 4. Appuntamenti a Tavola — Menù & Ricorrenze (`/appuntamenti`)
+La masseria propone un calendario di appuntamenti stagionali e festivi consultabili come locandine interattive su `/appuntamenti`, prenotabili direttamente via WhatsApp o telefono:
+- **Il Pranzo della Domenica in Masseria** (Domeniche & Giorni Festivi · da €50/persona): antipasti della masseria, orecchiette e strascinate fatte a mano al ragù della domenica, arrosti misti della Murgia e involtino al sugo, dolce della casa, vino locale, acqua e caffè.
+- **Convivio di Primavera & 1° Maggio** (25 Aprile · 1° Maggio · Primavera · da €55/persona): latticini freschi, profumi di campo e brace nella corte storica.
+- **Sere d'Estate sotto le Lucine della Corte** (Giugno – Settembre · da €50/persona): cene serali all'aperto tra candele, pietra antica e brezza della Murgia.
+- **Tavola d'Autunno — Olio Nuovo & Funghi Cardoncelli** (Ottobre – Novembre · da €55/persona): sapori intensi della Murgia tra vendemmia, olio nuovo, cardoncelli e camino.
+- **I Convivi delle Feste — Immacolata, Natale & Santo Stefano** (8 Dicembre · 25–26 Dicembre · Capodanno · da €60/persona): grandi pranzi e cene invernali sotto le volte storiche riscaldate in pietra.
+- **Pranzo di Pasqua & Lunedì dell'Angelo** (Pasqua & Pasquetta · da €60/persona): festa della rinascita tra prato, cavalli Murgesi e grandi tavolate conviviali.
+
+---
+
+## 5. Eventi, Matrimoni e Cerimonie (`/eventi`)
+- **I 6 formati ospitati**:
+  1. **Matrimoni & Ricevimenti** (fino a 250 ospiti, rito civile o simbolico in loco)
+  2. **Cerimonie di Famiglia** (battesimi, comunioni, cresime, anniversari)
+  3. **Compleanni & Feste Private** (diciottesimi, lauree, serate con musica in corte)
+  4. **Eventi Aziendali & Team Building** (cene aziendali, convention, esperienze in masseria)
+  5. **Cene & Convivi di Gruppo** (tavolate su prenotazione per associazioni e comitive)
+  6. **Feste ed Esperienze Equestri** (eventi a tema con i cavalli Murgesi e la Sfilata di Attacchi d'Epoca)
 - **Spazi disponibili**:
   - **Sala storica interna**: sotto le volte settecentesche in pietra, ideale in ogni stagione e per cene aziendali invernali.
   - **Corte esterna e giardino di ulivi secolari**: allestimento serale con lunghe tavole conviviali in legno, candele e stringhe di lucine calde.
@@ -52,7 +69,7 @@
 
 ---
 
-## 5. Cavalli Murgesi, Esperienze Equestri e Vendita Internazionale (`/cavalli` & `/cavalli/vetrina`)
+## 6. Cavalli Murgesi, Esperienze Equestri e Vendita Internazionale (`/cavalli` & `/cavalli/vetrina`)
 - **Razza**: Cavallo Murgese (razza autoctona della Murgia pugliese riconosciuta ufficialmente nel 1926, manto morello o baio scuro, carattere docile ed elegante).
 - **Allevamento**: cresciuti allo stato semi-brado nei pascoli di Noci, iscritti al Registro Anagrafico del Cavallo Murgese (suffisso T.A.) con passaporto equino UE.
 - **Attività ed esperienze**: passeggiate a cavallo tra gli ulivi e i muretti a secco, visite in scuderia, partecipazione e promozione della Sfilata di Attacchi d'Epoca con cavalli Murgesi e muli di Martina Franca.
@@ -60,7 +77,7 @@
 
 ---
 
-## 6. Le 4 Stagioni in Masseria
+## 7. Le 4 Stagioni in Masseria
 - **Primavera**: passeggiate a cavallo tra gli ulivi in fiore, pranzi e picnic all'aperto nel prato nuovo.
 - **Estate**: cene ed eventi sotto le stelle nella corte illuminata da lucine e candele, Sfilata di Attacchi d'Epoca.
 - **Autunno**: trekking e passeggiate a cavallo tra il foliage murgiano, laboratori culinari di pasta fatta a mano con degustazioni.
@@ -68,7 +85,7 @@
 
 ---
 
-## 7. Posizione e Distanze (Noci, Murgia dei Trulli / Valle d'Itria)
+## 8. Posizione e Distanze (`/dove-siamo` — Noci, Murgia dei Trulli / Valle d'Itria)
 - Putignano: 9 km (12 min)
 - Alberobello: 11 km (12 min)
 - Locorotondo: 20 km (22 min)
@@ -79,7 +96,7 @@
 
 ---
 
-## 8. Domande Frequenti (FAQ)
+## 9. Domande Frequenti (`/faq`)
 **D: Posso venire a pranzo o a cena in due persone senza prenotazione?**
 R: No. La masseria apre la sua cucina su prenotazione per gruppi e occasioni di almeno 20 ospiti, con almeno 2 giorni di preavviso.
 

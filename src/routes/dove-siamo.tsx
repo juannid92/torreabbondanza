@@ -60,6 +60,11 @@ export const Route = createFileRoute("/dove-siamo")({
         content:
           "Come arrivare a Masseria Torre Abbondanza a Noci (BA): indicazioni da Bari, Brindisi, Taranto, Alberobello. Coordinate GPS, mappa e parcheggio gratuito.",
       },
+      {
+        name: "keywords",
+        content:
+          "dove si trova masseria torre abbondanza, come arrivare noci masseria, indicazioni stradali masseria murgia, parcheggio masseria noci, coordinate gps torre abbondanza",
+      },
       { property: "og:title", content: "Dove Siamo — Masseria Torre Abbondanza" },
       {
         property: "og:description",
@@ -69,6 +74,14 @@ export const Route = createFileRoute("/dove-siamo")({
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${SITE_URL}/dove-siamo` },
       { property: "og:image", content: absoluteUrl(placeMasseria) },
+      { property: "og:image:alt", content: "Masseria Torre Abbondanza nella Murgia di Noci (BA)" },
+      { name: "twitter:title", content: "Dove Siamo — Masseria Torre Abbondanza" },
+      {
+        name: "twitter:description",
+        content:
+          "Indicazioni stradali, mappa e coordinate GPS per raggiungere la masseria nel cuore della Murgia di Noci.",
+      },
+      { name: "twitter:image", content: absoluteUrl(placeMasseria) },
     ],
     links: buildHreflangLinks("/dove-siamo"),
     scripts: [{ type: "application/ld+json", children: JSON.stringify(doveSiamoSchema) }],

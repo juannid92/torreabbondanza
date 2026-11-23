@@ -1,7 +1,7 @@
 # ==============================================================================
 # Masseria Torre Abbondanza — robots.txt
 # Canonical Domain: https://www.masseriatorreabbondanza.it
-# Last Updated: 2026-11-17
+# Last Updated: 2026-11-23
 # ==============================================================================
 
 # Regola generale per tutti i crawler
@@ -9,8 +9,13 @@ User-agent: *
 Allow: /
 Allow: /eventi
 Allow: /cucina
+Allow: /appuntamenti
 Allow: /cavalli
 Allow: /cavalli/vetrina
+Allow: /la-masseria
+Allow: /dove-siamo
+Allow: /gallery
+Allow: /faq
 Allow: /seo/
 Allow: /assets/
 Allow: /llms.txt
