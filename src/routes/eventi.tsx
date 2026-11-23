@@ -8,7 +8,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
 import { SITE_URL, absoluteUrl, buildEventsJsonLd } from "@/lib/site";
 import { buildHreflangLinks } from "@/lib/hreflang";
-import eventsImg from "@/assets/events-space-day.jpg";
+import eventsImg from "@/assets/events-wedding.jpg";
 
 const PAGE_TITLE = "Eventi, Matrimoni e Cerimonie — Masseria Torre Abbondanza | Noci, Puglia";
 const PAGE_DESCRIPTION =

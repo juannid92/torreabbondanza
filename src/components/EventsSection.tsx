@@ -1,922 +1,1602 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+  type PanInfo,
+} from "framer-motion";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  Images,
+  MessageCircle,
+  Phone,
+  X,
+} from "lucide-react";
 import { MagneticButton } from "./MagneticButton";
-import { splitWords } from "@/lib/split-text";
-import { observeRevealElements } from "@/lib/scroll-ready";
-import dayImg from "@/assets/events-space-day.jpg";
-import nightImg from "@/assets/events-space-night.jpg";
+import { scrollToSection } from "@/hooks/use-lenis";
+import { BUSINESS } from "@/lib/site";
+import { cn } from "@/lib/utils";
+import weddingImg from "@/assets/events-wedding.jpg";
 import tablePanoImg from "@/assets/events-table-pano.jpg";
+import imperialTableImg from "@/assets/story-oggi.jpg";
+import stoneCourtImg from "@/assets/story-pietra.jpg";
+import nightCourtImg from "@/assets/events-space-night.jpg";
+import facadeImg from "@/assets/story-origini.jpg";
+import horseRideImg from "@/assets/primavera-alessio/primavera-esperienza.webp";
 import carriageImg from "@/assets/events-carriage.jpg";
+import horsePortalImg from "@/assets/horses-tradition.jpg";
+import dessertImg from "@/assets/kitchen-dolci.jpg";
 
-/* -------------------------------------------------------------------------- */
-/* Costanti: punti luce delle "lucine" (3 stringhe ad arco)                   */
-/* -------------------------------------------------------------------------- */
-type Light = { x: number; y: number; r: number; delay: number };
-
-const r3 = (n: number) => Math.round(n * 1000) / 1000;
-
-function buildLightStrings(): Light[] {
-  const lights: Light[] = [];
-  // 3 stringhe ad arco: x in [4..96]%, y centrata su 3 fasce
-  const strings = [
-    { yBase: 26, yAmp: -10, count: 22 },
-    { yBase: 36, yAmp: -8, count: 26 },
-    { yBase: 48, yAmp: -6, count: 20 },
-  ];
-  let order = 0;
-  const totalLights = strings.reduce((s, st) => s + st.count, 0);
-  strings.forEach((s, si) => {
-    for (let i = 0; i < s.count; i++) {
-      const t = i / (s.count - 1);
-      const x = 4 + t * 92;
-      const arc = Math.sin(t * Math.PI);
-      const y = s.yBase + s.yAmp * arc;
-      // ordine di accensione semi-random per evitare onda perfetta
-      const baseDelay = order / totalLights;
-      const jitter = ((si * 7 + i * 11) % 13) / 13 - 0.5;
-      lights.push({
-        x: r3(x),
-        y: r3(y),
-        r: r3(2.6 + (si === 1 ? 0.6 : 0)),
-        delay: r3(Math.min(0.95, Math.max(0, baseDelay + jitter * 0.04))),
-      });
-      order++;
-    }
-  });
-  return lights;
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
 }
 
 /* -------------------------------------------------------------------------- */
-/* Occasioni — Momento C                                                       */
+/* Dati delle 7 Occasioni                                                     */
 /* -------------------------------------------------------------------------- */
-// [K8] L'array è ordinato: prima l'esperienza equestre (anima distinta del
-// brand — vedi HorsesSection), poi la masseria come cornice delle occasioni
-// classiche, in coda le 5 voci canoniche del form. Niente cambi estetici:
-// stesso layout, stesse animazioni, stesse classi CSS.
-const OCCASIONS = [
+interface EventGalleryFrame {
+  src: string;
+  alt: string;
+  caption: string;
+  width: number;
+  height: number;
+}
+
+interface EventOccasion {
+  id: string;
+  indexLabel: string;
+  title: string;
+  shortTitle: string;
+  formValue:
+    | "matrimonio"
+    | "cerimonia"
+    | "battesimo"
+    | "compleanno"
+    | "festa-privata"
+    | "altro"
+    | "esperienza-equestre";
+  spaces: string;
+  phrase: string;
+  description: string;
+  highlights: readonly string[];
+  ambientTint: string;
+  image: string;
+  imageAlt: string;
+  width: number;
+  height: number;
+  gallery: readonly EventGalleryFrame[];
+}
+
+const EVENTS_DATA: readonly EventOccasion[] = [
   {
-    word: "ESPERIENZA EQUESTRE",
-    phrase: "Cavalli Murgesi al pascolo, passeggiate e attacchi d'epoca tra i muretti a secco.",
+    id: "matrimoni",
+    indexLabel: "01",
+    title: "Matrimoni",
+    shortTitle: "Matrimoni",
+    formValue: "matrimonio",
+    spaces: "Corte degli Ulivi · Sala del '700",
+    phrase: "Il sì sotto gli ulivi, la festa che non finisce.",
+    description:
+      "Ricevimenti fino a 250 ospiti tra la corte esterna in pietra bianca, il pergolato estivo in cannicciato e la sala storica del Settecento.",
+    highlights: [
+      "Corte degli ulivi e sala storica con volte e travi del Settecento",
+      "Cucina pugliese interna con menù su misura (varianti vegetariane, vegane, gluten-free e bimbi)",
+      "Possibilità di ingresso in carrozza d'epoca con i nostri cavalli Murgesi",
+    ],
+    ambientTint: "rgba(181, 103, 58, 0.24)",
+    image: weddingImg,
+    imageAlt:
+      "Tavoli tondi imbanditi con candele e fiori bianchi sotto il pergolato in cannicciato e gli archi in pietra della masseria",
+    width: 948,
+    height: 801,
+    gallery: [
+      {
+        src: weddingImg,
+        alt: "Ricevimento nuziale nella corte storica della Masseria Torre Abbondanza",
+        caption: "Banchetto sotto il pergolato e gli archi della corte",
+        width: 948,
+        height: 801,
+      },
+      {
+        src: tablePanoImg,
+        alt: "Sala interna illuminata con travi in legno e centrotavola floreali",
+        caption: "Sala storica del '700 preparata a festa",
+        width: 1008,
+        height: 541,
+      },
+      {
+        src: carriageImg,
+        alt: "Carrozza d'epoca trainata da un cavallo Murgese nero davanti alla facciata",
+        caption: "Arrivo degli sposi con gli attacchi d'epoca su richiesta",
+        width: 968,
+        height: 957,
+      },
+    ],
   },
   {
-    word: "LA MASSERIA",
+    id: "cerimonie",
+    indexLabel: "02",
+    title: "Cerimonie",
+    shortTitle: "Cerimonie",
+    formValue: "cerimonia",
+    spaces: "Arcate in Pietra · Giardino",
+    phrase: "Civili, simboliche: i riti che vi somigliano.",
+    description:
+      "Comunioni, cresime, promesse e cerimonie civili o simboliche accolte tra le arcate storiche e il verde della Murgia di Noci.",
+    highlights: [
+      "Spazi dedicati al rito all'aperto tra gli archi e le pietre settecentesche",
+      "Pranzi e cene su prenotazione per gruppi da 20 fino a 250 ospiti",
+      "Coordinamento diretto con la famiglia Giunta dal primo sopralluogo alla tavola",
+    ],
+    ambientTint: "rgba(169, 128, 46, 0.22)",
+    image: stoneCourtImg,
+    imageAlt:
+      "Corte settecentesca con portico ad archi bianchi, coppi in terracotta e grandi vasi di agrumi",
+    width: 924,
+    height: 541,
+    gallery: [
+      {
+        src: stoneCourtImg,
+        alt: "Corte ad archi della masseria in pietra imbiancata a calce",
+        caption: "Le arcate in pietra e i vasi di agrumi della corte",
+        width: 924,
+        height: 541,
+      },
+      {
+        src: weddingImg,
+        alt: "Allestimento elegante sotto il pergolato in legno e cannicciato",
+        caption: "Allestimento tavoli per cerimonie all'aperto",
+        width: 948,
+        height: 801,
+      },
+      {
+        src: imperialTableImg,
+        alt: "Tavola lunga imperiale nella sala principale della masseria",
+        caption: "Tavola lunga nella sala interna per le grandi famiglie",
+        width: 1200,
+        height: 1120,
+      },
+    ],
+  },
+  {
+    id: "battesimi",
+    indexLabel: "03",
+    title: "Battesimi",
+    shortTitle: "Battesimi",
+    formValue: "battesimo",
+    spaces: "Sala Storica · Tavola Imperiale",
+    phrase: "Le prime feste di famiglia, al riparo della pietra.",
+    description:
+      "Una lunga tavola raccolta attorno ai nuovi arrivati, con cucina espressa della tradizione pugliese e portate dedicate ai più piccoli.",
+    highlights: [
+      "Sala accogliente in tutte le stagioni con ampi tavoli conviviali",
+      "Menù stagionale dai 50 euro a persona con varianti dedicate ai bambini",
+      "Cortile tranquillo e sicuro immerso nella campagna di Noci",
+    ],
+    ambientTint: "rgba(181, 103, 58, 0.19)",
+    image: imperialTableImg,
+    imageAlt:
+      "Sala interna con tavola lunga imperiale apparecchiata con candele, runner e tovagliato bianco",
+    width: 1200,
+    height: 1120,
+    gallery: [
+      {
+        src: imperialTableImg,
+        alt: "Tavola imperiale apparecchiata nella sala settecentesca",
+        caption: "La tavola unica di famiglia al centro della sala",
+        width: 1200,
+        height: 1120,
+      },
+      {
+        src: stoneCourtImg,
+        alt: "Cortile esterno protetto dalle mura bianche della masseria",
+        caption: "La corte interna per il benvenuto agli ospiti",
+        width: 924,
+        height: 541,
+      },
+      {
+        src: tablePanoImg,
+        alt: "Vista panoramica della sala interna con luce calda e travi a vista",
+        caption: "Vista completa della sala tra travi e lunette ad arco",
+        width: 1008,
+        height: 541,
+      },
+    ],
+  },
+  {
+    id: "compleanni",
+    indexLabel: "04",
+    title: "Compleanni",
+    shortTitle: "Compleanni",
+    formValue: "compleanno",
+    spaces: "Sala Storica · Corte Serale",
+    phrase: "Gli anni che contano, candele e brindisi sotto le stelle.",
+    description:
+      "Diciottesimi, feste di laurea, trent'anni e ricorrenze speciali: tavola su misura, vini del territorio, dolci fatti a mano e spazio alla musica.",
+    highlights: [
+      "Menù costruito insieme con almeno 2 giorni di anticipo (min. 20 ospiti)",
+      "Dolci artigianali della casa e brindisi nella sala calda o nella corte serale",
+      "Ambiente autentico e riservato lontano dal rumore cittadino",
+    ],
+    ambientTint: "rgba(169, 128, 46, 0.24)",
+    image: tablePanoImg,
+    imageAlt:
+      "Panoramica della sala ricevimenti illuminata con lampadario floreale e tavoli tondi imbanditi",
+    width: 1008,
+    height: 541,
+    gallery: [
+      {
+        src: tablePanoImg,
+        alt: "Sala ricevimenti illuminata con tavoli tondi e drappeggi",
+        caption: "Sala interna con illuminazione calda serale",
+        width: 1008,
+        height: 541,
+      },
+      {
+        src: nightCourtImg,
+        alt: "Tavola sotto l'ulivo illuminato nella corte di sera",
+        caption: "Brindisi notturni sotto l'ulivo nella corte",
+        width: 864,
+        height: 900,
+      },
+      {
+        src: dessertImg,
+        alt: "Tortino al cioccolato artigianale guarnito con fragole fresche",
+        caption: "I dolci artigianali preparati nella cucina interna",
+        width: 960,
+        height: 675,
+      },
+    ],
+  },
+  {
+    id: "feste-private",
+    indexLabel: "05",
+    title: "Feste Private",
+    shortTitle: "Feste Private",
+    formValue: "festa-privata",
+    spaces: "Corte Serale · Uso Esclusivo",
+    phrase: "Aziendali, intime, a sorpresa: la masseria è vostra.",
+    description:
+      "Cene aziendali, rimpatriate, anniversari e serate su invito: l'intera cornice della masseria dedicata esclusivamente al vostro gruppo.",
+    highlights: [
+      "Prenotazione dedicata a gruppi a partire da 20 persone",
+      "Scelta tra cena nella sala interna o serata nella corte tra gli ulivi",
+      "Parcheggio interno e posizione comoda tra Noci, Alberobello e Putignano",
+    ],
+    ambientTint: "rgba(169, 128, 46, 0.2)",
+    image: nightCourtImg,
+    imageAlt: "Corte della masseria illuminata di notte sotto l'ulivo con tavola preparata",
+    width: 864,
+    height: 900,
+    gallery: [
+      {
+        src: nightCourtImg,
+        alt: "La corte esterna illuminata di sera con tavola e ulivo secolare",
+        caption: "L'ulivo e la corte di pietra alla luce della sera",
+        width: 864,
+        height: 900,
+      },
+      {
+        src: tablePanoImg,
+        alt: "Interno caldo della sala storica pronto per una cena privata",
+        caption: "Sala storica per cene aziendali ed eventi privati",
+        width: 1008,
+        height: 541,
+      },
+      {
+        src: imperialTableImg,
+        alt: "Tavola conviviale lunga apparecchiata con bicchieri e candele",
+        caption: "Tavolata conviviale unica su misura",
+        width: 1200,
+        height: 1120,
+      },
+    ],
+  },
+  {
+    id: "la-masseria",
+    indexLabel: "06",
+    title: "La Masseria",
+    shortTitle: "La Masseria",
+    formValue: "altro",
+    spaces: "Dimora del '700 · Noci, Murgia",
     phrase:
       "La cornice: pietra, ulivi, cortile, lunga tavola. Scegliete il momento, noi facciamo il resto.",
+    description:
+      "Una masseria storica del Settecento con sala interna, corte imbiancata a calce, cucina di famiglia e scuderie di cavalli Murgesi nella Murgia barese.",
+    highlights: [
+      "Architettura rurale pugliese autentica conservata dalla famiglia Giunta",
+      "Possibilità di integrare esperienze in scuderia o pranzi della tradizione",
+      "Consulenza diretta per qualsiasi ricorrenza o progetto su misura",
+    ],
+    ambientTint: "rgba(107, 114, 80, 0.25)",
+    image: facadeImg,
+    imageAlt:
+      "Facciata padronale settecentesca della Masseria Torre Abbondanza con portale ad arco, stemma in pietra e balconi",
+    width: 1200,
+    height: 1120,
+    gallery: [
+      {
+        src: facadeImg,
+        alt: "Corpo centrale del Settecento della Masseria Torre Abbondanza",
+        caption: "La facciata settecentesca con portale ad arco e stemma",
+        width: 1200,
+        height: 1120,
+      },
+      {
+        src: stoneCourtImg,
+        alt: "Corte interna ad archi con tegole in terracotta e piante di agrumi",
+        caption: "Il portico in pietra bianca lungo la corte",
+        width: 924,
+        height: 541,
+      },
+      {
+        src: weddingImg,
+        alt: "La corte allestita per un grande ricevimento tra cannicciato e archi",
+        caption: "La masseria allestita nei giorni di festa",
+        width: 948,
+        height: 801,
+      },
+    ],
   },
-  { word: "MATRIMONI", phrase: "Il sì sotto gli ulivi, la festa che non finisce." },
-  { word: "CERIMONIE", phrase: "Civili, simboliche: i riti che vi somigliano." },
-  { word: "BATTESIMI", phrase: "Le prime feste di famiglia, al riparo della pietra." },
-  { word: "COMPLEANNI", phrase: "Gli anni che contano, candele e brindisi sotto le stelle." },
-  { word: "FESTE PRIVATE", phrase: "Aziendali, intime, a sorpresa: la masseria è vostra." },
+  {
+    id: "esperienza-equestre",
+    indexLabel: "07",
+    title: "Esperienza Equestre",
+    shortTitle: "Equitazione",
+    formValue: "esperienza-equestre",
+    spaces: "Allevamento Murgesi · Attacchi d'Epoca",
+    phrase: "Cavalli Murgesi al pascolo, passeggiate e attacchi d'epoca tra i muretti a secco.",
+    description:
+      "Visite alle scuderie dell'allevamento Torre Abbondanza (Registro Anagrafico T.A.), passeggiate tra gli ulivi e arrivi in carrozza d'epoca.",
+    highlights: [
+      "Cavalli Murgesi e muli Martinesi allevati direttamente in masseria",
+      "Passeggiate guidate lungo i sentieri rurali e visite in scuderia su prenotazione",
+      "Sfilata di Attacchi d'Epoca e ingresso in carrozza per cerimonie",
+    ],
+    ambientTint: "rgba(181, 103, 58, 0.22)",
+    image: horseRideImg,
+    imageAlt:
+      "Cavaliere in sella a un cavallo Murgese dal manto nero morello lungo il pascolo delimitato dai muretti a secco",
+    width: 1500,
+    height: 998,
+    gallery: [
+      {
+        src: horseRideImg,
+        alt: "Cavallo Murgese al passo nei pascoli della Masseria Torre Abbondanza",
+        caption: "Passeggiate equestri tra pascoli e muretti a secco",
+        width: 1500,
+        height: 998,
+      },
+      {
+        src: carriageImg,
+        alt: "Carrozza tradizionale trainata dal cavallo Murgese nel piazzale della masseria",
+        caption: "Gli attacchi d'epoca guidati davanti alla facciata",
+        width: 968,
+        height: 957,
+      },
+      {
+        src: horsePortalImg,
+        alt: "Cavallo Murgese nero posizionato simmetricamente davanti al portale storico ad arco",
+        caption: "Esemplari T.A. nel cortile padronale della masseria",
+        width: 1800,
+        height: 1198,
+      },
+    ],
+  },
 ] as const;
 
+interface SpaceShowcaseItem {
+  id: "sala" | "corte";
+  title: string;
+  subtitle: string;
+  description: string;
+  colSpanClass: string;
+  views: readonly [EventGalleryFrame, EventGalleryFrame];
+}
+
+const SPACES_SHOWCASE: readonly SpaceShowcaseItem[] = [
+  {
+    id: "sala",
+    title: "La Sala Storica del '700",
+    subtitle: "Capienza fino a 250 ospiti · Tutta la stagione",
+    description:
+      "Travi a vista, archi in pietra e luce calda per lunghi tavoli imperiali o tavoli tondi curati dal nostro staff di cucina.",
+    colSpanClass: "lg:col-span-7",
+    views: [
+      {
+        src: tablePanoImg,
+        alt: "Sala interna principale con travi in legno, lampadario floreale e tavoli apparecchiati",
+        caption: "Vista panoramica · Luce calda & tavoli tondi",
+        width: 1008,
+        height: 541,
+      },
+      {
+        src: imperialTableImg,
+        alt: "Tavola lunga imperiale al centro della sala settecentesca della masseria",
+        caption: "Allestimento imperiale · Tavola unica",
+        width: 1200,
+        height: 1120,
+      },
+    ],
+  },
+  {
+    id: "corte",
+    title: "La Corte & Gli Ulivi",
+    subtitle: "Pergolato in cannicciato · Ricevimenti all'aperto",
+    description:
+      "Pietra imbiancata a calce, arcate settecentesche e serate estive tra gli ulivi secolari della Murgia.",
+    colSpanClass: "lg:col-span-5",
+    views: [
+      {
+        src: stoneCourtImg,
+        alt: "Cortile con portico ad archi bianchi e tegole pugliesi di giorno",
+        caption: "La corte di giorno · Archi & pietra viva",
+        width: 924,
+        height: 541,
+      },
+      {
+        src: nightCourtImg,
+        alt: "Corte della masseria illuminata di notte sotto il grande ulivo",
+        caption: "La corte di sera · Sotto l'ulivo",
+        width: 864,
+        height: 900,
+      },
+    ],
+  },
+] as const;
+
+function buildEventWhatsAppUrl(eventTitle: string): string {
+  const text = `Ciao Masseria Torre Abbondanza, vorrei informazioni e disponibilità per organizzare: ${eventTitle}.`;
+  return `${BUSINESS.whatsappUrl}?text=${encodeURIComponent(text)}`;
+}
+
+function requestEventInForm(formValue: EventOccasion["formValue"]) {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(
+    new CustomEvent("masseria:select-occasion", { detail: { kind: formValue } }),
+  );
+  scrollToSection("#contatti");
+}
+
 /* -------------------------------------------------------------------------- */
-/* Sezione                                                                     */
+/* Sotto-componente Desktop: Lama Fotografica Espandibile                     */
 /* -------------------------------------------------------------------------- */
-export function EventsSection() {
-  const rootRef = useRef<HTMLElement>(null);
-  const lights = useMemo(buildLightStrings, []);
+interface DesktopBladeProps {
+  occasion: EventOccasion;
+  index: number;
+  isActive: boolean;
+  reduced: boolean;
+  onActivate: () => void;
+  onScheduleHoverActivate: () => void;
+  onCancelHoverActivate: () => void;
+  onOpenDetail: () => void;
+}
+
+function DesktopBlade({
+  occasion,
+  index,
+  isActive,
+  reduced,
+  onActivate,
+  onScheduleHoverActivate,
+  onCancelHoverActivate,
+  onOpenDetail,
+}: DesktopBladeProps) {
+  const bladeRef = useRef<HTMLElement>(null);
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const smoothX = useSpring(pointerX, { stiffness: 130, damping: 22, mass: 0.5 });
+  const smoothY = useSpring(pointerY, { stiffness: 130, damping: 22, mass: 0.5 });
+
+  const handlePointerMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!isActive || reduced || !bladeRef.current) return;
+    const rect = bladeRef.current.getBoundingClientRect();
+    const normX = (e.clientX - rect.left) / rect.width - 0.5;
+    const normY = (e.clientY - rect.top) / rect.height - 0.5;
+    pointerX.set(normX * -14);
+    pointerY.set(normY * -10);
+  };
+
+  const resetParallax = () => {
+    pointerX.set(0);
+    pointerY.set(0);
+  };
 
   useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    root.querySelectorAll<HTMLElement>("[data-fade]").forEach((el) => {
-      el.setAttribute("data-reveal", "soft");
-    });
-    const cleanupReveal = observeRevealElements(root);
-
-    const ctx = gsap.context(() => {
-      /* ---------- Titoli con mask-reveal per parola ---------- */
-      const titles = root.querySelectorAll<HTMLElement>("[data-mask-title]");
-      titles.forEach((title) => {
-        const words = splitWords(title);
-        ScrollTrigger.create({
-          trigger: title,
-          start: "top 85%",
-          once: true,
-          invalidateOnRefresh: true,
-          onEnter: () => {
-            gsap.fromTo(
-              words,
-              { yPercent: 110 },
-              {
-                yPercent: 0,
-                duration: reduced ? 0.2 : 1.1,
-                ease: "power3.out",
-                stagger: reduced ? 0 : 0.06,
-                overwrite: true,
-              },
-            );
-          },
-        });
-      });
-
-      /* ---------- Opener title: mask-reveal manuale (rispetta l'accento) ---------- */
-      const openerWords = root.querySelectorAll<HTMLElement>("[data-opener-word]");
-      if (openerWords.length) {
-        gsap.set(openerWords, { yPercent: 110 });
-        gsap.to(openerWords, {
-          yPercent: 0,
-          duration: reduced ? 0.2 : 1.1,
-          ease: "power3.out",
-          stagger: reduced ? 0 : 0.08,
-          delay: 0.2,
-        });
-      }
-
-      if (reduced) return;
-
-      /* ---------- MOMENTO A — ken burns lento sulla foto giorno ---------- */
-      const openerImg = root.querySelector<HTMLElement>("[data-opener-img]");
-      if (openerImg) {
-        gsap.fromTo(
-          openerImg,
-          { scale: 1.02, xPercent: 0 },
-          { scale: 1.1, xPercent: -2, duration: 22, ease: "none", repeat: -1, yoyo: true },
-        );
-      }
-
-      /* ---------- MOMENTO C — switch desktop/mobile via matchMedia ---------- */
-      const dayLayer = root.querySelector<HTMLElement>("[data-day-layer]");
-      const nightLayer = root.querySelector<HTMLElement>("[data-night-layer]");
-      const skyLayer = root.querySelector<HTMLElement>("[data-sky-layer]");
-      const lightEls = root.querySelectorAll<HTMLElement>("[data-light]");
-      const candleEls = root.querySelectorAll<HTMLElement>("[data-candle]");
-      const bokehLayer = root.querySelector<HTMLElement>("[data-bokeh-layer]");
-      const kineticB = root.querySelector<HTMLElement>("[data-kinetic-b]");
-      const cScene = root.querySelector<HTMLElement>("[data-scene-c]");
-      const cTrack = root.querySelector<HTMLElement>("[data-scene-c-track]");
-      const cBg = root.querySelector<HTMLElement>("[data-scene-c-bg]");
-      const cMid = root.querySelector<HTMLElement>("[data-scene-c-mid]");
-      const cFg = root.querySelector<HTMLElement>("[data-scene-c-fg]");
-      const cOccs = root.querySelectorAll<HTMLElement>("[data-occasion]");
-      const firstCopy = root.querySelector<HTMLElement>("[data-events-first-copy]");
-
-      const mm = gsap.matchMedia();
-
-      // DESKTOP / TABLET (≥ 768px) — unica timeline pinned: giorno/notte + dolly orizzontale
-      mm.add("(min-width: 768px)", () => {
-        if (cScene && cTrack) {
-          const getDistance = () => Math.max(0, cTrack.scrollWidth - window.innerWidth);
-          const getDuration = () => Math.max(getDistance(), window.innerHeight * 2.2);
-
-          gsap.set(dayLayer, { autoAlpha: 1 });
-          gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), { autoAlpha: 0 });
-          gsap.set(lightEls, { opacity: 0, scale: 0.6 });
-          gsap.set(candleEls, { opacity: 0 });
-          if (kineticB) gsap.set(kineticB, { yPercent: 30, opacity: 0 });
-
-          const masterTimeline = gsap.timeline({
-            scrollTrigger: {
-              id: "events-main-dolly",
-              trigger: cScene,
-              start: "top top",
-              end: () => `+=${getDuration()}`,
-              pin: true,
-              pinSpacing: true,
-              scrub: 1,
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
-            },
-          });
-
-          if (dayLayer) {
-            masterTimeline.to(dayLayer, { autoAlpha: 0.25, ease: "none", duration: 0.18 }, 0);
-          }
-          if (nightLayer) {
-            masterTimeline.to(nightLayer, { autoAlpha: 1, ease: "none", duration: 0.18 }, 0);
-          }
-          if (skyLayer) {
-            masterTimeline.to(skyLayer, { autoAlpha: 1, ease: "none", duration: 0.18 }, 0);
-          }
-          if (firstCopy) {
-            masterTimeline.to(
-              firstCopy,
-              { autoAlpha: 0, y: -24, ease: "none", duration: 0.12 },
-              0.06,
-            );
-          }
-          lightEls.forEach((el) => {
-            const delay = parseFloat(el.dataset.delay ?? "0");
-            const at = 0.03 + delay * 0.13;
-            masterTimeline.to(el, { opacity: 1, scale: 1, duration: 0.02, ease: "power2.out" }, at);
-          });
-          candleEls.forEach((el, i) => {
-            masterTimeline.to(
-              el,
-              { opacity: 1, duration: 0.02, ease: "power2.out" },
-              0.1 + (i / candleEls.length) * 0.08,
-            );
-          });
-          if (bokehLayer) {
-            masterTimeline.to(bokehLayer, { autoAlpha: 0.9, duration: 0.18, ease: "none" }, 0.04);
-          }
-          if (kineticB) {
-            masterTimeline.to(
-              kineticB,
-              { yPercent: -30, opacity: 0.95, ease: "none", duration: 0.18 },
-              0,
-            );
-          }
-
-          if (cBg) {
-            masterTimeline.to(
-              cBg,
-              {
-                x: () => -getDistance() * 0.3,
-                ease: "none",
-                duration: 0.82,
-              },
-              0.18,
-            );
-          }
-          if (cMid) {
-            masterTimeline.to(
-              cMid,
-              {
-                x: () => -getDistance() * 0.6,
-                ease: "none",
-                duration: 0.82,
-              },
-              0.18,
-            );
-          }
-          if (cFg) {
-            masterTimeline.to(
-              cFg,
-              {
-                x: () => -getDistance() * 1.15,
-                ease: "none",
-                duration: 0.82,
-              },
-              0.18,
-            );
-          }
-          masterTimeline.to(
-            cTrack,
-            { x: () => -getDistance(), ease: "none", duration: 0.82 },
-            0.18,
-          );
-
-          cOccs.forEach((occ) => {
-            const word = occ.querySelector<HTMLElement>("[data-occ-word]");
-            const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
-            if (!word || !phrase) return;
-            const wordChars = splitWords(word);
-            ScrollTrigger.create({
-              trigger: occ,
-              containerAnimation: masterTimeline,
-              start: "left center",
-              end: "right center",
-              onEnter: () => {
-                gsap.fromTo(
-                  wordChars,
-                  { yPercent: 110 },
-                  {
-                    yPercent: 0,
-                    duration: 0.9,
-                    ease: "power3.out",
-                    stagger: 0.05,
-                    overwrite: true,
-                  },
-                );
-                gsap.fromTo(
-                  phrase,
-                  { opacity: 0, y: 20 },
-                  {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.7,
-                    ease: "power3.out",
-                    delay: 0.15,
-                    overwrite: true,
-                  },
-                );
-              },
-              once: true,
-              horizontal: true,
-            });
-          });
-        }
-      });
-
-      // MOBILE (< 768px) — scena B/C statiche e verticali, fail-safe sempre visibile
-      mm.add("(max-width: 767px)", () => {
-        gsap.set(dayLayer, { autoAlpha: 0.25, clearProps: "transform" });
-        gsap.set([nightLayer, skyLayer, bokehLayer].filter(Boolean), {
-          autoAlpha: 1,
-          clearProps: "transform",
-        });
-        gsap.set(lightEls, { opacity: 1, scale: 1, clearProps: "transform" });
-        gsap.set(candleEls, { opacity: 1 });
-        if (kineticB) gsap.set(kineticB, { yPercent: 0, opacity: 0.7 });
-        if (cTrack) gsap.set(cTrack, { clearProps: "transform,x" });
-        [cBg, cMid, cFg].forEach((el) => {
-          if (el) gsap.set(el, { clearProps: "transform,x" });
-        });
-
-        cOccs.forEach((occ) => {
-          const word = occ.querySelector<HTMLElement>("[data-occ-word]");
-          const phrase = occ.querySelector<HTMLElement>("[data-occ-phrase]");
-          if (!word || !phrase) return;
-          ScrollTrigger.create({
-            trigger: occ,
-            start: "top 86%",
-            once: true,
-            invalidateOnRefresh: true,
-            onEnter: () => {
-              gsap.fromTo(
-                word,
-                { y: 18 },
-                { y: 0, duration: 0.75, ease: "power3.out", overwrite: true },
-              );
-              gsap.fromTo(
-                phrase,
-                { y: 14 },
-                { y: 0, duration: 0.65, ease: "power3.out", delay: 0.08, overwrite: true },
-              );
-            },
-          });
-        });
-      });
-
-      /* ---------- MOMENTO D — parallax carrozza ---------- */
-      const carriage = root.querySelector<HTMLElement>("[data-carriage-img]");
-      if (carriage) {
-        gsap.fromTo(
-          carriage,
-          { yPercent: -5, scale: 1.06 },
-          {
-            yPercent: 5,
-            ease: "none",
-            scrollTrigger: {
-              trigger: carriage,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-              invalidateOnRefresh: true,
-            },
-          },
-        );
-      }
-    }, root);
-
-    return () => {
-      ctx.revert();
-      cleanupReveal();
-    };
-  }, []);
+    if (!isActive) {
+      pointerX.set(0);
+      pointerY.set(0);
+    }
+  }, [isActive, pointerX, pointerY]);
 
   return (
-    <section id="eventi" ref={rootRef} aria-labelledby="events-title" className="relative bg-ivory">
-      <h2 id="events-title" className="sr-only">
-        Eventi e matrimoni alla Masseria Torre Abbondanza
-      </h2>
+    <motion.article
+      ref={bladeRef}
+      data-event-blade
+      onMouseEnter={onScheduleHoverActivate}
+      onMouseLeave={() => {
+        onCancelHoverActivate();
+        resetParallax();
+      }}
+      onMouseMove={handlePointerMove}
+      animate={{ flexGrow: isActive ? 4.85 : 0.62 }}
+      transition={
+        reduced ? { duration: 0.01 } : { type: "spring", stiffness: 205, damping: 28, mass: 0.9 }
+      }
+      style={{ flexBasis: 0, minWidth: isActive ? 380 : 68 }}
+      className={cn(
+        "group relative h-full overflow-hidden rounded-xl border transition-colors duration-300",
+        isActive
+          ? "border-gold/55 shadow-[0_28px_70px_-24px_rgba(0,0,0,0.85)]"
+          : "border-ivory/15 hover:border-ivory/35",
+      )}
+    >
+      {/* Sfondo fotografico reale con parallasse puntatore su lama attiva */}
+      <motion.img
+        src={occasion.image}
+        alt={occasion.imageAlt}
+        width={occasion.width}
+        height={occasion.height}
+        loading={index < 2 ? "eager" : "lazy"}
+        decoding="async"
+        style={isActive && !reduced ? { x: smoothX, y: smoothY, scale: 1.07 } : { scale: 1.04 }}
+        className={cn(
+          "pointer-events-none absolute inset-0 h-full w-full object-cover transition-[filter] duration-500",
+          isActive ? "brightness-95" : "brightness-[0.52] group-hover:brightness-[0.72]",
+        )}
+      />
 
-      {/* ====================================================================
-          MOMENTO B — Apertura fotografica compatta
-      ==================================================================== */}
+      {/* Scrim calibrato ad alto contrasto */}
       <div
-        data-scene-b
-        className="relative mb-0 h-[100svh] min-h-[640px] w-full overflow-hidden bg-murgese pb-0 max-md:h-auto max-md:min-h-[100svh]"
-      >
-        <div data-scene-b-media className="absolute inset-0">
-          <img
-            data-opener-img
-            src={dayImg}
-            alt="Cortile della masseria all'ora dorata, lunga tavola di legno in attesa sotto gli ulivi"
-            loading="lazy"
-            decoding="async"
-            width={1920}
-            height={1280}
-            className="absolute inset-0 h-full w-full object-cover"
-            style={{ willChange: "transform" }}
-          />
-        </div>
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 z-20 h-56"
-          style={{
-            background:
-              "linear-gradient(180deg, var(--murgese) 0%, color-mix(in oklab, var(--murgese) 50%, transparent) 35%, transparent 100%)",
-          }}
-        />
-        <div data-scene-b-opener className="absolute inset-0 z-10 flex items-end">
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, transparent 25%, color-mix(in oklab, var(--ink) 30%, transparent) 65%, color-mix(in oklab, var(--ink) 70%, transparent) 100%)",
-            }}
-          />
-          <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-end px-6 pb-20 md:px-12 md:pb-28">
-            <p data-fade className="text-eyebrow text-ivory/85">
-              07 — Eventi & Matrimoni
-            </p>
-            <h3
-              aria-label="Quando la masseria si accende"
-              className="mt-6 font-display font-semibold leading-[1.02] text-ivory"
-              style={{
-                fontSize: "clamp(2.4rem, 7vw, 6.4rem)",
-                letterSpacing: "-0.025em",
-                maxWidth: "18ch",
-              }}
-            >
-              {["Quando", "la", "masseria", "si", "accende"].map((w, i, arr) => {
-                const isAccent = w === "accende";
-                return (
-                  <span
-                    key={i}
-                    aria-hidden
-                    className="inline-block overflow-hidden align-top"
-                    style={{ paddingBottom: "0.16em" }}
-                  >
-                    <span
-                      data-opener-word
-                      className={`inline-block ${isAccent ? "italic" : ""}`}
-                      style={{
-                        willChange: "transform",
-                        color: isAccent ? "var(--gold)" : undefined,
-                      }}
-                    >
-                      {w}
-                      {i < arr.length - 1 ? "\u00A0" : ""}
-                    </span>
-                  </span>
-                );
-              })}
-            </h3>
-            <p
-              data-fade
-              className="mt-8 max-w-2xl font-display text-lg italic leading-snug text-ivory/85 md:text-2xl"
-            >
-              Cerimonie, matrimoni e feste private in una masseria del Settecento: spazi che vivono
-              solo per le grandi occasioni.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* ====================================================================
-          MOMENTO C — Dolly orizzontale dentro la festa
-      ==================================================================== */}
-      <div
-        data-scene-c
-        className="relative mt-0 min-h-[100svh] overflow-hidden bg-murgese pt-0 md:h-screen"
-        style={{ contain: "paint" }}
-      >
-        {/* Layer parallax di sfondo: panorama tavola */}
-        <div
-          data-scene-c-bg
-          className="absolute inset-0 -z-10 w-full md:inset-y-0 md:left-0 md:w-[800%]"
-          style={{
-            backgroundImage: `url(${tablePanoImg})`,
-            backgroundSize: "auto 110%",
-            backgroundRepeat: "repeat-x",
-            backgroundPosition: "left center",
-            opacity: 0.95,
-            willChange: "transform",
-          }}
-        />
-        {/* Velatura per leggibilità */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--murgese) 55%, transparent) 0%, transparent 35%, color-mix(in oklab, var(--murgese) 70%, transparent) 100%)",
-          }}
-        />
-        {/* Lucine midground (parallax intermedio) */}
-        <div
-          data-scene-c-mid
-          className="absolute inset-0 -z-10 w-full md:inset-y-0 md:left-0 md:w-[800%]"
-          style={{ willChange: "transform" }}
-        >
-          {Array.from({ length: 120 }).map((_, i) => {
-            const x = (i / 119) * 100;
-            const y = 15 + ((i * 13) % 7) * 2;
-            return (
-              <span
-                key={i}
-                className={`absolute block rounded-full ${i >= 40 ? "max-md:hidden" : ""}`}
-                style={{
-                  left: `${x}%`,
-                  top: `${y}%`,
-                  width: 10,
-                  height: 10,
-                  background:
-                    "radial-gradient(circle, rgba(255,228,170,0.95) 0%, rgba(255,228,170,0) 70%)",
-                  filter: "blur(0.5px)",
-                  animation: `candle-flicker ${2 + (i % 4) * 0.4}s ease-in-out ${i * 0.07}s infinite`,
-                }}
-              />
-            );
-          })}
-        </div>
-
-        {/* Track orizzontale con le occasioni */}
-        <div
-          data-scene-c-track
-          className="relative z-10 flex min-h-[100svh] flex-col items-start justify-center gap-10 px-6 py-20 md:absolute md:inset-y-0 md:left-0 md:flex-row md:items-center md:justify-start md:gap-0 md:px-0 md:py-0"
-          style={{ willChange: "transform" }}
-        >
-          {/* Primo pannello: giorno → notte integrato nella timeline pinned */}
-          <div
-            data-events-first-panel
-            className="relative h-[100svh] w-full shrink-0 overflow-hidden md:w-screen"
-          >
-            <img
-              data-day-layer
-              src={dayImg}
-              alt=""
-              loading="eager"
-              decoding="async"
-              width={1920}
-              height={1280}
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{ willChange: "opacity" }}
-            />
-            <img
-              data-night-layer
-              src={nightImg}
-              alt=""
-              loading="eager"
-              decoding="async"
-              width={1920}
-              height={1280}
-              className="absolute inset-0 h-full w-full object-cover opacity-0"
-              style={{ willChange: "opacity" }}
-            />
-            <div
-              data-sky-layer
-              aria-hidden
-              className="pointer-events-none absolute inset-0"
-              style={{
-                opacity: 0,
-                background:
-                  "linear-gradient(180deg, color-mix(in oklab, var(--murgese) 75%, #0b1a3a) 0%, color-mix(in oklab, var(--murgese) 35%, transparent) 55%, transparent 100%)",
-                willChange: "opacity",
-              }}
-            />
-
-            <svg
-              aria-hidden
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              className="pointer-events-none absolute inset-0 h-full w-full"
-            >
-              <defs>
-                <radialGradient id="events-bulb-glow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#FFE7B0" stopOpacity="1" />
-                  <stop offset="40%" stopColor="#F2B95C" stopOpacity="0.55" />
-                  <stop offset="100%" stopColor="#A9802E" stopOpacity="0" />
-                </radialGradient>
-                <radialGradient id="events-bulb-core" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#FFF6D8" stopOpacity="1" />
-                  <stop offset="100%" stopColor="#F2B95C" stopOpacity="0" />
-                </radialGradient>
-              </defs>
-              {["M 4 26 Q 50 16 96 26", "M 4 36 Q 50 28 96 36", "M 4 48 Q 50 42 96 48"].map(
-                (d, i) => (
-                  <path
-                    key={i}
-                    d={d}
-                    fill="none"
-                    stroke="rgba(247,243,236,0.18)"
-                    strokeWidth="0.12"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                ),
-              )}
-              {lights.map((l, i) => (
-                <g
-                  key={i}
-                  data-light
-                  data-delay={l.delay}
-                  className={i >= 36 ? "max-md:hidden" : undefined}
-                  style={{
-                    opacity: 0,
-                    transform: "scale(0.6)",
-                    transformOrigin: `${l.x}% ${l.y}%`,
-                    transformBox: "fill-box",
-                    willChange: "opacity, transform",
-                  }}
-                >
-                  <circle cx={l.x} cy={l.y} r={l.r * 3} fill="url(#events-bulb-glow)" />
-                  <circle cx={l.x} cy={l.y} r={l.r * 1.4} fill="url(#events-bulb-core)" />
-                  <circle cx={l.x} cy={l.y} r={l.r * 0.45} fill="#FFFBE6" />
-                </g>
-              ))}
-            </svg>
-
-            <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-[16%] z-10">
-              {Array.from({ length: 12 }).map((_, i) => (
-                <span
-                  key={i}
-                  data-candle
-                  className="absolute block"
-                  style={{
-                    left: `${6 + (i / 11) * 88}%`,
-                    width: 14,
-                    height: 14,
-                    borderRadius: "50%",
-                    background:
-                      "radial-gradient(circle at 50% 45%, #FFF3BE 0%, #F2B95C 35%, rgba(169,128,46,0) 75%)",
-                    filter: "blur(1px)",
-                    opacity: 0,
-                    animation: `candle-flicker ${1.8 + (i % 5) * 0.3}s ease-in-out ${i * 0.1}s infinite`,
-                    willChange: "opacity, transform",
-                  }}
-                />
-              ))}
-            </div>
-
-            <div
-              data-bokeh-layer
-              aria-hidden
-              className="pointer-events-none absolute inset-0"
-              style={{ opacity: 0, willChange: "opacity" }}
-            >
-              {Array.from({ length: 14 }).map((_, i) => {
-                const seed = (i * 37) % 100;
-                const x = (seed * 1.7) % 100;
-                const y = 10 + ((seed * 0.6) % 65);
-                const size = 80 + (seed % 5) * 24;
-                const opacity = 0.18 + (seed % 7) * 0.05;
-                return (
-                  <span
-                    key={i}
-                    className="absolute block rounded-full"
-                    style={{
-                      left: `${x}%`,
-                      top: `${y}%`,
-                      width: size,
-                      height: size,
-                      background:
-                        "radial-gradient(circle at 50% 50%, rgba(255,213,138,0.9) 0%, rgba(255,213,138,0) 70%)",
-                      opacity,
-                      transform: "translate(-50%, -50%)",
-                      animation: `bokeh-drift ${10 + (i % 5) * 3}s ease-in-out ${i * 0.4}s infinite`,
-                    }}
-                  />
-                );
-              })}
-            </div>
-
-            <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
-              <span
-                data-kinetic-b
-                className="select-none font-display font-semibold tracking-[-0.05em] text-ivory/0"
-                style={{
-                  fontSize: "clamp(7rem, 22vw, 22rem)",
-                  lineHeight: 0.85,
-                  color: "color-mix(in oklab, var(--ivory) 18%, transparent)",
-                  mixBlendMode: "soft-light",
-                  willChange: "transform, opacity",
-                }}
-              >
-                FESTA
-              </span>
-            </div>
-
-            <div
-              data-events-first-copy
-              className="absolute inset-x-0 bottom-10 z-30 mx-auto flex max-w-7xl items-end justify-between gap-6 px-6 md:bottom-16 md:px-12"
-              style={{ willChange: "opacity, transform" }}
-            >
-              <p
-                className="font-display italic text-ivory"
-                style={{
-                  fontSize: "clamp(1.1rem, 1.6vw, 1.6rem)",
-                  textShadow: "0 4px 24px rgba(0,0,0,0.45)",
-                  maxWidth: "32ch",
-                }}
-              >
-                Scorri: la luce arriva, le candele si accendono, la tavola si apparecchia.
-              </p>
-              <span
-                className="hidden text-eyebrow text-ivory/70 md:inline-flex"
-                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}
-              >
-                giorno → notte
-              </span>
-            </div>
-          </div>
-
-          {/* Padding tra trasformazione e percorso nella tavola */}
-          <div className="hidden w-[20vw] flex-shrink-0 md:block" />
-
-          {/* Eyebrow di apertura del momento C */}
-          <div
-            data-reveal="soft"
-            className="w-full max-w-[28rem] flex-shrink-0 md:w-[50vw] md:pr-12"
-          >
-            <p className="text-eyebrow text-ivory/65">II · Dentro la festa</p>
-            <p
-              className="mt-6 font-display font-medium italic text-ivory"
-              style={{
-                fontSize: "clamp(1.5rem, 2.4vw, 2.4rem)",
-                lineHeight: 1.15,
-                maxWidth: "22ch",
-                textShadow: "0 4px 24px rgba(0,0,0,0.4)",
-              }}
-            >
-              Camminate dentro la tavola lunga: ogni occasione ha il suo passo.
-            </p>
-          </div>
-
-          {OCCASIONS.map((occ) => (
-            <article
-              key={occ.word}
-              data-occasion
-              data-reveal="soft"
-              className="relative flex w-full flex-shrink-0 items-center justify-start md:w-[80vw] md:justify-center md:px-[8vw]"
-              style={{ minHeight: undefined }}
-            >
-              <div className="flex max-w-full flex-col items-start gap-6">
-                <h3
-                  data-occ-word
-                  className="font-display font-semibold leading-[0.95] tracking-[-0.04em] text-ivory"
-                  style={{
-                    fontSize: "clamp(3rem, 9vw, 9rem)",
-                    textShadow: "0 6px 30px rgba(0,0,0,0.55), 0 0 60px rgba(242,185,92,0.25)",
-                  }}
-                >
-                  {occ.word}
-                </h3>
-                <p
-                  data-occ-phrase
-                  className="max-w-md font-display text-lg italic leading-snug text-ivory/85 md:text-xl"
-                  style={{ textShadow: "0 3px 18px rgba(0,0,0,0.5)" }}
-                >
-                  {occ.phrase}
-                </p>
-              </div>
-            </article>
-          ))}
-
-          {/* Chiusura: spazi */}
-          <div
-            data-reveal="soft"
-            className="flex w-full flex-shrink-0 items-center md:w-[80vw] md:px-[8vw]"
-          >
-            <div className="flex max-w-md flex-col gap-5">
-              <p className="text-eyebrow text-gold">Gli spazi</p>
-              <p
-                className="font-display italic text-ivory"
-                style={{
-                  fontSize: "clamp(1.4rem, 2.2vw, 2.1rem)",
-                  lineHeight: 1.2,
-                  textShadow: "0 4px 24px rgba(0,0,0,0.5)",
-                }}
-              >
-                La <span className="text-gold">sala storica</span> sotto le volte del Settecento e
-                il <span className="text-gold">giardino</span> di ulivi: due cornici, una sola
-                accoglienza.
-              </p>
-            </div>
-          </div>
-
-          {/* Padding finale */}
-          <div className="hidden w-[20vw] flex-shrink-0 md:block" />
-        </div>
-
-        {/* Foreground bokeh (parallax veloce) */}
-        <div
-          data-scene-c-fg
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-20"
-          style={{ width: "220%", willChange: "transform" }}
-        >
-          {Array.from({ length: 16 }).map((_, i) => {
-            const x = (i / 15) * 100;
-            const y = 30 + ((i * 17) % 50);
-            const size = 90 + (i % 4) * 40;
-            return (
-              <span
-                key={i}
-                className="absolute block rounded-full"
-                style={{
-                  left: `${x}%`,
-                  top: `${y}%`,
-                  width: size,
-                  height: size,
-                  transform: "translate(-50%, -50%)",
-                  background:
-                    "radial-gradient(circle, rgba(255,213,138,0.45) 0%, rgba(255,213,138,0) 70%)",
-                  filter: "blur(2px)",
-                  opacity: 0.55,
-                }}
-              />
-            );
-          })}
-        </div>
-      </div>
-
-      {/* ====================================================================
-          MOMENTO D — Tocco equestre discreto
-      ==================================================================== */}
-      <aside
-        aria-labelledby="events-carriage-title"
-        className="relative overflow-hidden"
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
         style={{
-          background:
-            "linear-gradient(180deg, var(--murgese) 0%, color-mix(in oklab, var(--murgese) 96%, var(--ink)) 50%, var(--ivory) 100%)",
+          background: isActive
+            ? "linear-gradient(180deg, rgba(21,17,15,0.22) 0%, rgba(21,17,15,0.18) 38%, rgba(21,17,15,0.92) 100%)"
+            : "linear-gradient(180deg, rgba(21,17,15,0.62) 0%, rgba(21,17,15,0.45) 45%, rgba(21,17,15,0.88) 100%)",
         }}
+      />
+
+      {!isActive ? (
+        <button
+          type="button"
+          onClick={onActivate}
+          aria-pressed={false}
+          aria-label={`Apri ${occasion.title}: ${occasion.phrase}`}
+          className="relative z-10 flex h-full w-full cursor-pointer flex-col items-center justify-between px-2 py-6 text-ivory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gold"
+        >
+          <span className="font-sans text-xs font-medium tracking-[0.2em] text-gold tabular-nums">
+            {occasion.indexLabel}
+          </span>
+          <span className="font-display text-xl font-medium tracking-[-0.015em] whitespace-nowrap text-ivory/90 transition-colors duration-300 group-hover:text-gold [writing-mode:vertical-rl] rotate-180">
+            {occasion.title}
+          </span>
+          <span
+            aria-hidden
+            className="h-1.5 w-1.5 rounded-full bg-ivory/35 transition-transform duration-300 group-hover:scale-125 group-hover:bg-gold"
+          />
+        </button>
+      ) : (
+        <div className="relative z-10 flex h-full flex-col justify-between p-7 xl:p-9">
+          <div className="flex items-center justify-between gap-4">
+            <span className="font-sans text-xs font-medium tracking-[0.22em] text-gold tabular-nums">
+              {occasion.indexLabel} / 07
+            </span>
+            <span className="rounded-full border border-ivory/25 bg-murgese/75 px-3.5 py-1 text-[11px] font-medium tracking-[0.14em] uppercase text-ivory/90">
+              {occasion.spaces}
+            </span>
+          </div>
+
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={occasion.id}
+              initial={reduced ? { opacity: 1 } : { opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduced ? { opacity: 1 } : { opacity: 0, y: -8 }}
+              transition={
+                reduced ? { duration: 0.01 } : { duration: 0.34, ease: [0.22, 1, 0.36, 1] }
+              }
+              className="max-w-xl"
+            >
+              <h3
+                className="font-display font-semibold tracking-[-0.025em] text-ivory"
+                style={{ fontSize: "clamp(2rem, 3.3vw, 3.25rem)", lineHeight: 1.02 }}
+              >
+                {occasion.title}
+              </h3>
+              <p className="mt-3 font-display text-lg italic leading-snug text-gold xl:text-xl">
+                {occasion.phrase}
+              </p>
+              <p className="mt-3 max-w-[54ch] text-sm leading-relaxed text-ivory/85">
+                {occasion.description}
+              </p>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => requestEventInForm(occasion.formValue)}
+                  className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full bg-terracotta px-5 py-2.5 text-xs font-medium tracking-[0.16em] uppercase text-ivory transition-colors hover:bg-gold hover:text-murgese focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                >
+                  <span>Richiedi per questo evento</span>
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  onClick={onOpenDetail}
+                  className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full border border-ivory/35 bg-murgese/75 px-5 py-2.5 text-xs font-medium tracking-[0.16em] uppercase text-ivory transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                >
+                  <span>Dettagli e foto</span>
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      )}
+    </motion.article>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Sotto-componente Mobile: Mazzo Fotografico 3D Tattile                      */
+/* -------------------------------------------------------------------------- */
+interface MobileDeckProps {
+  activeIndex: number;
+  reduced: boolean;
+  onSelectIndex: (idx: number) => void;
+  onStep: (delta: 1 | -1) => void;
+  onOpenDetail: (occ: EventOccasion) => void;
+}
+
+function MobileTactileDeck({
+  activeIndex,
+  reduced,
+  onSelectIndex,
+  onStep,
+  onOpenDetail,
+}: MobileDeckProps) {
+  const pillStripRef = useRef<HTMLDivElement>(null);
+  const pillButtonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const didUserInteractRef = useRef(false);
+
+  const dragX = useMotionValue(0);
+  const dragRotate = useTransform(dragX, [-180, 0, 180], [-7, 0, 7]);
+  const dragOpacityFade = useTransform(dragX, [-240, 0, 240], [0.82, 1, 0.82]);
+
+  useEffect(() => {
+    dragX.set(0);
+  }, [activeIndex, dragX]);
+
+  // Centra orizzontalmente il solo contenitore pillole SOLO dopo un'interazione utente
+  useEffect(() => {
+    if (!didUserInteractRef.current) return;
+    const container = pillStripRef.current;
+    const pill = pillButtonsRef.current[activeIndex];
+    if (!container || !pill) return;
+    const targetLeft = pill.offsetLeft - container.clientWidth / 2 + pill.clientWidth / 2;
+    container.scrollTo({
+      left: Math.max(0, targetLeft),
+      behavior: reduced ? "auto" : "smooth",
+    });
+  }, [activeIndex, reduced]);
+
+  const handleSelect = (idx: number) => {
+    didUserInteractRef.current = true;
+    onSelectIndex(idx);
+  };
+
+  const handleStep = (delta: 1 | -1) => {
+    didUserInteractRef.current = true;
+    onStep(delta);
+  };
+
+  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if (info.offset.x < -55 || info.velocity.x < -380) {
+      handleStep(1);
+    } else if (info.offset.x > 55 || info.velocity.x > 380) {
+      handleStep(-1);
+    }
+  };
+
+  const layers = [2, 1, 0] as const;
+
+  return (
+    <div className="lg:hidden">
+      {/* Barra pillole rapide */}
+      <div
+        ref={pillStripRef}
+        role="tablist"
+        aria-label="Seleziona il tipo di evento"
+        className="flex snap-x snap-mandatory gap-2 overflow-x-auto px-5 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        <div className="mx-auto max-w-7xl px-6 py-28 md:px-12 md:py-40">
-          <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-12 md:gap-16">
-            <figure
-              data-fade
-              className="relative overflow-hidden shadow-soft md:col-span-7"
-              style={{
-                borderRadius: "10px",
-                border: "1px solid color-mix(in oklab, var(--ivory) 18%, transparent)",
-                aspectRatio: "4 / 3",
+        {EVENTS_DATA.map((occ, idx) => {
+          const isActive = idx === activeIndex;
+          return (
+            <button
+              key={occ.id}
+              ref={(el) => {
+                pillButtonsRef.current[idx] = el;
               }}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => handleSelect(idx)}
+              className={cn(
+                "relative min-h-[44px] flex-shrink-0 snap-start rounded-full border px-4 py-2 text-xs font-medium tracking-[0.12em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold",
+                isActive
+                  ? "border-terracotta text-ivory"
+                  : "border-ivory/20 bg-ivory/[0.03] text-ivory/75 hover:border-ivory/40 hover:text-ivory",
+              )}
+            >
+              {isActive && (
+                <motion.span
+                  layoutId="mobile-events-pill"
+                  transition={
+                    reduced ? { duration: 0.01 } : { type: "spring", stiffness: 320, damping: 28 }
+                  }
+                  aria-hidden
+                  className="absolute inset-0 rounded-full bg-terracotta"
+                />
+              )}
+              <span className="relative z-10 inline-flex items-center gap-2">
+                <span className={cn("tabular-nums", isActive ? "text-ivory/90" : "text-gold")}>
+                  {occ.indexLabel}
+                </span>
+                <span>{occ.shortTitle}</span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Mazzo fotografico 3D impilato */}
+      <div className="relative mx-auto mt-4 h-[500px] w-full max-w-[440px] px-5 sm:h-[530px]">
+        {layers.map((offset) => {
+          const itemIndex = (activeIndex + offset) % EVENTS_DATA.length;
+          const occ = EVENTS_DATA[itemIndex];
+          const isFront = offset === 0;
+          const zIndex = 30 - offset * 10;
+          const restScale = offset === 0 ? 1 : offset === 1 ? 0.94 : 0.88;
+          const restY = offset === 0 ? 0 : offset === 1 ? 14 : 28;
+          const restRotate = offset === 0 ? 0 : offset === 1 ? 1.8 : -2;
+          const restOpacity = offset === 0 ? 1 : offset === 1 ? 0.72 : 0.42;
+
+          return (
+            <motion.article
+              key={occ.id}
+              style={{
+                zIndex,
+                x: isFront ? dragX : 0,
+                rotate: isFront && !reduced ? dragRotate : restRotate,
+                opacity: isFront && !reduced ? dragOpacityFade : restOpacity,
+              }}
+              initial={false}
+              animate={{
+                scale: restScale,
+                y: restY,
+                rotate: restRotate,
+                opacity: restOpacity,
+              }}
+              transition={
+                reduced
+                  ? { duration: 0.01 }
+                  : { type: "spring", stiffness: 250, damping: 26, mass: 0.85 }
+              }
+              drag={isFront && !reduced ? "x" : false}
+              dragDirectionLock
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.85}
+              onDragEnd={isFront ? handleDragEnd : undefined}
+              aria-hidden={!isFront}
+              className={cn(
+                "absolute inset-x-5 top-0 h-[468px] overflow-hidden rounded-2xl border shadow-[0_26px_55px_-20px_rgba(0,0,0,0.9)] sm:h-[496px]",
+                isFront
+                  ? "touch-pan-y cursor-grab border-gold/45 active:cursor-grabbing"
+                  : "pointer-events-none border-ivory/15",
+              )}
             >
               <img
-                data-carriage-img
-                src={carriageImg}
-                alt="Carrozza d'epoca trainata da cavalli Murgesi neri all'ingresso della masseria all'ora dorata"
-                loading="lazy"
-                width={1280}
-                height={960}
-                className="absolute inset-0 h-[112%] w-full object-cover"
-                style={{ top: "-6%", willChange: "transform" }}
+                src={occ.image}
+                alt={occ.imageAlt}
+                width={occ.width}
+                height={occ.height}
+                loading={isFront || offset === 1 ? "eager" : "lazy"}
+                decoding="async"
+                draggable={false}
+                className="pointer-events-none absolute inset-0 h-full w-full object-cover select-none"
               />
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(180deg, transparent 55%, color-mix(in oklab, var(--murgese) 60%, transparent))",
+                    "linear-gradient(180deg, rgba(21,17,15,0.28) 0%, rgba(21,17,15,0.22) 34%, rgba(21,17,15,0.94) 100%)",
                 }}
               />
-            </figure>
 
-            <div data-fade className="flex flex-col gap-6 md:col-span-5">
-              <span
-                className="text-eyebrow"
-                style={{ color: "color-mix(in oklab, var(--ivory) 75%, transparent)" }}
+              <div className="relative z-10 flex h-full flex-col justify-between p-5 sm:p-6">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-sans text-xs font-medium tracking-[0.2em] text-gold tabular-nums">
+                    {occ.indexLabel} / 07
+                  </span>
+                  <span className="rounded-full border border-ivory/25 bg-murgese/80 px-3 py-1 text-[10px] font-medium tracking-[0.12em] uppercase text-ivory/90">
+                    {occ.spaces}
+                  </span>
+                </div>
+
+                <div>
+                  <h3 className="font-display text-3xl font-semibold tracking-[-0.025em] text-ivory">
+                    {occ.title}
+                  </h3>
+                  <p className="mt-2 font-display text-base italic leading-snug text-gold">
+                    {occ.phrase}
+                  </p>
+                  <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-ivory/85 sm:text-sm">
+                    {occ.description}
+                  </p>
+
+                  {isFront && (
+                    <div
+                      onPointerDownCapture={(e) => e.stopPropagation()}
+                      className="mt-4 flex flex-wrap items-center gap-2.5"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => requestEventInForm(occ.formValue)}
+                        className="inline-flex min-h-[44px] flex-1 cursor-pointer items-center justify-center gap-2 rounded-full bg-terracotta px-4 py-2.5 text-xs font-medium tracking-[0.14em] uppercase text-ivory transition-colors hover:bg-gold hover:text-murgese focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                      >
+                        <span>Richiedi</span>
+                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onOpenDetail(occ)}
+                        className="inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-1.5 rounded-full border border-ivory/35 bg-murgese/80 px-4 py-2.5 text-xs font-medium tracking-[0.14em] uppercase text-ivory transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                      >
+                        <span>Dettagli e foto</span>
+                        <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.article>
+          );
+        })}
+      </div>
+
+      {/* Controlli mazzo */}
+      <div className="mx-auto mt-4 flex max-w-[440px] items-center justify-between px-5">
+        <button
+          type="button"
+          onClick={() => handleStep(-1)}
+          aria-label="Evento precedente"
+          className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-ivory/25 text-ivory transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+        >
+          <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+        </button>
+
+        <div className="text-center">
+          <p className="text-xs font-medium tracking-[0.18em] text-gold uppercase tabular-nums">
+            {EVENTS_DATA[activeIndex].indexLabel} / 07
+          </p>
+          <p className="mt-0.5 text-[11px] text-ivory/65">Trascina la carta o tocca le frecce</p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => handleStep(1)}
+          aria-label="Evento successivo"
+          className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-ivory/25 text-ivory transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+        >
+          <ChevronRight className="h-5 w-5" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Scheda Espansa Cinematografica (Desktop Modal / Mobile Bottom-Sheet)       */
+/* -------------------------------------------------------------------------- */
+interface EventDetailSheetProps {
+  occasion: EventOccasion | null;
+  reduced: boolean;
+  onClose: () => void;
+}
+
+function EventDetailSheet({ occasion, reduced, onClose }: EventDetailSheetProps) {
+  const [galleryIndex, setGalleryIndex] = useState(0);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    setGalleryIndex(0);
+  }, [occasion?.id]);
+
+  useEffect(() => {
+    if (!occasion) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeBtnRef.current?.focus();
+
+    const onKeyDown = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [occasion, onClose]);
+
+  const activePhoto = occasion ? (occasion.gallery[galleryIndex] ?? occasion.gallery[0]) : null;
+
+  return (
+    <AnimatePresence>
+      {occasion && activePhoto && (
+        <motion.div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="event-detail-title"
+          initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={reduced ? { opacity: 0 } : { opacity: 0 }}
+          transition={reduced ? { duration: 0.01 } : { duration: 0.24 }}
+          onClick={onClose}
+          className="fixed inset-0 z-[70] flex items-end justify-center bg-murgese/85 p-0 md:items-center md:p-8"
+        >
+          <motion.div
+            initial={reduced ? { opacity: 1 } : { opacity: 0, y: 28, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.98 }}
+            transition={reduced ? { duration: 0.01 } : { duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative flex max-h-[92svh] w-full max-w-5xl flex-col overflow-hidden rounded-t-3xl border border-ivory/15 bg-murgese text-ivory shadow-[0_32px_90px_-16px_rgba(0,0,0,0.95)] md:grid md:max-h-[88vh] md:grid-cols-12 md:rounded-2xl"
+          >
+            {/* Colonna foto multi-scatto */}
+            <div className="relative flex flex-col justify-between bg-ink/30 md:col-span-7">
+              <div className="relative aspect-[16/10] w-full overflow-hidden md:aspect-auto md:h-full md:min-h-[420px]">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.img
+                    key={activePhoto.src}
+                    src={activePhoto.src}
+                    alt={activePhoto.alt}
+                    width={activePhoto.width}
+                    height={activePhoto.height}
+                    initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 1.03 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={reduced ? { opacity: 1 } : { opacity: 0 }}
+                    transition={reduced ? { duration: 0.01 } : { duration: 0.3 }}
+                    className="h-full w-full object-cover"
+                  />
+                </AnimatePresence>
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-28"
+                  style={{
+                    background: "linear-gradient(180deg, transparent 0%, rgba(21,17,15,0.9) 100%)",
+                  }}
+                />
+                <p className="absolute bottom-3 left-4 right-4 text-xs text-ivory/85 md:bottom-4 md:left-6">
+                  {activePhoto.caption}
+                </p>
+              </div>
+
+              {/* Miniature selettore galleria */}
+              <div className="flex items-center gap-2 border-t border-ivory/10 bg-murgese px-4 py-3 md:px-6">
+                {occasion.gallery.map((frame, idx) => {
+                  const selected = idx === galleryIndex;
+                  return (
+                    <button
+                      key={frame.src + idx}
+                      type="button"
+                      onClick={() => setGalleryIndex(idx)}
+                      aria-label={`Foto ${idx + 1}: ${frame.caption}`}
+                      aria-pressed={selected}
+                      className={cn(
+                        "relative h-12 w-16 cursor-pointer overflow-hidden rounded-md border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold",
+                        selected
+                          ? "border-gold opacity-100 ring-1 ring-gold"
+                          : "border-ivory/20 opacity-60 hover:opacity-95",
+                      )}
+                    >
+                      <img
+                        src={frame.src}
+                        alt=""
+                        width={frame.width}
+                        height={frame.height}
+                        className="h-full w-full object-cover"
+                      />
+                    </button>
+                  );
+                })}
+                <span className="ml-auto text-[11px] text-ivory/65 tabular-nums">
+                  {galleryIndex + 1} / {occasion.gallery.length}
+                </span>
+              </div>
+            </div>
+
+            {/* Colonna dettagli e prenotazione */}
+            <div className="flex flex-col justify-between overflow-y-auto p-6 md:col-span-5 md:p-8">
+              <div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-xs font-medium tracking-[0.2em] text-gold uppercase tabular-nums">
+                    {occasion.indexLabel} · {occasion.spaces}
+                  </span>
+                  <button
+                    ref={closeBtnRef}
+                    type="button"
+                    onClick={onClose}
+                    aria-label="Chiudi scheda evento"
+                    className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-ivory/20 text-ivory/80 transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                  >
+                    <X className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                </div>
+
+                <h3
+                  id="event-detail-title"
+                  className="mt-4 font-display text-3xl font-semibold tracking-[-0.025em] text-ivory"
+                >
+                  {occasion.title}
+                </h3>
+                <p className="mt-2 font-display text-base italic text-gold">{occasion.phrase}</p>
+                <p className="mt-4 text-sm leading-relaxed text-ivory/85">{occasion.description}</p>
+
+                <ul className="mt-5 space-y-2.5 border-t border-ivory/10 pt-5 text-sm text-ivory/85">
+                  {occasion.highlights.map((item) => (
+                    <li key={item} className="flex items-start gap-2.5">
+                      <span
+                        aria-hidden
+                        className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-gold"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mt-7 space-y-2.5 border-t border-ivory/10 pt-5">
+                <div className="grid grid-cols-2 gap-2.5">
+                  <a
+                    href={buildEventWhatsAppUrl(occasion.title)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-terracotta px-4 py-2.5 text-xs font-medium tracking-[0.14em] uppercase text-ivory transition-colors hover:bg-gold hover:text-murgese focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                  >
+                    <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                    <span>WhatsApp</span>
+                  </a>
+                  <a
+                    href={`tel:${BUSINESS.phoneTel}`}
+                    className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-ivory/25 bg-ivory/[0.04] px-4 py-2.5 text-xs font-medium tracking-[0.14em] uppercase text-ivory transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                  >
+                    <Phone className="h-4 w-4" aria-hidden="true" />
+                    <span>Chiama</span>
+                  </a>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const value = occasion.formValue;
+                    onClose();
+                    requestEventInForm(value);
+                  }}
+                  className="inline-flex min-h-[44px] w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-gold/45 px-4 py-2.5 text-xs font-medium tracking-[0.14em] uppercase text-gold transition-colors hover:bg-gold hover:text-murgese focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                >
+                  <span>Compila il modulo con questo evento</span>
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Sezione Principale: EventsSection (#eventi)                                */
+/* -------------------------------------------------------------------------- */
+export function EventsSection() {
+  const rootRef = useRef<HTMLElement>(null);
+  const desktopStageRef = useRef<HTMLDivElement>(null);
+  const hoverTimerRef = useRef<number | null>(null);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [detailOccasion, setDetailOccasion] = useState<EventOccasion | null>(null);
+  const [spaceViews, setSpaceViews] = useState<{ sala: 0 | 1; corte: 0 | 1 }>({
+    sala: 0,
+    corte: 0,
+  });
+
+  const prefersReducedMotion = useReducedMotion();
+  const reduced = Boolean(prefersReducedMotion);
+
+  const cancelHoverTimer = useCallback(() => {
+    if (hoverTimerRef.current !== null) {
+      window.clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+  }, []);
+
+  const scheduleHoverActivate = useCallback(
+    (idx: number) => {
+      cancelHoverTimer();
+      hoverTimerRef.current = window.setTimeout(() => {
+        setActiveIndex(idx);
+      }, 90);
+    },
+    [cancelHoverTimer],
+  );
+
+  const stepActive = useCallback((delta: 1 | -1) => {
+    setActiveIndex((prev) => (prev + delta + EVENTS_DATA.length) % EVENTS_DATA.length);
+  }, []);
+
+  useEffect(() => () => cancelHoverTimer(), [cancelHoverTimer]);
+
+  // GSAP ScrollTrigger: ingresso a sipario sulle lame desktop + contro-parallasse dittico attacchi
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 1024px)", () => {
+        const blades = root.querySelectorAll<HTMLElement>("[data-event-blade]");
+        const stage = desktopStageRef.current;
+        if (blades.length && stage) {
+          gsap.fromTo(
+            blades,
+            { clipPath: "inset(10% 0% 0% 0% round 12px)" },
+            {
+              clipPath: "inset(0% 0% 0% 0% round 12px)",
+              duration: 0.85,
+              stagger: 0.055,
+              ease: "power3.out",
+              immediateRender: false,
+              clearProps: "clipPath",
+              scrollTrigger: {
+                trigger: stage,
+                start: "top 86%",
+                once: true,
+                invalidateOnRefresh: true,
+              },
+            },
+          );
+        }
+
+        const carriageLead = root.querySelector<HTMLElement>("[data-carriage-lead]");
+        const carriageCompanion = root.querySelector<HTMLElement>("[data-carriage-companion]");
+        const carriageBand = root.querySelector<HTMLElement>("[data-carriage-band]");
+
+        if (carriageBand && carriageLead && carriageCompanion) {
+          gsap.fromTo(
+            carriageLead,
+            { yPercent: -4 },
+            {
+              yPercent: 4,
+              ease: "none",
+              scrollTrigger: {
+                trigger: carriageBand,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 0.7,
+                invalidateOnRefresh: true,
+              },
+            },
+          );
+          gsap.fromTo(
+            carriageCompanion,
+            { yPercent: 5 },
+            {
+              yPercent: -5,
+              ease: "none",
+              scrollTrigger: {
+                trigger: carriageBand,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 0.7,
+                invalidateOnRefresh: true,
+              },
+            },
+          );
+        }
+      });
+    }, root);
+
+    return () => ctx.revert();
+  }, []);
+
+  const handleStageKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      stepActive(1);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      stepActive(-1);
+    }
+  };
+
+  const activeOccasion = EVENTS_DATA[activeIndex];
+
+  return (
+    <section
+      id="eventi"
+      ref={rootRef}
+      aria-labelledby="events-heading"
+      className="relative text-foreground"
+    >
+      {/* ====================================================================
+          ATTO 1 — Testata chiara su --ivory (garantisce contrasto su /eventi)
+      ==================================================================== */}
+      <div className="bg-ivory pt-28 pb-10 text-ink md:pt-36 md:pb-14">
+        <div className="mx-auto max-w-[1520px] px-5 md:px-8 xl:px-12">
+          <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="lg:col-span-7">
+              <h2
+                id="events-heading"
+                className="font-display font-semibold tracking-[-0.03em] text-ink text-balance"
+                style={{ fontSize: "clamp(2.35rem, 4.9vw, 4.5rem)", lineHeight: 0.98 }}
               >
-                Un dettaglio d'eccezione
-              </span>
-              <h3
-                id="events-carriage-title"
-                data-mask-title
-                className="font-display font-medium leading-[1.08] text-ivory"
-                style={{
-                  fontSize: "clamp(1.6rem, 2.8vw, 2.2rem)",
-                  letterSpacing: "-0.015em",
-                }}
-              >
-                L'arrivo con gli attacchi d'epoca
-              </h3>
-              <p className="max-w-md font-display text-base italic leading-relaxed text-ivory/80 md:text-lg">
-                Per chi lo desidera, la cerimonia può aprirsi con un arrivo d'eccezione: una
-                carrozza d'epoca trainata dai nostri cavalli{" "}
-                <span style={{ color: "var(--gold)" }}>Murgesi</span>. Una scenografia rara, sobria,
-                profondamente del territorio.
+                Sette modi di vivere{" "}
+                <em className="font-medium italic text-terracotta">la Masseria.</em>
+              </h2>
+              <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-ink/75 md:text-lg">
+                Matrimoni, cerimonie, feste di famiglia, serate riservate ed esperienze equestri
+                nella dimora del Settecento tra sala storica, corte in pietra e ulivi della Murgia.
               </p>
-              <p className="text-eyebrow text-ivory/55">Servizio su richiesta</p>
+            </div>
+
+            <dl className="grid grid-cols-3 gap-4 border-t border-ink/15 pt-5 lg:col-span-5">
+              <div>
+                <dt className="text-[11px] font-medium tracking-[0.14em] uppercase text-ink/60">
+                  Ricevimenti
+                </dt>
+                <dd className="mt-1 font-display text-base font-medium text-ink tabular-nums md:text-lg">
+                  Fino a 250 ospiti
+                </dd>
+              </div>
+              <div>
+                <dt className="text-[11px] font-medium tracking-[0.14em] uppercase text-ink/60">
+                  Cornici
+                </dt>
+                <dd className="mt-1 font-display text-base font-medium text-ink md:text-lg">
+                  Sala &amp; Uliveto
+                </dd>
+              </div>
+              <div>
+                <dt className="text-[11px] font-medium tracking-[0.14em] uppercase text-ink/60">
+                  Tavola
+                </dt>
+                <dd className="mt-1 font-display text-base font-medium text-ink md:text-lg">
+                  Cucina interna
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      {/* ====================================================================
+          ATTO 2 — Palcoscenico scuro --murgese: 7 Lame Desktop + Mazzo 3D Mobile
+      ==================================================================== */}
+      <div className="relative overflow-hidden bg-murgese py-12 text-ivory md:py-16 xl:py-20">
+        {/* Alone cromatico reattivo all'evento attivo */}
+        <motion.div
+          aria-hidden
+          animate={{
+            background: `radial-gradient(ellipse 70% 55% at 50% 35%, ${activeOccasion.ambientTint}, transparent 72%)`,
+          }}
+          transition={reduced ? { duration: 0.01 } : { duration: 0.65, ease: "easeOut" }}
+          className="pointer-events-none absolute inset-0"
+        />
+
+        <div className="relative z-10">
+          {/* DESKTOP (lg+): 7 Lame Espandibili */}
+          <div
+            ref={desktopStageRef}
+            onKeyDown={handleStageKeyDown}
+            aria-label="I sette eventi della Masseria Torre Abbondanza"
+            className="mx-auto hidden max-w-[1520px] px-8 lg:block xl:px-12"
+          >
+            <div className="flex h-[70vh] min-h-[550px] max-h-[720px] gap-2.5">
+              {EVENTS_DATA.map((occ, idx) => (
+                <DesktopBlade
+                  key={occ.id}
+                  occasion={occ}
+                  index={idx}
+                  isActive={idx === activeIndex}
+                  reduced={reduced}
+                  onActivate={() => setActiveIndex(idx)}
+                  onScheduleHoverActivate={() => scheduleHoverActivate(idx)}
+                  onCancelHoverActivate={cancelHoverTimer}
+                  onOpenDetail={() => setDetailOccasion(occ)}
+                />
+              ))}
+            </div>
+
+            {/* Barra di selezione rapida & tastiera */}
+            <div className="mt-5 flex items-center justify-between gap-6 border-t border-ivory/10 pt-4">
+              <div className="flex flex-wrap items-center gap-1.5">
+                {EVENTS_DATA.map((occ, idx) => {
+                  const isActive = idx === activeIndex;
+                  return (
+                    <button
+                      key={occ.id}
+                      type="button"
+                      onClick={() => setActiveIndex(idx)}
+                      className={cn(
+                        "relative cursor-pointer rounded-full px-3.5 py-2 text-xs font-medium tracking-[0.1em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold",
+                        isActive ? "text-murgese" : "text-ivory/70 hover:text-ivory",
+                      )}
+                    >
+                      {isActive && (
+                        <motion.span
+                          layoutId="desktop-events-rail"
+                          transition={
+                            reduced
+                              ? { duration: 0.01 }
+                              : { type: "spring", stiffness: 320, damping: 30 }
+                          }
+                          aria-hidden
+                          className="absolute inset-0 rounded-full bg-gold"
+                        />
+                      )}
+                      <span className="relative z-10 inline-flex items-center gap-1.5">
+                        <span className="tabular-nums opacity-80">{occ.indexLabel}</span>
+                        <span>{occ.shortTitle}</span>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => stepActive(-1)}
+                  aria-label="Evento precedente"
+                  className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-ivory/20 text-ivory/80 transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                >
+                  <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => stepActive(1)}
+                  aria-label="Evento successivo"
+                  className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-ivory/20 text-ivory/80 transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                >
+                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* MOBILE (< lg): Mazzo 3D Tattile + Barra Pillole */}
+          <MobileTactileDeck
+            activeIndex={activeIndex}
+            reduced={reduced}
+            onSelectIndex={setActiveIndex}
+            onStep={stepActive}
+            onOpenDetail={setDetailOccasion}
+          />
+
+          {/* ==================================================================
+              ATTO 3 — Trittico Bento Asimmetrico: Spazi & Attacchi d'Epoca
+          ================================================================== */}
+          <div className="mx-auto mt-16 max-w-[1520px] px-5 md:mt-24 md:px-8 xl:px-12">
+            {/* Riga 1: Spazi con toggle reale Giorno/Sera & Panoramica/Imperiale */}
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+              {SPACES_SHOWCASE.map((space) => {
+                const viewIndex = spaceViews[space.id];
+                const frame = space.views[viewIndex];
+                const toggleView = () =>
+                  setSpaceViews((prev) => ({
+                    ...prev,
+                    [space.id]: prev[space.id] === 0 ? 1 : 0,
+                  }));
+
+                return (
+                  <article
+                    key={space.id}
+                    className={cn(
+                      "flex flex-col overflow-hidden rounded-2xl border border-ivory/15 bg-ivory/[0.03]",
+                      space.colSpanClass,
+                    )}
+                  >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden">
+                      <AnimatePresence mode="wait" initial={false}>
+                        <motion.img
+                          key={frame.src}
+                          src={frame.src}
+                          alt={frame.alt}
+                          width={frame.width}
+                          height={frame.height}
+                          loading="lazy"
+                          decoding="async"
+                          initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 1.03 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={reduced ? { opacity: 1 } : { opacity: 0 }}
+                          transition={
+                            reduced
+                              ? { duration: 0.01 }
+                              : { duration: 0.38, ease: [0.22, 1, 0.36, 1] }
+                          }
+                          className="h-full w-full object-cover"
+                        />
+                      </AnimatePresence>
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-x-0 bottom-0 h-28"
+                        style={{
+                          background:
+                            "linear-gradient(180deg, transparent 0%, rgba(21,17,15,0.88) 100%)",
+                        }}
+                      />
+                      <div className="absolute inset-x-4 bottom-3 flex items-center justify-between gap-3 md:inset-x-6 md:bottom-4">
+                        <span className="text-xs font-medium text-ivory/90">{frame.caption}</span>
+                        <button
+                          type="button"
+                          onClick={toggleView}
+                          className="inline-flex min-h-[40px] cursor-pointer items-center gap-1.5 rounded-full border border-ivory/30 bg-murgese/80 px-3.5 py-1.5 text-[11px] font-medium tracking-[0.12em] uppercase text-ivory transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                        >
+                          <Images className="h-3.5 w-3.5" aria-hidden="true" />
+                          <span>Cambia vista</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-1 flex-col justify-between p-6 md:p-7">
+                      <div>
+                        <h3 className="font-display text-2xl font-semibold tracking-[-0.02em] text-ivory">
+                          {space.title}
+                        </h3>
+                        <p className="mt-2 max-w-[65ch] text-sm leading-relaxed text-ivory/80">
+                          {space.description}
+                        </p>
+                      </div>
+                      <p className="mt-4 border-t border-ivory/10 pt-3 text-xs tracking-[0.14em] uppercase text-gold">
+                        {space.subtitle}
+                      </p>
+                    </div>
+                  </article>
+                );
+              })}
+
+              {/* Riga 2: Dittico Equestre — L'arrivo con gli attacchi d'epoca */}
+              <aside
+                data-carriage-band
+                aria-labelledby="events-carriage-title"
+                className="overflow-hidden rounded-2xl border border-ivory/15 bg-ivory/[0.03] lg:col-span-12"
+              >
+                <div className="grid grid-cols-1 items-center gap-8 p-6 md:p-10 lg:grid-cols-12 lg:gap-12">
+                  <div className="grid grid-cols-12 items-end gap-4 lg:col-span-7">
+                    <figure
+                      data-carriage-lead
+                      className="col-span-7 overflow-hidden rounded-xl border border-ivory/15"
+                    >
+                      <img
+                        src={carriageImg}
+                        alt="Carrozza d'epoca trainata da un cavallo Murgese nero davanti alla masseria"
+                        width={968}
+                        height={957}
+                        loading="lazy"
+                        decoding="async"
+                        className="aspect-[4/4.2] h-full w-full object-cover"
+                      />
+                    </figure>
+                    <figure
+                      data-carriage-companion
+                      className="col-span-5 overflow-hidden rounded-xl border border-ivory/15"
+                    >
+                      <img
+                        src={horsePortalImg}
+                        alt="Cavallo Murgese nero posizionato davanti al portale storico della masseria"
+                        width={1800}
+                        height={1198}
+                        loading="lazy"
+                        decoding="async"
+                        className="aspect-[4/3.6] h-full w-full object-cover"
+                      />
+                    </figure>
+                  </div>
+
+                  <div className="flex flex-col gap-5 lg:col-span-5">
+                    <h3
+                      id="events-carriage-title"
+                      className="font-display font-semibold tracking-[-0.02em] text-ivory"
+                      style={{ fontSize: "clamp(1.75rem, 2.9vw, 2.5rem)", lineHeight: 1.06 }}
+                    >
+                      L&apos;arrivo con gli attacchi d&apos;epoca
+                    </h3>
+                    <p className="max-w-[65ch] font-display text-lg italic leading-relaxed text-gold">
+                      Una scenografia rara, sobria, profondamente del territorio.
+                    </p>
+                    <p className="max-w-[65ch] text-sm leading-relaxed text-ivory/80 md:text-base">
+                      Su richiesta, la cerimonia o il ricevimento può aprirsi con l&apos;ingresso di
+                      una carrozza d&apos;epoca trainata dai cavalli Murgesi allevati dalla famiglia
+                      Giunta proprio in masseria.
+                    </p>
+                    <div className="mt-2 flex flex-wrap items-center gap-4 border-t border-ivory/10 pt-5">
+                      <span className="text-xs font-medium tracking-[0.16em] uppercase text-ivory/75">
+                        Servizio su richiesta
+                      </span>
+                      <a
+                        href="/cavalli"
+                        className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-medium tracking-[0.16em] uppercase text-gold transition-colors hover:text-ivory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                      >
+                        <span>Scopri i nostri Murgesi</span>
+                        <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </aside>
             </div>
           </div>
         </div>
-      </aside>
+      </div>
 
       {/* ====================================================================
-          CTA — chiusura calda
+          ATTO 4 — Chiusura CTA su --ivory & transizione verso Sez. 08
       ==================================================================== */}
-      <div className="relative bg-ivory">
-        <div className="mx-auto flex max-w-7xl flex-col items-start gap-12 px-6 py-28 md:flex-row md:items-end md:justify-between md:gap-16 md:px-12 md:py-36">
-          <div data-fade className="max-w-2xl">
-            <p
-              className="font-display font-medium leading-[1.1] text-ink"
-              style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}
+      <div className="bg-ivory text-ink">
+        <div className="mx-auto flex max-w-[1520px] flex-col items-start justify-between gap-10 px-5 py-20 md:flex-row md:items-end md:px-8 md:py-28 xl:px-12">
+          <div className="max-w-2xl">
+            <h3
+              className="font-display font-semibold tracking-[-0.025em] text-ink text-balance"
+              style={{ fontSize: "clamp(1.7rem, 3.1vw, 2.6rem)", lineHeight: 1.08 }}
             >
-              Raccontateci la vostra occasione. <em className="text-terracotta">Accenderemo</em> la
-              masseria per voi.
-            </p>
+              Parlaci del tuo evento: costruiamo insieme{" "}
+              <em className="font-medium italic text-terracotta">ogni dettaglio.</em>
+            </h3>
+            <div className="mt-6 flex flex-wrap items-center gap-5 text-xs font-medium tracking-[0.14em] uppercase text-ink/75">
+              <a
+                href={BUSINESS.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[44px] items-center gap-2 transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
+              >
+                <MessageCircle className="h-4 w-4 text-terracotta" aria-hidden="true" />
+                <span>WhatsApp diretto</span>
+              </a>
+              <a
+                href={`tel:${BUSINESS.phoneTel}`}
+                className="inline-flex min-h-[44px] items-center gap-2 transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
+              >
+                <Phone className="h-4 w-4 text-terracotta" aria-hidden="true" />
+                <span className="tabular-nums">{BUSINESS.phone}</span>
+              </a>
+            </div>
           </div>
-          <div data-fade className="flex w-full flex-shrink-0 flex-wrap gap-4 md:w-auto">
+
+          <div className="flex w-full flex-shrink-0 flex-wrap gap-4 md:w-auto">
             <MagneticButton href="#contatti" variant="pill-solid" className="w-full md:w-auto">
-              Richiedi informazioni per il tuo evento →
+              Richiedi disponibilità
             </MagneticButton>
             <MagneticButton href="/appuntamenti" variant="pill" className="w-full md:w-auto">
-              Appuntamenti a tavola & menù
+              Appuntamenti a tavola &amp; menù
             </MagneticButton>
           </div>
         </div>
 
-        {/* Uscita morbida verso Sez. 08 */}
+        {/* Uscita morbida verso Sez. 08 (SeasonsSection) */}
         <div
           aria-hidden
-          className="pointer-events-none h-32"
+          className="pointer-events-none h-28"
           style={{
             background:
               "linear-gradient(180deg, var(--ivory), color-mix(in oklab, var(--olive) 14%, transparent))",
@@ -924,22 +1604,12 @@ export function EventsSection() {
         />
       </div>
 
-      {/* Keyframes locali per flicker candele e bokeh */}
-      <style>{`
-        @keyframes candle-flicker {
-          0%, 100% { opacity: 0.85; transform: scale(1); }
-          25% { opacity: 1; transform: scale(1.08); }
-          50% { opacity: 0.7; transform: scale(0.94); }
-          75% { opacity: 0.95; transform: scale(1.04); }
-        }
-        @keyframes bokeh-drift {
-          0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-          50% { transform: translate(-50%, -50%) translateY(-14px); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          [data-candle], [data-light] { animation: none !important; opacity: 1 !important; transform: none !important; }
-        }
-      `}</style>
+      {/* Scheda Espansa Cinematografica (Desktop Split Modal / Mobile Bottom Sheet) */}
+      <EventDetailSheet
+        occasion={detailOccasion}
+        reduced={reduced}
+        onClose={() => setDetailOccasion(null)}
+      />
     </section>
   );
 }

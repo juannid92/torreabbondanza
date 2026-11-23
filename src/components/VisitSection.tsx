@@ -290,6 +290,24 @@ function OccasionForm() {
   const [waUrl, setWaUrl] = useState<string | null>(null);
   const set = (k: keyof typeof v) => (val: string) => setV((p) => ({ ...p, [k]: val }));
 
+  useEffect(() => {
+    const onSelectOccasion = (event: Event) => {
+      const kind = (event as CustomEvent<{ kind?: string }>).detail?.kind;
+      if (!kind) return;
+      if (OCCASIONS.some((o) => o.value === kind)) {
+        setV((prev) => ({ ...prev, kind }));
+        setErrors((prev) => {
+          if (!prev.kind) return prev;
+          const next = { ...prev };
+          delete next.kind;
+          return next;
+        });
+      }
+    };
+    window.addEventListener("masseria:select-occasion", onSelectOccasion);
+    return () => window.removeEventListener("masseria:select-occasion", onSelectOccasion);
+  }, []);
+
   const horseSelected = v.kind === "esperienza-equestre";
 
   function validate() {
