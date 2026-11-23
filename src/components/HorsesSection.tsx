@@ -223,6 +223,15 @@ export function HorsesSection() {
             >
               {t("horses.subtitle")}
             </p>
+            <div data-h-fade className="mt-8">
+              <MagneticButton
+                href="/cavalli/vetrina"
+                variant="pill-solid"
+                className="hover:text-ink"
+              >
+                {t("horses.ctaShowcase")}
+              </MagneticButton>
+            </div>
           </div>
 
           <div className="relative md:col-span-7">
@@ -561,16 +570,16 @@ export function HorsesSection() {
               {t("horses.traditionBody")}
             </p>
 
-            <div className="mt-12 flex flex-wrap items-center gap-6">
-              <MagneticButton href="#contatti" variant="pill-ivory">
-                {t("horses.ctaExperience")}
-              </MagneticButton>
+            <div className="mt-12 flex flex-wrap items-center gap-4">
               <MagneticButton
                 href="/cavalli/vetrina"
-                variant="link"
-                className="text-ivory/80 hover:text-gold"
+                variant="pill-solid"
+                className="hover:text-ink"
               >
                 {t("horses.ctaShowcase")}
+              </MagneticButton>
+              <MagneticButton href="#contatti" variant="pill-ivory">
+                {t("horses.ctaExperience")}
               </MagneticButton>
             </div>
           </div>

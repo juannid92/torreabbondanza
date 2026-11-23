@@ -8,8 +8,8 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * Sezione 02 — "Il Tempo Lento"
- * Manifesto editoriale con spotlight reading guidato dallo scroll (pin + scrub).
+ * Sezione 01 — "Il Tempo Lento"
+ * Manifesto editoriale con ingresso fluido riga per riga allo scroll.
  */
 
 type AccentTone = "warm" | "deep";
@@ -104,15 +104,10 @@ const LINES: Token[][] = [
 // Indent per riga (broken grid).
 const LINE_INDENT = [0, 1, 2, 0, 2, 1, 3];
 
-// Full text per accessibilità.
-const FULL_TEXT = LINES.map((l) => l.map((t) => t.text).join(" ")).join(" ");
-
 export function ManifestoSection() {
   const { t, i18n } = useTranslation();
   const sectionRef = useRef<HTMLElement | null>(null);
-  const stageRef = useRef<HTMLDivElement | null>(null);
-  const blockquoteRef = useRef<HTMLQuoteElement | null>(null);
-  const wordsRef = useRef<HTMLSpanElement[]>([]);
+  const linesRef = useRef<HTMLSpanElement[]>([]);
   const ruleRef = useRef<HTMLSpanElement | null>(null);
   const arcPathRef = useRef<SVGPathElement | null>(null);
   const signatureRef = useRef<HTMLDivElement | null>(null);
@@ -145,38 +140,72 @@ export function ManifestoSection() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const section = sectionRef.current;
-    const stage = stageRef.current;
-    const blockquote = blockquoteRef.current;
-    if (!section || !stage || !blockquote) return;
+    if (!section) return;
 
-    const words = wordsRef.current.filter(Boolean);
+    const lineEls = linesRef.current.filter(Boolean);
 
     if (reduced) {
-      // Stato pieno, niente pin/scrub.
-      gsap.set(words, { opacity: 1, color: "" });
-      gsap.set([eyebrowTextRef.current, signatureRef.current], { opacity: 1, y: 0 });
+      gsap.set([eyebrowTextRef.current, signatureRef.current, ...lineEls], { opacity: 1, y: 0 });
       if (ruleRef.current) gsap.set(ruleRef.current, { scaleX: 1 });
       return;
     }
 
     const ctx = gsap.context(() => {
-      // Ingresso eyebrow + filetto (prima del pin)
+      // Ingresso eyebrow + filetto
       gsap.from(eyebrowTextRef.current, {
         opacity: 0,
-        y: 8,
-        duration: 0.6,
+        y: 10,
+        duration: 0.7,
         ease: "power2.out",
-        scrollTrigger: { trigger: section, start: "top 80%" },
+        scrollTrigger: { trigger: section, start: "top 82%", once: true },
       });
+
       gsap.from(ruleRef.current, {
         scaleX: 0,
         transformOrigin: "left center",
         duration: 0.9,
         ease: "power3.out",
-        scrollTrigger: { trigger: section, start: "top 80%" },
+        scrollTrigger: { trigger: section, start: "top 82%", once: true },
       });
 
-      // Arco-eco draw (sincronizzato allo scroll)
+      // Ingresso editoriale morbido riga per riga (senza blocco scroll / karaoke)
+      if (lineEls.length > 0) {
+        gsap.fromTo(
+          lineEls,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.85,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 72%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
+          },
+        );
+      }
+
+      // Firma fade-in
+      if (signatureRef.current) {
+        gsap.fromTo(
+          signatureRef.current,
+          { opacity: 0, y: 12 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: 0.45,
+            ease: "power2.out",
+            scrollTrigger: { trigger: section, start: "top 72%", once: true },
+          },
+        );
+      }
+
+      // Arco-eco draw lungo lo scroll naturale
       if (arcPathRef.current) {
         const len = arcPathRef.current.getTotalLength();
         gsap.set(arcPathRef.current, { strokeDasharray: len, strokeDashoffset: len });
@@ -185,134 +214,24 @@ export function ManifestoSection() {
           ease: "none",
           scrollTrigger: {
             trigger: section,
-            start: "top bottom",
-            end: "bottom top",
+            start: "top 85%",
+            end: "bottom 40%",
             scrub: true,
           },
         });
       }
-
-      // === Pin + spotlight reading + teleprompter ===
-      const isMobile = window.matchMedia("(max-width: 767px)").matches;
-
-      // Stato iniziale: tutte parole "futura"
-      gsap.set(words, { opacity: 0.18, scale: 1 });
-
-      // Calcolo offset teleprompter: trasla il blockquote per tenere la
-      // riga attiva nella banda di lettura (~50% viewport).
-      // Si rilegge ad ogni refresh (resize/font load).
-      const computeOffset = () => {
-        const textH = blockquote.scrollHeight;
-        const bandH = window.innerHeight * 0.55;
-        return Math.max(0, textH - bandH);
-      };
-
-      // Durata in scroll-px: proporzionale al numero di parole.
-      const pxPerWord = isMobile ? 80 : 90;
-      const exitPx = 600;
-      const totalPx = words.length * pxPerWord + exitPx;
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: `+=${totalPx}`,
-          pin: true,
-          pinSpacing: true,
-          scrub: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // Sequenza karaoke: ogni parola passa 0.18 → 1 → 0.55, in posizione assoluta.
-      const stepIn = 0.6;
-      const stepHold = 0.3;
-      const stepOut = 0.5;
-      const wordSlot = 1.0; // 1 "unità" per parola: scroll mappato 1:1
-
-      words.forEach((w, i) => {
-        const accent = w.dataset.accent === "true";
-        const tone = w.dataset.tone as AccentTone | undefined;
-        const activeColor = accent ? (tone === "deep" ? DEEP : WARM) : "var(--ink)";
-        const at = i * wordSlot;
-        tl.to(
-          w,
-          {
-            opacity: 1,
-            scale: 1.02,
-            color: activeColor,
-            duration: stepIn,
-            ease: "power2.out",
-          },
-          at,
-        );
-        tl.to(
-          w,
-          {
-            opacity: 0.55,
-            scale: 1,
-            duration: stepOut,
-            ease: "power2.inOut",
-          },
-          at + stepIn + stepHold,
-        );
-      });
-
-      const readingDuration = words.length * wordSlot;
-
-      // Teleprompter: trasla il blockquote linearmente sulla stessa progress.
-      tl.to(
-        blockquote,
-        {
-          y: () => -computeOffset(),
-          ease: "none",
-          duration: readingDuration,
-        },
-        0,
-      );
-
-      // Firma fade-in nel finale della lettura
-      tl.from(
-        signatureRef.current,
-        {
-          opacity: 0,
-          y: 12,
-          duration: 1.2,
-          ease: "power2.out",
-        },
-        readingDuration - 1.5,
-      );
-
-      // Hold confortevole (~6% finale prima dell'uscita)
-      const holdDuration = Math.max(0.6, readingDuration * 0.06);
-      tl.to({}, { duration: holdDuration }, readingDuration);
-
-      // Uscita morbida: fade + scale-out del manifesto prima di sganciare il pin
-      tl.to(
-        stage,
-        {
-          opacity: 0,
-          scale: 0.98,
-          duration: Math.max(1.5, readingDuration * 0.1),
-          ease: "power2.in",
-        },
-        readingDuration + holdDuration,
-      );
     }, section);
 
     return () => ctx.revert();
   }, [i18n.language]);
 
-  wordsRef.current = [];
-  let wordCounter = 0;
+  linesRef.current = [];
 
   return (
     <section
       ref={sectionRef}
       aria-labelledby="manifesto-title"
       className="relative w-full overflow-hidden bg-ivory text-ink"
-      style={{ minHeight: "100svh" }}
     >
       {/* Grain coerente con hero */}
       <div className="grain-overlay" aria-hidden />
@@ -320,7 +239,7 @@ export function ManifestoSection() {
       {/* Arco-eco decorativo (richiamo all'hero) */}
       <svg
         aria-hidden
-        className="pointer-events-none absolute right-[6vw] top-[18%] hidden md:block"
+        className="pointer-events-none absolute right-[6vw] top-[14%] hidden md:block"
         width="420"
         height="560"
         viewBox="0 0 420 560"
@@ -341,7 +260,7 @@ export function ManifestoSection() {
         Manifesto — Il Tempo Lento
       </h2>
 
-      <div className="relative z-10 mx-auto flex h-[100svh] max-w-[1400px] flex-col px-6 pt-[10vh] pb-[8vh] md:px-12 lg:px-20">
+      <div className="relative z-10 mx-auto flex max-w-[1400px] flex-col px-6 py-24 md:px-12 md:py-36 lg:px-20">
         {/* Eyebrow + filetto */}
         <div className="flex items-center gap-4">
           <span ref={eyebrowTextRef} className="text-eyebrow text-ink/70">
@@ -356,84 +275,65 @@ export function ManifestoSection() {
         </div>
 
         {/* Manifesto */}
-        <div
-          ref={stageRef}
-          className="relative mt-[6vh] flex-1 overflow-hidden"
-          style={{ willChange: "opacity, transform" }}
-        >
+        <div className="relative mt-12 md:mt-16">
           {/* Testo accessibile (screen reader) */}
           <p className="sr-only">{fullText}</p>
 
           {/* Blocco visivo (aria-hidden) — broken grid */}
           <blockquote
-            ref={blockquoteRef}
             aria-hidden
-            className="font-display font-normal leading-[1.2] text-ink"
+            className="font-display font-normal leading-[1.22] text-ink"
             style={{
               fontSize: "clamp(1.5rem, 3.6vw, 3rem)",
-              maxWidth: "min(70ch, 80%)",
-              willChange: "transform",
+              maxWidth: "min(70ch, 85%)",
             }}
           >
             {lines.map((line, li) => {
               const isCjk = line.length > 3 && line.every((tok) => tok.text.length <= 2);
               const indent = LINE_INDENT[li] ?? 0;
-              // mobile: rientri ridotti
               const desktopPad = ["0", "8%", "16%", "24%"][indent];
               return (
                 <span
                   key={li}
-                  className="block"
+                  ref={(el) => {
+                    if (el) linesRef.current[li] = el;
+                  }}
+                  className="block will-change-transform"
                   style={{
                     paddingLeft: desktopPad,
-                    marginTop: li === 0 ? 0 : "0.15em",
+                    marginTop: li === 0 ? 0 : "0.18em",
                   }}
                 >
-                  {line.map((tok, ti) => {
-                    const idx = wordCounter++;
-                    return (
-                      <span key={`${li}-${ti}`}>
-                        <span
-                          ref={(el) => {
-                            if (el) wordsRef.current[idx] = el;
-                          }}
-                          data-word
-                          data-accent={tok.accent ? "true" : "false"}
-                          data-tone={tok.tone ?? ""}
-                          className={tok.accent ? "font-display italic" : ""}
-                          style={{
-                            display: "inline-block",
-                            opacity: 0.18,
-                            color: tok.accent ? (tok.tone === "deep" ? DEEP : WARM) : undefined,
-                            fontSize: tok.accent ? "1.08em" : undefined,
-                            willChange: "opacity, transform, color",
-                          }}
-                        >
-                          {tok.text}
-                        </span>
-                        {!isCjk && ti < line.length - 1 ? " " : ""}
+                  {line.map((tok, ti) => (
+                    <span key={`${li}-${ti}`}>
+                      <span
+                        className={tok.accent ? "font-display italic" : undefined}
+                        style={{
+                          color: tok.accent ? (tok.tone === "deep" ? DEEP : WARM) : undefined,
+                          fontSize: tok.accent ? "1.08em" : undefined,
+                        }}
+                      >
+                        {tok.text}
                       </span>
-                    );
-                  })}
+                      {!isCjk && ti < line.length - 1 ? " " : ""}
+                    </span>
+                  ))}
                 </span>
               );
             })}
           </blockquote>
 
           {/* Firma */}
-          <div
-            ref={signatureRef}
-            className="mt-[8vh] flex justify-end md:absolute md:bottom-0 md:right-0 md:mt-0"
-          >
+          <div ref={signatureRef} className="mt-12 flex justify-end md:mt-14">
             <span className="text-eyebrow text-ink/60">— {t("manifesto.signature")}</span>
           </div>
         </div>
       </div>
 
-      {/* Sfumatura di uscita: avorio → pietra (continuità con Sez. 03) */}
+      {/* Sfumatura di uscita: avorio → pietra (continuità con Sez. 02) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-32"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28"
         style={{
           background: "linear-gradient(to bottom, transparent, var(--stone))",
         }}

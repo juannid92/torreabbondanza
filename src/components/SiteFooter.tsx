@@ -20,6 +20,8 @@ import { cn } from "@/lib/utils";
 import { scrollToSection } from "@/hooks/use-lenis";
 import { BUSINESS, SITE_URL } from "@/lib/site";
 import closingArchImg from "@/assets/fiocco-quinta/cavallo-dettaglio.jpg";
+import logoMasseria from "@/assets/logo-masseria.png";
+import stemmaTorre from "@/assets/stemma-torre.png";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -560,11 +562,18 @@ export function SiteFooter() {
           <div className="mt-24 grid gap-12 md:grid-cols-2 lg:grid-cols-4 border-t border-ivory/10 pt-14">
             {/* Masseria */}
             <div data-foot-col>
-              <p className="font-display text-2xl leading-tight tracking-tight">
-                Masseria
-                <br />
-                <span className="italic text-gold">Torre Abbondanza</span>
-              </p>
+              <div className="flex items-center gap-3">
+                <img
+                  src={logoMasseria}
+                  alt="Masseria Torre Abbondanza"
+                  className="h-12 w-auto object-contain brightness-0 invert opacity-95 sm:h-14"
+                />
+                <img
+                  src={stemmaTorre}
+                  alt="Stemma Torre Abbondanza"
+                  className="h-12 w-auto object-contain brightness-0 invert opacity-95 sm:h-14"
+                />
+              </div>
               <p className="mt-5 text-sm leading-relaxed text-ivory/70">
                 {t("footerSection.brandDesc")}
               </p>

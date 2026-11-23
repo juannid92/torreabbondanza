@@ -5,6 +5,8 @@ import { Menu, X, MessageCircle } from "lucide-react";
 import { BUSINESS } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import logoMasseria from "@/assets/logo-masseria.png";
+import stemmaTorre from "@/assets/stemma-torre.png";
 
 const NAV_ITEMS: {
   key: "masseria" | "cucina" | "appuntamenti" | "cavalli" | "eventi" | "contatti";
@@ -52,16 +54,29 @@ export function SiteHeader() {
           : "bg-transparent",
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-12">
-        {/* Logo */}
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2.5 md:px-12 md:py-3">
+        {/* Logo + Stemma */}
         <Link
           to="/"
-          className={cn(
-            "font-display text-lg font-semibold tracking-tight transition-colors",
-            scrolled || mobileOpen ? "text-ivory" : "text-ink",
-          )}
+          aria-label="Masseria Torre Abbondanza — Home"
+          className="flex shrink-0 items-center gap-2.5 sm:gap-3 transition-opacity hover:opacity-85"
         >
-          Torre Abbondanza
+          <img
+            src={logoMasseria}
+            alt="Masseria Torre Abbondanza"
+            className={cn(
+              "h-9 w-auto object-contain transition-all duration-300 sm:h-11",
+              (scrolled || mobileOpen) && "brightness-0 invert",
+            )}
+          />
+          <img
+            src={stemmaTorre}
+            alt="Stemma Torre Abbondanza"
+            className={cn(
+              "h-9 w-auto object-contain transition-all duration-300 sm:h-11",
+              (scrolled || mobileOpen) && "brightness-0 invert",
+            )}
+          />
         </Link>
 
         {/* Desktop nav */}
