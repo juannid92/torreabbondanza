@@ -20,9 +20,23 @@
     "chiudiMenu": "Menü schließen"
   },
   "hero": {
-    "eyebrow": "Masseria aus dem 18. Jahrhundert · Noci, Apulien",
-    "title": "Torre Abbondanza",
-    "subtitle": "Wo Stein auf Galopp trifft. Traditionelle Küche, exklusive Veranstaltungen und Murgese-Pferde im Herzen des Trulli-Tals."
+    "tagline": "Zwei Seelen, eine Masseria aus dem 18. Jahrhundert: apulische Küche für Feiern und die alte Kunst der Murgese-Pferde im Herzen der Murgia.",
+    "ctaEvents": "Tafel & Zeremonien",
+    "ctaHorses": "Murgese-Pferde",
+    "ctaBook": "Tisch reservieren",
+    "scroll": "Scrollen",
+    "est": "Gegr. 18. Jh.",
+    "breeding": "Murgese-Gestüt",
+    "marquee": [
+      "MURGESE-PFERDE",
+      "RESTAURANT",
+      "GESTÜT",
+      "HOCHZEITEN & FESTE",
+      "HISTORISCHE KUTSCHEN",
+      "APULISCHE KÜCHE",
+      "MASSERIA DES 18. JH.",
+      "MURGIA · NOCI"
+    ]
   },
   "masseria": {
     "eyebrow": "Vom 18. Jahrhundert bis heute",
@@ -129,5 +143,448 @@
     "diritti": "Alle Rechte vorbehalten.",
     "privacy": "Datenschutzerklärung",
     "cookie": "Cookie-Richtlinie"
+  },
+  "a11y": {
+    "skipToContent": "Zum Hauptinhalt springen"
+  },
+  "header": {
+    "masseria": "Die Masseria",
+    "cucina": "Küche",
+    "appuntamenti": "Kulinarische Termine",
+    "cavalli": "Pferde",
+    "eventi": "Events",
+    "contatti": "Kontakt",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "whatsappFull": "Auf WhatsApp schreiben"
+  },
+  "intro": {
+    "skip": "Intro überspringen"
+  },
+  "manifesto": {
+    "eyebrow": "01 — Das Manifest",
+    "lines": [
+      "Es gibt einen Ort, an dem der Stein drei Jahrhunderte erzählt,",
+      "an dem die Erde ihre Früchte schenkt und jede Tafel zum Fest wird,",
+      "und an dem die Murgese-Pferde so frei laufen wie einst.",
+      "Hier verlangsamt sich die Zeit, Gastfreundschaft ist familiär,",
+      "und Fülle ist keine Menge —",
+      "sondern die Großzügigkeit einer alten Geste,",
+      "die sich jeden Tag erneuert."
+    ],
+    "signature": "Masseria Torre Abbondanza · Seit dem 18. Jahrhundert"
+  },
+  "story": {
+    "eyebrow": "02 — Geschichte",
+    "titleStart": "Drei Jahrhunderte",
+    "titleAccent": "Stein",
+    "body": "Eine zweistimmige Geschichte: die Masseria der Familie Giunta aus dem 18. Jahrhundert und die Murgese-Pferde dieses Landes.",
+    "scrollHint": "scrollen →",
+    "c1Eyebrow": "Kapitel I — Die Ursprünge",
+    "c1Title": "Auf dem Land von Noci",
+    "c1Body": "Im Herzen des 18. Jahrhunderts, zwischen Wäldern, Trockensteinmauern und dem Weiß von Noci, wuchs die Masseria Stein auf Stein empor.",
+    "c1Note": "18. Jahrhundert · Noci · Murgia dei Trulli",
+    "c2Eyebrow": "Kapitel II — Die Materie",
+    "c2Title": "Kalk, Stein, Licht",
+    "c2Body": "Rundbögen, atmende Kalkwände und Terrakottadächer: Apuliens ländliche Architektur ist keine Dekoration, sondern Klima.",
+    "c3Eyebrow": "Kapitel III — Die Linie",
+    "c3TitleStart": "Das",
+    "c3TitleAccent": "Pferd",
+    "c3TitleEnd": "der Murgia",
+    "c3Body": "In unseren Ställen lebt das eingetragene Murgese-Gestüt der Familie Giunta (Kürzel T.A.): tiefschwarzes Fell, Stolz und historische Kutschen.",
+    "c4Eyebrow": "Kapitel IV — Die Familie",
+    "c4Title": "Familie Giunta, seit 2005",
+    "c4Body": "Zwanzig Jahre echte Gastfreundschaft: apulische Küche auf Vorbestellung, eigener Garten und tägliche Pflege.",
+    "c5Eyebrow": "Kapitel V — Heute",
+    "c5Title": "Zwei Seelen, eine Schwelle",
+    "c5Body": "Heute empfängt Torre Abbondanza Hochzeiten, Zeremonien, private Feiern und Pferdeliebhaber aus ganz Europa."
+  },
+  "place": {
+    "eyebrow": "03 — Der Ort",
+    "titleWords": [
+      "Im",
+      "Atem",
+      "der",
+      "Murgia"
+    ],
+    "subtitle": "Ein ruhiger Ort zwischen jahrhundertealten Olivenbäumen und Trockensteinmauern.",
+    "coords": [
+      "40.73° N — 17.13° E",
+      "Murgia dei Trulli · Hochplateau",
+      "Noci (BA) · Apulien",
+      "Heimat des Murgese-Pferdes",
+      "Oliven · Stein · Pferde"
+    ],
+    "mapCaption": "Notizbuch · Murgia dei Trulli",
+    "howToReach": "Anfahrt",
+    "nearNoci": "Wenige Minuten von Noci,",
+    "nearItria": "zwischen den Olivenhainen des Itria-Tals.",
+    "inHeart": "Im Herzen der Murgia, Land der Masserien und Pferde.",
+    "openGoogleMaps": "In Google Maps öffnen"
+  },
+  "kitchen": {
+    "eyebrow": "04 — Die Küche",
+    "titleStart": "Unsere",
+    "titleAccent": "Küche",
+    "subtitle": "Familienrezepte, Zutaten aus der Murgia und frisch zubereitete Gänge auf Reservierung.",
+    "tags": [
+      "Nur auf Reservierung",
+      "Für Feiern & Events",
+      "Menü nach Maß",
+      "Veg · Vegan · Glutenfrei"
+    ],
+    "courses": [
+      {
+        "course": "Vorspeisen vom Land",
+        "word": "ANTIPASTI",
+        "dishTitle": "Apulische Traditionsauswahl",
+        "description": "Gebratene Oliven, lokale Wurst- und Käsespezialitäten, Parmigiana, warme Focaccia, Saubohnenpüree und gebratene Paprika."
+      },
+      {
+        "course": "Hausgemachte Pasta",
+        "word": "PRIMI",
+        "dishTitle": "Handgerollte Cavatelli mit Ragù",
+        "description": "Frische, von Hand geformte Cavatelli und Orecchiette mit Sonntagsragù und Cardoncelli-Pilzen."
+      },
+      {
+        "course": "Hauptgänge",
+        "word": "SECONDI",
+        "dishTitle": "Geschmorte Fleischroulade",
+        "description": "Ausgewähltes Fleisch, langsam in apulischem Rotwein mit Wildkräutern geschmort."
+      },
+      {
+        "course": "Hausgemachte Desserts",
+        "word": "DOLCI",
+        "dishTitle": "Schokoladentörtchen",
+        "description": "Handgefertigte Desserts des Hauses für jeden Anlass."
+      }
+    ]
+  },
+  "menu": {
+    "eyebrow": "05 — Aromen",
+    "titleStart": "Die Tafel für",
+    "titleAccent": "große Anlässe",
+    "kinetic": [
+      "Geselligkeit",
+      "Tradition",
+      "nach Maß",
+      "Anlass"
+    ],
+    "prose1Start": "Die Masseria öffnet ihre Küche für",
+    "prose1Accent": "besondere Anlässe",
+    "prose1End": "— Zeremonien, Taufen, Geburtstage, Hochzeiten.",
+    "prose2": "Jedes Menü entsteht im gemeinsamen Gespräch. Für unsere Tafel genügen mindestens zwanzig Gäste, zwei Tage Vorlauf und ein Vorschlag ab fünfzig Euro pro Person.",
+    "dietary": "Vegetarisch · Vegan · Glutenfrei · Kindermenü — auf Wunsch",
+    "ctaRequest": "Menü anfragen",
+    "ctaAppointments": "Kulinarische Termine & Menüs",
+    "bridgeStart": "Nach der Tafel wartet der Galopp.",
+    "bridgeLink": "Die Murgese-Pferde"
+  },
+  "postersTeaser": {
+    "eyebrow": "Kulinarische Termine · Menüs & Feste",
+    "titleStart": "Die Termine",
+    "titleAccent": "am Tisch",
+    "titleEnd": "der Masseria",
+    "subtitle": "Familiensonntage, Feiertage und Sommerabende im Hof: entdecken Sie unsere Sondermenüs.",
+    "ctaAll": "Alle kulinarischen Termine",
+    "whatsapp": "WhatsApp",
+    "call": "Anrufen"
+  },
+  "horses": {
+    "eyebrow": "06 — Die Pferde",
+    "titleStart": "Die Linie",
+    "titleAccent": "Murgese",
+    "subtitle": "Eingetragene Murgese-Zucht der Familie Giunta (T.A.): glänzende Rappen und Reittradition.",
+    "traditionTitleStart": "Die Masseria bewahrt das",
+    "traditionTitleAccent": "Reiter-Erbe.",
+    "traditionQuote": "Historische Kutschenparaden, Murgese-Pferde und Maultiere aus Martina Franca: gelebte Tradition.",
+    "traditionBody": "Unsere Pferde stammen aus der Zucht der Familie Giunta (T.A.). Stallführungen, Ausritte und Kutschfahrten auf Anfrage.",
+    "ctaExperience": "Reiterlebnis anfragen",
+    "ctaShowcase": "Pferde im Schaufenster"
+  },
+  "events": {
+    "headingStart": "Sieben Arten, die",
+    "headingAccent": "Masseria zu erleben.",
+    "subheading": "Hochzeiten, Zeremonien, Familienfeste, exklusive Abende und Reiterlebnisse zwischen historischem Saal und Olivenhof.",
+    "stat1Label": "Empfänge",
+    "stat1Value": "Bis zu 250 Gäste",
+    "stat2Label": "Räume",
+    "stat2Value": "Saal & Olivenhain",
+    "stat3Label": "Küche",
+    "stat3Value": "Eigene Küche",
+    "reqBtn": "Für dieses Event anfragen",
+    "reqShortBtn": "Anfragen",
+    "detailsBtn": "Details & Fotos",
+    "swipeHint": "Karte wischen oder Pfeile nutzen",
+    "changeView": "Ansicht wechseln",
+    "closeSheet": "Details schließen",
+    "whatsapp": "WhatsApp",
+    "call": "Anrufen",
+    "fillForm": "Formular für dieses Event ausfüllen",
+    "carriageTitle": "Ankunft mit historischer Kutsche",
+    "carriageQuote": "Ein seltener, stilvoller Auftritt tief aus unserer Region.",
+    "carriageBody": "Auf Wunsch beginnt Ihre Feier mit der Einfahrt einer historischen Kutsche, gezogen von unseren Murgese-Pferden.",
+    "carriageBadge": "Service auf Anfrage",
+    "carriageLink": "Unsere Murgese entdecken",
+    "closingStart": "Erzählen Sie uns von Ihrem Event: wir gestalten",
+    "closingAccent": "jedes Detail.",
+    "whatsappDirect": "Direkt per WhatsApp",
+    "ctaAvailability": "Verfügbarkeit prüfen",
+    "ctaAppointments": "Kulinarische Termine & Menüs",
+    "spaces": {
+      "salaTitle": "Historischer Saal (18. Jh.)",
+      "salaSubtitle": "Bis zu 250 Gäste · Ganzjährig",
+      "salaDesc": "Holzbalken, Steinbögen und warmes Licht für lange kaiserliche Tafeln oder runde Tische.",
+      "salaV1": "Panoramablick · Warmes Licht",
+      "salaV2": "Kaiserliche Tafel · Langer Tisch",
+      "corteTitle": "Der Hof & die Olivenbäume",
+      "corteSubtitle": "Schilfpergola · Empfänge im Freien",
+      "corteDesc": "Weiß getünchter Stein, historische Bögen und Sommerabende unter alten Olivenbäumen.",
+      "corteV1": "Hof am Tag · Bögen & Naturstein",
+      "corteV2": "Hof am Abend · Unter dem Olivenbaum"
+    },
+    "items": [
+      {
+        "id": "matrimoni",
+        "title": "Hochzeiten",
+        "shortTitle": "Hochzeiten",
+        "spaces": "Olivenhof · Historischer Saal",
+        "phrase": "Das Ja-Wort unter Olivenbäumen, ein unvergessliches Fest.",
+        "description": "Empfänge bis 250 Gäste im Steinhof, unter der Sommerpergola und im Gewölbesaal des 18. Jahrhunderts.",
+        "highlights": [
+          "Olivenhof und historischer Saal aus dem 18. Jahrhundert",
+          "Eigene apulische Küche mit Wunschmenüs",
+          "Optionaler Einzug mit historischer Murgese-Kutsche"
+        ]
+      },
+      {
+        "id": "cerimonie",
+        "title": "Zeremonien",
+        "shortTitle": "Zeremonien",
+        "spaces": "Steinbögen · Garten",
+        "phrase": "Standesamtlich oder symbolisch: Rituale ganz nach Ihnen.",
+        "description": "Kommunionen, Konfirmationen und freie Trauungen zwischen den historischen Steinbögen.",
+        "highlights": [
+          "Außenbereiche für Zeremonien im historischen Innenhof",
+          "Menüs auf Reservierung für 20 bis 250 Gäste",
+          "Persönliche Betreuung durch Familie Giunta"
+        ]
+      },
+      {
+        "id": "battesimi",
+        "title": "Taufen",
+        "shortTitle": "Taufen",
+        "spaces": "Historischer Saal · Familientafel",
+        "phrase": "Die ersten Familienfeste, geborgen im alten Stein.",
+        "description": "Eine große Familientafel mit frischer apulischer Küche und Kindergerichten.",
+        "highlights": [
+          "Gemütlicher Saal zu jeder Jahreszeit",
+          "Saisonale Menüs ab 50 € pro Person inkl. Kinderoptionen",
+          "Ruhiger, sicherer Innenhof auf dem Land"
+        ]
+      },
+      {
+        "id": "compleanni",
+        "title": "Geburtstage",
+        "shortTitle": "Geburtstage",
+        "spaces": "Historischer Saal · Abendhof",
+        "phrase": "Jahre, die zählen — Kerzen und Anstoßen unter Sternen.",
+        "description": "Runde Geburtstage, Abschlüsse und Jubiläen mit Wunschmenü, lokalen Weinen und Musik.",
+        "highlights": [
+          "Menü mindestens 2 Tage im Voraus (ab 20 Gästen)",
+          "Hausgemachte Desserts und abendlicher Empfang",
+          "Private Atmosphäre fern vom Stadtlärm"
+        ]
+      },
+      {
+        "id": "feste-private",
+        "title": "Private Feiern",
+        "shortTitle": "Privatfeiern",
+        "spaces": "Abendhof · Exklusive Nutzung",
+        "phrase": "Firmenfeiern oder Überraschungen: die Masseria gehört Ihnen.",
+        "description": "Geschäftsessen, Familientreffen und exklusive Abende im gesamten Anwesen.",
+        "highlights": [
+          "Exklusive Gruppenbuchungen ab 20 Personen",
+          "Wahl zwischen historischem Saal und Olivenhof",
+          "Eigene Parkplätze nahe Noci und Alberobello"
+        ]
+      },
+      {
+        "id": "la-masseria",
+        "title": "Die Masseria",
+        "shortTitle": "Masseria",
+        "spaces": "Anwesen 18. Jh. · Noci",
+        "phrase": "Stein, Oliven, Hof und lange Tafel. Sie wählen den Moment.",
+        "description": "Historisches Landgut mit Festsaal, weißem Hof, Familienküche und Murgese-Ställen.",
+        "highlights": [
+          "Authentische apulische Architektur der Familie Giunta",
+          "Kombinierbar mit Stallführungen oder Festessen",
+          "Direkte Beratung für maßgeschneiderte Projekte"
+        ]
+      },
+      {
+        "id": "esperienza-equestre",
+        "title": "Reiterlebnis",
+        "shortTitle": "Reitsport",
+        "spaces": "Murgese-Gestüt · Kutschen",
+        "phrase": "Murgese-Pferde auf der Weide, Ausritte und historische Kutschen.",
+        "description": "Stallbesuche im Gestüt Torre Abbondanza (T.A.), Ausritte und Kutschfahrten.",
+        "highlights": [
+          "Eingetragene Murgese-Pferde und Maultiere vor Ort gezüchtet",
+          "Geführte Ausritte und Stallführungen auf Anfrage",
+          "Historische Kutschenparaden für Feiern"
+        ]
+      }
+    ]
+  },
+  "seasons": {
+    "eyebrow": "08 — Die Jahreszeiten",
+    "title": "Ein Jahr in der Masseria",
+    "ctaEvents": "Events entdecken",
+    "items": [
+      {
+        "label": "Frühling",
+        "italic": "in Blüte",
+        "kicker": "Das Land erwacht: blühende Olivenbäume und ruhige Schritte entlang der Steinmauern.",
+        "exp1Title": "Zu Pferd durch blühende Oliven",
+        "exp1Text": "Ausritte mit den Murgese-Pferden zwischen weißen Frühlingsblüten.",
+        "exp2Title": "Erwachen im Grünen",
+        "exp2Text": "Picknicks und Mittagessen unter Olivenbäumen mit frischem Brot und Käse."
+      },
+      {
+        "label": "Sommer",
+        "italic": "unter Sternen",
+        "kicker": "Lange Abende, warmes Gold auf Stein und Tafel: Zeit zum Feiern.",
+        "exp1Title": "Dinner unter den Sternen",
+        "exp1Text": "Kerzenlicht und lange Tafeln im historischen Hof.",
+        "exp2Title": "Parade historischer Kutschen",
+        "exp2Text": "Murgese-Pferde und alte Kutschen auf den Landwegen."
+      },
+      {
+        "label": "Herbst",
+        "italic": "der Pfade",
+        "kicker": "Olivenernte, Spätlese und erste Wärme im Steinsaal.",
+        "exp1Title": "Unter alten Olivenbäumen",
+        "exp1Text": "Verkostung von neuem Olivenöl mit warmem Brot.",
+        "exp2Title": "Die Herbsttafel",
+        "exp2Text": "Cardoncelli-Pilze, hausgemachte Pasta und Rotweine."
+      },
+      {
+        "label": "Winter",
+        "italic": "am Kamin",
+        "kicker": "Der Stein bewahrt die Kaminwärme, Sonntagsessen mit der Familie.",
+        "exp1Title": "Geborgenheit im Saal des 18. Jh.",
+        "exp1Text": "Familienfeste unter warmen Bögen am offenen Feuer.",
+        "exp2Title": "Die Murgese im Winter",
+        "exp2Text": "Glänzendes schwarzes Fell in der klaren Winterluft."
+      }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "09 — Gästebuch",
+    "title": "Stimmen unserer Gäste",
+    "seal": "Eines der beliebtesten Ziele der Murgia.",
+    "stats": "4,4 / 5 auf TripAdvisor (213 Bewertungen) · 9,7 / 10 auf TheFork (50 Bewertungen)",
+    "notes": [
+      "Eine Oase der Ruhe und des Geschmacks. Ausgezeichnetes Essen und herzlicher Service.",
+      "Wunderschöne Masseria auf dem Land von Noci. Tolle Küche und liebevolle Präsentation.",
+      "Wir hatten einen wunderbaren Tag mit über fünfzig Gästen — großartige Gastfreundschaft."
+    ]
+  },
+  "visitSection": {
+    "eyebrow": "10 — Kontakt",
+    "titleWords": [
+      "Besuchen",
+      "Sie",
+      "uns."
+    ],
+    "subtitle": "Im Herzen der Murgia zwischen alten Olivenbäumen. Wir freuen uns auf Sie.",
+    "where": "Standort",
+    "addressLabel": "Adresse",
+    "phoneLabel": "Telefon",
+    "whatsappLabel": "WhatsApp",
+    "whatsappCta": "Auf WhatsApp schreiben",
+    "siteLabel": "Website",
+    "inMurgia": "In der Murgia",
+    "directionsGoogle": "Route · Google Maps",
+    "modelNote": "Unsere Küche öffnet auf Reservierung für besondere Anlässe.",
+    "formTitle": "Erzählen Sie uns von Ihrem Anlass",
+    "formSubtitle": "Füllen Sie das Formular aus für eine direkte WhatsApp-Anfrage.",
+    "nameLabel": "Vor- und Nachname",
+    "phoneFieldLabel": "Telefon / WhatsApp",
+    "kindLabel": "Art des Anlasses",
+    "dateLabel": "Ungefähres Datum",
+    "guestsLabel": "Anzahl Gäste",
+    "messageLabel": "Nachricht",
+    "consentText": "Ich stimme der Datenverarbeitung gemäß Datenschutzrichtlinie zu.",
+    "submitBtn": "Anfrage per WhatsApp senden",
+    "errName": "Bitte Namen eingeben.",
+    "errPhone": "Ungültige Telefonnummer.",
+    "errKind": "Bitte Anlass wählen.",
+    "errMessage": "Bitte Nachricht eingeben.",
+    "errConsent": "Datenschutz-Zustimmung erforderlich.",
+    "successMsg": "Danke! Ihre Anfrage ist bereit.",
+    "openWhatsAppNow": "WhatsApp jetzt öffnen",
+    "occasions": {
+      "matrimonio": "Hochzeit",
+      "cerimonia": "Zeremonie",
+      "battesimo": "Taufe",
+      "compleanno": "Geburtstag",
+      "festa-privata": "Private Feier",
+      "esperienza-equestre": "Reiterlebnis",
+      "altro": "Sonstiges"
+    }
+  },
+  "footerSection": {
+    "eyebrow": "11 — Abschied",
+    "locationTag": "Contrada Murgia · Noci",
+    "claim1": "Zwei",
+    "claim1Accent": "Seelen",
+    "claim2": "ein einziges",
+    "claim2Accent": "Land",
+    "quote": "«Unsere Tore stehen allen offen, die die Ruhe der Murgia, den echten Geschmack der Erde und unsere Murgese-Pferde suchen.»",
+    "family": "— Familie Giunta",
+    "since": "Seit dem 18. Jahrhundert",
+    "whatsappBtn": "Auf WhatsApp schreiben",
+    "callBtn": "Anrufen",
+    "shareBtn": "Masseria mit Freunden teilen →",
+    "shareCopied": "Link kopiert",
+    "archCaption": "«Wo Stein des 18. Jahrhunderts auf den Galopp trifft.»",
+    "brandDesc": "Masseria aus dem 18. Jahrhundert in Noci. Küche auf Reservierung, Murgese-Pferde und besondere Anlässe.",
+    "navTitle": "Entdecken",
+    "contactsTitle": "Kontakt",
+    "followTitle": "Folgen",
+    "requestBtn": "Anlass anfragen",
+    "rights": "Alle Rechte vorbehalten.",
+    "cookiePrefs": "Cookie-Einstellungen",
+    "onReservation": "Auf Reservierung",
+    "backToTop": "Nach oben",
+    "navLinks": {
+      "storia": "Geschichte",
+      "luogo": "Der Ort",
+      "cucina": "Küche",
+      "menu": "Aromen",
+      "cavalli": "Pferde",
+      "eventi": "Events",
+      "esperienze": "Erlebnisse",
+      "recensioni": "Stimmen",
+      "contatti": "Kontakt"
+    }
+  },
+  "cookieBanner": {
+    "title": "Cookie-Einstellungen",
+    "desc": "Diese Website verwendet notwendige technische Cookies und mit Ihrer Zustimmung Analyse-Cookies (GA4).",
+    "rejectAll": "Alle ablehnen",
+    "customize": "Anpassen",
+    "acceptAll": "Alle akzeptieren",
+    "prefsTitle": "Cookie-Einstellungen verwalten",
+    "prefsDesc": "Gemäß DSGVO können Sie wählen, welche Kategorien aktiviert werden.",
+    "techTitle": "Technische Cookies (immer aktiv)",
+    "techDesc": "Erforderlich für Betrieb, Sicherheit und Speicherung Ihrer Auswahl.",
+    "analyticsTitle": "Analyse-Cookies (GA4)",
+    "analyticsDesc": "Anonymisierte Besuchsstatistiken.",
+    "marketingTitle": "Marketing-Cookies",
+    "marketingDesc": "Kampagnenmessung nur nach Ihrer Zustimmung.",
+    "savePrefs": "Einstellungen speichern"
   }
 }

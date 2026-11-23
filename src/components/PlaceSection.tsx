@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ParallaxLayer } from "./ParallaxLayer";
@@ -20,7 +21,10 @@ if (typeof window !== "undefined") {
 const MAP_URL = `https://www.google.com/maps/search/?api=1&query=${BUSINESS.geo.lat},${BUSINESS.geo.lon}`;
 
 export function PlaceSection() {
+  const { t } = useTranslation();
   const sceneRef = useRef<HTMLDivElement | null>(null);
+  const titleWords = t("place.titleWords", { returnObjects: true }) as string[];
+  const coords = t("place.coords", { returnObjects: true }) as string[];
   const titleRef = useRef<HTMLHeadingElement | null>(null);
 
   useEffect(() => {
@@ -233,7 +237,7 @@ export function PlaceSection() {
         {/* Overlay testuale */}
         <div className="pointer-events-none absolute inset-0 z-20 flex flex-col">
           <div className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col px-6 pt-[14vh] md:px-12 lg:px-20">
-            <span className="text-eyebrow text-ink/70">03 — Il luogo</span>
+            <span className="text-eyebrow text-ink/70">{t("place.eyebrow")}</span>
             <h2
               id="place-title"
               ref={titleRef}
@@ -244,34 +248,26 @@ export function PlaceSection() {
                 letterSpacing: "-0.025em",
               }}
             >
-              <span className="word-mask">
-                <span data-word-inner className="word-inner">
-                  Nel&nbsp;
-                </span>
-              </span>
-              <span className="word-mask">
-                <span data-word-inner className="word-inner">
-                  respiro&nbsp;
-                </span>
-              </span>
-              <span className="word-mask">
-                <span data-word-inner className="word-inner">
-                  della&nbsp;
-                </span>
-              </span>
-              <span className="word-mask">
-                <span data-word-inner className="word-inner italic text-terracotta">
-                  Murgia
-                </span>
-              </span>
+              {(Array.isArray(titleWords) ? titleWords : ["Nel", "respiro", "della", "Murgia"]).map(
+                (w, idx, arr) => (
+                  <span key={idx} className="word-mask">
+                    <span
+                      data-word-inner
+                      className={`word-inner ${idx === arr.length - 1 ? "italic text-terracotta" : ""}`}
+                    >
+                      {w}
+                      {idx < arr.length - 1 ? "\u00A0" : ""}
+                    </span>
+                  </span>
+                ),
+              )}
             </h2>
             <p
               data-reveal="soft"
               className="mt-6 max-w-[44ch] font-display text-ink/80"
               style={{ fontSize: "clamp(1.05rem, 1.4vw, 1.4rem)", lineHeight: 1.5 }}
             >
-              Un punto di quiete tra ulivi secolari e muretti a secco, dove pascolano i cavalli
-              Murgesi e il paesaggio diventa silenzio.
+              {t("place.subtitle")}
             </p>
             {/* Lista compatta — visibile inline solo su mobile, NON in overlay */}
             <ul
@@ -279,23 +275,18 @@ export function PlaceSection() {
               aria-label="Coordinate e contesto"
               className="mt-8 grid grid-cols-1 gap-2 md:hidden"
             >
-              {[
-                { t: "40.73° N — 17.13° E", deep: false },
-                { t: "Murgia dei Trulli · altopiano", deep: false },
-                { t: "Noci (BA) · Puglia", deep: false },
-                { t: "Terra del cavallo Murgese", deep: true },
-                { t: "Ulivi · pietra · cavalli", deep: false },
-              ].map(({ t, deep }) => (
+              {(Array.isArray(coords) ? coords : []).map((txt, idx) => (
                 <li
-                  key={t}
+                  key={idx}
                   className="text-eyebrow"
                   style={{
-                    color: deep
-                      ? "var(--color-murgese, #15110F)"
-                      : "color-mix(in oklab, var(--ink) 75%, transparent)",
+                    color:
+                      idx === 3
+                        ? "var(--color-murgese, #15110F)"
+                        : "color-mix(in oklab, var(--ink) 75%, transparent)",
                   }}
                 >
-                  {t}
+                  {txt}
                 </li>
               ))}
             </ul>
@@ -358,15 +349,13 @@ export function PlaceSection() {
             >
               <StylizedMap />
             </div>
-            <span className="mt-3 block text-eyebrow text-ink/55">
-              Taccuino · Murgia dei Trulli
-            </span>
+            <span className="mt-3 block text-eyebrow text-ink/55">{t("place.mapCaption")}</span>
           </div>
 
           {/* Info reali */}
           <div className="flex flex-col gap-6">
             <span data-reveal className="text-eyebrow text-terracotta">
-              Come raggiungerci
+              {t("place.howToReach")}
             </span>
             <h3
               data-reveal="soft"
@@ -377,9 +366,9 @@ export function PlaceSection() {
                 letterSpacing: "-0.015em",
               }}
             >
-              A pochi minuti da Noci,
+              {t("place.nearNoci")}
               <br />
-              <span className="italic text-olive">tra gli ulivi della Valle d'Itria.</span>
+              <span className="italic text-olive">{t("place.nearItria")}</span>
             </h3>
             <address className="not-italic font-sans text-ink/80" style={{ lineHeight: 1.7 }}>
               Strada Vicinale per Massafra — SP 211
@@ -387,7 +376,7 @@ export function PlaceSection() {
               Zona E n. 49, 70015 Noci (BA)
             </address>
             <p className="font-sans text-ink/65" style={{ fontSize: "0.95rem", lineHeight: 1.65 }}>
-              Nel cuore della Murgia, terra di masserie e di cavalli.
+              {t("place.inHeart")}
             </p>
             <ul
               className="mt-3 grid grid-cols-2 gap-x-6 gap-y-1.5 font-sans text-ink/75"
@@ -429,7 +418,7 @@ export function PlaceSection() {
               aria-label="Apri in mappa su Google Maps"
               className="group inline-flex w-fit items-center gap-3 border-b border-ink/30 pb-1 text-eyebrow text-ink transition-colors hover:border-terracotta hover:text-terracotta"
             >
-              Apri in mappa
+              {t("place.openGoogleMaps")}
               <span aria-hidden className="transition-transform group-hover:translate-x-1">
                 →
               </span>

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -274,6 +275,7 @@ const OCCASIONS: { value: string; label: string; horse?: boolean }[] = [
 ];
 
 function OccasionForm() {
+  const { t } = useTranslation();
   const [v, setV] = useState({
     name: "",
     phone: "",
@@ -312,11 +314,11 @@ function OccasionForm() {
 
   function validate() {
     const e: Record<string, string> = {};
-    if (!v.name.trim()) e.name = "Inserisci il tuo nome.";
-    if (!/^[\d +().\-/]{6,}$/.test(v.phone)) e.phone = "Numero di telefono non valido.";
-    if (!v.kind) e.kind = "Scegli il tipo di occasione.";
-    if (!v.message.trim()) e.message = "Raccontaci qualcosa.";
-    if (v.consent !== "yes") e.consent = "È necessario il consenso privacy.";
+    if (!v.name.trim()) e.name = t("visitSection.errName");
+    if (!/^[\d +().\-/]{6,}$/.test(v.phone)) e.phone = t("visitSection.errPhone");
+    if (!v.kind) e.kind = t("visitSection.errKind");
+    if (!v.message.trim()) e.message = t("visitSection.errMessage");
+    if (v.consent !== "yes") e.consent = t("visitSection.errConsent");
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -392,7 +394,7 @@ function OccasionForm() {
 
       <div data-field className="grid gap-7 md:grid-cols-2">
         <Field
-          label="Nome e cognome"
+          label={t("visitSection.nameLabel")}
           name="name"
           required
           autoComplete="name"
@@ -401,7 +403,7 @@ function OccasionForm() {
           error={errors.name}
         />
         <Field
-          label="Telefono"
+          label={t("visitSection.phoneFieldLabel")}
           name="phone"
           type="tel"
           required
@@ -414,7 +416,7 @@ function OccasionForm() {
 
       <div data-field className="grid gap-7 md:grid-cols-3">
         <Field
-          label="Tipo di occasione"
+          label={t("visitSection.kindLabel")}
           name="kind"
           required
           value={v.kind}
@@ -433,13 +435,13 @@ function OccasionForm() {
             <option value="" disabled hidden />
             {OCCASIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {t(`visitSection.occasions.${o.value}`)}
               </option>
             ))}
           </select>
         </Field>
         <Field
-          label="Data indicativa"
+          label={t("visitSection.dateLabel")}
           name="date"
           type="date"
           min={today}
@@ -447,7 +449,7 @@ function OccasionForm() {
           onChange={set("date")}
         />
         <Field
-          label="Numero ospiti"
+          label={t("visitSection.guestsLabel")}
           name="guests"
           type="number"
           min="1"
@@ -458,7 +460,7 @@ function OccasionForm() {
 
       <div data-field>
         <Field
-          label="Messaggio"
+          label={t("visitSection.messageLabel")}
           name="message"
           textarea
           rows={4}
@@ -466,12 +468,12 @@ function OccasionForm() {
           value={v.message}
           onChange={set("message")}
           error={errors.message}
-          hint="Allergie, menù dedicati, esigenze particolari: scrivi tutto qui."
+          hint={t("menu.dietary")}
         />
       </div>
 
       <p data-field className="text-[11px] tracking-[0.18em] uppercase text-ink/55">
-        veg · vegan · gluten-free · menù bambini disponibili su richiesta
+        {t("menu.dietary")}
       </p>
 
       <label data-field className="flex items-start gap-3 text-sm text-ink/75 cursor-pointer">
@@ -483,15 +485,14 @@ function OccasionForm() {
           className="mt-1 h-4 w-4 accent-[color:var(--terracotta)]"
         />
         <span>
-          Acconsento al trattamento dei dati secondo la{" "}
-          {/* [K7] href="#" → /privacy (route TanStack Start) */}
+          {t("visitSection.consentText")}{" "}
           <Link
             to="/privacy"
             target="_blank"
             rel="noopener"
             className="underline underline-offset-4 hover:text-terracotta"
           >
-            privacy policy
+            {t("footer.privacy")}
           </Link>
           .
           {errors.consent && (
@@ -503,13 +504,13 @@ function OccasionForm() {
       </label>
 
       <div data-field className="flex flex-wrap items-center gap-4">
-        <SubmitButton status={status} label="Invia su WhatsApp" />
+        <SubmitButton status={status} label={t("visitSection.submitBtn")} />
         <a
           href={`tel:${PHONE_TEL}`}
           className="inline-flex items-center gap-2.5 rounded-full border border-stone/80 px-6 py-3.5 text-sm tracking-[0.16em] uppercase text-ink transition-colors duration-300 hover:border-terracotta hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
         >
           <Phone className="h-4 w-4" />
-          <span>Chiama ora</span>
+          <span>{t("footerSection.callBtn")}</span>
         </a>
       </div>
       <Feedback status={status} message={msg} waUrl={waUrl ?? undefined} />
@@ -544,7 +545,11 @@ function ContactRow({ label, icon, children }: ContactRowProps) {
 
 /* ---------------- Section ---------------- */
 export function VisitSection() {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement | null>(null);
+  const titleWords = t("visitSection.titleWords", { returnObjects: true }) as string[];
+  const vWords =
+    Array.isArray(titleWords) && titleWords.length >= 3 ? titleWords : ["Vieni", "a", "trovarci."];
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const mapRef = useRef<HTMLDivElement | null>(null);
   const markerRef = useRef<HTMLDivElement | null>(null);
@@ -660,32 +665,27 @@ export function VisitSection() {
         {/* Testata */}
         <header className="max-w-3xl">
           <p data-field className="text-[11px] tracking-[0.28em] uppercase text-ink/55 mb-6">
-            10 — Contatti
+            {t("visitSection.eyebrow")}
           </p>
           <h2
             ref={titleRef}
             id="visit-title"
             className="font-display text-[clamp(2.6rem,7.2vw,5.8rem)] leading-[0.95] tracking-tight"
           >
-            <span className="inline-block overflow-hidden align-bottom">
-              <span data-word className="inline-block">
-                Vieni&nbsp;
+            {vWords.map((w, idx, arr) => (
+              <span key={idx} className="inline-block overflow-hidden align-bottom">
+                <span
+                  data-word
+                  className={`inline-block ${idx === arr.length - 1 ? "italic text-terracotta" : ""}`}
+                >
+                  {w}
+                  {idx < arr.length - 1 ? "\u00A0" : ""}
+                </span>
               </span>
-            </span>
-            <span className="inline-block overflow-hidden align-bottom">
-              <span data-word className="inline-block">
-                a&nbsp;
-              </span>
-            </span>
-            <span className="inline-block overflow-hidden align-bottom">
-              <span data-word className="inline-block italic text-terracotta">
-                trovarci.
-              </span>
-            </span>
+            ))}
           </h2>
           <p data-field className="mt-6 max-w-xl text-lg text-ink/75 leading-relaxed">
-            Nel cuore della Murgia, tra ulivi secolari e l'eco del galoppo dei nostri Murgesi. Ti
-            aspettiamo per la tavola, per una festa, per un'esperienza che resta.
+            {t("visitSection.subtitle")}
           </p>
         </header>
 
@@ -695,10 +695,13 @@ export function VisitSection() {
           <aside data-parallax="-14" className="space-y-12">
             <div>
               <p data-field className="text-[11px] tracking-[0.22em] uppercase text-ink/55 mb-4">
-                Dove siamo
+                {t("visitSection.where")}
               </p>
               <ul className="border-t border-stone/40">
-                <ContactRow label="Indirizzo" icon={<MapPin className="h-4 w-4" />}>
+                <ContactRow
+                  label={t("visitSection.addressLabel")}
+                  icon={<MapPin className="h-4 w-4" />}
+                >
                   <a
                     href={MAPS_URL}
                     target="_blank"
@@ -711,25 +714,34 @@ export function VisitSection() {
                     </span>
                   </a>
                 </ContactRow>
-                <ContactRow label="Telefono" icon={<Phone className="h-4 w-4" />}>
+                <ContactRow
+                  label={t("visitSection.phoneLabel")}
+                  icon={<Phone className="h-4 w-4" />}
+                >
                   <a href={`tel:${PHONE_TEL}`} className="hover:text-terracotta transition-colors">
                     {PHONE}
                   </a>
                 </ContactRow>
-                <ContactRow label="WhatsApp" icon={<MessageCircle className="h-4 w-4" />}>
+                <ContactRow
+                  label={t("visitSection.whatsappLabel")}
+                  icon={<MessageCircle className="h-4 w-4" />}
+                >
                   <a
                     href={WHATSAPP_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-terracotta transition-colors"
                   >
-                    Scrivici su WhatsApp
+                    {t("visitSection.whatsappCta")}
                     <span className="block text-base text-ink/70 not-italic font-sans">
                       {PHONE}
                     </span>
                   </a>
                 </ContactRow>
-                <ContactRow label="Sito" icon={<Globe className="h-4 w-4" />}>
+                <ContactRow
+                  label={t("visitSection.siteLabel")}
+                  icon={<Globe className="h-4 w-4" />}
+                >
                   <a
                     href={SITE_URL}
                     target="_blank"
@@ -765,7 +777,7 @@ export function VisitSection() {
             {/* Mappa stilizzata */}
             <div data-field>
               <p className="text-[11px] tracking-[0.22em] uppercase text-ink/55 mb-4">
-                Nella Murgia
+                {t("visitSection.inMurgia")}
               </p>
               <div
                 ref={mapRef}
@@ -792,7 +804,7 @@ export function VisitSection() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 tracking-[0.14em] uppercase text-ink hover:text-terracotta transition-colors"
                 >
-                  Indicazioni · Google Maps
+                  {t("visitSection.directionsGoogle")}
                   <ArrowRight className="h-4 w-4" />
                 </a>
                 <a
@@ -812,8 +824,7 @@ export function VisitSection() {
               data-field
               className="font-display italic text-[clamp(1.05rem,1.4vw,1.3rem)] leading-relaxed text-ink/80 border-l-2 border-terracotta pl-5"
             >
-              La cucina apre su prenotazione, per le grandi occasioni. Scrivici e componiamo insieme
-              la tua.
+              {t("visitSection.modelNote")}
             </p>
           </aside>
 

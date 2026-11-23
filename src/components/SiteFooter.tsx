@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -40,16 +41,28 @@ const FB_URL = BUSINESS.facebook.url;
 
 // [K1] Rimosso "Manifesto": nessuna sezione con id="manifesto" in tutto il sito.
 // Le altre voci sono state riallacciate: #stagioni → #esperienze, #visita → #contatti.
-const NAV: { label: string; href: string }[] = [
-  { label: "Storia", href: "/#storia" },
-  { label: "Il Luogo", href: "/#luogo" },
-  { label: "Cucina", href: "/#cucina" },
-  { label: "I Sapori", href: "/#menu" },
-  { label: "I Cavalli", href: "/#cavalli" },
-  { label: "Eventi", href: "/#eventi" },
-  { label: "Esperienze", href: "/#esperienze" },
-  { label: "Recensioni", href: "/#recensioni" },
-  { label: "Contatti", href: "/#contatti" },
+const NAV: {
+  key:
+    | "storia"
+    | "luogo"
+    | "cucina"
+    | "menu"
+    | "cavalli"
+    | "eventi"
+    | "esperienze"
+    | "recensioni"
+    | "contatti";
+  href: string;
+}[] = [
+  { key: "storia", href: "/#storia" },
+  { key: "luogo", href: "/#luogo" },
+  { key: "cucina", href: "/#cucina" },
+  { key: "menu", href: "/#menu" },
+  { key: "cavalli", href: "/#cavalli" },
+  { key: "eventi", href: "/#eventi" },
+  { key: "esperienze", href: "/#esperienze" },
+  { key: "recensioni", href: "/#recensioni" },
+  { key: "contatti", href: "/#contatti" },
 ];
 
 function smoothScrollTo(href: string) {
@@ -91,6 +104,7 @@ async function shareMasseria(onCopied?: () => void) {
 
 /* ---------------- Barra Concierge Fluttuante + Back to Top ---------------- */
 function FloatingConciergeAndTop() {
+  const { t } = useTranslation();
   const [pastHero, setPastHero] = useState(false);
   const [nearBottom, setNearBottom] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -165,7 +179,7 @@ function FloatingConciergeAndTop() {
               className="flex flex-1 items-center justify-center gap-2 rounded-full border border-ivory/20 bg-ivory/5 px-4 py-2.5 text-[11px] font-medium tracking-[0.15em] uppercase text-ivory transition-colors active:scale-[0.98]"
             >
               <Phone className="h-3.5 w-3.5 text-gold" />
-              <span>Chiama</span>
+              <span>{t("footerSection.callBtn")}</span>
             </a>
             <button
               type="button"
@@ -193,7 +207,7 @@ function FloatingConciergeAndTop() {
           >
             <span className="mr-2 inline-flex items-center gap-2 text-[10px] tracking-[0.22em] uppercase text-ivory/75">
               <span className="h-2 w-2 rounded-full bg-gold animate-pulse" />
-              Su prenotazione
+              {t("footerSection.onReservation")}
             </span>
             <a
               href={WHATSAPP_DIRECT_CTA}
@@ -259,6 +273,7 @@ function FloatingConciergeAndTop() {
 
 /* ---------------- 12 — Il Congedo ("L'Ultimo Arco" + Firma Famiglia Giunta) ---------------- */
 function ClosingClaim() {
+  const { t } = useTranslation();
   const ref = useRef<HTMLDivElement | null>(null);
   const [sharedCopied, setSharedCopied] = useState(false);
 
@@ -333,9 +348,11 @@ function ClosingClaim() {
             TA
           </span>
           <div>
-            <p className="text-[11px] tracking-[0.28em] uppercase text-ivory/60">11 — Il Congedo</p>
+            <p className="text-[11px] tracking-[0.28em] uppercase text-ivory/60">
+              {t("footerSection.eyebrow")}
+            </p>
             <p className="text-xs italic font-display text-gold/85">
-              Contrada Murgia · Agro di Noci
+              {t("footerSection.locationTag")}
             </p>
           </div>
         </div>
@@ -346,17 +363,18 @@ function ClosingClaim() {
         >
           <span data-mask-line className="block overflow-hidden">
             <span className="inline-block">
-              Due <span className="italic text-terracotta">anime</span>,
+              {t("footerSection.claim1")}{" "}
+              <span className="italic text-terracotta">{t("footerSection.claim1Accent")}</span>,
             </span>
           </span>
           <span data-mask-line className="block overflow-hidden">
             <span className="inline-block">
-              una sola{" "}
+              {t("footerSection.claim2")}{" "}
               <span
                 className="italic"
                 style={{ color: "color-mix(in oklab, var(--ivory) 90%, var(--gold) 40%)" }}
               >
-                terra
+                {t("footerSection.claim2Accent")}
               </span>
               .
             </span>
@@ -369,16 +387,14 @@ function ClosingClaim() {
             className="font-display italic leading-relaxed text-ivory/85"
             style={{ fontSize: "clamp(1.1rem, 1.55vw, 1.4rem)" }}
           >
-            «Le porte della nostra corte si aprono a chi cerca il tempo lento della Murgia, il
-            sapore sincero della terra e il passo fiero dei nostri Murgesi. Vi aspettiamo in
-            masseria.»
+            {t("footerSection.quote")}
           </p>
           <footer className="mt-3 flex items-center gap-3 text-xs tracking-[0.2em] uppercase text-gold">
-            <span>— Famiglia Giunta</span>
+            <span>{t("footerSection.family")}</span>
             <span aria-hidden className="text-ivory/30">
               ·
             </span>
-            <span className="text-ivory/55">Dal Settecento a oggi</span>
+            <span className="text-ivory/55">{t("footerSection.since")}</span>
           </footer>
         </blockquote>
 
@@ -391,7 +407,7 @@ function ClosingClaim() {
             className="group inline-flex items-center gap-3 rounded-full bg-terracotta px-7 py-4 text-xs font-medium tracking-[0.18em] uppercase text-ivory shadow-lg transition-all duration-300 hover:bg-gold hover:text-ink"
           >
             <MessageCircle className="h-4 w-4" />
-            <span>Scrivici su WhatsApp</span>
+            <span>{t("footerSection.whatsappBtn")}</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
 
@@ -400,7 +416,9 @@ function ClosingClaim() {
             className="inline-flex items-center gap-2.5 rounded-full border border-ivory/30 bg-ivory/[0.04] px-6 py-4 text-xs font-medium tracking-[0.18em] uppercase text-ivory transition-colors duration-300 hover:border-gold hover:text-gold"
           >
             <Phone className="h-4 w-4 text-gold" />
-            <span>Chiama {PHONE}</span>
+            <span>
+              {t("footerSection.callBtn")} {PHONE}
+            </span>
           </a>
         </div>
 
@@ -414,12 +432,12 @@ function ClosingClaim() {
             {sharedCopied ? (
               <>
                 <Check className="h-3.5 w-3.5 text-gold" />
-                <span className="text-gold">Link copiato · Inoltralo su WhatsApp a chi ami</span>
+                <span className="text-gold">{t("footerSection.shareCopied")}</span>
               </>
             ) : (
               <>
                 <Share2 className="h-3.5 w-3.5 text-gold transition-transform group-hover:scale-110" />
-                <span>Invia la Masseria a chi ami →</span>
+                <span>{t("footerSection.shareBtn")}</span>
               </>
             )}
           </button>
@@ -463,6 +481,7 @@ function ClosingClaim() {
 
 /* ---------------- Footer ---------------- */
 export function SiteFooter() {
+  const { t } = useTranslation();
   const footerRef = useRef<HTMLElement | null>(null);
   const year = new Date().getFullYear();
 
@@ -547,14 +566,15 @@ export function SiteFooter() {
                 <span className="italic text-gold">Torre Abbondanza</span>
               </p>
               <p className="mt-5 text-sm leading-relaxed text-ivory/70">
-                Masseria del Settecento immersa nella Murgia di Noci. Tavola su prenotazione,
-                cavalli Murgesi e occasioni rare.
+                {t("footerSection.brandDesc")}
               </p>
             </div>
 
             {/* Naviga */}
             <nav data-foot-col aria-label="Footer">
-              <h3 className="text-[11px] tracking-[0.22em] uppercase text-ivory/55 mb-5">Naviga</h3>
+              <h3 className="text-[11px] tracking-[0.22em] uppercase text-ivory/55 mb-5">
+                {t("footerSection.navTitle")}
+              </h3>
               <ul className="grid grid-cols-2 gap-x-4 gap-y-3">
                 {NAV.map((n) => (
                   <li key={n.href}>
@@ -567,7 +587,7 @@ export function SiteFooter() {
                       className="group inline-flex w-fit items-center text-sm tracking-[0.04em] text-ivory/75 hover:text-ivory transition-colors"
                     >
                       <span className="relative">
-                        {n.label}
+                        {t(`footerSection.navLinks.${n.key}`)}
                         <span
                           aria-hidden
                           className="absolute left-0 -bottom-0.5 h-px w-0 bg-gold transition-all duration-500 group-hover:w-full"
@@ -582,7 +602,7 @@ export function SiteFooter() {
             {/* Contatti */}
             <div data-foot-col>
               <h3 className="text-[11px] tracking-[0.22em] uppercase text-ivory/55 mb-5">
-                Contatti
+                {t("footerSection.contactsTitle")}
               </h3>
               <ul className="space-y-4 text-sm text-ivory/80">
                 <li className="flex items-start gap-3">
@@ -627,7 +647,7 @@ export function SiteFooter() {
             {/* Social */}
             <div data-foot-col>
               <h3 className="text-[11px] tracking-[0.22em] uppercase text-ivory/55 mb-5">
-                Seguici
+                {t("footerSection.followTitle")}
               </h3>
               <ul className="space-y-4 text-sm">
                 <li>
@@ -665,7 +685,7 @@ export function SiteFooter() {
                 onClick={() => smoothScrollTo("#contatti")}
                 className="group mt-8 inline-flex items-center gap-2 text-sm tracking-[0.14em] uppercase text-ivory hover:text-gold transition-colors"
               >
-                Richiedi la tua occasione
+                {t("footerSection.requestBtn")}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
@@ -674,7 +694,7 @@ export function SiteFooter() {
           {/* C) Sottofooter legale */}
           <div className="relative z-10 mt-16 border-t border-ivory/10 pt-6 flex flex-col gap-2 md:flex-row md:items-center md:justify-between text-xs text-ivory/55">
             <p>
-              © {year} {BUSINESS.legalName ?? BUSINESS.name} — Tutti i diritti riservati.
+              © {year} {BUSINESS.legalName ?? BUSINESS.name} — {t("footerSection.rights")}
               <span className="mx-2 text-ivory/25">·</span>
               P.IVA {BUSINESS.vatId?.replace(/^IT/, "") ?? "06351980724"}
               <span className="mx-2 text-ivory/25">·</span>
@@ -683,12 +703,12 @@ export function SiteFooter() {
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
               <li>
                 <Link to="/privacy" className="hover:text-ivory transition-colors">
-                  Privacy Policy
+                  {t("footer.privacy")}
                 </Link>
               </li>
               <li>
                 <Link to="/cookie" className="hover:text-ivory transition-colors">
-                  Cookie Policy
+                  {t("footer.cookie")}
                 </Link>
               </li>
               <li>
@@ -697,7 +717,7 @@ export function SiteFooter() {
                   onClick={openCookiePreferences}
                   className="hover:text-ivory transition-colors"
                 >
-                  Preferenze cookie
+                  {t("footerSection.cookiePrefs")}
                 </button>
               </li>
             </ul>

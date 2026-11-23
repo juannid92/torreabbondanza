@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
@@ -13,9 +14,15 @@ const KINETIC_WORDS: { label: string; tone: "warm" | "ink"; size: string; offset
 ];
 
 export function MenuSection() {
+  const { t } = useTranslation();
   const rootRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const kineticLabels = t("menu.kinetic", { returnObjects: true }) as string[];
+  const kWords =
+    Array.isArray(kineticLabels) && kineticLabels.length >= 4
+      ? kineticLabels
+      : KINETIC_WORDS.map((k) => k.label);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -171,7 +178,7 @@ export function MenuSection() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-8">
             <p data-menu-intro className="text-eyebrow text-ink/70">
-              05 — I sapori
+              {t("menu.eyebrow")}
             </p>
             <h2
               id="menu-title"
@@ -182,7 +189,7 @@ export function MenuSection() {
                 letterSpacing: "-0.028em",
               }}
             >
-              La tavola su <em className="text-terracotta">misura</em>
+              {t("menu.titleStart")} <em className="text-terracotta">{t("menu.titleAccent")}</em>
             </h2>
           </div>
           <div className="md:col-span-4 md:pt-10">
@@ -190,8 +197,7 @@ export function MenuSection() {
               data-menu-intro
               className="font-display text-lg italic leading-snug text-ink/75 md:text-xl"
             >
-              Niente carta da sfogliare: una cucina pugliese della tradizione che si compone
-              insieme, su misura per la tua occasione.
+              {t("menu.prose1Start")} {t("menu.prose1Accent")} {t("menu.prose1End")}
             </p>
           </div>
         </div>
@@ -250,7 +256,7 @@ export function MenuSection() {
                     mixBlendMode: "screen",
                   }}
                 >
-                  convivio
+                  {kWords[0]}
                 </span>
               </div>
             </div>
@@ -269,7 +275,7 @@ export function MenuSection() {
                     lineHeight: 0.95,
                   }}
                 >
-                  su misura
+                  {kWords[2]}
                 </span>
               </div>
             </div>
@@ -291,7 +297,7 @@ export function MenuSection() {
                   lineHeight: 0.9,
                 }}
               >
-                tradizione
+                {kWords[1]}
               </span>
             </div>
             <div className="col-span-7 overflow-hidden text-right">
@@ -306,7 +312,7 @@ export function MenuSection() {
                   lineHeight: 0.9,
                 }}
               >
-                occasione
+                {kWords[3]}
               </span>
             </div>
           </div>
@@ -314,7 +320,7 @@ export function MenuSection() {
 
         {/* Mobile: parole sotto la foto, stack */}
         <div className="mt-8 flex flex-col gap-2 px-6 md:hidden">
-          {KINETIC_WORDS.map((w) => (
+          {KINETIC_WORDS.map((w, idx) => (
             <div key={w.label} className="overflow-hidden">
               <span
                 data-kinetic
@@ -326,7 +332,7 @@ export function MenuSection() {
                   lineHeight: 0.95,
                 }}
               >
-                {w.label}
+                {kWords[idx] ?? w.label}
               </span>
             </div>
           ))}
@@ -344,9 +350,8 @@ export function MenuSection() {
               letterSpacing: "-0.012em",
             }}
           >
-            La masseria apre la sua cucina per le{" "}
-            <em className="text-terracotta">grandi occasioni</em> — cerimonie, battesimi,
-            compleanni, matrimoni.
+            {t("menu.prose1Start")} <em className="text-terracotta">{t("menu.prose1Accent")}</em>{" "}
+            {t("menu.prose1End")}
           </p>
           <p
             className="font-sans text-ink/80"
@@ -355,26 +360,20 @@ export function MenuSection() {
               lineHeight: 1.6,
             }}
           >
-            Ogni menù nasce da un accordo, pensato insieme. Per sedervi alla nostra tavola bastano
-            una compagnia di almeno{" "}
-            <em className="font-display italic text-terracotta">venti persone</em>,{" "}
-            <em className="font-display italic text-terracotta">due giorni</em> di anticipo e una
-            proposta che parte da{" "}
-            <em className="font-display italic text-terracotta">cinquanta euro</em> a persona. Il
-            resto — i sapori, il ritmo, i dettagli — lo scegliamo con voi.
+            {t("menu.prose2")}
           </p>
           <p className="text-eyebrow text-ink/55" style={{ letterSpacing: "0.18em" }}>
-            Veg · Vegan · Gluten-free · Menù bambini — su richiesta
+            {t("menu.dietary")}
           </p>
         </div>
 
         {/* CTA */}
         <div className="mt-14 flex flex-wrap items-center gap-6 md:mt-20">
           <MagneticButton href="#contatti" variant="pill-solid">
-            Richiedi il tuo menù →
+            {t("menu.ctaRequest")}
           </MagneticButton>
           <MagneticButton href="/appuntamenti" variant="pill">
-            Appuntamenti a tavola & menù
+            {t("menu.ctaAppointments")}
           </MagneticButton>
         </div>
       </div>
@@ -400,13 +399,13 @@ export function MenuSection() {
               letterSpacing: "-0.015em",
             }}
           >
-            Finita la tavola, resta il galoppo.{" "}
+            {t("menu.bridgeStart")}{" "}
             <a
               href="#cavalli"
               className="not-italic underline-offset-4 transition-colors hover:underline"
               style={{ color: "var(--murgese)" }}
             >
-              I cavalli Murgesi →
+              {t("menu.bridgeLink")} →
             </a>
           </p>
         </div>

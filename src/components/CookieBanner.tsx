@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Cookie, Settings2, X, Check } from "lucide-react";
 
@@ -166,6 +167,7 @@ function BannerView({
   onCustomize: () => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="relative flex flex-col gap-4 p-4 pr-10 md:p-6 md:pr-12 md:flex-row md:items-center md:justify-between md:gap-8">
       <div className="flex items-start gap-3 md:flex-1">
@@ -180,24 +182,22 @@ function BannerView({
             id="cookie-banner-title"
             className="font-display text-base font-semibold text-ink md:text-lg"
           >
-            Preferenze sui cookie e misurazione
+            {t("cookieBanner.title")}
           </h2>
           <p className="mt-1 text-xs leading-relaxed text-ink/80 md:text-sm">
-            Questo sito utilizza cookie tecnici necessari al funzionamento e, previo consenso,
-            cookie analitici (Google Tag / GA4) per migliorare l'esperienza di navigazione. Puoi
-            rifiutare o personalizzare le scelte senza alcuna conseguenza. Consulta la{" "}
+            {t("cookieBanner.desc")}{" "}
             <Link
               to="/cookie"
               className="font-medium text-ink underline underline-offset-4 hover:text-terracotta"
             >
-              Cookie Policy
+              {t("footer.cookie")}
             </Link>{" "}
-            e la{" "}
+            ·{" "}
             <Link
               to="/privacy"
               className="font-medium text-ink underline underline-offset-4 hover:text-terracotta"
             >
-              Privacy Policy
+              {t("footer.privacy")}
             </Link>
             .
           </p>
@@ -211,7 +211,7 @@ function BannerView({
           className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/20 px-5 py-2 text-[11px] tracking-[0.16em] uppercase text-ink transition-colors hover:border-terracotta hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
         >
           <X className="h-3.5 w-3.5" />
-          Rifiuta tutti
+          {t("cookieBanner.rejectAll")}
         </button>
         <button
           type="button"
@@ -219,7 +219,7 @@ function BannerView({
           className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/20 px-5 py-2 text-[11px] tracking-[0.16em] uppercase text-ink transition-colors hover:border-terracotta hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
         >
           <Settings2 className="h-3.5 w-3.5" />
-          Personalizza
+          {t("cookieBanner.customize")}
         </button>
         <button
           type="button"
@@ -227,7 +227,7 @@ function BannerView({
           className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-2 text-[11px] tracking-[0.16em] uppercase text-ivory transition-colors hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
         >
           <Check className="h-3.5 w-3.5" />
-          Accetta tutti
+          {t("cookieBanner.acceptAll")}
         </button>
       </div>
     </div>
@@ -246,12 +246,13 @@ function PrefsView({
   onSave: () => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="relative p-5 md:p-7">
       <button
         type="button"
         onClick={onClose}
-        aria-label="Chiudi preferenze cookie"
+        aria-label={t("cookieBanner.prefsTitle")}
         className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-ink/60 transition-colors hover:bg-stone/20 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
       >
         <X className="h-4 w-4" />
@@ -261,29 +262,26 @@ function PrefsView({
         id="cookie-banner-title"
         className="font-display text-lg font-semibold text-ink md:text-xl"
       >
-        Gestisci le preferenze cookie
+        {t("cookieBanner.prefsTitle")}
       </h2>
-      <p className="mt-2 text-sm text-ink/80">
-        Ai sensi del Provvedimento del Garante del 10 giugno 2021 e del GDPR, puoi scegliere quali
-        categorie attivare oltre ai cookie tecnici essenziali.
-      </p>
+      <p className="mt-2 text-sm text-ink/80">{t("cookieBanner.prefsDesc")}</p>
 
       <ul className="mt-5 grid gap-3">
         <CookieRow
-          name="Cookie tecnici (sempre attivi)"
-          description="Necessari al funzionamento della rete di distribuzione, alla sicurezza (Cloudflare) e alla memorizzazione delle tue preferenze di consenso."
+          name={t("cookieBanner.techTitle")}
+          description={t("cookieBanner.techDesc")}
           required
           checked
         />
         <CookieRow
-          name="Cookie analitici (Google Tag / GA4)"
-          description="Raccolgono statistiche aggregate e anonimizzate sulle visite tramite Google Tag con Google Consent Mode v2."
+          name={t("cookieBanner.analyticsTitle")}
+          description={t("cookieBanner.analyticsDesc")}
           checked={categories.analytics}
           onChange={(checked) => onChange({ ...categories, analytics: checked })}
         />
         <CookieRow
-          name="Cookie di marketing e misurazione conversioni"
-          description="Consentono a Google Tag di misurare le conversioni e l'efficacia delle campagne solo previo tuo consenso."
+          name={t("cookieBanner.marketingTitle")}
+          description={t("cookieBanner.marketingDesc")}
           checked={categories.marketing}
           onChange={(checked) => onChange({ ...categories, marketing: checked })}
         />
@@ -291,11 +289,9 @@ function PrefsView({
 
       <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-ink/60">
-          Per approfondire consulta la{" "}
           <Link to="/cookie" className="underline hover:text-terracotta">
-            Cookie Policy
+            {t("footer.cookie")}
           </Link>
-          .
         </p>
         <button
           type="button"
@@ -303,7 +299,7 @@ function PrefsView({
           className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[11px] tracking-[0.18em] uppercase text-ivory transition-colors hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
         >
           <Check className="h-3.5 w-3.5" />
-          Salva preferenze
+          {t("cookieBanner.savePrefs")}
         </button>
       </div>
     </div>

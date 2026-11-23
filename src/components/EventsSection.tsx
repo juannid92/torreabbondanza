@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -490,6 +491,7 @@ function DesktopBlade({
   onCancelHoverActivate,
   onOpenDetail,
 }: DesktopBladeProps) {
+  const { t } = useTranslation();
   const bladeRef = useRef<HTMLElement>(null);
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
@@ -625,7 +627,7 @@ function DesktopBlade({
                   onClick={() => requestEventInForm(occasion.formValue)}
                   className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full bg-terracotta px-5 py-2.5 text-xs font-medium tracking-[0.16em] uppercase text-ivory transition-colors hover:bg-gold hover:text-murgese focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                 >
-                  <span>Richiedi per questo evento</span>
+                  <span>{t("events.reqBtn")}</span>
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </button>
                 <button
@@ -633,7 +635,7 @@ function DesktopBlade({
                   onClick={onOpenDetail}
                   className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full border border-ivory/35 bg-murgese/75 px-5 py-2.5 text-xs font-medium tracking-[0.16em] uppercase text-ivory transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                 >
-                  <span>Dettagli e foto</span>
+                  <span>{t("events.detailsBtn")}</span>
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
@@ -649,6 +651,7 @@ function DesktopBlade({
 /* Sotto-componente Mobile: Mazzo Fotografico 3D Tattile                      */
 /* -------------------------------------------------------------------------- */
 interface MobileDeckProps {
+  events: readonly EventOccasion[];
   activeIndex: number;
   reduced: boolean;
   onSelectIndex: (idx: number) => void;
@@ -657,12 +660,14 @@ interface MobileDeckProps {
 }
 
 function MobileTactileDeck({
+  events,
   activeIndex,
   reduced,
   onSelectIndex,
   onStep,
   onOpenDetail,
 }: MobileDeckProps) {
+  const { t } = useTranslation();
   const pillStripRef = useRef<HTMLDivElement>(null);
   const pillButtonsRef = useRef<(HTMLButtonElement | null)[]>([]);
   const didUserInteractRef = useRef(false);
@@ -717,7 +722,7 @@ function MobileTactileDeck({
         aria-label="Seleziona il tipo di evento"
         className="flex snap-x snap-mandatory gap-2 overflow-x-auto px-5 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {EVENTS_DATA.map((occ, idx) => {
+        {events.map((occ, idx) => {
           const isActive = idx === activeIndex;
           return (
             <button
@@ -760,8 +765,8 @@ function MobileTactileDeck({
       {/* Mazzo fotografico 3D impilato */}
       <div className="relative mx-auto mt-4 h-[500px] w-full max-w-[440px] px-5 sm:h-[530px]">
         {layers.map((offset) => {
-          const itemIndex = (activeIndex + offset) % EVENTS_DATA.length;
-          const occ = EVENTS_DATA[itemIndex];
+          const itemIndex = (activeIndex + offset) % events.length;
+          const occ = events[itemIndex];
           const isFront = offset === 0;
           const zIndex = 30 - offset * 10;
           const restScale = offset === 0 ? 1 : offset === 1 ? 0.94 : 0.88;
@@ -853,7 +858,7 @@ function MobileTactileDeck({
                         onClick={() => requestEventInForm(occ.formValue)}
                         className="inline-flex min-h-[44px] flex-1 cursor-pointer items-center justify-center gap-2 rounded-full bg-terracotta px-4 py-2.5 text-xs font-medium tracking-[0.14em] uppercase text-ivory transition-colors hover:bg-gold hover:text-murgese focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                       >
-                        <span>Richiedi</span>
+                        <span>{t("events.reqShortBtn")}</span>
                         <ArrowRight className="h-4 w-4" aria-hidden="true" />
                       </button>
                       <button
@@ -861,7 +866,7 @@ function MobileTactileDeck({
                         onClick={() => onOpenDetail(occ)}
                         className="inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-1.5 rounded-full border border-ivory/35 bg-murgese/80 px-4 py-2.5 text-xs font-medium tracking-[0.14em] uppercase text-ivory transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                       >
-                        <span>Dettagli e foto</span>
+                        <span>{t("events.detailsBtn")}</span>
                         <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                       </button>
                     </div>
@@ -886,9 +891,9 @@ function MobileTactileDeck({
 
         <div className="text-center">
           <p className="text-xs font-medium tracking-[0.18em] text-gold uppercase tabular-nums">
-            {EVENTS_DATA[activeIndex].indexLabel} / 07
+            {events[activeIndex].indexLabel} / 07
           </p>
-          <p className="mt-0.5 text-[11px] text-ivory/65">Trascina la carta o tocca le frecce</p>
+          <p className="mt-0.5 text-[11px] text-ivory/65">{t("events.swipeHint")}</p>
         </div>
 
         <button
@@ -914,6 +919,7 @@ interface EventDetailSheetProps {
 }
 
 function EventDetailSheet({ occasion, reduced, onClose }: EventDetailSheetProps) {
+  const { t } = useTranslation();
   const [galleryIndex, setGalleryIndex] = useState(0);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -1073,14 +1079,14 @@ function EventDetailSheet({ occasion, reduced, onClose }: EventDetailSheetProps)
                     className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-terracotta px-4 py-2.5 text-xs font-medium tracking-[0.14em] uppercase text-ivory transition-colors hover:bg-gold hover:text-murgese focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                   >
                     <MessageCircle className="h-4 w-4" aria-hidden="true" />
-                    <span>WhatsApp</span>
+                    <span>{t("events.whatsapp")}</span>
                   </a>
                   <a
                     href={`tel:${BUSINESS.phoneTel}`}
                     className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-ivory/25 bg-ivory/[0.04] px-4 py-2.5 text-xs font-medium tracking-[0.14em] uppercase text-ivory transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                   >
                     <Phone className="h-4 w-4" aria-hidden="true" />
-                    <span>Chiama</span>
+                    <span>{t("events.call")}</span>
                   </a>
                 </div>
                 <button
@@ -1092,7 +1098,7 @@ function EventDetailSheet({ occasion, reduced, onClose }: EventDetailSheetProps)
                   }}
                   className="inline-flex min-h-[44px] w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-gold/45 px-4 py-2.5 text-xs font-medium tracking-[0.14em] uppercase text-gold transition-colors hover:bg-gold hover:text-murgese focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                 >
-                  <span>Compila il modulo con questo evento</span>
+                  <span>{t("events.fillForm")}</span>
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
@@ -1108,7 +1114,61 @@ function EventDetailSheet({ occasion, reduced, onClose }: EventDetailSheetProps)
 /* Sezione Principale: EventsSection (#eventi)                                */
 /* -------------------------------------------------------------------------- */
 export function EventsSection() {
+  const { t, i18n } = useTranslation();
   const rootRef = useRef<HTMLElement>(null);
+
+  const events = useMemo(() => {
+    const translated = t("events.items", { returnObjects: true }) as
+      | Array<{
+          title?: string;
+          shortTitle?: string;
+          spaces?: string;
+          phrase?: string;
+          description?: string;
+          highlights?: string[];
+        }>
+      | undefined;
+    return EVENTS_DATA.map((item, idx) => {
+      const tr = Array.isArray(translated) ? translated[idx] : undefined;
+      if (!tr) return item;
+      return {
+        ...item,
+        title: tr.title ?? item.title,
+        shortTitle: tr.shortTitle ?? item.shortTitle,
+        spaces: tr.spaces ?? item.spaces,
+        phrase: tr.phrase ?? item.phrase,
+        description: tr.description ?? item.description,
+        highlights: tr.highlights ?? item.highlights,
+      };
+    });
+  }, [t, i18n.language]);
+
+  const localizedSpaces = useMemo(() => {
+    return SPACES_SHOWCASE.map((space) => {
+      if (space.id === "sala") {
+        return {
+          ...space,
+          title: t("events.spaces.salaTitle"),
+          subtitle: t("events.spaces.salaSubtitle"),
+          description: t("events.spaces.salaDesc"),
+          views: [
+            { ...space.views[0], caption: t("events.spaces.salaV1") },
+            { ...space.views[1], caption: t("events.spaces.salaV2") },
+          ] as const,
+        };
+      }
+      return {
+        ...space,
+        title: t("events.spaces.corteTitle"),
+        subtitle: t("events.spaces.corteSubtitle"),
+        description: t("events.spaces.corteDesc"),
+        views: [
+          { ...space.views[0], caption: t("events.spaces.corteV1") },
+          { ...space.views[1], caption: t("events.spaces.corteV2") },
+        ] as const,
+      };
+    });
+  }, [t, i18n.language]);
   const desktopStageRef = useRef<HTMLDivElement>(null);
   const hoverTimerRef = useRef<number | null>(null);
 
@@ -1230,7 +1290,7 @@ export function EventsSection() {
     }
   };
 
-  const activeOccasion = EVENTS_DATA[activeIndex];
+  const activeOccasion = events[activeIndex];
 
   return (
     <section
@@ -1251,38 +1311,37 @@ export function EventsSection() {
                 className="font-display font-semibold tracking-[-0.03em] text-ink text-balance"
                 style={{ fontSize: "clamp(2.35rem, 4.9vw, 4.5rem)", lineHeight: 0.98 }}
               >
-                Sette modi di vivere{" "}
-                <em className="font-medium italic text-terracotta">la Masseria.</em>
+                {t("events.headingStart")}{" "}
+                <em className="font-medium italic text-terracotta">{t("events.headingAccent")}</em>
               </h2>
               <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-ink/75 md:text-lg">
-                Matrimoni, cerimonie, feste di famiglia, serate riservate ed esperienze equestri
-                nella dimora del Settecento tra sala storica, corte in pietra e ulivi della Murgia.
+                {t("events.subheading")}
               </p>
             </div>
 
             <dl className="grid grid-cols-3 gap-4 border-t border-ink/15 pt-5 lg:col-span-5">
               <div>
                 <dt className="text-[11px] font-medium tracking-[0.14em] uppercase text-ink/60">
-                  Ricevimenti
+                  {t("events.stat1Label")}
                 </dt>
                 <dd className="mt-1 font-display text-base font-medium text-ink tabular-nums md:text-lg">
-                  Fino a 250 ospiti
+                  {t("events.stat1Value")}
                 </dd>
               </div>
               <div>
                 <dt className="text-[11px] font-medium tracking-[0.14em] uppercase text-ink/60">
-                  Cornici
+                  {t("events.stat2Label")}
                 </dt>
                 <dd className="mt-1 font-display text-base font-medium text-ink md:text-lg">
-                  Sala &amp; Uliveto
+                  {t("events.stat2Value")}
                 </dd>
               </div>
               <div>
                 <dt className="text-[11px] font-medium tracking-[0.14em] uppercase text-ink/60">
-                  Tavola
+                  {t("events.stat3Label")}
                 </dt>
                 <dd className="mt-1 font-display text-base font-medium text-ink md:text-lg">
-                  Cucina interna
+                  {t("events.stat3Value")}
                 </dd>
               </div>
             </dl>
@@ -1313,7 +1372,7 @@ export function EventsSection() {
             className="mx-auto hidden max-w-[1520px] px-8 lg:block xl:px-12"
           >
             <div className="flex h-[70vh] min-h-[550px] max-h-[720px] gap-2.5">
-              {EVENTS_DATA.map((occ, idx) => (
+              {events.map((occ, idx) => (
                 <DesktopBlade
                   key={occ.id}
                   occasion={occ}
@@ -1331,7 +1390,7 @@ export function EventsSection() {
             {/* Barra di selezione rapida & tastiera */}
             <div className="mt-5 flex items-center justify-between gap-6 border-t border-ivory/10 pt-4">
               <div className="flex flex-wrap items-center gap-1.5">
-                {EVENTS_DATA.map((occ, idx) => {
+                {events.map((occ, idx) => {
                   const isActive = idx === activeIndex;
                   return (
                     <button
@@ -1387,6 +1446,7 @@ export function EventsSection() {
 
           {/* MOBILE (< lg): Mazzo 3D Tattile + Barra Pillole */}
           <MobileTactileDeck
+            events={events}
             activeIndex={activeIndex}
             reduced={reduced}
             onSelectIndex={setActiveIndex}
@@ -1400,7 +1460,7 @@ export function EventsSection() {
           <div className="mx-auto mt-16 max-w-[1520px] px-5 md:mt-24 md:px-8 xl:px-12">
             {/* Riga 1: Spazi con toggle reale Giorno/Sera & Panoramica/Imperiale */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-              {SPACES_SHOWCASE.map((space) => {
+              {localizedSpaces.map((space) => {
                 const viewIndex = spaceViews[space.id];
                 const frame = space.views[viewIndex];
                 const toggleView = () =>
@@ -1454,7 +1514,7 @@ export function EventsSection() {
                           className="inline-flex min-h-[40px] cursor-pointer items-center gap-1.5 rounded-full border border-ivory/30 bg-murgese/80 px-3.5 py-1.5 text-[11px] font-medium tracking-[0.12em] uppercase text-ivory transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                         >
                           <Images className="h-3.5 w-3.5" aria-hidden="true" />
-                          <span>Cambia vista</span>
+                          <span>{t("events.changeView")}</span>
                         </button>
                       </div>
                     </div>
@@ -1520,25 +1580,23 @@ export function EventsSection() {
                       className="font-display font-semibold tracking-[-0.02em] text-ivory"
                       style={{ fontSize: "clamp(1.75rem, 2.9vw, 2.5rem)", lineHeight: 1.06 }}
                     >
-                      L&apos;arrivo con gli attacchi d&apos;epoca
+                      {t("events.carriageTitle")}
                     </h3>
                     <p className="max-w-[65ch] font-display text-lg italic leading-relaxed text-gold">
-                      Una scenografia rara, sobria, profondamente del territorio.
+                      {t("events.carriageQuote")}
                     </p>
                     <p className="max-w-[65ch] text-sm leading-relaxed text-ivory/80 md:text-base">
-                      Su richiesta, la cerimonia o il ricevimento può aprirsi con l&apos;ingresso di
-                      una carrozza d&apos;epoca trainata dai cavalli Murgesi allevati dalla famiglia
-                      Giunta proprio in masseria.
+                      {t("events.carriageBody")}
                     </p>
                     <div className="mt-2 flex flex-wrap items-center gap-4 border-t border-ivory/10 pt-5">
                       <span className="text-xs font-medium tracking-[0.16em] uppercase text-ivory/75">
-                        Servizio su richiesta
+                        {t("events.carriageBadge")}
                       </span>
                       <a
                         href="/cavalli"
                         className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-medium tracking-[0.16em] uppercase text-gold transition-colors hover:text-ivory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
                       >
-                        <span>Scopri i nostri Murgesi</span>
+                        <span>{t("events.carriageLink")}</span>
                         <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                       </a>
                     </div>
@@ -1560,8 +1618,8 @@ export function EventsSection() {
               className="font-display font-semibold tracking-[-0.025em] text-ink text-balance"
               style={{ fontSize: "clamp(1.7rem, 3.1vw, 2.6rem)", lineHeight: 1.08 }}
             >
-              Parlaci del tuo evento: costruiamo insieme{" "}
-              <em className="font-medium italic text-terracotta">ogni dettaglio.</em>
+              {t("events.closingStart")}{" "}
+              <em className="font-medium italic text-terracotta">{t("events.closingAccent")}</em>
             </h3>
             <div className="mt-6 flex flex-wrap items-center gap-5 text-xs font-medium tracking-[0.14em] uppercase text-ink/75">
               <a
@@ -1571,7 +1629,7 @@ export function EventsSection() {
                 className="inline-flex min-h-[44px] items-center gap-2 transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
               >
                 <MessageCircle className="h-4 w-4 text-terracotta" aria-hidden="true" />
-                <span>WhatsApp diretto</span>
+                <span>{t("events.whatsappDirect")}</span>
               </a>
               <a
                 href={`tel:${BUSINESS.phoneTel}`}
@@ -1585,10 +1643,10 @@ export function EventsSection() {
 
           <div className="flex w-full flex-shrink-0 flex-wrap gap-4 md:w-auto">
             <MagneticButton href="#contatti" variant="pill-solid" className="w-full md:w-auto">
-              Richiedi disponibilità
+              {t("events.ctaAvailability")}
             </MagneticButton>
             <MagneticButton href="/appuntamenti" variant="pill" className="w-full md:w-auto">
-              Appuntamenti a tavola &amp; menù
+              {t("events.ctaAppointments")}
             </MagneticButton>
           </div>
         </div>

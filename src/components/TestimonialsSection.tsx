@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { observeRevealElements } from "@/lib/scroll-ready";
@@ -52,6 +53,95 @@ const NOTES: GuestNote[] = [
 
 // [K4] Piattaforme di recensione effettivamente presenti.
 const PLATFORMS: string[] = ["TripAdvisor", "TheFork"];
+
+function TestimonialsHeaderAndList() {
+  const { t } = useTranslation();
+  const translatedNotes = t("testimonials.notes", { returnObjects: true }) as string[];
+  return (
+    <>
+      <p className="text-eyebrow mb-6 text-ink/70">{t("testimonials.eyebrow")}</p>
+      <h2
+        id="guestbook-title"
+        className="mb-20 max-w-[18ch]"
+        style={{
+          fontFamily: '"Caveat", "Segoe Script", cursive',
+          fontWeight: 600,
+          fontSize: "clamp(2.6rem, 6.5vw, 5.6rem)",
+          lineHeight: 1.05,
+          color: "var(--ink, #1a1410)",
+        }}
+      >
+        {t("testimonials.title")}
+      </h2>
+
+      <div className="relative grid grid-cols-1 gap-y-20 md:grid-cols-12 md:gap-y-28">
+        {NOTES.map((n, i) => {
+          const layout = [
+            "md:col-start-1 md:col-span-6",
+            "md:col-start-8 md:col-span-5",
+            "md:col-start-2 md:col-span-6",
+          ];
+          const translatedText =
+            Array.isArray(translatedNotes) && translatedNotes[i] ? translatedNotes[i] : n.text;
+          return (
+            <div key={i} className={layout[i] ?? "md:col-span-6"}>
+              <GuestPage note={{ ...n, text: translatedText }} index={i} />
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="mt-32 border-t border-ink/15 pt-12 text-center">
+        <p
+          style={{
+            fontFamily: '"Caveat", "Segoe Script", cursive',
+            fontSize: "clamp(1.8rem, 3.4vw, 3rem)",
+            lineHeight: 1.1,
+            color: "var(--ink, #1a1410)",
+          }}
+        >
+          {t("testimonials.seal")}
+        </p>
+        {PLATFORMS.length > 0 && (
+          <ul
+            className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-4"
+            aria-label="Presenza sulle piattaforme di recensione"
+          >
+            {PLATFORMS.map((p) => {
+              const href =
+                p === "TripAdvisor"
+                  ? "https://www.tripadvisor.it/Restaurant_Review-g1057217-d5960944-Reviews-Masseria_Torre_Abbondanza-Noci_Province_of_Bari_Puglia.html"
+                  : p === "TheFork"
+                    ? "https://www.thefork.it/ristorante/masseria-torre-abbondanza-r201438"
+                    : undefined;
+              return (
+                <li
+                  key={p}
+                  className="text-eyebrow text-ink/60"
+                  style={{ letterSpacing: "0.22em" }}
+                >
+                  {href ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="transition-colors hover:text-terracotta"
+                    >
+                      {p}
+                    </a>
+                  ) : (
+                    p
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        <p className="mt-6 font-sans text-xs text-ink/55">{t("testimonials.stats")}</p>
+      </div>
+    </>
+  );
+}
 
 function GuestPage({ note, index }: { note: GuestNote; index: number }) {
   const ref = useRef<HTMLElement>(null);
@@ -251,91 +341,7 @@ export function TestimonialsSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-28 md:px-12 md:py-44">
         {/* Eyebrow + titolo */}
-        <p className="text-eyebrow mb-6 text-ink/70">09 — Il libro degli ospiti</p>
-        <h2
-          id="guestbook-title"
-          className="mb-20 max-w-[18ch]"
-          style={{
-            fontFamily: '"Caveat", "Segoe Script", cursive',
-            fontWeight: 600,
-            fontSize: "clamp(2.6rem, 6.5vw, 5.6rem)",
-            lineHeight: 1.05,
-            color: "var(--ink, #1a1410)",
-          }}
-        >
-          Le voci di chi è stato qui
-        </h2>
-
-        <div className="relative grid grid-cols-1 gap-y-20 md:grid-cols-12 md:gap-y-28">
-          {NOTES.map((n, i) => {
-            const layout = [
-              "md:col-start-1 md:col-span-6",
-              "md:col-start-8 md:col-span-5",
-              "md:col-start-2 md:col-span-6",
-              "md:col-start-7 md:col-span-6",
-              "md:col-start-1 md:col-span-5",
-              "md:col-start-8 md:col-span-4",
-              "md:col-start-3 md:col-span-7",
-            ];
-            return (
-              <div key={i} className={layout[i] ?? "md:col-span-6"}>
-                <GuestPage note={n} index={i} />
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Sigillo qualitativo + piattaforme (zero numeri) */}
-        <div className="mt-32 border-t border-ink/15 pt-12 text-center">
-          <p
-            style={{
-              fontFamily: '"Caveat", "Segoe Script", cursive',
-              fontSize: "clamp(1.8rem, 3.4vw, 3rem)",
-              lineHeight: 1.1,
-              color: "var(--ink, #1a1410)",
-            }}
-          >
-            Tra le mete più amate della Murgia.
-          </p>
-          {PLATFORMS.length > 0 && (
-            <ul
-              className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-4"
-              aria-label="Presenza sulle piattaforme di recensione"
-            >
-              {PLATFORMS.map((p) => {
-                const href =
-                  p === "TripAdvisor"
-                    ? "https://www.tripadvisor.it/Restaurant_Review-g1057217-d5960944-Reviews-Masseria_Torre_Abbondanza-Noci_Province_of_Bari_Puglia.html"
-                    : p === "TheFork"
-                      ? "https://www.thefork.it/ristorante/masseria-torre-abbondanza-r201438"
-                      : undefined;
-                return (
-                  <li
-                    key={p}
-                    className="text-eyebrow text-ink/60"
-                    style={{ letterSpacing: "0.22em" }}
-                  >
-                    {href ? (
-                      <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="transition-colors hover:text-terracotta"
-                      >
-                        {p}
-                      </a>
-                    ) : (
-                      p
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-          <p className="mt-6 font-sans text-xs text-ink/55">
-            4,4 / 5 su TripAdvisor (213 recensioni) · 9,7 / 10 su TheFork (50 recensioni)
-          </p>
-        </div>
+        <TestimonialsHeaderAndList />
       </div>
 
       {/* Uscita verso Contatti: sfumatura calda */}

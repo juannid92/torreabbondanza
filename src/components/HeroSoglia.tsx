@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "@/lib/split-text";
@@ -30,7 +31,9 @@ const HERO_VIDEO_URL = "/hero-video.mp4";
  * Layout verticale a sinistra; connettore "&" centrale; due CTA di pari peso.
  */
 export function HeroSoglia() {
+  const { t } = useTranslation();
   const root = useRef<HTMLElement>(null);
+  const marqueeItems = t("hero.marquee", { returnObjects: true }) as string[];
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoSrc, setVideoSrc] = useState<string | undefined>(undefined);
 
@@ -317,9 +320,9 @@ export function HeroSoglia() {
       >
         <span>Noci · Puglia</span>
         <span className="text-ink/40">·</span>
-        <span className="text-ink/50">Est. XVIII sec.</span>
+        <span className="text-ink/50">{t("hero.est")}</span>
         <span className="text-ink/40">·</span>
-        <span style={{ color: "var(--murgese)" }}>Allevamento Murgese</span>
+        <span style={{ color: "var(--murgese)" }}>{t("hero.breeding")}</span>
       </div>
 
       {/* TORRE kicker + meta su mobile */}
@@ -334,17 +337,16 @@ export function HeroSoglia() {
         <div data-meta className="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-eyebrow text-ink/60">
           <span>Noci · Puglia</span>
           <span>·</span>
-          <span>Est. XVIII sec.</span>
+          <span>{t("hero.est")}</span>
           <span>·</span>
-          <span style={{ color: "var(--murgese)" }}>Allevamento Murgese</span>
+          <span style={{ color: "var(--murgese)" }}>{t("hero.breeding")}</span>
         </div>
       </div>
 
       {/* === Sottotitolo + CTA (equità: due pill di pari peso + link terziario) === */}
       <div className="absolute left-6 right-6 z-40 flex flex-col gap-5 md:gap-6 md:left-24 md:right-auto md:max-w-[560px] bottom-[14%] md:bottom-[8%]">
         <p data-subtitle className="font-sans text-base md:text-lg leading-relaxed text-ink/85">
-          Due anime, una masseria del Settecento: la cucina di Puglia per eventi e cerimonie e
-          l'antica arte dei cavalli Murgesi, nel cuore della Murgia.
+          {t("hero.tagline")}
         </p>
         <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">
           <div data-cta className="w-full sm:w-auto">
@@ -353,7 +355,7 @@ export function HeroSoglia() {
               href="#eventi"
               className="w-full sm:w-auto justify-center"
             >
-              Tavola &amp; Cerimonie
+              {t("hero.ctaEvents")}
             </MagneticButton>
           </div>
           <div data-cta className="w-full sm:w-auto">
@@ -362,14 +364,14 @@ export function HeroSoglia() {
               href="#cavalli"
               className="w-full sm:w-auto justify-center"
             >
-              I Cavalli Murgesi
+              {t("hero.ctaHorses")}
             </MagneticButton>
           </div>
         </div>
         <div className="-mt-1">
           <div data-cta>
             <MagneticButton variant="link" href="#contatti">
-              Prenota un tavolo
+              {t("hero.ctaBook")}
             </MagneticButton>
           </div>
         </div>
@@ -384,7 +386,7 @@ export function HeroSoglia() {
           className="text-eyebrow text-ink/60"
           style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
         >
-          Scorri
+          {t("hero.scroll")}
         </span>
         <span
           aria-hidden
@@ -396,7 +398,7 @@ export function HeroSoglia() {
         data-marquee
         className="absolute inset-x-0 bottom-0 z-50 bg-ivory/70 backdrop-blur-[2px]"
       >
-        <KineticMarquee items={MARQUEE_ITEMS} />
+        <KineticMarquee items={Array.isArray(marqueeItems) ? marqueeItems : MARQUEE_ITEMS} />
       </div>
 
       <style>{`

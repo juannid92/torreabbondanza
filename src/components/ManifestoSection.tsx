@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -107,6 +108,7 @@ const LINE_INDENT = [0, 1, 2, 0, 2, 1, 3];
 const FULL_TEXT = LINES.map((l) => l.map((t) => t.text).join(" ")).join(" ");
 
 export function ManifestoSection() {
+  const { t, i18n } = useTranslation();
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const blockquoteRef = useRef<HTMLQuoteElement | null>(null);
@@ -115,6 +117,28 @@ export function ManifestoSection() {
   const arcPathRef = useRef<SVGPathElement | null>(null);
   const signatureRef = useRef<HTMLDivElement | null>(null);
   const eyebrowTextRef = useRef<HTMLSpanElement | null>(null);
+
+  const lines = useMemo<Token[][]>(() => {
+    if (i18n.language === "it") return LINES;
+    const trLines = t("manifesto.lines", { returnObjects: true }) as string[];
+    if (!Array.isArray(trLines) || !trLines.length) return LINES;
+    return trLines.map((lineStr) => {
+      const parts = lineStr.includes(" ") ? lineStr.split(/\s+/) : Array.from(lineStr);
+      return parts.map((text) => ({ text }));
+    });
+  }, [t, i18n.language]);
+
+  const fullText = useMemo(
+    () =>
+      lines
+        .map((l) =>
+          l
+            .map((tok) => tok.text)
+            .join(l[0]?.text.length === 1 && !l.some((x) => x.text.length > 1) ? "" : " "),
+        )
+        .join(" "),
+    [lines],
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -278,8 +302,9 @@ export function ManifestoSection() {
     }, section);
 
     return () => ctx.revert();
-  }, []);
+  }, [i18n.language]);
 
+  wordsRef.current = [];
   let wordCounter = 0;
 
   return (
@@ -320,7 +345,7 @@ export function ManifestoSection() {
         {/* Eyebrow + filetto */}
         <div className="flex items-center gap-4">
           <span ref={eyebrowTextRef} className="text-eyebrow text-ink/70">
-            01 — Manifesto
+            {t("manifesto.eyebrow")}
           </span>
           <span
             ref={ruleRef}
@@ -337,7 +362,7 @@ export function ManifestoSection() {
           style={{ willChange: "opacity, transform" }}
         >
           {/* Testo accessibile (screen reader) */}
-          <p className="sr-only">{FULL_TEXT}</p>
+          <p className="sr-only">{fullText}</p>
 
           {/* Blocco visivo (aria-hidden) — broken grid */}
           <blockquote
@@ -350,7 +375,8 @@ export function ManifestoSection() {
               willChange: "transform",
             }}
           >
-            {LINES.map((line, li) => {
+            {lines.map((line, li) => {
+              const isCjk = line.length > 3 && line.every((tok) => tok.text.length <= 2);
               const indent = LINE_INDENT[li] ?? 0;
               // mobile: rientri ridotti
               const desktopPad = ["0", "8%", "16%", "24%"][indent];
@@ -385,7 +411,7 @@ export function ManifestoSection() {
                         >
                           {tok.text}
                         </span>
-                        {ti < line.length - 1 ? " " : ""}
+                        {!isCjk && ti < line.length - 1 ? " " : ""}
                       </span>
                     );
                   })}
@@ -399,7 +425,7 @@ export function ManifestoSection() {
             ref={signatureRef}
             className="mt-[8vh] flex justify-end md:absolute md:bottom-0 md:right-0 md:mt-0"
           >
-            <span className="text-eyebrow text-ink/60">— Masseria Torre Abbondanza, Noci</span>
+            <span className="text-eyebrow text-ink/60">— {t("manifesto.signature")}</span>
           </div>
         </div>
       </div>

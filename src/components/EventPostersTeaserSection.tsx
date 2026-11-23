@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, MessageCircle, Phone } from "lucide-react";
 import { BUSINESS } from "@/lib/site";
 import { EVENT_POSTERS, PHONE_HREF, PosterFlyerVisual } from "@/components/EventPostersShowcase";
@@ -11,6 +12,7 @@ const FEATURED_POSTERS = [EVENT_POSTERS[0], EVENT_POSTERS[4], EVENT_POSTERS[1]];
  * pagina completa `/locandine`.
  */
 export function EventPostersTeaserSection() {
+  const { t } = useTranslation();
   return (
     <section
       id="appuntamenti-tavola"
@@ -30,9 +32,7 @@ export function EventPostersTeaserSection() {
         {/* Intestazione sezione con rimando principale a /appuntamenti */}
         <div className="flex flex-col gap-8 border-b border-ivory/15 pb-12 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <span className="text-eyebrow text-gold">
-              Appuntamenti a Tavola · Menù & Ricorrenze
-            </span>
+            <span className="text-eyebrow text-gold">{t("postersTeaser.eyebrow")}</span>
             <h2
               id="posters-teaser-title"
               className="mt-4 font-display font-semibold leading-[1.02] text-ivory"
@@ -41,12 +41,12 @@ export function EventPostersTeaserSection() {
                 letterSpacing: "-0.025em",
               }}
             >
-              Gli appuntamenti <em className="italic text-gold">a tavola</em> della Masseria
+              {t("postersTeaser.titleStart")}{" "}
+              <em className="italic text-gold">{t("postersTeaser.titleAccent")}</em>{" "}
+              {t("postersTeaser.titleEnd")}
             </h2>
             <p className="mt-5 font-display text-lg leading-relaxed text-ivory/75">
-              Domeniche in famiglia, festività comandate, ponti di primavera e cene estive sotto le
-              lucine della corte: scopri i menù dedicati alle date speciali e prenota il tuo tavolo
-              su WhatsApp o al telefono.
+              {t("postersTeaser.subtitle")}
             </p>
           </div>
 
@@ -55,7 +55,7 @@ export function EventPostersTeaserSection() {
               to="/appuntamenti"
               className="inline-flex items-center justify-center gap-2.5 rounded-full bg-terracotta px-7 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase text-ivory shadow-[0_18px_40px_-18px_rgba(0,0,0,0.65)] transition-colors hover:bg-gold hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             >
-              <span>Scopri tutti gli appuntamenti a tavola</span>
+              <span>{t("postersTeaser.ctaAll")}</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
@@ -97,7 +97,7 @@ export function EventPostersTeaserSection() {
                     className="inline-flex items-center justify-center gap-1.5 rounded-full bg-terracotta px-3 py-2.5 text-[11px] font-semibold tracking-[0.12em] uppercase text-ivory transition-colors hover:bg-gold hover:text-ink"
                   >
                     <MessageCircle className="h-3.5 w-3.5 shrink-0" />
-                    <span>WhatsApp</span>
+                    <span>{t("postersTeaser.whatsapp")}</span>
                   </a>
                   <a
                     href={PHONE_HREF}
@@ -105,7 +105,7 @@ export function EventPostersTeaserSection() {
                     className="inline-flex items-center justify-center gap-1.5 rounded-full border border-ivory/30 px-3 py-2.5 text-[11px] font-semibold tracking-[0.12em] uppercase text-ivory transition-colors hover:border-gold hover:text-gold"
                   >
                     <Phone className="h-3.5 w-3.5 shrink-0" />
-                    <span>Chiama</span>
+                    <span>{t("postersTeaser.call")}</span>
                   </a>
                 </div>
               </div>

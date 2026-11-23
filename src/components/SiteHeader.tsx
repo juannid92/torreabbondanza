@@ -1,24 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { BUSINESS } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 const NAV_ITEMS: {
-  label: string;
+  key: "masseria" | "cucina" | "appuntamenti" | "cavalli" | "eventi" | "contatti";
   to: "/" | "/cucina" | "/cavalli" | "/eventi" | "/appuntamenti";
   hash?: string;
 }[] = [
-  { label: "La Masseria", to: "/", hash: "luogo" },
-  { label: "Cucina", to: "/cucina" },
-  { label: "Appuntamenti a Tavola", to: "/appuntamenti" },
-  { label: "Cavalli", to: "/cavalli" },
-  { label: "Eventi", to: "/eventi" },
-  { label: "Contatti", to: "/", hash: "contatti" },
+  { key: "masseria", to: "/", hash: "luogo" },
+  { key: "cucina", to: "/cucina" },
+  { key: "appuntamenti", to: "/appuntamenti" },
+  { key: "cavalli", to: "/cavalli" },
+  { key: "eventi", to: "/eventi" },
+  { key: "contatti", to: "/", hash: "contatti" },
 ];
 
 export function SiteHeader() {
+  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
@@ -68,7 +70,7 @@ export function SiteHeader() {
             const isActive = location.pathname === item.to && !item.hash;
             return (
               <Link
-                key={item.label}
+                key={item.key}
                 to={item.to}
                 hash={item.hash}
                 className={cn(
@@ -77,7 +79,7 @@ export function SiteHeader() {
                   isActive && "text-gold font-medium",
                 )}
               >
-                {item.label}
+                {t(`header.${item.key}`)}
               </Link>
             );
           })}
@@ -99,7 +101,7 @@ export function SiteHeader() {
           <button
             type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Chiudi menu" : "Apri menu"}
+            aria-label={mobileOpen ? t("header.closeMenu") : t("header.openMenu")}
             aria-expanded={mobileOpen}
             className={cn(
               "inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors md:hidden",
@@ -119,7 +121,7 @@ export function SiteHeader() {
               const isActive = location.pathname === item.to && !item.hash;
               return (
                 <Link
-                  key={item.label}
+                  key={item.key}
                   to={item.to}
                   hash={item.hash}
                   onClick={() => setMobileOpen(false)}
@@ -130,7 +132,7 @@ export function SiteHeader() {
                       : "text-ivory/80 hover:bg-ivory/5 hover:text-ivory",
                   )}
                 >
-                  {item.label}
+                  {t(`header.${item.key}`)}
                 </Link>
               );
             })}
@@ -141,7 +143,7 @@ export function SiteHeader() {
               className="mt-4 flex items-center justify-center gap-2 rounded-full bg-terracotta px-6 py-3 text-sm font-medium tracking-widest uppercase text-ivory transition-colors hover:bg-gold hover:text-ink"
             >
               <MessageCircle className="h-4 w-4" />
-              Scrivici su WhatsApp
+              {t("header.whatsappFull")}
             </a>
           </nav>
         </div>

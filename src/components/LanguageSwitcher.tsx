@@ -21,7 +21,12 @@ export function LanguageSwitcher({ className }: { className?: string }) {
   }, []);
 
   const changeLang = (lng: Language) => {
-    i18n.changeLanguage(lng);
+    void i18n.changeLanguage(lng);
+    try {
+      window.localStorage.setItem("i18nextLng", lng);
+    } catch {
+      /* ignore storage errors */
+    }
     // Update URL query param without reload
     const url = new URL(window.location.href);
     if (lng === "it") {

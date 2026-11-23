@@ -20,9 +20,23 @@
     "chiudiMenu": "Chiudi menu"
   },
   "hero": {
-    "eyebrow": "Masseria del Settecento · Noci, Puglia",
-    "title": "Torre Abbondanza",
-    "subtitle": "Dove la pietra incontra il galoppo. Cucina tradizionale, eventi esclusivi e cavalli Murgesi nel cuore della Murgia dei Trulli."
+    "tagline": "Due anime, una masseria del Settecento: la cucina di Puglia per eventi e cerimonie e l'antica arte dei cavalli Murgesi, nel cuore della Murgia.",
+    "ctaEvents": "Tavola & Cerimonie",
+    "ctaHorses": "I Cavalli Murgesi",
+    "ctaBook": "Prenota un tavolo",
+    "scroll": "Scorri",
+    "est": "Est. XVIII sec.",
+    "breeding": "Allevamento Murgese",
+    "marquee": [
+      "CAVALLI MURGESI",
+      "RISTORANTE",
+      "ALLEVAMENTO",
+      "CERIMONIE & MATRIMONI",
+      "ATTACCHI D'EPOCA",
+      "CUCINA PUGLIESE",
+      "MASSERIA DEL '700",
+      "MURGIA · NOCI"
+    ]
   },
   "masseria": {
     "eyebrow": "Dal Settecento a oggi",
@@ -129,5 +143,448 @@
     "diritti": "Tutti i diritti riservati.",
     "privacy": "Privacy Policy",
     "cookie": "Cookie Policy"
+  },
+  "a11y": {
+    "skipToContent": "Vai al contenuto principale"
+  },
+  "header": {
+    "masseria": "La Masseria",
+    "cucina": "Cucina",
+    "appuntamenti": "Appuntamenti a Tavola",
+    "cavalli": "Cavalli",
+    "eventi": "Eventi",
+    "contatti": "Contatti",
+    "openMenu": "Apri menu",
+    "closeMenu": "Chiudi menu",
+    "whatsappFull": "Scrivici su WhatsApp"
+  },
+  "intro": {
+    "skip": "Salta intro"
+  },
+  "manifesto": {
+    "eyebrow": "01 — Il Manifesto",
+    "lines": [
+      "C'è un luogo dove la pietra racconta tre secoli,",
+      "dove la terra dona i suoi frutti e ogni tavola diventa una festa,",
+      "e dove i cavalli Murgesi corrono liberi come un tempo.",
+      "Qui il tempo rallenta, l'accoglienza è di famiglia,",
+      "e l'abbondanza non è quantità —",
+      "è la generosità di un gesto antico",
+      "che si rinnova ogni giorno."
+    ],
+    "signature": "Masseria Torre Abbondanza · Dal Settecento"
+  },
+  "story": {
+    "eyebrow": "02 — La Storia",
+    "titleStart": "Tre secoli di",
+    "titleAccent": "pietra",
+    "body": "Una storia a due voci: la masseria settecentesca della famiglia Giunta e i cavalli Murgesi che abitano questa terra da sempre.",
+    "scrollHint": "scorri →",
+    "c1Eyebrow": "Capitolo I — Le origini",
+    "c1Title": "Nell'agro di Noci",
+    "c1Body": "Nel cuore del Settecento, tra i boschi cedui, i muretti a secco e il bianco di Noci, la masseria nasce pietra su pietra, alzata per custodire i raccolti granari, i pascoli e il bestiame nella Murgia dei Trulli, culla storica del cavallo Murgese.",
+    "c1Note": "XVIII secolo · Agro di Noci · Murgia dei Trulli",
+    "c2Eyebrow": "Capitolo II — La materia",
+    "c2Title": "La calce, la pietra, la luce",
+    "c2Body": "Archi a tutto sesto, muri a calce che respirano, tetti in terracotta che si scaldano nel pomeriggio: l'architettura rurale pugliese non è decoro, è clima. Il bianco riflette la luce, la pietra trattiene il fresco.",
+    "c3Eyebrow": "Capitolo III — La stirpe",
+    "c3TitleStart": "Il",
+    "c3TitleAccent": "cavallo",
+    "c3TitleEnd": "della Murgia",
+    "c3Body": "Nelle scuderie vive l'allevamento di cavalli Murgesi iscritti al Registro Anagrafico della famiglia Giunta (suffisso T.A.): mantello morello, fierezza antica e sfilate di attacchi d'epoca.",
+    "c4Eyebrow": "Capitolo IV — La famiglia",
+    "c4Title": "La famiglia Giunta, dal 2005",
+    "c4Body": "Vent'anni di ospitalità autentica: la tavola pugliese su prenotazione per le grandi occasioni, l'orto, il grano e la cura quotidiana di un luogo vivo.",
+    "c5Eyebrow": "Capitolo V — Oggi",
+    "c5Title": "Due anime, una soglia",
+    "c5Body": "Oggi Torre Abbondanza accoglie matrimoni, cerimonie, feste private e appassionati di cavalli Murgesi da tutta Europa."
+  },
+  "place": {
+    "eyebrow": "03 — Il luogo",
+    "titleWords": [
+      "Nel",
+      "respiro",
+      "della",
+      "Murgia"
+    ],
+    "subtitle": "Un punto di quiete tra ulivi secolari e muretti a secco, dove pascolano i cavalli Murgesi e il paesaggio diventa silenzio.",
+    "coords": [
+      "40.73° N — 17.13° E",
+      "Murgia dei Trulli · altopiano",
+      "Noci (BA) · Puglia",
+      "Terra del cavallo Murgese",
+      "Ulivi · pietra · cavalli"
+    ],
+    "mapCaption": "Taccuino · Murgia dei Trulli",
+    "howToReach": "Come raggiungerci",
+    "nearNoci": "A pochi minuti da Noci,",
+    "nearItria": "tra gli ulivi della Valle d'Itria.",
+    "inHeart": "Nel cuore della Murgia, terra di masserie e di cavalli.",
+    "openGoogleMaps": "Apri in Google Maps"
+  },
+  "kitchen": {
+    "eyebrow": "04 — La Cucina",
+    "titleStart": "La nostra",
+    "titleAccent": "cucina",
+    "subtitle": "Ricette di famiglia, materie prime della Murgia e portate preparate espresse su prenotazione.",
+    "tags": [
+      "Solo su prenotazione",
+      "Per cerimonie ed eventi",
+      "Menù su misura",
+      "Veg · Vegan · Gluten-free"
+    ],
+    "courses": [
+      {
+        "course": "Antipasti di terra",
+        "word": "ANTIPASTI",
+        "dishTitle": "Carrellata della tradizione pugliese",
+        "description": "Olive fritte, salumi e formaggi locali, parmigiana, focaccia calda, purè di fave bianche e peperoni fritti. Una carrellata generosa che apre il pasto come un racconto del territorio."
+      },
+      {
+        "course": "Primi della casa",
+        "word": "PRIMI",
+        "dishTitle": "Cavatelli fatti a mano al ragù",
+        "description": "Primi di terra nella tradizione pugliese: pasta fresca tirata a mano, cavatelli e orecchiette, con il ragù di carne della domenica e i funghi cardoncelli della Murgia."
+      },
+      {
+        "course": "Secondi",
+        "word": "SECONDI",
+        "dishTitle": "Involtino di carne al sugo",
+        "description": "Carni selezionate della tradizione, cotture lente al vino rosso pugliese e profumi di erbe spontanee. Una memoria di campagna che torna in tavola."
+      },
+      {
+        "course": "Dolci fatti a mano",
+        "word": "DOLCI",
+        "dishTitle": "Tortino al cioccolato",
+        "description": "Dolci della casa preparati artigianalmente per ogni ricorrenza. Il tortino al cioccolato con fragole chiude il convivio con equilibrio e dolcezza."
+      }
+    ]
+  },
+  "menu": {
+    "eyebrow": "05 — I Sapori",
+    "titleStart": "La tavola delle",
+    "titleAccent": "grandi occasioni",
+    "kinetic": [
+      "convivio",
+      "tradizione",
+      "su misura",
+      "occasione"
+    ],
+    "prose1Start": "La masseria apre la sua cucina per le",
+    "prose1Accent": "grandi occasioni",
+    "prose1End": "— cerimonie, battesimi, compleanni, matrimoni.",
+    "prose2": "Ogni menù nasce da un accordo, pensato insieme. Per sedervi alla nostra tavola bastano una compagnia di almeno venti persone, due giorni di anticipo e una proposta che parte da cinquanta euro a persona. Il resto — i sapori, il ritmo, i dettagli — lo scegliamo con voi.",
+    "dietary": "Veg · Vegan · Gluten-free · Menù bambini — su richiesta",
+    "ctaRequest": "Richiedi il tuo menù",
+    "ctaAppointments": "Appuntamenti a tavola & menù",
+    "bridgeStart": "Finita la tavola, resta il galoppo.",
+    "bridgeLink": "I cavalli Murgesi"
+  },
+  "postersTeaser": {
+    "eyebrow": "Appuntamenti a Tavola · Menù & Ricorrenze",
+    "titleStart": "Gli appuntamenti",
+    "titleAccent": "a tavola",
+    "titleEnd": "della Masseria",
+    "subtitle": "Domeniche in famiglia, festività comandate, ponti di primavera e cene estive sotto le lucine della corte: scopri i menù dedicati alle date speciali e prenota il tuo tavolo su WhatsApp o al telefono.",
+    "ctaAll": "Scopri tutti gli appuntamenti a tavola",
+    "whatsapp": "WhatsApp",
+    "call": "Chiama"
+  },
+  "horses": {
+    "eyebrow": "06 — I Cavalli",
+    "titleStart": "La stirpe",
+    "titleAccent": "Murgese",
+    "subtitle": "Allevamento della famiglia Giunta iscritto al Registro Anagrafico (suffisso T.A.): morelli lucenti, equilibrio e tradizione equestre.",
+    "traditionTitleStart": "La masseria custodisce la Murgia",
+    "traditionTitleAccent": "equestre.",
+    "traditionQuote": "Sfilata di Attacchi d'Epoca, cavalli Murgesi e muli Martinesi: nella masseria la tradizione equestre della Murgia non è memoria, è gesto vivo.",
+    "traditionBody": "I cavalli sono della famiglia Giunta, che alleva Murgesi in masseria — con soggetti iscritti al Registro Anagrafico (suffisso T.A.) e a volte presenti in fiera. Esperienze equestri tra scuderia, pascolo e attacchi storici, su richiesta, in occasione di eventi e visite guidate.",
+    "ctaExperience": "Vivi l'esperienza equestre",
+    "ctaShowcase": "Esemplari in vetrina"
+  },
+  "events": {
+    "headingStart": "Sette modi di vivere",
+    "headingAccent": "la Masseria.",
+    "subheading": "Matrimoni, cerimonie, feste di famiglia, serate riservate ed esperienze equestri nella dimora del Settecento tra sala storica, corte in pietra e ulivi della Murgia.",
+    "stat1Label": "Ricevimenti",
+    "stat1Value": "Fino a 250 ospiti",
+    "stat2Label": "Cornici",
+    "stat2Value": "Sala & Uliveto",
+    "stat3Label": "Tavola",
+    "stat3Value": "Cucina interna",
+    "reqBtn": "Richiedi per questo evento",
+    "reqShortBtn": "Richiedi",
+    "detailsBtn": "Dettagli e foto",
+    "swipeHint": "Trascina la carta o tocca le frecce",
+    "changeView": "Cambia vista",
+    "closeSheet": "Chiudi scheda evento",
+    "whatsapp": "WhatsApp",
+    "call": "Chiama",
+    "fillForm": "Compila il modulo con questo evento",
+    "carriageTitle": "L'arrivo con gli attacchi d'epoca",
+    "carriageQuote": "Una scenografia rara, sobria, profondamente del territorio.",
+    "carriageBody": "Su richiesta, la cerimonia o il ricevimento può aprirsi con l'ingresso di una carrozza d'epoca trainata dai cavalli Murgesi allevati dalla famiglia Giunta proprio in masseria.",
+    "carriageBadge": "Servizio su richiesta",
+    "carriageLink": "Scopri i nostri Murgesi",
+    "closingStart": "Parlaci del tuo evento: costruiamo insieme",
+    "closingAccent": "ogni dettaglio.",
+    "whatsappDirect": "WhatsApp diretto",
+    "ctaAvailability": "Richiedi disponibilità",
+    "ctaAppointments": "Appuntamenti a tavola & menù",
+    "spaces": {
+      "salaTitle": "La Sala Storica del '700",
+      "salaSubtitle": "Capienza fino a 250 ospiti · Tutta la stagione",
+      "salaDesc": "Travi a vista, archi in pietra e luce calda per lunghi tavoli imperiali o tavoli tondi curati dal nostro staff di cucina.",
+      "salaV1": "Vista panoramica · Luce calda & tavoli tondi",
+      "salaV2": "Allestimento imperiale · Tavola unica",
+      "corteTitle": "La Corte & Gli Ulivi",
+      "corteSubtitle": "Pergolato in cannicciato · Ricevimenti all'aperto",
+      "corteDesc": "Pietra imbiancata a calce, arcate settecentesche e serate estive tra gli ulivi secolari della Murgia.",
+      "corteV1": "La corte di giorno · Archi & pietra viva",
+      "corteV2": "La corte di sera · Sotto l'ulivo"
+    },
+    "items": [
+      {
+        "id": "matrimoni",
+        "title": "Matrimoni",
+        "shortTitle": "Matrimoni",
+        "spaces": "Corte degli Ulivi · Sala del '700",
+        "phrase": "Il sì sotto gli ulivi, la festa che non finisce.",
+        "description": "Ricevimenti fino a 250 ospiti tra la corte esterna in pietra bianca, il pergolato estivo in cannicciato e la sala storica del Settecento.",
+        "highlights": [
+          "Corte degli ulivi e sala storica con volte e travi del Settecento",
+          "Cucina pugliese interna con menù su misura (varianti vegetariane, vegane, gluten-free e bimbi)",
+          "Possibilità di ingresso in carrozza d'epoca con i nostri cavalli Murgesi"
+        ]
+      },
+      {
+        "id": "cerimonie",
+        "title": "Cerimonie",
+        "shortTitle": "Cerimonie",
+        "spaces": "Arcate in Pietra · Giardino",
+        "phrase": "Civili, simboliche: i riti che vi somigliano.",
+        "description": "Comunioni, cresime, promesse e cerimonie civili o simboliche accolte tra le arcate storiche e il verde della Murgia di Noci.",
+        "highlights": [
+          "Spazi dedicati al rito all'aperto tra gli archi e le pietre settecentesche",
+          "Pranzi e cene su prenotazione per gruppi da 20 fino a 250 ospiti",
+          "Coordinamento diretto con la famiglia Giunta dal primo sopralluogo alla tavola"
+        ]
+      },
+      {
+        "id": "battesimi",
+        "title": "Battesimi",
+        "shortTitle": "Battesimi",
+        "spaces": "Sala Storica · Tavola Imperiale",
+        "phrase": "Le prime feste di famiglia, al riparo della pietra.",
+        "description": "Una lunga tavola raccolta attorno ai nuovi arrivati, con cucina espressa della tradizione pugliese e portate dedicate ai più piccoli.",
+        "highlights": [
+          "Sala accogliente in tutte le stagioni con ampi tavoli conviviali",
+          "Menù stagionale dai 50 euro a persona con varianti dedicate ai bambini",
+          "Cortile tranquillo e sicuro immerso nella campagna di Noci"
+        ]
+      },
+      {
+        "id": "compleanni",
+        "title": "Compleanni",
+        "shortTitle": "Compleanni",
+        "spaces": "Sala Storica · Corte Serale",
+        "phrase": "Gli anni che contano, candele e brindisi sotto le stelle.",
+        "description": "Diciottesimi, feste di laurea, trent'anni e ricorrenze speciali: tavola su misura, vini del territorio, dolci fatti a mano e spazio alla musica.",
+        "highlights": [
+          "Menù costruito insieme con almeno 2 giorni di anticipo (min. 20 ospiti)",
+          "Dolci artigianali della casa e brindisi nella sala calda o nella corte serale",
+          "Ambiente autentico e riservato lontano dal rumore cittadino"
+        ]
+      },
+      {
+        "id": "feste-private",
+        "title": "Feste Private",
+        "shortTitle": "Feste Private",
+        "spaces": "Corte Serale · Uso Esclusivo",
+        "phrase": "Aziendali, intime, a sorpresa: la masseria è vostra.",
+        "description": "Cene aziendali, rimpatriate, anniversari e serate su invito: l'intera cornice della masseria dedicata esclusivamente al vostro gruppo.",
+        "highlights": [
+          "Prenotazione dedicata a gruppi a partire da 20 persone",
+          "Scelta tra cena nella sala interna o serata nella corte tra gli ulivi",
+          "Parcheggio interno e posizione comoda tra Noci, Alberobello e Putignano"
+        ]
+      },
+      {
+        "id": "la-masseria",
+        "title": "La Masseria",
+        "shortTitle": "La Masseria",
+        "spaces": "Dimora del '700 · Noci, Murgia",
+        "phrase": "La cornice: pietra, ulivi, cortile, lunga tavola. Scegliete il momento, noi facciamo il resto.",
+        "description": "Una masseria storica del Settecento con sala interna, corte imbiancata a calce, cucina di famiglia e scuderie di cavalli Murgesi nella Murgia barese.",
+        "highlights": [
+          "Architettura rurale pugliese autentica conservata dalla famiglia Giunta",
+          "Possibilità di integrare esperienze in scuderia o pranzi della tradizione",
+          "Consulenza diretta per qualsiasi ricorrenza o progetto su misura"
+        ]
+      },
+      {
+        "id": "esperienza-equestre",
+        "title": "Esperienza Equestre",
+        "shortTitle": "Equitazione",
+        "spaces": "Allevamento Murgesi · Attacchi d'Epoca",
+        "phrase": "Cavalli Murgesi al pascolo, passeggiate e attacchi d'epoca tra i muretti a secco.",
+        "description": "Visite alle scuderie dell'allevamento Torre Abbondanza (Registro Anagrafico T.A.), passeggiate tra gli ulivi e arrivi in carrozza d'epoca.",
+        "highlights": [
+          "Cavalli Murgesi e muli Martinesi allevati direttamente in masseria",
+          "Passeggiate guidate lungo i sentieri rurali e visite in scuderia su prenotazione",
+          "Sfilata di Attacchi d'Epoca e ingresso in carrozza per cerimonie"
+        ]
+      }
+    ]
+  },
+  "seasons": {
+    "eyebrow": "08 — Le Stagioni",
+    "title": "Un anno in masseria",
+    "ctaEvents": "Scopri gli eventi",
+    "items": [
+      {
+        "label": "Primavera",
+        "italic": "in fiore",
+        "kicker": "La campagna si risveglia: ulivi in fiore, terra che respira, passi lenti tra i muretti a secco.",
+        "exp1Title": "A cavallo tra gli ulivi in fiore",
+        "exp1Text": "Passeggiate nei sentieri della masseria con i Murgesi: il passo lento dei cavalli e il bianco delle fioriture lungo i filari.",
+        "exp2Title": "Risveglio nel verde",
+        "exp2Text": "Pranzi e picnic all'aperto fra ulivi e prato nuovo: pane, erbe selvatiche, formaggi della tradizione pugliese."
+      },
+      {
+        "label": "Estate",
+        "italic": "sotto le stelle",
+        "kicker": "Le sere si fanno lunghe, l'oro bruciato si posa su pietra e tavola: la masseria si apre alla festa.",
+        "exp1Title": "Cene ed eventi sotto le stelle",
+        "exp1Text": "Lucine, candele e tavole lunghe negli spazi aperti: matrimoni, cene private e cerimonie nella corte settecentesca.",
+        "exp2Title": "Sfilata di Attacchi d'Epoca",
+        "exp2Text": "I Murgesi e i muli Martinesi in parata con le carrozze d'epoca: una scenografia viva che attraversa la campagna."
+      },
+      {
+        "label": "Autunno",
+        "italic": "dei sentieri",
+        "kicker": "Raccolta delle olive, vendemmia tardiva, foglie d'ocra e il primo tepore della sala in pietra.",
+        "exp1Title": "Tra gli ulivi secolari",
+        "exp1Text": "Raccolta dell'olio nuovo, degustazioni con pane caldo e passeggiate nella luce morbida di ottobre.",
+        "exp2Title": "La tavola d'autunno",
+        "exp2Text": "Funghi cardoncelli della Murgia, legumi antichi, pasta fatta a mano e vini rossi del territorio."
+      },
+      {
+        "label": "Inverno",
+        "italic": "al riparo",
+        "kicker": "La pietra custodisce il calore del camino, il passo dei cavalli nella bruma e i pranzi della domenica.",
+        "exp1Title": "Intimità nella sala del '700",
+        "exp1Text": "Pranzi di famiglia, festività e ricorrenze raccolti tra archi caldi, fuoco vivo e cucina espressa.",
+        "exp2Title": "I Murgesi d'inverno",
+        "exp2Text": "Il manto morello lucido nella luce chiara dell'altopiano: visite in scuderia e momenti lenti."
+      }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "09 — Il libro degli ospiti",
+    "title": "Le voci di chi è stato qui",
+    "seal": "Tra le mete più amate della Murgia.",
+    "stats": "4,4 / 5 su TripAdvisor (213 recensioni) · 9,7 / 10 su TheFork (50 recensioni)",
+    "notes": [
+      "Un'oasi di pace e di gusto. Si mangia benissimo, in un ambiente tranquillo. Servizio preciso, personale cordiale e disponibile.",
+      "Bellissima masseria nella campagna di Noci. Qualità del cibo molto buona, presentazioni ottime e abbinamenti curati.",
+      "Abbiamo trascorso una bellissima giornata. Più di cinquanta tra adulti e bambini, accolti con grande attenzione. Si è mangiato davvero bene."
+    ]
+  },
+  "visitSection": {
+    "eyebrow": "10 — Contatti",
+    "titleWords": [
+      "Vieni",
+      "a",
+      "trovarci."
+    ],
+    "subtitle": "Nel cuore della Murgia, tra ulivi secolari e l'eco del galoppo dei nostri Murgesi. Ti aspettiamo per la tavola, per una festa, per un'esperienza che resta.",
+    "where": "Dove siamo",
+    "addressLabel": "Indirizzo",
+    "phoneLabel": "Telefono",
+    "whatsappLabel": "WhatsApp",
+    "whatsappCta": "Scrivici su WhatsApp",
+    "siteLabel": "Sito",
+    "inMurgia": "Nella Murgia",
+    "directionsGoogle": "Indicazioni · Google Maps",
+    "modelNote": "La cucina apre su prenotazione, per le grandi occasioni. Scrivici e componiamo insieme la tua.",
+    "formTitle": "Raccontaci la tua occasione",
+    "formSubtitle": "Compila il modulo: prepariamo subito il messaggio su WhatsApp o riceviamo la richiesta.",
+    "nameLabel": "Nome e cognome",
+    "phoneFieldLabel": "Telefono / WhatsApp",
+    "kindLabel": "Tipo di occasione",
+    "dateLabel": "Data indicativa",
+    "guestsLabel": "Numero ospiti",
+    "messageLabel": "Messaggio",
+    "consentText": "Acconsento al trattamento dei dati personali secondo la Privacy Policy.",
+    "submitBtn": "Invia richiesta su WhatsApp",
+    "errName": "Inserisci il tuo nome.",
+    "errPhone": "Numero di telefono non valido.",
+    "errKind": "Scegli il tipo di occasione.",
+    "errMessage": "Raccontaci qualcosa.",
+    "errConsent": "È necessario il consenso privacy.",
+    "successMsg": "Grazie! La tua richiesta è pronta.",
+    "openWhatsAppNow": "Apri WhatsApp ora",
+    "occasions": {
+      "matrimonio": "Matrimonio",
+      "cerimonia": "Cerimonia",
+      "battesimo": "Battesimo",
+      "compleanno": "Compleanno",
+      "festa-privata": "Festa privata",
+      "esperienza-equestre": "Esperienza equestre",
+      "altro": "Altro"
+    }
+  },
+  "footerSection": {
+    "eyebrow": "11 — Il Congedo",
+    "locationTag": "Contrada Murgia · Agro di Noci",
+    "claim1": "Due",
+    "claim1Accent": "anime",
+    "claim2": "una sola",
+    "claim2Accent": "terra",
+    "quote": "«Le porte della nostra corte si aprono a chi cerca il tempo lento della Murgia, il sapore sincero della terra e il passo fiero dei nostri Murgesi. Vi aspettiamo in masseria.»",
+    "family": "— Famiglia Giunta",
+    "since": "Dal Settecento a oggi",
+    "whatsappBtn": "Scrivici su WhatsApp",
+    "callBtn": "Chiama",
+    "shareBtn": "Invia la Masseria a chi ami →",
+    "shareCopied": "Link copiato · Inoltralo su WhatsApp a chi ami",
+    "archCaption": "«Dove la pietra del Settecento incontra il galoppo.»",
+    "brandDesc": "Masseria del Settecento immersa nella Murgia di Noci. Tavola su prenotazione, cavalli Murgesi e occasioni rare.",
+    "navTitle": "Naviga",
+    "contactsTitle": "Contatti",
+    "followTitle": "Seguici",
+    "requestBtn": "Richiedi la tua occasione",
+    "rights": "Tutti i diritti riservati.",
+    "cookiePrefs": "Preferenze cookie",
+    "onReservation": "Su prenotazione",
+    "backToTop": "Torna su",
+    "navLinks": {
+      "storia": "Storia",
+      "luogo": "Il Luogo",
+      "cucina": "Cucina",
+      "menu": "I Sapori",
+      "cavalli": "I Cavalli",
+      "eventi": "Eventi",
+      "esperienze": "Esperienze",
+      "recensioni": "Recensioni",
+      "contatti": "Contatti"
+    }
+  },
+  "cookieBanner": {
+    "title": "Preferenze sui cookie e misurazione",
+    "desc": "Questo sito utilizza cookie tecnici necessari al funzionamento e, previo consenso, cookie analitici (Google Tag / GA4) per migliorare l'esperienza di navigazione. Puoi rifiutare o personalizzare le scelte senza alcuna conseguenza.",
+    "rejectAll": "Rifiuta tutti",
+    "customize": "Personalizza",
+    "acceptAll": "Accetta tutti",
+    "prefsTitle": "Gestisci le preferenze cookie",
+    "prefsDesc": "Ai sensi del GDPR puoi scegliere quali categorie attivare oltre ai cookie tecnici essenziali.",
+    "techTitle": "Cookie tecnici (sempre attivi)",
+    "techDesc": "Necessari al funzionamento della rete, alla sicurezza e alla memorizzazione del consenso.",
+    "analyticsTitle": "Cookie analitici (Google Tag / GA4)",
+    "analyticsDesc": "Statistiche aggregate e anonimizzate sulle visite tramite Google Consent Mode v2.",
+    "marketingTitle": "Cookie di marketing e conversioni",
+    "marketingDesc": "Misurazione dell'efficacia delle campagne solo previo consenso esplicito.",
+    "savePrefs": "Salva preferenze"
   }
 }

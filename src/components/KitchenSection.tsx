@@ -1,7 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
+import { BUSINESS } from "@/lib/site";
 import antipastiImg from "@/assets/kitchen-antipasti.jpg";
 import primiImg from "@/assets/kitchen-primi.jpg";
 import secondiImg from "@/assets/kitchen-secondi.jpg";
@@ -80,7 +82,28 @@ const SERVICE_TAGS = [
 ];
 
 export function KitchenSection() {
+  const { t, i18n } = useTranslation();
   const rootRef = useRef<HTMLElement>(null);
+
+  const translatedTags = t("kitchen.tags", { returnObjects: true }) as string[];
+  const serviceTags = Array.isArray(translatedTags) ? translatedTags : SERVICE_TAGS;
+
+  const courses = useMemo(() => {
+    const trCourses = t("kitchen.courses", { returnObjects: true }) as
+      | Array<{ course?: string; word?: string; dishTitle?: string; description?: string }>
+      | undefined;
+    return COURSES.map((c, idx) => {
+      const tr = Array.isArray(trCourses) ? trCourses[idx] : undefined;
+      if (!tr) return c;
+      return {
+        ...c,
+        course: tr.course ?? c.course,
+        oversizedWord: tr.word ?? c.oversizedWord,
+        dishTitle: tr.dishTitle ?? c.dishTitle,
+        description: tr.description ?? c.description,
+      };
+    });
+  }, [t, i18n.language]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -153,7 +176,7 @@ export function KitchenSection() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-7">
             <p data-intro className="text-eyebrow text-ink/70">
-              04 — La cucina
+              {t("kitchen.eyebrow")}
             </p>
             <h2
               id="kitchen-title"
@@ -164,27 +187,18 @@ export function KitchenSection() {
                 letterSpacing: "-0.025em",
               }}
             >
-              La <em className="text-terracotta">terra</em> in tavola
+              {t("kitchen.titleStart")}{" "}
+              <em className="text-terracotta">{t("kitchen.titleAccent")}</em>
             </h2>
           </div>
 
           <div className="flex flex-col gap-6 md:col-span-5 md:pt-6">
             <p data-intro className="font-sans text-base leading-relaxed text-ink/80 md:text-lg">
-              Tradizione pugliese e materie prime fresche del territorio, attraversate da un tocco
-              creativo. La nostra cucina apre su prenotazione: ogni menù viene composto su misura,
-              pensato per cerimonie, eventi e grandi occasioni.
-            </p>
-
-            <p
-              data-intro
-              className="font-display text-lg italic leading-snug text-ink/70 md:text-xl"
-            >
-              La stessa Murgia che alleva i <span style={{ color: "var(--murgese)" }}>cavalli</span>{" "}
-              e piega gli ulivi arriva, ogni giorno, nel piatto.
+              {t("kitchen.subtitle")}
             </p>
 
             <ul data-intro className="flex flex-wrap gap-2" aria-label="Servizi della cucina">
-              {SERVICE_TAGS.map((tag) => (
+              {serviceTags.map((tag) => (
                 <li
                   key={tag}
                   className="text-eyebrow rounded-full border border-ink/15 px-3 py-1.5 text-ink/70"
@@ -204,7 +218,7 @@ export function KitchenSection() {
           className="mt-16 divide-y divide-ink/10 md:mt-24"
           aria-label="Le quattro portate della masseria"
         >
-          {COURSES.map((item) => {
+          {courses.map((item) => {
             const isLeft = item.align === "left";
             return (
               <article
@@ -295,13 +309,13 @@ export function KitchenSection() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Scrivici su WhatsApp →
+                {t("header.whatsappFull")}
               </MagneticButton>
               <MagneticButton href="/appuntamenti" variant="pill-solid">
-                Appuntamenti a tavola & menù
+                {t("events.ctaAppointments")}
               </MagneticButton>
               <MagneticButton href={TEL_HREF} variant="link">
-                Oppure chiama +39 338 483 4318
+                {BUSINESS.phone}
               </MagneticButton>
             </div>
             <p className="text-eyebrow text-ink/55">Risposta in giornata · senza impegno</p>
@@ -315,12 +329,8 @@ export function KitchenSection() {
           <p className="font-display text-lg italic text-ink/65 md:text-xl">
             L'altra anima della masseria.
           </p>
-          <MagneticButton
-            href="#cavalli"
-            variant="link"
-            ariaLabel="L'altra anima: i cavalli Murgesi"
-          >
-            <span style={{ color: "var(--murgese)" }}>I cavalli Murgesi →</span>
+          <MagneticButton href="#cavalli" variant="link" ariaLabel={t("hero.ctaHorses")}>
+            <span style={{ color: "var(--murgese)" }}>{t("hero.ctaHorses")}</span>
           </MagneticButton>
         </div>
       </div>

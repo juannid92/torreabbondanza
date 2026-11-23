@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -18,6 +19,7 @@ const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffec
  * sottostante (coordinata con `html.intro-pending` in __root.tsx).
  */
 export function IntroOverlay() {
+  const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
   const [fading, setFading] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -128,7 +130,7 @@ export function IntroOverlay() {
         onClick={dismiss}
         className="fixed right-6 bottom-[max(1.5rem,env(safe-area-inset-bottom))] z-10 inline-flex min-h-[44px] items-center gap-2 rounded-full border border-ivory/25 bg-[color:var(--murgese)]/75 px-5 py-2.5 text-eyebrow text-ivory backdrop-blur-sm transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
       >
-        <span>Salta intro</span>
+        <span>{t("intro.skip")}</span>
         <span aria-hidden>→</span>
       </button>
     </div>

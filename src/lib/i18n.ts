@@ -40,6 +40,23 @@ export const HREFLANG_MAP: Record<Language, string> = {
   fr: "fr",
 };
 
+export function resolveInitialLanguage(): Language {
+  if (typeof window === "undefined") return "it";
+  try {
+    const param = new URLSearchParams(window.location.search).get("lang");
+    if (param && (SUPPORTED_LANGUAGES as readonly string[]).includes(param)) {
+      return param as Language;
+    }
+    const stored = window.localStorage.getItem("i18nextLng");
+    if (stored && (SUPPORTED_LANGUAGES as readonly string[]).includes(stored)) {
+      return stored as Language;
+    }
+  } catch {
+    /* ignore storage/url errors */
+  }
+  return "it";
+}
+
 i18n.use(initReactI18next).init({
   resources: {
     it: { translation: it },
@@ -53,11 +70,6 @@ i18n.use(initReactI18next).init({
   fallbackLng: "it",
   supportedLngs: SUPPORTED_LANGUAGES as unknown as string[],
   interpolation: { escapeValue: false },
-  detection: {
-    order: ["querystring", "localStorage", "navigator"],
-    lookupQuerystring: "lang",
-    caches: ["localStorage"],
-  },
 });
 
 export default i18n;

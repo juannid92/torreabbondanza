@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagneticButton } from "./MagneticButton";
@@ -295,7 +296,7 @@ function StageContent({ stage }: { stage: SeasonStage }) {
   );
 }
 
-function SeasonProgress() {
+function SeasonProgress({ stages }: { stages: SeasonStage[] }) {
   return (
     <aside
       data-progress
@@ -303,7 +304,7 @@ function SeasonProgress() {
       aria-hidden
     >
       <ol className="flex flex-col gap-5">
-        {STAGES.map((s) => (
+        {stages.map((s) => (
           <li key={s.key} className="flex items-center gap-3">
             <span
               data-prog-dot
@@ -335,10 +336,10 @@ function SeasonProgress() {
   );
 }
 
-function StaticFallback() {
+function StaticFallback({ stages }: { stages: SeasonStage[] }) {
   return (
     <div className="flex flex-col gap-20 px-6 py-16 md:px-12 md:py-24">
-      {STAGES.map((s) => (
+      {stages.map((s) => (
         <article
           key={s.key}
           data-reveal="soft"
@@ -417,7 +418,44 @@ function StaticFallback() {
 }
 
 export function SeasonsSection() {
+  const { t, i18n } = useTranslation();
   const rootRef = useRef<HTMLElement>(null);
+
+  const stages = useMemo(() => {
+    const trItems = t("seasons.items", { returnObjects: true }) as
+      | Array<{
+          label?: string;
+          italic?: string;
+          kicker?: string;
+          exp1Title?: string;
+          exp1Text?: string;
+          exp2Title?: string;
+          exp2Text?: string;
+        }>
+      | undefined;
+    return STAGES.map((stage, idx) => {
+      const tr = Array.isArray(trItems) ? trItems[idx] : undefined;
+      if (!tr) return stage;
+      return {
+        ...stage,
+        label: tr.label ?? stage.label,
+        italic: tr.italic ?? stage.italic,
+        kicker: tr.kicker ?? stage.kicker,
+        experiences: [
+          {
+            ...stage.experiences[0],
+            title: tr.exp1Title ?? stage.experiences[0].title,
+            text: tr.exp1Text ?? stage.experiences[0].text,
+          },
+          {
+            ...stage.experiences[1],
+            title: tr.exp2Title ?? stage.experiences[1].title,
+            text: tr.exp2Text ?? stage.experiences[1].text,
+          },
+        ],
+      };
+    });
+  }, [t, i18n.language]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -574,23 +612,15 @@ export function SeasonsSection() {
           className="text-eyebrow mb-6"
           style={{ color: "color-mix(in oklab, var(--season-fg) 60%, transparent)" }}
         >
-          08 — Esperienze & stagioni
+          {t("seasons.eyebrow")}
         </p>
         <h2
           id="seasons-title"
           className="font-display max-w-5xl font-medium leading-[0.95]"
           style={{ fontSize: "clamp(2.8rem, 8vw, 7rem)" }}
         >
-          Le <em style={{ color: "var(--season-accent)", fontStyle: "italic" }}>stagioni</em> della
-          Murgia
+          {t("seasons.title")}
         </h2>
-        <p
-          className="font-display mt-8 max-w-2xl text-lg italic md:text-xl"
-          style={{ color: "color-mix(in oklab, var(--season-fg) 80%, transparent)" }}
-        >
-          Ogni stagione ha il suo gesto: a cavallo tra gli ulivi, intorno alla tavola, nel ritmo
-          lento della Murgia.
-        </p>
       </div>
 
       {/* Ciclo pinnato — desktop */}
@@ -598,18 +628,18 @@ export function SeasonsSection() {
         data-pin-stage
         className="relative hidden h-[100svh] w-full overflow-hidden lg:block motion-reduce:hidden"
       >
-        {STAGES.map((s) => (
+        {stages.map((s) => (
           <StageBackground key={`bg-${s.key}`} stage={s} />
         ))}
-        <SeasonProgress />
-        {STAGES.map((s) => (
+        <SeasonProgress stages={stages} />
+        {stages.map((s) => (
           <StageContent key={`ct-${s.key}`} stage={s} />
         ))}
       </div>
 
       {/* Fallback verticale: sempre su mobile, e per reduced-motion */}
       <div className="block lg:hidden motion-reduce:block">
-        <StaticFallback />
+        <StaticFallback stages={stages} />
       </div>
 
       {/* Chiusura — transizione morbida verso Galleria */}
@@ -625,15 +655,14 @@ export function SeasonsSection() {
             className="font-display max-w-2xl leading-tight"
             style={{ fontSize: "clamp(1.4rem, 2.4vw, 2.2rem)" }}
           >
-            L'anno alla masseria gira sempre: c'è una stagione che ti aspetta, con la sua festa e il
-            suo passo.
+            {t("seasons.title")}
           </p>
           <div className="flex flex-wrap gap-4">
             <MagneticButton href="#eventi" variant="pill">
-              Vedi gli eventi →
+              {t("seasons.ctaEvents")}
             </MagneticButton>
             <MagneticButton href="#contatti" variant="link">
-              Scrivici →
+              {t("cta.contattaci")}
             </MagneticButton>
           </div>
         </div>

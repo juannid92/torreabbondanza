@@ -1,133 +1,590 @@
 {
- "nav": {
- "masseria": "The Masseria",
- "cucina": "Kitchen",
- "cavalli": "Horses",
- "eventi": "Events",
- "contatti": "Contact",
- "gallery": "Gallery",
- "faq": "FAQ",
- "doveSiamo": "Directions"
- },
- "cta": {
- "whatsapp": "WhatsApp",
- "whatsappFull": "Message us on WhatsApp",
- "prenota": "Book now",
- "scopri": "Learn more",
- "contattaci": "Contact us",
- "preventivo": "Request a quote",
- "menu": "Open menu",
- "chiudiMenu": "Close menu"
- },
- "hero": {
- "eyebrow": "18th-century Masseria · Noci, Puglia",
- "title": "Torre Abbondanza",
- "subtitle": "Where stone meets gallop. Traditional cuisine, exclusive events and Murgese horses in the heart of the Trulli Valley."
- },
- "masseria": {
- "eyebrow": "From the 18th century to today",
- "title": "Masseria Torre Abbondanza",
- "subtitle": "An 18th-century rural estate set in the Trulli Valley, where the history of stone meets the hospitality of the Giunta family.",
- "storiaTitle": "A story of land and tradition",
- "storia1": "Masseria Torre Abbondanza was born as a rural estate in the heart of the Trulli Valley, between Noci and Alberobello. Its white stone walls tell centuries of farming life, when masserie were the beating heart of Puglia's agricultural economy.",
- "storia2": "Since 2005, the Giunta family has transformed this place into a landmark for authentic hospitality: the historic hall with its 18th-century stone vaults hosts weddings and ceremonies, the kitchen serves traditional Pugliese flavours by reservation, and the Murgese horse breeding keeps alive one of Italy's oldest breeds.",
- "storia3": "Today the masseria lives with two souls in balance: the table and the gallop, the stone and the earth, memory and welcome. Every guest who crosses the threshold enters a continuing story.",
- "fondazione": "Year founded",
- "fondazioneVal": "18th cent.",
- "gestione": "Family-run since",
- "capacita": "Event capacity",
- "capacitaVal": "Up to 250 guests",
- "razza": "Breed raised",
- "razzaVal": "Murgese Horse",
- "vieniTitle": "Come visit us",
- "vieniDesc": "Book a visit to the masseria or discover our services for events, cuisine and horses.",
- "scopriEventi": "Discover events"
- },
- "cucina": {
- "eyebrow": "Traditional flavours",
- "title": "Our kitchen",
- "subtitle": "Authentic Pugliese cuisine prepared with local ingredients and recipes passed down through generations. By reservation for groups of 20 or more."
- },
- "cavalli": {
- "eyebrow": "Murgese breeding",
- "title": "Our horses",
- "subtitle": "Breeding of registered Murgese horses. Equestrian experiences, historic carriage parades and international sales.",
- "venditaTitle": "Murgese Horses for Sale",
- "venditaSubtitle": "Registered breeding stock. EU, Russia, China export available.",
- "exportEU": "Europe shipping",
- "exportRU": "Russia & CIS",
- "exportCN": "China & Asia",
- "pedigree": "Certified pedigree",
- "dressage": "Dressage",
- "attacchi": "Historic carriage driving"
- },
- "eventi": {
- "eyebrow": "Unique celebrations",
- "title": "Events & ceremonies",
- "subtitle": "Weddings, ceremonies, private parties and corporate dinners in the historic courtyard and the 18th-century vaulted hall."
- },
- "faq": {
- "eyebrow": "Useful information",
- "title": "Frequently asked questions",
- "subtitle": "Everything you need to know about Masseria Torre Abbondanza: reservations, events, cuisine, horses and how to reach us.",
- "noAnswer": "Didn't find your answer?",
- "noAnswerDesc": "Write to us directly: we reply within 24 hours.",
- "q1": "How does restaurant booking work?",
- "a1": "The kitchen opens by reservation for groups of at least 20 people with at least two days' notice. The menu is created together, tailored to Pugliese tradition, starting from €50 per person.",
- "q2": "Can I host weddings or ceremonies at the masseria?",
- "a2": "Yes. The 18th-century masseria hosts weddings, civil and symbolic ceremonies, baptisms, birthdays, private parties and corporate dinners both in the historic vaulted hall and in the outdoor courtyard among ancient olive trees.",
- "q3": "Are vegetarian, vegan or gluten-free menus available?",
- "a3": "Yes, on request we prepare dedicated vegetarian, vegan, gluten-free and children's menus to meet guests' needs.",
- "q4": "Does the masseria breed and sell Murgese horses?",
- "a4": "Yes. The Giunta family breeds registered Murgese horses (T.A. suffix), organises equestrian experiences, Historic Carriage Parades and offers international sales with shipping to Europe, Russia and China.",
- "q5": "Can I arrive by historic carriage at a ceremony?",
- "a5": "Yes, on request the ceremony entrance can open with a historic carriage drawn by the masseria's own Murgese horses.",
- "q6": "Where exactly is the masseria?",
- "a6": "It is located at Strada Vicinale per Massafra, Zona E n. 49, 70015 Noci (BA), in the heart of the Trulli Valley and Valle d'Itria, about 12 minutes from Putignano and Alberobello.",
- "q7": "Is parking available?",
- "a7": "Yes, ample free parking inside the property, directly accessible from the vicinal road. Reserved spaces for guests with reduced mobility.",
- "q8": "What is the maximum event capacity?",
- "a8": "The masseria can host up to 250 guests between the historic hall and outdoor courtyard, with customisable setups depending on the event type.",
- "q9": "How can I request a quote?",
- "a9": "Contact us via WhatsApp or fill in the contact form on the Events page. We reply within 24 hours.",
- "q10": "Can Murgese horses be exported abroad?",
- "a10": "Yes. We handle all export documentation: EU passport, health certificates, CITES for non-EU countries, land and air transport. We serve Europe, Russia/CIS and China/Asia."
- },
- "gallery": {
- "eyebrow": "Our world in pictures",
- "title": "Photo gallery",
- "subtitle": "Events, cuisine, Murgese horses and the beauty of the Trulli Valley: discover Masseria Torre Abbondanza through images."
- },
- "doveSiamo": {
- "eyebrow": "How to reach us",
- "title": "Where we are",
- "subtitle": "Masseria Torre Abbondanza is in the heart of the Trulli Valley, just minutes from Noci, Alberobello and Putignano.",
- "indirizzo": "Address",
- "apriMaps": "Open in Google Maps",
- "chiama": "Call",
- "indicazioni": "Driving directions",
- "daBari": "From Bari (55 km, ~50 min)",
- "daBariDesc": "Take SS16 south towards Brindisi → Noci exit → follow SP211 to Massafra → Strada Vicinale per Massafra, Zona E n. 49.",
- "daBrindisi": "From Brindisi (65 km, ~55 min)",
- "daBrindisiDesc": "Take SS16 north towards Bari → Noci exit → follow SP211 to Massafra → Strada Vicinale per Massafra, Zona E n. 49.",
- "daTaranto": "From Taranto (45 km, ~40 min)",
- "daTarantoDesc": "Take SS172 dir towards Martina Franca → continue on SP211 to Noci → Strada Vicinale per Massafra, Zona E n. 49.",
- "daAlberobello": "From Alberobello (12 km, ~15 min)",
- "daAlberobelloDesc": "Follow SP211 to Noci → Strada Vicinale per Massafra, Zona E n. 49.",
- "gps": "GPS coordinates",
- "gpsNote": "Usable with satellite navigators and offline navigation apps.",
- "parcheggio": "Parking",
- "parcheggioDesc": "Ample free parking inside the property, directly accessible from the vicinal road. Reserved spaces for guests with reduced mobility."
- },
- "visit": {
- "title": "Come visit us",
- "subtitle": "Book a visit, an event or discover our Murgese horses.",
- "cta": "Contact us"
- },
- "footer": {
- "tagline": "18th-century masseria in the heart of the Trulli Valley.",
- "diritti": "All rights reserved.",
- "privacy": "Privacy Policy",
- "cookie": "Cookie Policy"
- }
+  "nav": {
+    "masseria": "The Masseria",
+    "cucina": "Kitchen",
+    "cavalli": "Horses",
+    "eventi": "Events",
+    "contatti": "Contact",
+    "gallery": "Gallery",
+    "faq": "FAQ",
+    "doveSiamo": "Directions"
+  },
+  "cta": {
+    "whatsapp": "WhatsApp",
+    "whatsappFull": "Message us on WhatsApp",
+    "prenota": "Book now",
+    "scopri": "Learn more",
+    "contattaci": "Contact us",
+    "preventivo": "Request a quote",
+    "menu": "Open menu",
+    "chiudiMenu": "Close menu"
+  },
+  "hero": {
+    "tagline": "Two souls, one 18th-century Masseria: Puglian cuisine for ceremonies and private events, and the ancient art of Murgese horses in the heart of Murgia.",
+    "ctaEvents": "Table & Ceremonies",
+    "ctaHorses": "Murgese Horses",
+    "ctaBook": "Book a table",
+    "scroll": "Scroll",
+    "est": "Est. 18th century",
+    "breeding": "Murgese Stud Farm",
+    "marquee": [
+      "MURGESE HORSES",
+      "RESTAURANT",
+      "STUD FARM",
+      "WEDDINGS & CEREMONIES",
+      "VINTAGE CARRIAGES",
+      "PUGLIAN CUISINE",
+      "18TH-CENTURY MASSERIA",
+      "MURGIA · NOCI"
+    ]
+  },
+  "masseria": {
+    "eyebrow": "From the 18th century to today",
+    "title": "Masseria Torre Abbondanza",
+    "subtitle": "An 18th-century rural estate set in the Trulli Valley, where the history of stone meets the hospitality of the Giunta family.",
+    "storiaTitle": "A story of land and tradition",
+    "storia1": "Masseria Torre Abbondanza was born as a rural estate in the heart of the Trulli Valley, between Noci and Alberobello. Its white stone walls tell centuries of farming life, when masserie were the beating heart of Puglia's agricultural economy.",
+    "storia2": "Since 2005, the Giunta family has transformed this place into a landmark for authentic hospitality: the historic hall with its 18th-century stone vaults hosts weddings and ceremonies, the kitchen serves traditional Pugliese flavours by reservation, and the Murgese horse breeding keeps alive one of Italy's oldest breeds.",
+    "storia3": "Today the masseria lives with two souls in balance: the table and the gallop, the stone and the earth, memory and welcome. Every guest who crosses the threshold enters a continuing story.",
+    "fondazione": "Year founded",
+    "fondazioneVal": "18th cent.",
+    "gestione": "Family-run since",
+    "capacita": "Event capacity",
+    "capacitaVal": "Up to 250 guests",
+    "razza": "Breed raised",
+    "razzaVal": "Murgese Horse",
+    "vieniTitle": "Come visit us",
+    "vieniDesc": "Book a visit to the masseria or discover our services for events, cuisine and horses.",
+    "scopriEventi": "Discover events"
+  },
+  "cucina": {
+    "eyebrow": "Traditional flavours",
+    "title": "Our kitchen",
+    "subtitle": "Authentic Pugliese cuisine prepared with local ingredients and recipes passed down through generations. By reservation for groups of 20 or more."
+  },
+  "cavalli": {
+    "eyebrow": "Murgese breeding",
+    "title": "Our horses",
+    "subtitle": "Breeding of registered Murgese horses. Equestrian experiences, historic carriage parades and international sales.",
+    "venditaTitle": "Murgese Horses for Sale",
+    "venditaSubtitle": "Registered breeding stock. EU, Russia, China export available.",
+    "exportEU": "Europe shipping",
+    "exportRU": "Russia & CIS",
+    "exportCN": "China & Asia",
+    "pedigree": "Certified pedigree",
+    "dressage": "Dressage",
+    "attacchi": "Historic carriage driving"
+  },
+  "eventi": {
+    "eyebrow": "Unique celebrations",
+    "title": "Events & ceremonies",
+    "subtitle": "Weddings, ceremonies, private parties and corporate dinners in the historic courtyard and the 18th-century vaulted hall."
+  },
+  "faq": {
+    "eyebrow": "Useful information",
+    "title": "Frequently asked questions",
+    "subtitle": "Everything you need to know about Masseria Torre Abbondanza: reservations, events, cuisine, horses and how to reach us.",
+    "noAnswer": "Didn't find your answer?",
+    "noAnswerDesc": "Write to us directly: we reply within 24 hours.",
+    "q1": "How does restaurant booking work?",
+    "a1": "The kitchen opens by reservation for groups of at least 20 people with at least two days' notice. The menu is created together, tailored to Pugliese tradition, starting from €50 per person.",
+    "q2": "Can I host weddings or ceremonies at the masseria?",
+    "a2": "Yes. The 18th-century masseria hosts weddings, civil and symbolic ceremonies, baptisms, birthdays, private parties and corporate dinners both in the historic vaulted hall and in the outdoor courtyard among ancient olive trees.",
+    "q3": "Are vegetarian, vegan or gluten-free menus available?",
+    "a3": "Yes, on request we prepare dedicated vegetarian, vegan, gluten-free and children's menus to meet guests' needs.",
+    "q4": "Does the masseria breed and sell Murgese horses?",
+    "a4": "Yes. The Giunta family breeds registered Murgese horses (T.A. suffix), organises equestrian experiences, Historic Carriage Parades and offers international sales with shipping to Europe, Russia and China.",
+    "q5": "Can I arrive by historic carriage at a ceremony?",
+    "a5": "Yes, on request the ceremony entrance can open with a historic carriage drawn by the masseria's own Murgese horses.",
+    "q6": "Where exactly is the masseria?",
+    "a6": "It is located at Strada Vicinale per Massafra, Zona E n. 49, 70015 Noci (BA), in the heart of the Trulli Valley and Valle d'Itria, about 12 minutes from Putignano and Alberobello.",
+    "q7": "Is parking available?",
+    "a7": "Yes, ample free parking inside the property, directly accessible from the vicinal road. Reserved spaces for guests with reduced mobility.",
+    "q8": "What is the maximum event capacity?",
+    "a8": "The masseria can host up to 250 guests between the historic hall and outdoor courtyard, with customisable setups depending on the event type.",
+    "q9": "How can I request a quote?",
+    "a9": "Contact us via WhatsApp or fill in the contact form on the Events page. We reply within 24 hours.",
+    "q10": "Can Murgese horses be exported abroad?",
+    "a10": "Yes. We handle all export documentation: EU passport, health certificates, CITES for non-EU countries, land and air transport. We serve Europe, Russia/CIS and China/Asia."
+  },
+  "gallery": {
+    "eyebrow": "Our world in pictures",
+    "title": "Photo gallery",
+    "subtitle": "Events, cuisine, Murgese horses and the beauty of the Trulli Valley: discover Masseria Torre Abbondanza through images."
+  },
+  "doveSiamo": {
+    "eyebrow": "How to reach us",
+    "title": "Where we are",
+    "subtitle": "Masseria Torre Abbondanza is in the heart of the Trulli Valley, just minutes from Noci, Alberobello and Putignano.",
+    "indirizzo": "Address",
+    "apriMaps": "Open in Google Maps",
+    "chiama": "Call",
+    "indicazioni": "Driving directions",
+    "daBari": "From Bari (55 km, ~50 min)",
+    "daBariDesc": "Take SS16 south towards Brindisi → Noci exit → follow SP211 to Massafra → Strada Vicinale per Massafra, Zona E n. 49.",
+    "daBrindisi": "From Brindisi (65 km, ~55 min)",
+    "daBrindisiDesc": "Take SS16 north towards Bari → Noci exit → follow SP211 to Massafra → Strada Vicinale per Massafra, Zona E n. 49.",
+    "daTaranto": "From Taranto (45 km, ~40 min)",
+    "daTarantoDesc": "Take SS172 dir towards Martina Franca → continue on SP211 to Noci → Strada Vicinale per Massafra, Zona E n. 49.",
+    "daAlberobello": "From Alberobello (12 km, ~15 min)",
+    "daAlberobelloDesc": "Follow SP211 to Noci → Strada Vicinale per Massafra, Zona E n. 49.",
+    "gps": "GPS coordinates",
+    "gpsNote": "Usable with satellite navigators and offline navigation apps.",
+    "parcheggio": "Parking",
+    "parcheggioDesc": "Ample free parking inside the property, directly accessible from the vicinal road. Reserved spaces for guests with reduced mobility."
+  },
+  "visit": {
+    "title": "Come visit us",
+    "subtitle": "Book a visit, an event or discover our Murgese horses.",
+    "cta": "Contact us"
+  },
+  "footer": {
+    "tagline": "18th-century masseria in the heart of the Trulli Valley.",
+    "diritti": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "cookie": "Cookie Policy"
+  },
+  "a11y": {
+    "skipToContent": "Skip to main content"
+  },
+  "header": {
+    "masseria": "The Masseria",
+    "cucina": "Kitchen",
+    "appuntamenti": "Table Events",
+    "cavalli": "Horses",
+    "eventi": "Events",
+    "contatti": "Contact",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "whatsappFull": "Message us on WhatsApp"
+  },
+  "intro": {
+    "skip": "Skip intro"
+  },
+  "manifesto": {
+    "eyebrow": "01 — The Manifesto",
+    "lines": [
+      "There is a place where stone tells three centuries,",
+      "where the earth yields its harvest and every table becomes a celebration,",
+      "and where Murgese horses run free as they once did.",
+      "Here time slows down, hospitality is family-run,",
+      "and abundance is not quantity —",
+      "it is the generosity of an ancient gesture",
+      "renewed every single day."
+    ],
+    "signature": "Masseria Torre Abbondanza · Since the 18th Century"
+  },
+  "story": {
+    "eyebrow": "02 — History",
+    "titleStart": "Three centuries of",
+    "titleAccent": "stone",
+    "body": "A story told in two voices: the 18th-century Masseria of the Giunta family and the Murgese horses that have lived on this land forever.",
+    "scrollHint": "scroll →",
+    "c1Eyebrow": "Chapter I — Origins",
+    "c1Title": "In the countryside of Noci",
+    "c1Body": "In the heart of the 18th century, among oak woods, dry-stone walls, and the white lime of Noci, the Masseria rose stone by stone to shelter grain harvests, pastures, and livestock in the Murgia dei Trulli.",
+    "c1Note": "18th century · Noci Countryside · Murgia dei Trulli",
+    "c2Eyebrow": "Chapter II — Matter",
+    "c2Title": "Lime, stone, and light",
+    "c2Body": "Round arches, breathable lime walls, terracotta roofs warmed by the afternoon sun: Puglian rural architecture is not decoration, it is climate. White reflects the light, stone holds the cool air.",
+    "c3Eyebrow": "Chapter III — Lineage",
+    "c3TitleStart": "The",
+    "c3TitleAccent": "horse",
+    "c3TitleEnd": "of Murgia",
+    "c3Body": "Our stables preserve the Giunta family's registered Murgese stud farm (T.A. suffix): glossy black coats, ancient pride, and vintage carriage parades.",
+    "c4Eyebrow": "Chapter IV — Family",
+    "c4Title": "The Giunta family, since 2005",
+    "c4Body": "Twenty years of authentic hospitality: Puglian dining by reservation for special occasions, the kitchen garden, grain, and daily care of a living estate.",
+    "c5Eyebrow": "Chapter V — Today",
+    "c5Title": "Two souls, one threshold",
+    "c5Body": "Today Torre Abbondanza welcomes weddings, ceremonies, private celebrations, and Murgese horse enthusiasts from across Europe."
+  },
+  "place": {
+    "eyebrow": "03 — The Place",
+    "titleWords": [
+      "In",
+      "the",
+      "breath of",
+      "Murgia"
+    ],
+    "subtitle": "A quiet sanctuary among century-old olive trees and dry-stone walls, where Murgese horses graze and the landscape turns to stillness.",
+    "coords": [
+      "40.73° N — 17.13° E",
+      "Murgia dei Trulli · plateau",
+      "Noci (BA) · Puglia",
+      "Land of the Murgese horse",
+      "Olives · stone · horses"
+    ],
+    "mapCaption": "Field notes · Murgia dei Trulli",
+    "howToReach": "How to reach us",
+    "nearNoci": "Minutes from Noci,",
+    "nearItria": "among the olive groves of the Itria Valley.",
+    "inHeart": "In the heart of Murgia, land of historic estates and horses.",
+    "openGoogleMaps": "Open in Google Maps"
+  },
+  "kitchen": {
+    "eyebrow": "04 — The Kitchen",
+    "titleStart": "Our",
+    "titleAccent": "kitchen",
+    "subtitle": "Family recipes, Murgia ingredients, and freshly prepared courses by reservation.",
+    "tags": [
+      "By reservation only",
+      "For ceremonies & events",
+      "Bespoke menus",
+      "Veg · Vegan · Gluten-free"
+    ],
+    "courses": [
+      {
+        "course": "Land Antipasti",
+        "word": "ANTIPASTI",
+        "dishTitle": "Traditional Puglian Tasting Selection",
+        "description": "Fried olives, local cured meats and cheeses, parmigiana, warm focaccia, broad bean purée, and fried peppers. A generous spread opening the meal like a story of our land."
+      },
+      {
+        "course": "House First Courses",
+        "word": "PRIMI",
+        "dishTitle": "Handmade Cavatelli with Ragù",
+        "description": "Traditional Puglian pasta: hand-rolled fresh cavatelli and orecchiette served with Sunday meat ragù and wild Murgia cardoncelli mushrooms."
+      },
+      {
+        "course": "Main Courses",
+        "word": "SECONDI",
+        "dishTitle": "Slow-Braised Beef Roll in Sauce",
+        "description": "Selected local meats slow-cooked in Puglian red wine with wild countryside herbs. A rural memory brought back to the table."
+      },
+      {
+        "course": "Handmade Desserts",
+        "word": "DOLCI",
+        "dishTitle": "Warm Chocolate Tartlet",
+        "description": "Artisanal house desserts crafted for every occasion. Our chocolate tartlet with strawberries closes the feast with warmth and balance."
+      }
+    ]
+  },
+  "menu": {
+    "eyebrow": "05 — Flavors",
+    "titleStart": "The table for",
+    "titleAccent": "special occasions",
+    "kinetic": [
+      "conviviality",
+      "tradition",
+      "bespoke",
+      "occasion"
+    ],
+    "prose1Start": "The Masseria opens its kitchen for",
+    "prose1Accent": "grand occasions",
+    "prose1End": "— ceremonies, christenings, birthdays, and weddings.",
+    "prose2": "Every menu is shaped together by agreement. To gather at our table you only need a party of at least twenty guests, two days' notice, and a menu starting from fifty euros per person. Everything else — flavors, pacing, details — we choose with you.",
+    "dietary": "Veg · Vegan · Gluten-free · Kids Menu — on request",
+    "ctaRequest": "Request your menu",
+    "ctaAppointments": "Table appointments & menus",
+    "bridgeStart": "When the feast ends, the gallop awaits.",
+    "bridgeLink": "Murgese horses"
+  },
+  "postersTeaser": {
+    "eyebrow": "Table Appointments · Menus & Celebrations",
+    "titleStart": "Seasonal table",
+    "titleAccent": "appointments",
+    "titleEnd": "at the Masseria",
+    "subtitle": "Family Sundays, holiday feasts, spring weekends, and summer dinners under the courtyard lights: explore our dedicated menus and book via WhatsApp or phone.",
+    "ctaAll": "View all table appointments",
+    "whatsapp": "WhatsApp",
+    "call": "Call"
+  },
+  "horses": {
+    "eyebrow": "06 — The Horses",
+    "titleStart": "The Murgese",
+    "titleAccent": "lineage",
+    "subtitle": "Registered Murgese breeding by the Giunta family (T.A. suffix): glossy black coats, balance, and equestrian heritage.",
+    "traditionTitleStart": "The Masseria preserves equestrian",
+    "traditionTitleAccent": "Murgia.",
+    "traditionQuote": "Vintage carriage parades, Murgese horses, and Martina Franca mules: here equestrian tradition is not memory, it is a living gesture.",
+    "traditionBody": "Our horses belong to the Giunta family, registered in the Official Studbook (T.A. suffix). Equestrian experiences among stables, pastures, and historic carriages are available on request for events and guided visits.",
+    "ctaExperience": "Live the equestrian experience",
+    "ctaShowcase": "Horses in showcase"
+  },
+  "events": {
+    "headingStart": "Seven ways to live",
+    "headingAccent": "the Masseria.",
+    "subheading": "Weddings, ceremonies, family celebrations, private evenings, and equestrian experiences in our 18th-century estate between the historic hall and olive courtyard.",
+    "stat1Label": "Receptions",
+    "stat1Value": "Up to 250 guests",
+    "stat2Label": "Settings",
+    "stat2Value": "Hall & Olive Grove",
+    "stat3Label": "Dining",
+    "stat3Value": "In-house kitchen",
+    "reqBtn": "Inquire for this event",
+    "reqShortBtn": "Inquire",
+    "detailsBtn": "Details & photos",
+    "swipeHint": "Swipe the card or tap arrows",
+    "changeView": "Switch view",
+    "closeSheet": "Close event details",
+    "whatsapp": "WhatsApp",
+    "call": "Call",
+    "fillForm": "Fill out the form with this event",
+    "carriageTitle": "Arrival by vintage carriage",
+    "carriageQuote": "A rare, refined entrance deeply rooted in our territory.",
+    "carriageBody": "On request, your ceremony or reception can open with a vintage carriage drawn by Murgese horses bred right here at the Masseria by the Giunta family.",
+    "carriageBadge": "Available on request",
+    "carriageLink": "Discover our Murgese horses",
+    "closingStart": "Tell us about your event: we shape",
+    "closingAccent": "every detail.",
+    "whatsappDirect": "Direct WhatsApp",
+    "ctaAvailability": "Request availability",
+    "ctaAppointments": "Table appointments & menus",
+    "spaces": {
+      "salaTitle": "18th-Century Historic Hall",
+      "salaSubtitle": "Capacity up to 250 guests · All seasons",
+      "salaDesc": "Exposed timber beams, stone arches, and warm lighting for imperial long tables or round banquet layouts curated by our kitchen team.",
+      "salaV1": "Panoramic view · Warm light & round tables",
+      "salaV2": "Imperial layout · Single long table",
+      "corteTitle": "The Courtyard & Olive Grove",
+      "corteSubtitle": "Reed pergola · Open-air receptions",
+      "corteDesc": "Whitewashed stone, 18th-century arches, and summer evenings beneath ancient Murgia olive trees.",
+      "corteV1": "Courtyard by day · Arches & living stone",
+      "corteV2": "Courtyard by night · Under the olive tree"
+    },
+    "items": [
+      {
+        "id": "matrimoni",
+        "title": "Weddings",
+        "shortTitle": "Weddings",
+        "spaces": "Olive Courtyard · Historic Hall",
+        "phrase": "I do beneath the olive trees, a celebration without end.",
+        "description": "Receptions for up to 250 guests across our white-stone courtyard, summer reed pergola, and 18th-century vaulted hall.",
+        "highlights": [
+          "Olive grove courtyard and 18th-century hall with timber beams",
+          "In-house Puglian kitchen with custom menus (vegetarian, vegan, gluten-free & kids)",
+          "Optional grand arrival by vintage carriage with our Murgese horses"
+        ]
+      },
+      {
+        "id": "cerimonie",
+        "title": "Ceremonies",
+        "shortTitle": "Ceremonies",
+        "spaces": "Stone Arches · Garden",
+        "phrase": "Civil or symbolic: rituals tailored to you.",
+        "description": "Communions, confirmations, vow renewals, and civil or symbolic ceremonies framed by historic stone arches in Noci.",
+        "highlights": [
+          "Dedicated open-air ceremony settings beneath 18th-century arches",
+          "Private lunches and dinners by reservation from 20 to 250 guests",
+          "Personal coordination with the Giunta family from first visit to the feast"
+        ]
+      },
+      {
+        "id": "battesimi",
+        "title": "Christenings",
+        "shortTitle": "Christenings",
+        "spaces": "Historic Hall · Imperial Table",
+        "phrase": "First family milestones, sheltered by ancient stone.",
+        "description": "A welcoming family table centered on new beginnings, with fresh Puglian cuisine and dedicated dishes for younger guests.",
+        "highlights": [
+          "Warm all-season dining hall with generous family tables",
+          "Seasonal menus from €50 per guest with dedicated children's options",
+          "Quiet, safe courtyard surrounded by the Noci countryside"
+        ]
+      },
+      {
+        "id": "compleanni",
+        "title": "Birthdays",
+        "shortTitle": "Birthdays",
+        "spaces": "Historic Hall · Evening Court",
+        "phrase": "The years that matter, candles and toasts under the stars.",
+        "description": "Milestone birthdays, graduations, and special anniversaries: custom menus, local wines, handmade desserts, and room for music.",
+        "highlights": [
+          "Bespoke menu arranged at least 2 days ahead (min. 20 guests)",
+          "Handmade house pastries and evening toasts in the hall or courtyard",
+          "Private, authentic atmosphere away from city noise"
+        ]
+      },
+      {
+        "id": "feste-private",
+        "title": "Private Parties",
+        "shortTitle": "Private Parties",
+        "spaces": "Evening Court · Exclusive Use",
+        "phrase": "Corporate, intimate, or surprise: the Masseria is yours.",
+        "description": "Corporate dinners, reunions, anniversaries, and invitation-only evenings with the entire estate dedicated to your group.",
+        "highlights": [
+          "Dedicated bookings for private groups starting from 20 guests",
+          "Choice of indoor historic hall or starlit olive courtyard",
+          "Private on-site parking minutes from Noci, Alberobello, and Putignano"
+        ]
+      },
+      {
+        "id": "la-masseria",
+        "title": "The Masseria",
+        "shortTitle": "The Masseria",
+        "spaces": "18th-Century Estate · Noci",
+        "phrase": "The setting: stone, olives, courtyard, long table. Choose your moment, we take care of the rest.",
+        "description": "An authentic 18th-century estate with vaulted dining hall, whitewashed courtyard, family kitchen, and Murgese horse stables.",
+        "highlights": [
+          "Authentic Puglian rural architecture preserved by the Giunta family",
+          "Combine your event with stable visits or traditional feasts",
+          "Direct consultation for any bespoke project or celebration"
+        ]
+      },
+      {
+        "id": "esperienza-equestre",
+        "title": "Equestrian Experience",
+        "shortTitle": "Equestrian",
+        "spaces": "Murgese Stud · Vintage Carriages",
+        "phrase": "Murgese horses at pasture, trail rides, and vintage carriages along dry-stone walls.",
+        "description": "Guided stable visits at the Torre Abbondanza stud farm (T.A. Studbook), trail rides among olive trees, and vintage carriage drives.",
+        "highlights": [
+          "Registered Murgese horses and Martina Franca mules bred on site",
+          "Guided countryside rides and stable tours by reservation",
+          "Vintage Carriage Parades and grand ceremonial arrivals"
+        ]
+      }
+    ]
+  },
+  "seasons": {
+    "eyebrow": "08 — The Seasons",
+    "title": "A year at the Masseria",
+    "ctaEvents": "Explore events",
+    "items": [
+      {
+        "label": "Spring",
+        "italic": "in bloom",
+        "kicker": "The countryside awakens: olive blossoms, breathing earth, slow footsteps along dry-stone walls.",
+        "exp1Title": "Riding among blossoming olive trees",
+        "exp1Text": "Trail rides across the estate with our Murgese horses through white spring blooms.",
+        "exp2Title": "Awakening in the green",
+        "exp2Text": "Open-air lunches and picnics under the olive trees with artisan bread, wild herbs, and local cheeses."
+      },
+      {
+        "label": "Summer",
+        "italic": "under the stars",
+        "kicker": "Evenings stretch long, warm gold settles on stone and table: the Masseria opens to celebration.",
+        "exp1Title": "Dinners & events under the stars",
+        "exp1Text": "Candlelight and long tables outdoors: weddings, private dinners, and ceremonies in the 18th-century court.",
+        "exp2Title": "Vintage Carriage Parade",
+        "exp2Text": "Murgese horses and Martina Franca mules parading with historic carriages across the countryside."
+      },
+      {
+        "label": "Autumn",
+        "italic": "of the trails",
+        "kicker": "Olive harvest, late vintage, ochre leaves, and the first warmth of the stone hall.",
+        "exp1Title": "Among ancient olive groves",
+        "exp1Text": "New olive oil tastings with warm bread and gentle rides in the soft October light.",
+        "exp2Title": "The autumn table",
+        "exp2Text": "Wild Murgia cardoncelli mushrooms, heritage legumes, handmade pasta, and local red wines."
+      },
+      {
+        "label": "Winter",
+        "italic": "sheltered",
+        "kicker": "Stone holds the warmth of the hearth, horses step through mist, and Sunday tables gather.",
+        "exp1Title": "Intimacy in the 18th-century hall",
+        "exp1Text": "Family lunches and holiday feasts gathered beneath warm arches and open firelight.",
+        "exp2Title": "Murgese horses in winter",
+        "exp2Text": "Glossy black coats against the crisp plateau light: quiet stable visits and slow moments."
+      }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "09 — Guestbook",
+    "title": "Voices of those who visited",
+    "seal": "Among the most cherished destinations in Murgia.",
+    "stats": "4.4 / 5 on TripAdvisor (213 reviews) · 9.7 / 10 on TheFork (50 reviews)",
+    "notes": [
+      "An oasis of peace and flavor. Wonderful food in a tranquil setting. Attentive service, warm and helpful staff.",
+      "Beautiful masseria in the countryside of Noci. High food quality, thoughtful presentation, and fine pairings.",
+      "We spent a wonderful day. Over fifty adults and children welcomed with great care. Truly delicious dining."
+    ]
+  },
+  "visitSection": {
+    "eyebrow": "10 — Contact",
+    "titleWords": [
+      "Come",
+      "visit",
+      "us."
+    ],
+    "subtitle": "In the heart of Murgia, among ancient olive trees and the echo of our Murgese horses. We await you for dining, celebrations, and lasting memories.",
+    "where": "Where we are",
+    "addressLabel": "Address",
+    "phoneLabel": "Phone",
+    "whatsappLabel": "WhatsApp",
+    "whatsappCta": "Message us on WhatsApp",
+    "siteLabel": "Website",
+    "inMurgia": "In Murgia",
+    "directionsGoogle": "Directions · Google Maps",
+    "modelNote": "Our kitchen opens by reservation for special occasions. Write to us and we will compose yours together.",
+    "formTitle": "Tell us about your occasion",
+    "formSubtitle": "Fill in the form: we prepare your WhatsApp message right away or receive your inquiry.",
+    "nameLabel": "Full name",
+    "phoneFieldLabel": "Phone / WhatsApp",
+    "kindLabel": "Occasion type",
+    "dateLabel": "Approximate date",
+    "guestsLabel": "Number of guests",
+    "messageLabel": "Message",
+    "consentText": "I consent to personal data processing in accordance with the Privacy Policy.",
+    "submitBtn": "Send inquiry on WhatsApp",
+    "errName": "Please enter your name.",
+    "errPhone": "Invalid phone number.",
+    "errKind": "Please choose an occasion type.",
+    "errMessage": "Please tell us a little about your event.",
+    "errConsent": "Privacy consent is required.",
+    "successMsg": "Thank you! Your inquiry is ready.",
+    "openWhatsAppNow": "Open WhatsApp now",
+    "occasions": {
+      "matrimonio": "Wedding",
+      "cerimonia": "Ceremony",
+      "battesimo": "Christening",
+      "compleanno": "Birthday",
+      "festa-privata": "Private Party",
+      "esperienza-equestre": "Equestrian Experience",
+      "altro": "Other"
+    }
+  },
+  "footerSection": {
+    "eyebrow": "11 — Farewell",
+    "locationTag": "Contrada Murgia · Noci Countryside",
+    "claim1": "Two",
+    "claim1Accent": "souls",
+    "claim2": "one single",
+    "claim2Accent": "land",
+    "quote": "«The doors of our courtyard open to those seeking the slow pace of Murgia, the honest flavor of the earth, and the proud stride of our Murgese horses. We await you at the Masseria.»",
+    "family": "— Giunta Family",
+    "since": "Since the 18th Century",
+    "whatsappBtn": "Message us on WhatsApp",
+    "callBtn": "Call",
+    "shareBtn": "Share the Masseria with someone you love →",
+    "shareCopied": "Link copied · Forward it on WhatsApp",
+    "archCaption": "«Where 18th-century stone meets the gallop.»",
+    "brandDesc": "18th-century Masseria in the Murgia of Noci. Dining by reservation, Murgese horses, and rare occasions.",
+    "navTitle": "Explore",
+    "contactsTitle": "Contact",
+    "followTitle": "Follow us",
+    "requestBtn": "Plan your occasion",
+    "rights": "All rights reserved.",
+    "cookiePrefs": "Cookie preferences",
+    "onReservation": "By reservation",
+    "backToTop": "Back to top",
+    "navLinks": {
+      "storia": "History",
+      "luogo": "The Place",
+      "cucina": "Kitchen",
+      "menu": "Flavors",
+      "cavalli": "Horses",
+      "eventi": "Events",
+      "esperienze": "Experiences",
+      "recensioni": "Reviews",
+      "contatti": "Contact"
+    }
+  },
+  "cookieBanner": {
+    "title": "Cookie preferences & analytics",
+    "desc": "This website uses essential technical cookies and, with your consent, analytics cookies (Google Tag / GA4) to improve browsing. You may decline or customize your choices anytime.",
+    "rejectAll": "Reject all",
+    "customize": "Customize",
+    "acceptAll": "Accept all",
+    "prefsTitle": "Manage cookie preferences",
+    "prefsDesc": "Under GDPR you can choose which categories to enable in addition to essential technical cookies.",
+    "techTitle": "Technical cookies (always active)",
+    "techDesc": "Required for network delivery, security, and saving your consent preferences.",
+    "analyticsTitle": "Analytics cookies (Google Tag / GA4)",
+    "analyticsDesc": "Aggregated, anonymized visit statistics via Google Consent Mode v2.",
+    "marketingTitle": "Marketing & conversion cookies",
+    "marketingDesc": "Measures campaign effectiveness only with your explicit consent.",
+    "savePrefs": "Save preferences"
+  }
 }

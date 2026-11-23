@@ -20,9 +20,23 @@
     "chiudiMenu": "Fermer le menu"
   },
   "hero": {
-    "eyebrow": "Masseria du XVIIIe siècle · Noci, Pouilles",
-    "title": "Torre Abbondanza",
-    "subtitle": "Là où la pierre rencontre le galop. Cuisine traditionnelle, événements exclusifs et chevaux Murgese au cœur de la Vallée des Trulli."
+    "tagline": "Deux âmes, une masseria du XVIIIe siècle : la cuisine des Pouilles pour vos cérémonies et l'art ancestral des chevaux Murgese au cœur de la Murgia.",
+    "ctaEvents": "Table & Cérémonies",
+    "ctaHorses": "Chevaux Murgese",
+    "ctaBook": "Réserver une table",
+    "scroll": "Défiler",
+    "est": "Fondée au XVIIIe s.",
+    "breeding": "Élevage Murgese",
+    "marquee": [
+      "CHEVAUX MURGESE",
+      "RESTAURANT",
+      "ÉLEVAGE",
+      "MARIAGES & CÉRÉMONIES",
+      "ATTELAGES D'ÉPOQUE",
+      "CUISINE DES POUILLES",
+      "MASSERIA DU XVIIIe",
+      "MURGIA · NOCI"
+    ]
   },
   "masseria": {
     "eyebrow": "Du XVIIIe siècle à aujourd'hui",
@@ -129,5 +143,448 @@
     "diritti": "Tous droits réservés.",
     "privacy": "Politique de confidentialité",
     "cookie": "Politique relative aux cookies"
+  },
+  "a11y": {
+    "skipToContent": "Aller au contenu principal"
+  },
+  "header": {
+    "masseria": "La Masseria",
+    "cucina": "Cuisine",
+    "appuntamenti": "Rendez-vous à Table",
+    "cavalli": "Chevaux",
+    "eventi": "Événements",
+    "contatti": "Contacts",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "whatsappFull": "Écrivez-nous sur WhatsApp"
+  },
+  "intro": {
+    "skip": "Passer l'intro"
+  },
+  "manifesto": {
+    "eyebrow": "01 — Le Manifeste",
+    "lines": [
+      "Il est un lieu où la pierre raconte trois siècles,",
+      "où la terre offre ses fruits et chaque table devient une fête,",
+      "et où les chevaux Murgese galopent libres comme autrefois.",
+      "Ici le temps ralentit, l'accueil est familial,",
+      "et l'abondance n'est pas quantité —",
+      "c'est la générosité d'un geste ancien",
+      "renouvelé chaque jour."
+    ],
+    "signature": "Masseria Torre Abbondanza · Depuis le XVIIIe siècle"
+  },
+  "story": {
+    "eyebrow": "02 — L'Histoire",
+    "titleStart": "Trois siècles de",
+    "titleAccent": "pierre",
+    "body": "Une histoire à deux voix : la masseria du XVIIIe siècle de la famille Giunta et les chevaux Murgese qui habitent cette terre depuis toujours.",
+    "scrollHint": "défiler →",
+    "c1Eyebrow": "Chapitre I — Les origines",
+    "c1Title": "Dans la campagne de Noci",
+    "c1Body": "Au cœur du XVIIIe siècle, entre bois de chênes, murets en pierre sèche et chaux blanche de Noci, la masseria s'est élevée pierre après pierre au cœur de la Murgia dei Trulli.",
+    "c1Note": "XVIIIe siècle · Campagne de Noci · Murgia dei Trulli",
+    "c2Eyebrow": "Chapitre II — La matière",
+    "c2Title": "La chaux, la pierre, la lumière",
+    "c2Body": "Arcs en plein cintre, murs à la chaux qui respirent et toits en terre cuite : l'architecture rurale des Pouilles est un art climatique.",
+    "c3Eyebrow": "Chapitre III — La lignée",
+    "c3TitleStart": "Le",
+    "c3TitleAccent": "cheval",
+    "c3TitleEnd": "de la Murgia",
+    "c3Body": "Dans les écuries vit l'élevage de chevaux Murgese inscrits au Livre Généalogique de la famille Giunta (affixe T.A.) : robe noire, noblesse et attelages d'époque.",
+    "c4Eyebrow": "Chapitre IV — La famille",
+    "c4Title": "La famille Giunta, depuis 2005",
+    "c4Body": "Vingt ans d'hospitalité authentique : cuisine des Pouilles sur réservation, potager et soin quotidien d'un domaine vivant.",
+    "c5Eyebrow": "Chapitre V — Aujourd'hui",
+    "c5Title": "Deux âmes, un seul seuil",
+    "c5Body": "Aujourd'hui Torre Abbondanza accueille mariages, cérémonies, réceptions privées et passionnés de chevaux Murgese de toute l'Europe."
+  },
+  "place": {
+    "eyebrow": "03 — Le Lieu",
+    "titleWords": [
+      "Dans",
+      "le souffle",
+      "de la",
+      "Murgia"
+    ],
+    "subtitle": "Un havre de paix entre oliviers séculaires et murets en pierre sèche, où paissent les chevaux Murgese.",
+    "coords": [
+      "40.73° N — 17.13° E",
+      "Murgia dei Trulli · plateau",
+      "Noci (BA) · Pouilles",
+      "Terre du cheval Murgese",
+      "Oliviers · pierre · chevaux"
+    ],
+    "mapCaption": "Carnet · Murgia dei Trulli",
+    "howToReach": "Comment venir",
+    "nearNoci": "À quelques minutes de Noci,",
+    "nearItria": "parmi les oliviers de la Vallée d'Itria.",
+    "inHeart": "Au cœur de la Murgia, terre de masserie et de chevaux.",
+    "openGoogleMaps": "Ouvrir dans Google Maps"
+  },
+  "kitchen": {
+    "eyebrow": "04 — La Cuisine",
+    "titleStart": "Notre",
+    "titleAccent": "cuisine",
+    "subtitle": "Recettes familiales, produits de la Murgia et plats préparés sur réservation.",
+    "tags": [
+      "Sur réservation uniquement",
+      "Pour cérémonies & événements",
+      "Menus sur mesure",
+      "Végétarien · Végan · Sans gluten"
+    ],
+    "courses": [
+      {
+        "course": "Antipasti du terroir",
+        "word": "ANTIPASTI",
+        "dishTitle": "Assortiment traditionnel des Pouilles",
+        "description": "Olives frites, charcuteries et fromages locaux, parmigiana, focaccia chaude, purée de fèves blanches et poivrons frits."
+      },
+      {
+        "course": "Pâtes maison",
+        "word": "PRIMI",
+        "dishTitle": "Cavatelli faits main au ragù",
+        "description": "Pâtes fraîches façonnées à la main, cavatelli et orecchiette au ragù du dimanche et champignons cardoncelli."
+      },
+      {
+        "course": "Plats principaux",
+        "word": "SECONDI",
+        "dishTitle": "Roulade de viande mijotée",
+        "description": "Viandes locales mijotées lentement au vin rouge des Pouilles et herbes sauvages."
+      },
+      {
+        "course": "Desserts artisanaux",
+        "word": "DOLCI",
+        "dishTitle": "Fondant au chocolat",
+        "description": "Desserts maison préparés artisanalement pour chaque événement."
+      }
+    ]
+  },
+  "menu": {
+    "eyebrow": "05 — Les Saveurs",
+    "titleStart": "La table des",
+    "titleAccent": "grandes occasions",
+    "kinetic": [
+      "convivialité",
+      "tradition",
+      "sur mesure",
+      "occasion"
+    ],
+    "prose1Start": "La masseria ouvre sa cuisine pour les",
+    "prose1Accent": "grandes occasions",
+    "prose1End": "— cérémonies, baptêmes, anniversaires, mariages.",
+    "prose2": "Chaque menu est conçu ensemble. Il suffit d'un groupe d'au moins vingt personnes, de deux jours de préavis et d'une proposition à partir de cinquante euros par convive.",
+    "dietary": "Végétarien · Végan · Sans gluten · Menu enfants — sur demande",
+    "ctaRequest": "Demander votre menu",
+    "ctaAppointments": "Rendez-vous à table & menus",
+    "bridgeStart": "Une fois la table levée, place au galop.",
+    "bridgeLink": "Les chevaux Murgese"
+  },
+  "postersTeaser": {
+    "eyebrow": "Rendez-vous à Table · Menus & Fêtes",
+    "titleStart": "Les rendez-vous",
+    "titleAccent": "à table",
+    "titleEnd": "de la Masseria",
+    "subtitle": "Dimanches en famille, jours de fête et dîners d'été dans la cour : découvrez nos menus dédiés et réservez par WhatsApp ou téléphone.",
+    "ctaAll": "Voir tous les rendez-vous",
+    "whatsapp": "WhatsApp",
+    "call": "Appeler"
+  },
+  "horses": {
+    "eyebrow": "06 — Les Chevaux",
+    "titleStart": "La lignée",
+    "titleAccent": "Murgese",
+    "subtitle": "Élevage de la famille Giunta inscrit au Livre Généalogique (affixe T.A.) : robe noire brillante et tradition équestre.",
+    "traditionTitleStart": "La masseria préserve la Murgia",
+    "traditionTitleAccent": "équestre.",
+    "traditionQuote": "Défilés d'Attelages d'Époque, chevaux Murgese et mules de Martina Franca : ici la tradition est vivante.",
+    "traditionBody": "Nos chevaux sont élevés sur place par la famille Giunta (T.A.). Expériences équestres, visites des écuries et sorties en calèche sur demande.",
+    "ctaExperience": "Vivre l'expérience équestre",
+    "ctaShowcase": "Chevaux en vitrine"
+  },
+  "events": {
+    "headingStart": "Sept façons de vivre",
+    "headingAccent": "la Masseria.",
+    "subheading": "Mariages, cérémonies, fêtes de famille, soirées privées et expériences équestres entre la salle du XVIIIe siècle et la cour aux oliviers.",
+    "stat1Label": "Réceptions",
+    "stat1Value": "Jusqu'à 250 hôtes",
+    "stat2Label": "Espaces",
+    "stat2Value": "Salle & Oliveraie",
+    "stat3Label": "Table",
+    "stat3Value": "Cuisine interne",
+    "reqBtn": "Demander pour cet événement",
+    "reqShortBtn": "Demander",
+    "detailsBtn": "Détails & photos",
+    "swipeHint": "Glissez la carte ou utilisez les flèches",
+    "changeView": "Changer de vue",
+    "closeSheet": "Fermer la fiche",
+    "whatsapp": "WhatsApp",
+    "call": "Appeler",
+    "fillForm": "Remplir le formulaire avec cet événement",
+    "carriageTitle": "L'arrivée en calèche d'époque",
+    "carriageQuote": "Une mise en scène rare, sobre et profondément ancrée dans notre terroir.",
+    "carriageBody": "Sur demande, votre cérémonie peut s'ouvrir par l'arrivée d'une calèche d'époque tirée par nos chevaux Murgese élevés à la masseria.",
+    "carriageBadge": "Service sur demande",
+    "carriageLink": "Découvrir nos Murgese",
+    "closingStart": "Parlez-nous de votre événement : construisons",
+    "closingAccent": "chaque détail.",
+    "whatsappDirect": "WhatsApp direct",
+    "ctaAvailability": "Demander les disponibilités",
+    "ctaAppointments": "Rendez-vous à table & menus",
+    "spaces": {
+      "salaTitle": "La Salle Historique du XVIIIe",
+      "salaSubtitle": "Jusqu'à 250 hôtes · Toute l'année",
+      "salaDesc": "Poutres apparentes, arcs en pierre et lumière chaleureuse pour tables impériales ou tables rondes.",
+      "salaV1": "Vue panoramique · Lumière chaude & tables rondes",
+      "salaV2": "Disposition impériale · Grande table unique",
+      "corteTitle": "La Cour & Les Oliviers",
+      "corteSubtitle": "Pergola · Réceptions en plein air",
+      "corteDesc": "Pierre blanchie à la chaux, arcades du XVIIIe siècle et soirées d'été sous les oliviers.",
+      "corteV1": "La cour de jour · Arcs & pierre vive",
+      "corteV2": "La cour de nuit · Sous l'olivier"
+    },
+    "items": [
+      {
+        "id": "matrimoni",
+        "title": "Mariages",
+        "shortTitle": "Mariages",
+        "spaces": "Cour des Oliviers · Salle du XVIIIe",
+        "phrase": "Le oui sous les oliviers, une fête inoubliable.",
+        "description": "Réceptions jusqu'à 250 invités entre cour en pierre blanche, pergola estivale et salle voûtée du XVIIIe siècle.",
+        "highlights": [
+          "Cour des oliviers et salle historique du XVIIIe siècle",
+          "Cuisine des Pouilles sur mesure (options végétariennes, véganes, sans gluten)",
+          "Arrivée possible en calèche d'époque avec nos chevaux Murgese"
+        ]
+      },
+      {
+        "id": "cerimonie",
+        "title": "Cérémonies",
+        "shortTitle": "Cérémonies",
+        "spaces": "Arcades en Pierre · Jardin",
+        "phrase": "Civiles ou symboliques : des rituels qui vous ressemblent.",
+        "description": "Communions, confirmations et cérémonies laïques ou symboliques accueillies sous les arcades historiques de Noci.",
+        "highlights": [
+          "Espaces extérieurs dédiés sous les arcades du XVIIIe siècle",
+          "Déjeuners et dîners sur réservation de 20 à 250 personnes",
+          "Coordination directe avec la famille Giunta"
+        ]
+      },
+      {
+        "id": "battesimi",
+        "title": "Baptêmes",
+        "shortTitle": "Baptêmes",
+        "spaces": "Salle Historique · Table Impériale",
+        "phrase": "Les premières fêtes de famille à l'abri de la pierre.",
+        "description": "Une grande table conviviale avec cuisine maison des Pouilles et plats dédiés aux enfants.",
+        "highlights": [
+          "Salle chaleureuse en toute saison",
+          "Menus de saison à partir de 50 € par personne avec menu enfant",
+          "Cour paisible et sûre en pleine campagne"
+        ]
+      },
+      {
+        "id": "compleanni",
+        "title": "Anniversaires",
+        "shortTitle": "Anniversaires",
+        "spaces": "Salle Historique · Cour du Soir",
+        "phrase": "Les années qui comptent, bougies et toasts sous les étoiles.",
+        "description": "Anniversaires, remises de diplômes et célébrations : menu sur mesure, vins locaux et pâtisseries maison.",
+        "highlights": [
+          "Menu élaboré au moins 2 jours à l'avance (min. 20 convives)",
+          "Desserts artisanaux et soirée dans la cour ou la salle",
+          "Cadre privé et authentique loin de la ville"
+        ]
+      },
+      {
+        "id": "feste-private",
+        "title": "Soirées Privées",
+        "shortTitle": "Soirées Privées",
+        "spaces": "Cour du Soir · Usage Exclusif",
+        "phrase": "Entreprises, intimes ou surprises : la masseria est à vous.",
+        "description": "Dîners d'entreprise, retrouvailles et soirées sur invitation avec privatisation du domaine.",
+        "highlights": [
+          "Réservations dédiées dès 20 personnes",
+          "Choix entre salle intérieure et cour étoilée",
+          "Parking privé à quelques minutes de Noci et Alberobello"
+        ]
+      },
+      {
+        "id": "la-masseria",
+        "title": "La Masseria",
+        "shortTitle": "La Masseria",
+        "spaces": "Demeure XVIIIe · Noci",
+        "phrase": "La pierre, les oliviers, la cour et la longue table. Choisissez l'instant.",
+        "description": "Authentique domaine du XVIIIe siècle avec salle voûtée, cour blanche, cuisine familiale et écuries.",
+        "highlights": [
+          "Architecture rurale authentique préservée par la famille Giunta",
+          "Visites des écuries ou repas traditionnels combinables",
+          "Accompagnement direct pour tout projet sur mesure"
+        ]
+      },
+      {
+        "id": "esperienza-equestre",
+        "title": "Expérience Équestre",
+        "shortTitle": "Équitation",
+        "spaces": "Élevage Murgese · Attelages",
+        "phrase": "Chevaux Murgese au pré, balades et attelages d'époque.",
+        "description": "Visite des écuries Torre Abbondanza (T.A.), promenades entre oliviers et balades en calèche d'époque.",
+        "highlights": [
+          "Chevaux Murgese et mules de Martina élevés sur place",
+          "Balades guidées et visites sur réservation",
+          "Défilés d'attelages d'époque et entrées de cérémonie"
+        ]
+      }
+    ]
+  },
+  "seasons": {
+    "eyebrow": "08 — Les Saisons",
+    "title": "Une année à la masseria",
+    "ctaEvents": "Découvrir les événements",
+    "items": [
+      {
+        "label": "Printemps",
+        "italic": "en fleur",
+        "kicker": "La campagne s'éveille : oliviers en fleurs et pas lents le long des murets.",
+        "exp1Title": "À cheval parmi les oliviers en fleurs",
+        "exp1Text": "Promenades équestres sur les sentiers du domaine avec nos Murgese.",
+        "exp2Title": "Éveil dans la verdure",
+        "exp2Text": "Déjeuners champêtres et pique-niques sous les oliviers."
+      },
+      {
+        "label": "Été",
+        "italic": "sous les étoiles",
+        "kicker": "Les soirées s'allongent, l'or du soir caresse la pierre : place à la fête.",
+        "exp1Title": "Dîners sous les étoiles",
+        "exp1Text": "Bougies et grandes tables dans la cour du XVIIIe siècle.",
+        "exp2Title": "Défilé d'Attelages d'Époque",
+        "exp2Text": "Nos chevaux Murgese en parade avec les voitures anciennes."
+      },
+      {
+        "label": "Automne",
+        "italic": "des sentiers",
+        "kicker": "Récolte des olives, feuilles dorées et première chaleur dans la salle en pierre.",
+        "exp1Title": "Parmi les oliviers centenaires",
+        "exp1Text": "Dégustation d'huile nouvelle et balades dans la lumière d'octobre.",
+        "exp2Title": "La table d'automne",
+        "exp2Text": "Champignons cardoncelli, pâtes maison et vins rouges locaux."
+      },
+      {
+        "label": "Hiver",
+        "italic": "au coin du feu",
+        "kicker": "La pierre garde la chaleur de l'âtre, dimanches en famille.",
+        "exp1Title": "Intimité dans la salle du XVIIIe",
+        "exp1Text": "Repas de famille et fêtes d'hiver près du feu.",
+        "exp2Title": "Les Murgese en hiver",
+        "exp2Text": "Robe noire brillante dans l'air vif du plateau."
+      }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "09 — Livre d'or",
+    "title": "Les voix de nos hôtes",
+    "seal": "Parmi les destinations les plus appréciées de la Murgia.",
+    "stats": "4,4 / 5 sur TripAdvisor (213 avis) · 9,7 / 10 sur TheFork (50 avis)",
+    "notes": [
+      "Une oasis de paix et de saveurs. Cuisine excellente dans un cadre serein, service attentionné et chaleureux.",
+      "Magnifique masseria dans la campagne de Noci. Cuisine de grande qualité et présentation soignée.",
+      "Nous avons passé une journée merveilleuse. Plus de cinquante convives accueillis avec une attention remarquable."
+    ]
+  },
+  "visitSection": {
+    "eyebrow": "10 — Contacts",
+    "titleWords": [
+      "Venez",
+      "nous",
+      "voir."
+    ],
+    "subtitle": "Au cœur de la Murgia, entre oliviers séculaires et galop de nos Murgese. Nous vous attendons.",
+    "where": "Où nous trouver",
+    "addressLabel": "Adresse",
+    "phoneLabel": "Téléphone",
+    "whatsappLabel": "WhatsApp",
+    "whatsappCta": "Écrire sur WhatsApp",
+    "siteLabel": "Site web",
+    "inMurgia": "En Murgia",
+    "directionsGoogle": "Itinéraire · Google Maps",
+    "modelNote": "Notre cuisine ouvre sur réservation pour vos grandes occasions.",
+    "formTitle": "Parlez-nous de votre occasion",
+    "formSubtitle": "Remplissez le formulaire pour préparer votre message WhatsApp.",
+    "nameLabel": "Nom et prénom",
+    "phoneFieldLabel": "Téléphone / WhatsApp",
+    "kindLabel": "Type d'événement",
+    "dateLabel": "Date indicative",
+    "guestsLabel": "Nombre de convives",
+    "messageLabel": "Message",
+    "consentText": "J'accepte le traitement de mes données selon la Politique de Confidentialité.",
+    "submitBtn": "Envoyer sur WhatsApp",
+    "errName": "Veuillez saisir votre nom.",
+    "errPhone": "Numéro de téléphone invalide.",
+    "errKind": "Choisissez le type d'événement.",
+    "errMessage": "Dites-nous en un peu plus.",
+    "errConsent": "Le consentement est requis.",
+    "successMsg": "Merci ! Votre demande est prête.",
+    "openWhatsAppNow": "Ouvrir WhatsApp",
+    "occasions": {
+      "matrimonio": "Mariage",
+      "cerimonia": "Cérémonie",
+      "battesimo": "Baptême",
+      "compleanno": "Anniversaire",
+      "festa-privata": "Soirée privée",
+      "esperienza-equestre": "Expérience équestre",
+      "altro": "Autre"
+    }
+  },
+  "footerSection": {
+    "eyebrow": "11 — L'Envoi",
+    "locationTag": "Contrada Murgia · Noci",
+    "claim1": "Deux",
+    "claim1Accent": "âmes",
+    "claim2": "une seule",
+    "claim2Accent": "terre",
+    "quote": "«Les portes de notre cour s'ouvrent à ceux qui cherchent le rythme apaisé de la Murgia, la saveur sincère de la terre et l'allure fière de nos chevaux Murgese.»",
+    "family": "— Famille Giunta",
+    "since": "Depuis le XVIIIe siècle",
+    "whatsappBtn": "Écrivez-nous sur WhatsApp",
+    "callBtn": "Appeler",
+    "shareBtn": "Partager la Masseria →",
+    "shareCopied": "Lien copié",
+    "archCaption": "«Où la pierre du XVIIIe siècle rencontre le galop.»",
+    "brandDesc": "Masseria du XVIIIe siècle à Noci. Table sur réservation, chevaux Murgese et moments rares.",
+    "navTitle": "Navigation",
+    "contactsTitle": "Contacts",
+    "followTitle": "Suivez-nous",
+    "requestBtn": "Organiser votre événement",
+    "rights": "Tous droits réservés.",
+    "cookiePrefs": "Préférences cookies",
+    "onReservation": "Sur réservation",
+    "backToTop": "Haut de page",
+    "navLinks": {
+      "storia": "Histoire",
+      "luogo": "Le Lieu",
+      "cucina": "Cuisine",
+      "menu": "Saveurs",
+      "cavalli": "Chevaux",
+      "eventi": "Événements",
+      "esperienze": "Saisons",
+      "recensioni": "Avis",
+      "contatti": "Contacts"
+    }
+  },
+  "cookieBanner": {
+    "title": "Préférences cookies",
+    "desc": "Ce site utilise des cookies techniques nécessaires et, avec votre accord, des cookies analytiques (GA4).",
+    "rejectAll": "Tout refuser",
+    "customize": "Personnaliser",
+    "acceptAll": "Tout accepter",
+    "prefsTitle": "Gérer les cookies",
+    "prefsDesc": "Conformément au RGPD, choisissez les catégories à activer.",
+    "techTitle": "Cookies techniques (toujours actifs)",
+    "techDesc": "Indispensables au fonctionnement et à la sécurité du site.",
+    "analyticsTitle": "Cookies analytiques (GA4)",
+    "analyticsDesc": "Statistiques anonymisées de fréquentation.",
+    "marketingTitle": "Cookies marketing",
+    "marketingDesc": "Mesure des campagnes avec votre consentement.",
+    "savePrefs": "Enregistrer"
   }
 }

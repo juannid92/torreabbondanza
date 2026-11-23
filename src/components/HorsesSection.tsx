@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useReducedMotion } from "framer-motion";
@@ -22,6 +23,7 @@ const MICRO_LABELS = [
 ];
 
 export function HorsesSection() {
+  const { t } = useTranslation();
   const rootRef = useRef<HTMLElement>(null);
   const gallopSceneRef = useRef<HTMLDivElement>(null);
   const gallopImgRef = useRef<HTMLImageElement>(null);
@@ -194,7 +196,7 @@ export function HorsesSection() {
               className="text-eyebrow"
               style={{ color: "color-mix(in oklab, var(--ivory) 65%, transparent)" }}
             >
-              06 — I cavalli Murgesi
+              {t("horses.eyebrow")}
             </p>
             <h2
               id="cavalli-title"
@@ -206,7 +208,8 @@ export function HorsesSection() {
                 color: "var(--ivory)",
               }}
             >
-              L&apos;anima <em className="text-terracotta">nera</em>
+              {t("horses.titleStart")}{" "}
+              <em className="text-terracotta">{t("horses.titleAccent")}</em>
             </h2>
             <p
               data-h-fade
@@ -218,8 +221,7 @@ export function HorsesSection() {
                 maxWidth: "34ch",
               }}
             >
-              Nera come la notte di Puglia, antica come questa terra: la stirpe del cavallo Murgese
-              vive nella Murgia da secoli.
+              {t("horses.subtitle")}
             </p>
           </div>
 
@@ -537,7 +539,8 @@ export function HorsesSection() {
                 color: "var(--ivory)",
               }}
             >
-              La masseria custodisce la Murgia <em className="text-terracotta">equestre</em>.
+              {t("horses.traditionTitleStart")}{" "}
+              <em className="text-terracotta">{t("horses.traditionTitleAccent")}</em>
             </h3>
             <p
               data-h-fade
@@ -548,30 +551,26 @@ export function HorsesSection() {
                 color: "color-mix(in oklab, var(--ivory) 82%, transparent)",
               }}
             >
-              Sfilata di Attacchi d&apos;Epoca, cavalli Murgesi e muli Martinesi: nella masseria la
-              tradizione equestre della Murgia non è memoria, è gesto vivo.
+              {t("horses.traditionQuote")}
             </p>
             <p
               data-h-fade
               className="mt-6 text-sm leading-relaxed"
               style={{ color: "color-mix(in oklab, var(--ivory) 65%, transparent)" }}
             >
-              I cavalli sono della famiglia Giunta, che alleva Murgesi in masseria — con soggetti
-              iscritti al Registro Anagrafico (suffisso T.A.) e a volte presenti in fiera.
-              Esperienze equestri tra scuderia, pascolo e attacchi storici, su richiesta, in
-              occasione di eventi e visite guidate.
+              {t("horses.traditionBody")}
             </p>
 
             <div className="mt-12 flex flex-wrap items-center gap-6">
               <MagneticButton href="#contatti" variant="pill-ivory">
-                Vivi l&apos;esperienza equestre →
+                {t("horses.ctaExperience")}
               </MagneticButton>
               <MagneticButton
                 href="/cavalli/vetrina"
                 variant="link"
                 className="text-ivory/80 hover:text-gold"
               >
-                Esemplari in vetrina
+                {t("horses.ctaShowcase")}
               </MagneticButton>
             </div>
           </div>

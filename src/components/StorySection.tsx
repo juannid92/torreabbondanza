@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { StoryPanel, type StoryPanelData } from "./StoryPanel";
@@ -149,12 +150,83 @@ const PANELS: StoryPanelData[] = [
 ];
 
 export function StorySection() {
+  const { t, i18n } = useTranslation();
   const sectionRef = useRef<HTMLElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const timelineRef = useRef<SVGPathElement | null>(null);
   const markersRef = useRef<(SVGCircleElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const total = PANELS.length;
+
+  const panels = useMemo<StoryPanelData[]>(() => {
+    return PANELS.map((p, idx) => {
+      if (idx === 0) {
+        return {
+          ...p,
+          eyebrow: t("story.eyebrow"),
+          title: (
+            <>
+              {t("story.titleStart")}{" "}
+              <em className="font-display italic text-terracotta">{t("story.titleAccent")}</em>
+            </>
+          ),
+          body: <>{t("story.body")}</>,
+          cta: <span className="text-eyebrow text-ink/60">{t("story.scrollHint")}</span>,
+        };
+      }
+      if (idx === 1) {
+        return {
+          ...p,
+          eyebrow: t("story.c1Eyebrow"),
+          title: <>{t("story.c1Title")}</>,
+          body: <>{t("story.c1Body")}</>,
+          note: <>{t("story.c1Note")}</>,
+        };
+      }
+      if (idx === 2) {
+        return {
+          ...p,
+          eyebrow: t("story.c2Eyebrow"),
+          title: <>{t("story.c2Title")}</>,
+          body: <>{t("story.c2Body")}</>,
+        };
+      }
+      if (idx === 3) {
+        return {
+          ...p,
+          eyebrow: t("story.c3Eyebrow"),
+          title: (
+            <>
+              {t("story.c3TitleStart")}{" "}
+              <em className="font-display italic" style={{ color: "var(--murgese)" }}>
+                {t("story.c3TitleAccent")}
+              </em>{" "}
+              {t("story.c3TitleEnd")}
+            </>
+          ),
+          body: <>{t("story.c3Body")}</>,
+        };
+      }
+      if (idx === 4) {
+        return {
+          ...p,
+          eyebrow: t("story.c4Eyebrow"),
+          title: <>{t("story.c4Title")}</>,
+          body: <>{t("story.c4Body")}</>,
+        };
+      }
+      if (idx === 5) {
+        return {
+          ...p,
+          eyebrow: t("story.c5Eyebrow"),
+          title: <>{t("story.c5Title")}</>,
+          body: <>{t("story.c5Body")}</>,
+        };
+      }
+      return p;
+    });
+  }, [t, i18n.language]);
+
+  const total = panels.length;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -437,7 +509,7 @@ export function StorySection() {
         className="flex h-[100svh] w-max flex-row max-md:h-auto max-md:w-full max-md:flex-col"
         style={{ willChange: "transform" }}
       >
-        {PANELS.map((p, i) => (
+        {panels.map((p, i) => (
           <StoryPanel key={i} data={p} index={i} total={total} />
         ))}
       </div>
@@ -458,7 +530,7 @@ export function StorySection() {
             strokeWidth="1.5"
             fill="none"
           />
-          {PANELS.map((_, i) => {
+          {panels.map((_, i) => {
             const cx = (1000 / (total - 1)) * i;
             const active = i <= activeIndex;
             const isDeep = PANELS[i].tone === "deep";

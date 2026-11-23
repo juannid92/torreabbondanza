@@ -7,11 +7,12 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 // Side-effect: inizializza i18n all'avvio dell'app
 import "@/lib/i18n";
+import { resolveInitialLanguage } from "@/lib/i18n";
 
 import appCss from "../styles.css?url";
 import ogImage from "../assets/hero-masseria.jpg";
@@ -172,6 +173,20 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const target = resolveInitialLanguage();
+    if (target !== i18n.language) {
+      void i18n.changeLanguage(target);
+    }
+  }, [i18n]);
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = i18n.language || "it";
+    }
+  }, [i18n.language]);
 
   return (
     <QueryClientProvider client={queryClient}>

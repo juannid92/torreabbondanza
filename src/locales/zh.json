@@ -20,9 +20,23 @@
     "chiudiMenu": "关闭菜单"
   },
   "hero": {
-    "eyebrow": "十八世纪庄园 · 诺奇，普利亚",
-    "title": "托雷·阿邦丹扎",
-    "subtitle": "石墙与奔马的交汇。传统美食、专属活动和穆尔杰斯马，坐落于特鲁利谷的心脏地带。"
+    "tagline": "两种灵魂，一座十八世纪庄园：举办庆典与活动的普利亚美食，以及特鲁利谷心脏地带的古老穆尔杰斯马艺。",
+    "ctaEvents": "美食与庆典",
+    "ctaHorses": "穆尔杰斯马",
+    "ctaBook": "预订餐桌",
+    "scroll": "向下滑动",
+    "est": "始建于十八世纪",
+    "breeding": "穆尔杰斯马繁育场",
+    "marquee": [
+      "穆尔杰斯马",
+      "传统餐厅",
+      "纯种马繁育",
+      "婚礼与庆典",
+      "古典马车",
+      "普利亚美食",
+      "十八世纪庄园",
+      "诺奇 · 穆尔贾"
+    ]
   },
   "masseria": {
     "eyebrow": "从十八世纪至今",
@@ -129,5 +143,448 @@
     "diritti": "保留所有权利。",
     "privacy": "隐私政策",
     "cookie": "Cookie政策"
+  },
+  "a11y": {
+    "skipToContent": "跳至主要内容"
+  },
+  "header": {
+    "masseria": "庄园",
+    "cucina": "美食",
+    "appuntamenti": "餐桌盛宴",
+    "cavalli": "马匹",
+    "eventi": "活动",
+    "contatti": "联系方式",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单",
+    "whatsappFull": "通过 WhatsApp 联系我们"
+  },
+  "intro": {
+    "skip": "跳过开场"
+  },
+  "manifesto": {
+    "eyebrow": "01 — 庄园宣言",
+    "lines": [
+      "有一个地方，石头诉说着三个世纪的岁月，",
+      "大地奉献丰饶果实，每一张餐桌都化作欢庆，",
+      "穆尔杰斯马如往昔般自由驰骋。",
+      "在这里，时光放慢脚步，款待源于家族传承，",
+      "而丰盛不在于数量 ——",
+      "在于古老手势的慷慨馈赠",
+      "日复一日地焕发新生。"
+    ],
+    "signature": "托雷·阿邦丹扎庄园 · 始于十八世纪"
+  },
+  "story": {
+    "eyebrow": "02 — 历史传承",
+    "titleStart": "三个世纪的",
+    "titleAccent": "石头记忆",
+    "body": "双声部的历史篇章：琼塔家族的十八世纪庄园，以及世代栖息于此的穆尔杰斯马。",
+    "scrollHint": "滑动浏览 →",
+    "c1Eyebrow": "第一章 — 起源",
+    "c1Title": "诺奇乡野之间",
+    "c1Body": "十八世纪中叶，在橡树林、干石墙与诺奇的白色石灰之间，庄园一石一瓦拔地而起，在特鲁利谷的中心守护着谷物、牧场与马群。",
+    "c1Note": "十八世纪 · 诺奇乡野 · 特鲁利谷",
+    "c2Eyebrow": "第二章 — 材质",
+    "c2Title": "石灰、石墙与阳光",
+    "c2Body": "半圆石拱、透气的石灰墙、在午后阳光下变暖的陶瓦屋顶：普利亚乡村建筑不是装饰，而是气候的智慧。白色反射阳光，石头留住清凉。",
+    "c3Eyebrow": "第三章 — 血统",
+    "c3TitleStart": "穆尔贾的",
+    "c3TitleAccent": "骏马",
+    "c3TitleEnd": "传奇",
+    "c3Body": "马厩内繁育着琼塔家族登记在册的穆尔杰斯马（T.A.后缀）：乌黑发亮的被毛、古老的傲骨以及古典马车巡游。",
+    "c4Eyebrow": "第四章 — 家族",
+    "c4Title": "琼塔家族，自2005年起",
+    "c4Body": "二十载真诚待客：为重要庆典提供预约制普利亚美食、菜园、麦田与对这座鲜活庄园的日常守护。",
+    "c5Eyebrow": "第五章 — 今日",
+    "c5Title": "双魂共栖，一扇门槛",
+    "c5Body": "如今，托雷·阿邦丹扎迎接着来自全欧洲的新人婚礼、典礼、私人派对与穆尔杰斯马爱好者。"
+  },
+  "place": {
+    "eyebrow": "03 — 地理位置",
+    "titleWords": [
+      "在",
+      "穆尔贾的",
+      "呼吸",
+      "之中"
+    ],
+    "subtitle": "百年橄榄树与干石墙之间的一方净土，穆尔杰斯马在此漫步吃草，风景归于宁静。",
+    "coords": [
+      "40.73° N — 17.13° E",
+      "特鲁利谷 · 高原",
+      "诺奇 (BA) · 普利亚",
+      "穆尔杰斯马的故乡",
+      "橄榄树 · 石墙 · 骏马"
+    ],
+    "mapCaption": "手记 · 特鲁利谷",
+    "howToReach": "如何到达",
+    "nearNoci": "距诺奇仅数分钟车程，",
+    "nearItria": "置身伊特里亚谷的橄榄林中。",
+    "inHeart": "地处穆尔贾腹地，庄园与骏马之乡。",
+    "openGoogleMaps": "在 Google 地图中打开"
+  },
+  "kitchen": {
+    "eyebrow": "04 — 庄园厨房",
+    "titleStart": "我们的",
+    "titleAccent": "厨房",
+    "subtitle": "家族秘方、穆尔贾本地食材与预约现做的地道佳肴。",
+    "tags": [
+      "仅限预约",
+      "典礼与宴会",
+      "定制菜单",
+      "素食 · 纯素 · 无麸质"
+    ],
+    "courses": [
+      {
+        "course": "乡土前菜",
+        "word": "前菜",
+        "dishTitle": "普利亚传统拼盘",
+        "description": "炸橄榄、当地腌肉和奶酪、茄子千层焗、热烤意式佛卡夏、白蚕豆泥和煎甜椒。丰盛的前菜犹如一幅风土画卷，拉开盛宴序幕。"
+      },
+      {
+        "course": "手工意面",
+        "word": "主食",
+        "dishTitle": "手工卡瓦泰利肉酱面",
+        "description": "传统普利亚手工意面：手擀新鲜卡瓦泰利与猫耳朵面，搭配周日慢炖肉酱和穆尔贾野生杏鲍菇。"
+      },
+      {
+        "course": "传统主菜",
+        "word": "主菜",
+        "dishTitle": "红酒慢炖肉卷",
+        "description": "严选本地肉类，以普利亚红酒与野生香草慢火烹煮，重现乡间餐桌的温暖记忆。"
+      },
+      {
+        "course": "手工甜点",
+        "word": "甜点",
+        "dishTitle": "熔岩巧克力蛋糕",
+        "description": "为每次相聚手工制作的庄园甜点。搭配新鲜草莓的巧克力蛋糕为盛宴画上优雅甜美的句号。"
+      }
+    ]
+  },
+  "menu": {
+    "eyebrow": "05 — 餐桌风味",
+    "titleStart": "属于重要时刻的",
+    "titleAccent": "欢聚餐桌",
+    "kinetic": [
+      "欢聚",
+      "传统",
+      "定制",
+      "盛宴"
+    ],
+    "prose1Start": "庄园厨房为您的",
+    "prose1Accent": "重要时刻",
+    "prose1End": "敞开 —— 典礼、洗礼、生日与婚礼。",
+    "prose2": "每一份菜单都由我们共同商定设计。只需至少20位宾客、提前2天预约，每人起价50欧元，即可入席。其余的风味、节奏与细节，由我们与您一同挑选。",
+    "dietary": "可应要求提供素食 · 纯素 · 无麸质 · 儿童菜单",
+    "ctaRequest": "咨询定制菜单",
+    "ctaAppointments": "餐桌盛宴与菜单",
+    "bridgeStart": "盛宴落幕，骏马驰骋依旧。",
+    "bridgeLink": "认识穆尔杰斯马"
+  },
+  "postersTeaser": {
+    "eyebrow": "餐桌盛宴 · 菜单与庆典",
+    "titleStart": "庄园的",
+    "titleAccent": "餐桌盛宴",
+    "titleEnd": "日历",
+    "subtitle": "家庭周日聚餐、节庆佳肴、春日长假与星光庭院夏夜：探索特别日期专属菜单，通过 WhatsApp 或电话轻松预订。",
+    "ctaAll": "查看所有餐桌盛宴",
+    "whatsapp": "WhatsApp",
+    "call": "致电"
+  },
+  "horses": {
+    "eyebrow": "06 — 穆尔杰斯马",
+    "titleStart": "穆尔杰斯",
+    "titleAccent": "纯正血统",
+    "subtitle": "琼塔家族登记繁育的穆尔杰斯马（T.A.前缀）：乌黑闪亮的被毛、优雅平衡与百年马术传统。",
+    "traditionTitleStart": "庄园守护着马背上的",
+    "traditionTitleAccent": "穆尔贾。",
+    "traditionQuote": "古典马车巡游、穆尔杰斯马与马丁纳骡马：在庄园里，马术传统不是尘封的记忆，而是鲜活的当下。",
+    "traditionBody": "马匹由琼塔家族在庄园繁育并登记在册（T.A.后缀）。可根据预约在活动和导览期间安排马厩参观、牧场骑行与古典马车体验。",
+    "ctaExperience": "预订马术体验",
+    "ctaShowcase": "查看精选马匹"
+  },
+  "events": {
+    "headingStart": "探索庄园的",
+    "headingAccent": "七种盛会方式。",
+    "subheading": "婚礼、典礼、家庭聚会、私人晚宴与马术体验，在十八世纪历史大厅、石墙庭院与穆尔贾橄榄树林间精彩呈现。",
+    "stat1Label": "宴会容量",
+    "stat1Value": "最多 250 位宾客",
+    "stat2Label": "场地空间",
+    "stat2Value": "历史大厅与橄榄园",
+    "stat3Label": "餐饮服务",
+    "stat3Value": "庄园自营厨房",
+    "reqBtn": "咨询此活动",
+    "reqShortBtn": "立即咨询",
+    "detailsBtn": "详情与照片",
+    "swipeHint": "左右滑动卡片或点击箭头",
+    "changeView": "切换视角",
+    "closeSheet": "关闭活动详情",
+    "whatsapp": "WhatsApp",
+    "call": "致电",
+    "fillForm": "用此活动填写预订表单",
+    "carriageTitle": "古典马车盛大入场",
+    "carriageQuote": "稀世珍贵、典雅庄重且深植当地风土的入场仪式。",
+    "carriageBody": "应您要求，典礼或婚宴可由琼塔家族在庄园繁育的穆尔杰斯骏马拉动古典马车华丽揭幕。",
+    "carriageBadge": "按需定制服务",
+    "carriageLink": "探索我们的穆尔杰斯马",
+    "closingStart": "告诉我们您的活动构想：共同雕琢",
+    "closingAccent": "每一处细节。",
+    "whatsappDirect": "WhatsApp 直连",
+    "ctaAvailability": "查询档期",
+    "ctaAppointments": "餐桌盛宴与菜单",
+    "spaces": {
+      "salaTitle": "十八世纪历史大厅",
+      "salaSubtitle": "可容纳多达 250 位宾客 · 全年开放",
+      "salaDesc": "外露木梁、石拱门与温暖灯光，适合举办长桌国宴或圆形桌宴，由庄园厨师团队精心呈献。",
+      "salaV1": "全景视野 · 暖光与圆桌布局",
+      "salaV2": "皇家布局 · 气派长桌盛宴",
+      "corteTitle": "庭院与百年橄榄园",
+      "corteSubtitle": "芦苇凉棚 · 户外草坪与庭院宴会",
+      "corteDesc": "白色石灰石墙、十八世纪拱廊与穆尔贾百年橄榄树下的夏夜星光派对。",
+      "corteV1": "白日庭院 · 石拱与原生石材",
+      "corteV2": "夜色庭院 · 橄榄树下星光"
+    },
+    "items": [
+      {
+        "id": "matrimoni",
+        "title": "浪漫婚礼",
+        "shortTitle": "婚礼",
+        "spaces": "橄榄庭院 · 十八世纪大厅",
+        "phrase": "在橄榄树下许下誓言，开启永不落幕的欢庆。",
+        "description": "可容纳多达 250 位宾客的婚宴场地，涵盖白色石砌庭院、夏季芦苇凉棚与十八世纪石拱大厅。",
+        "highlights": [
+          "百年橄榄园庭院与十八世纪木梁石拱大厅",
+          "庄园自营普利亚厨房定制菜单（含素食、纯素、无麸质及儿童餐）",
+          "可选穆尔杰斯马牵引古典马车盛大入场"
+        ]
+      },
+      {
+        "id": "cerimonie",
+        "title": "仪式典礼",
+        "shortTitle": "典礼",
+        "spaces": "石拱廊 · 庄园花园",
+        "phrase": "民事或象征性仪式：属于你们的独特印记。",
+        "description": "在诺奇古老的石拱与绿意盎然的穆尔贾自然中，承办初领圣体、坚振、誓言更新及民事或象征性典礼。",
+        "highlights": [
+          "十八世纪石拱下的户外专属仪式空间",
+          "接受 20 至 250 位宾客的预约制午宴与晚宴",
+          "从首次实地考察到宴会圆满，琼塔家族全程亲自协调"
+        ]
+      },
+      {
+        "id": "battesimi",
+        "title": "洗礼庆典",
+        "shortTitle": "洗礼",
+        "spaces": "历史大厅 · 家族长桌",
+        "phrase": "家族的初次欢聚，在古老石墙的庇护下举行。",
+        "description": "围绕新生喜悦布置温暖长桌，提供地道现做普利亚美食与儿童专属菜品。",
+        "highlights": [
+          "四季皆宜的温馨大厅，可布置宽敞家族聚餐长桌",
+          "应季菜单每人 50 欧元起，提供贴心儿童餐选择",
+          "藏身诺奇乡野间的宁静安全私密庭院"
+        ]
+      },
+      {
+        "id": "compleanni",
+        "title": "生日派对",
+        "shortTitle": "生日",
+        "spaces": "历史大厅 · 星空夜院",
+        "phrase": "值得铭记的岁月，星空下的烛光与举杯。",
+        "description": "成人礼、毕业欢庆、三十岁生日及重要纪念日：定制美食、本地美酒、手工甜点与音乐空间。",
+        "highlights": [
+          "至少提前 2 天共同定制菜单（最少 20 位宾客）",
+          "手工自制甜点，在温暖大厅或星光庭院举杯畅饮",
+          "远离城市喧嚣的真实、私密庄园氛围"
+        ]
+      },
+      {
+        "id": "feste-private",
+        "title": "私人派对",
+        "shortTitle": "私人派对",
+        "spaces": "夜间庭院 · 包场专享",
+        "phrase": "企业晚宴、私密聚会、惊喜派对：整座庄园归您所有。",
+        "description": "企业晚宴、同学重聚、周年庆及特邀晚会：整座庄园完整呈现，专属于您的团队与挚友。",
+        "highlights": [
+          "20 人起即可预订团队专场",
+          "自由选择历史室内大厅或星光橄榄树庭院",
+          "内部免费停车场，距诺奇、阿尔贝罗贝洛和普蒂尼亚诺仅数分钟车程"
+        ]
+      },
+      {
+        "id": "la-masseria",
+        "title": "包场庄园",
+        "shortTitle": "庄园",
+        "spaces": "十八世纪庄园 · 诺奇",
+        "phrase": "石墙、橄榄、庭院与长桌。您选定时刻，其余交给我们。",
+        "description": "正宗十八世纪历史庄园，集石拱宴会厅、白石庭院、家族厨房与穆尔杰斯马厩于一体。",
+        "highlights": [
+          "琼塔家族用心保护的正宗普利亚乡村建筑",
+          "可自由结合马厩体验或传统乡土美宴",
+          "为各类特殊庆典与定制项目提供一对一直接顾问服务"
+        ]
+      },
+      {
+        "id": "esperienza-equestre",
+        "title": "马术体验",
+        "shortTitle": "马术",
+        "spaces": "穆尔杰斯繁育场 · 古典马车",
+        "phrase": "牧场漫步的穆尔杰斯马，干石墙间的骑行与古典马车。",
+        "description": "探访托雷·阿邦丹扎繁育场（T.A. 登记谱系），在橄榄林间骑行，并体验古典马车巡游。",
+        "highlights": [
+          "庄园直接繁育的登记在册穆尔杰斯马与马丁纳骡马",
+          "预约制乡野骑行导览与专业马厩参观",
+          "古典马车盛装巡游及典礼马车接驾服务"
+        ]
+      }
+    ]
+  },
+  "seasons": {
+    "eyebrow": "08 — 四季轮转",
+    "title": "庄园的一年四季",
+    "ctaEvents": "探索活动",
+    "items": [
+      {
+        "label": "春日",
+        "italic": "繁花似锦",
+        "kicker": "大地苏醒：橄榄树开花，泥土呼吸，干石墙边慢步前行。",
+        "exp1Title": "骑马穿梭花开橄榄林",
+        "exp1Text": "骑乘穆尔杰斯马漫步庄园小径，在洁白花影间感受马蹄缓步。",
+        "exp2Title": "绿野苏醒之宴",
+        "exp2Text": "在橄榄树与新绿草地间享用户外午餐和野餐：手工面包、野菜与普利亚奶酪。"
+      },
+      {
+        "label": "夏日",
+        "italic": "星光之下",
+        "kicker": "白昼渐长，暖金洒满石墙与餐桌：庄园敞开大门迎接盛宴。",
+        "exp1Title": "星光庭院晚宴",
+        "exp1Text": "户外串灯、烛光与长桌：在十八世纪庭院举办婚礼、私人晚宴与典礼。",
+        "exp2Title": "古典马车巡游",
+        "exp2Text": "穆尔杰斯马与马丁纳骡马牵引古典马车巡游，穿行于乡野之间。"
+      },
+      {
+        "label": "秋日",
+        "italic": "乡野小径",
+        "kicker": "橄榄采摘、晚秋葡萄收成、赭色落叶与石厅的第一缕暖意。",
+        "exp1Title": "百年橄榄林间",
+        "exp1Text": "新榨橄榄油品鉴配热面包，以及十月柔和日光下的骑行。",
+        "exp2Title": "秋日丰收餐桌",
+        "exp2Text": "穆尔贾野生杏鲍菇、古老豆类、手工意面与当地红酒。"
+      },
+      {
+        "label": "冬日",
+        "italic": "温暖归处",
+        "kicker": "石墙留住壁炉暖意，薄雾中的马步声与周日家庭聚餐。",
+        "exp1Title": "十八世纪大厅的温情",
+        "exp1Text": "在温暖的石拱与炉火边围坐，共享家庭午宴与节庆欢聚。",
+        "exp2Title": "冬日里的穆尔杰斯马",
+        "exp2Text": "高原清冽阳光下乌黑发亮的被毛：马厩探访与静谧时光。"
+      }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "09 — 宾客留言簿",
+    "title": "到访者的真实心声",
+    "seal": "穆尔贾地区最受喜爱的目的地之一。",
+    "stats": "TripAdvisor 4.4/5（213条评价）· TheFork 9.7/10（50条评价）",
+    "notes": [
+      "一片宁静与美味的绿洲。环境安静优雅，菜品非常出色，服务周到细致，员工热情友好。",
+      "诺奇乡野间一座非常美丽的庄园。食物品质极佳，摆盘精美，酒菜搭配用心。",
+      "我们度过了无比美好的一天。五十多位大人和孩子都受到了细致入微的款待，饭菜实在太香了。"
+    ]
+  },
+  "visitSection": {
+    "eyebrow": "10 — 联系我们",
+    "titleWords": [
+      "欢迎",
+      "光临",
+      "庄园。"
+    ],
+    "subtitle": "置身穆尔贾腹地，百年橄榄树与穆尔杰斯马奔腾声相伴。我们在庄园静候您前来用餐、庆典或体验。",
+    "where": "庄园位置",
+    "addressLabel": "地址",
+    "phoneLabel": "电话",
+    "whatsappLabel": "WhatsApp",
+    "whatsappCta": "通过 WhatsApp 联系",
+    "siteLabel": "网站",
+    "inMurgia": "位于穆尔贾",
+    "directionsGoogle": "导航 · Google Maps",
+    "modelNote": "厨房仅在重要场合按预约开放。联系我们，一同定制您的专属盛宴。",
+    "formTitle": "告诉我们您的需求",
+    "formSubtitle": "填写表格：立即生成 WhatsApp 消息或向我们发送咨询请求。",
+    "nameLabel": "姓名",
+    "phoneFieldLabel": "电话 / WhatsApp",
+    "kindLabel": "活动类型",
+    "dateLabel": "预计日期",
+    "guestsLabel": "宾客人数",
+    "messageLabel": "留言内容",
+    "consentText": "我同意根据隐私政策处理个人数据。",
+    "submitBtn": "通过 WhatsApp 发送咨询",
+    "errName": "请输入您的姓名。",
+    "errPhone": "电话号码格式无效。",
+    "errKind": "请选择活动类型。",
+    "errMessage": "请简单介绍您的需求。",
+    "errConsent": "必须同意隐私条款。",
+    "successMsg": "谢谢！您的咨询已准备就绪。",
+    "openWhatsAppNow": "立即打开 WhatsApp",
+    "occasions": {
+      "matrimonio": "婚礼",
+      "cerimonia": "典礼",
+      "battesimo": "洗礼",
+      "compleanno": "生日派对",
+      "festa-privata": "私人派对",
+      "esperienza-equestre": "马术体验",
+      "altro": "其他"
+    }
+  },
+  "footerSection": {
+    "eyebrow": "11 — 尾声",
+    "locationTag": "穆尔贾乡间 · 诺奇",
+    "claim1": "两种",
+    "claim1Accent": "灵魂",
+    "claim2": "同一片",
+    "claim2Accent": "土地",
+    "quote": "«我们庭院的大门，为寻找穆尔贾慢时光、大地真诚风味和穆尔杰斯马昂首步伐的人而敞开。我们在庄园恭候您的到来。»",
+    "family": "— 琼塔家族",
+    "since": "自十八世纪传承至今",
+    "whatsappBtn": "通过 WhatsApp 联系",
+    "callBtn": "致电",
+    "shareBtn": "把庄园分享给挚爱之人 →",
+    "shareCopied": "链接已复制 · 在 WhatsApp 分享",
+    "archCaption": "«十八世纪石墙与奔马的交汇之处。»",
+    "brandDesc": "坐落于诺奇穆尔贾的十八世纪庄园。预约制餐饮、穆尔杰斯马与珍贵时刻。",
+    "navTitle": "导航",
+    "contactsTitle": "联系方式",
+    "followTitle": "关注我们",
+    "requestBtn": "定制您的专属庆典",
+    "rights": "保留所有权利。",
+    "cookiePrefs": "Cookie 设置",
+    "onReservation": "需提前预约",
+    "backToTop": "返回顶部",
+    "navLinks": {
+      "storia": "历史",
+      "luogo": "位置",
+      "cucina": "美食",
+      "menu": "风味",
+      "cavalli": "马匹",
+      "eventi": "活动",
+      "esperienze": "体验",
+      "recensioni": "评价",
+      "contatti": "联系"
+    }
+  },
+  "cookieBanner": {
+    "title": "Cookie 偏好与统计",
+    "desc": "本网站使用运行所需的技术性 Cookie，并在征得您同意后使用分析 Cookie（Google Tag / GA4）以优化体验。您可随时拒绝或自定义设置。",
+    "rejectAll": "全部拒绝",
+    "customize": "自定义",
+    "acceptAll": "全部接受",
+    "prefsTitle": "管理 Cookie 偏好",
+    "prefsDesc": "根据 GDPR，除必要的技术性 Cookie 外，您可以选择开启的类别。",
+    "techTitle": "技术性 Cookie（始终启用）",
+    "techDesc": "保障网站安全、网络分发及保存您的同意设置。",
+    "analyticsTitle": "分析 Cookie（Google Tag / GA4）",
+    "analyticsDesc": "通过 Google Consent Mode v2 收集匿名统计访问数据。",
+    "marketingTitle": "营销与转化 Cookie",
+    "marketingDesc": "仅在您明确同意后衡量推广活动效果。",
+    "savePrefs": "保存设置"
   }
 }
