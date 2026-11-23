@@ -64,34 +64,13 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
     category: "domenica",
     categoryLabel: "Domenica & Feste",
     period: "Ogni Domenica · Giorni Festivi",
-    price: "da €50 a persona",
-    minGuests: "Su prenotazione · gruppi min. 20 ospiti",
+    price: "Su prenotazione",
+    minGuests: "Su prenotazione · tavoli e gruppi",
     image: saporiConvivioImg,
     imageAlt: "Tavola imbandita per il pranzo della domenica alla Masseria Torre Abbondanza",
-    highlight: "Antipasti di terra · Orecchiette fatte a mano · Arrosti della Murgia",
-    courses: [
-      {
-        numeral: "I",
-        label: "Antipasti",
-        dishes: "Antipasti della Masseria",
-      },
-      {
-        numeral: "II",
-        label: "Primi",
-        dishes: "Orecchiette e strascinate fatte a mano al ragù della domenica",
-      },
-      {
-        numeral: "III",
-        label: "Secondi",
-        dishes: "Arrosti misti della Murgia e involtino al sugo",
-      },
-      {
-        numeral: "IV",
-        label: "Dolci & Bevande",
-        dishes: "Dolce della casa, vino locale, acqua e caffè",
-      },
-    ],
-    includes: "Vino locale della Murgia, acqua e caffè inclusi · Varianti su richiesta",
+    highlight: "",
+    courses: [],
+    includes: "Prenotabile già da ora via WhatsApp o telefono",
     whatsappUrl: makePosterWhatsAppUrl(
       "Il Pranzo della Domenica in Masseria",
       "Domeniche & Giorni Festivi",
@@ -266,36 +245,14 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
     category: "festivita",
     categoryLabel: "Festività",
     period: "Pasqua & Pasquetta in Masseria",
-    price: "da €60 a persona",
-    minGuests: "Su prenotazione · gruppi e famiglie",
+    price: "Su prenotazione",
+    minGuests: "Su prenotazione · tavoli e gruppi",
     image: seasonSpringImg,
     imageAlt: "Pranzo di Pasqua e Pasquetta immerso nel verde della Masseria Torre Abbondanza",
     comingSoon: true,
-    highlight: "Benedizione pasquale · Cavatelli ragù d'agnello · Pastiera artigianale",
-    courses: [
-      {
-        numeral: "I",
-        label: "Antipasti",
-        dishes:
-          "Benedizione pasquale pugliese, salumi, ricotta fresca, carciofi e rustici della tradizione",
-      },
-      {
-        numeral: "II",
-        label: "Primi",
-        dishes: "Cavatelli fatti a mano al ragù di agnello e cardoncelli",
-      },
-      {
-        numeral: "III",
-        label: "Secondi",
-        dishes: "Agnello della Murgia al forno con patate e lampascioni",
-      },
-      {
-        numeral: "IV",
-        label: "Dolci Pasquali",
-        dishes: "Pastiera artigianale, colomba e moscato",
-      },
-    ],
-    includes: "Possibilità di visita ai cavalli Murgesi in scuderia su richiesta",
+    highlight: "",
+    courses: [],
+    includes: "Locandina e menù in arrivo · Già prenotabile via WhatsApp o telefono",
     whatsappUrl: makePosterWhatsAppUrl(
       "Pranzo di Pasqua & Lunedì dell'Angelo",
       "Pasqua & Pasquetta in Masseria",
@@ -304,40 +261,18 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
   {
     id: "feste-primavera-maggio",
     title: "Convivio di Primavera & 1° Maggio",
-    subtitle: "Profumi di campo, latticini freschi e brace nella corte storica",
+    subtitle: "Primavera nella corte storica e tra gli ulivi della Masseria",
     category: "festivita",
     categoryLabel: "Festività",
     period: "25 Aprile · 1° Maggio · Primavera",
-    price: "da €55 a persona",
-    minGuests: "Su prenotazione · gruppi min. 20 ospiti",
+    price: "Su prenotazione",
+    minGuests: "Su prenotazione · tavoli e gruppi",
     image: seasonMayImg,
     imageAlt: "Corte fiorita di primavera alla Masseria Torre Abbondanza",
     comingSoon: true,
-    highlight: "Latticini di Noci · Cavatelli alle erbette · Agnello al forno a legna",
-    courses: [
-      {
-        numeral: "I",
-        label: "Antipasti",
-        dishes:
-          "Selezione di latticini di Noci, salumi murgiani, frittini di campo e focaccia calda",
-      },
-      {
-        numeral: "II",
-        label: "Primi",
-        dishes: "Cavatelli alle erbette spontanee e primo sale",
-      },
-      {
-        numeral: "III",
-        label: "Secondi",
-        dishes: "Agnello e carni della Murgia al forno a legna con patate novelle",
-      },
-      {
-        numeral: "IV",
-        label: "Dolci & Rosoli",
-        dishes: "Millefoglie artigianale e rosoli della masseria",
-      },
-    ],
-    includes: "Vini del territorio e acqua inclusi · Passeggiata tra gli ulivi in fiore",
+    highlight: "",
+    courses: [],
+    includes: "Locandina e menù in arrivo · Già prenotabile via WhatsApp o telefono",
     whatsappUrl: makePosterWhatsAppUrl(
       "Convivio di Primavera & 1° Maggio",
       "25 Aprile · 1° Maggio · Primavera",
@@ -346,39 +281,18 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
   {
     id: "sere-estate-corte",
     title: "Sere d'Estate sotto le Lucine della Corte",
-    subtitle: "Cene all'aperto tra candele, pietra antica e brezza della Murgia",
+    subtitle: "Cene all'aperto tra pietra antica e brezza della Murgia",
     category: "estate",
     categoryLabel: "Estate in Corte",
     period: "Giugno – Settembre · Cena in Corte",
-    price: "da €50 a persona",
-    minGuests: "Su prenotazione · gruppi min. 20 ospiti",
+    price: "Su prenotazione",
+    minGuests: "Su prenotazione · tavoli e gruppi",
     image: eventsSpaceNightImg,
     imageAlt: "Corte della Masseria Torre Abbondanza illuminata dalle lucine estive la sera",
     comingSoon: true,
-    highlight: "Burratina artigianale · Fagottini freschi · Tagliata murgiana alle erbe",
-    courses: [
-      {
-        numeral: "I",
-        label: "Antipasti",
-        dishes: "Crudo di terra, burratina artigianale, verdure grigliate dell'orto e sfizi caldi",
-      },
-      {
-        numeral: "II",
-        label: "Primi",
-        dishes: "Fagottini di pasta fresca ai profumi mediterranei",
-      },
-      {
-        numeral: "III",
-        label: "Secondi",
-        dishes: "Tagliata murgiana alle erbe con contorni di stagione",
-      },
-      {
-        numeral: "IV",
-        label: "Dolci & Calici",
-        dishes: "Semifreddo artigianale e calice sotto gli ulivi",
-      },
-    ],
-    includes: "Allestimento serale in corte con lucine · Menù su misura per compagnie",
+    highlight: "",
+    courses: [],
+    includes: "Locandina e menù in arrivo · Già prenotabile via WhatsApp o telefono",
     whatsappUrl: makePosterWhatsAppUrl(
       "Sere d'Estate sotto le Lucine della Corte",
       "Giugno – Settembre · Cena in Corte",
@@ -386,43 +300,21 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
   },
   {
     id: "sapori-autunno-olio-vino",
-    title: "Tavola d'Autunno — Olio Nuovo & Funghi Cardoncelli",
-    subtitle: "I sapori intensi della Murgia tra vendemmia, uliveto e camino",
+    title: "Tavola d'Autunno in Masseria",
+    subtitle: "La stagione d'autunno tra uliveto, camino e volte in pietra",
     category: "autunno",
     categoryLabel: "Autunno & Inverno",
     period: "Ottobre – Novembre · Autunno in Murgia",
-    price: "da €55 a persona",
-    minGuests: "Su prenotazione · gruppi min. 20 ospiti",
+    price: "Su prenotazione",
+    minGuests: "Su prenotazione · tavoli e gruppi",
     image: seasonAutumnImg,
-    imageAlt: "Uliveto e sapori d'autunno alla Masseria Torre Abbondanza",
+    imageAlt: "Uliveto e atmosfera d'autunno alla Masseria Torre Abbondanza",
     comingSoon: true,
-    highlight: "Olio extravergine nuovo · Tagliolini ai cardoncelli · Brasato al Primitivo",
-    courses: [
-      {
-        numeral: "I",
-        label: "Antipasti",
-        dishes:
-          "Bruschette con olio extravergine nuovo della masseria, cardoncelli gratinati e capocollo",
-      },
-      {
-        numeral: "II",
-        label: "Primi",
-        dishes: "Tagliolini freschi ai funghi cardoncelli della Murgia",
-      },
-      {
-        numeral: "III",
-        label: "Secondi",
-        dishes: "Brasato al Primitivo e bombette della tradizione",
-      },
-      {
-        numeral: "IV",
-        label: "Dolci d'Autunno",
-        dishes: "Tortino caldo al cioccolato e caldarroste",
-      },
-    ],
-    includes: "Degustazione olio nuovo e vini rossi pugliesi inclusi su richiesta",
+    highlight: "",
+    courses: [],
+    includes: "Locandina e menù in arrivo · Già prenotabile via WhatsApp o telefono",
     whatsappUrl: makePosterWhatsAppUrl(
-      "Tavola d'Autunno — Olio Nuovo & Funghi Cardoncelli",
+      "Tavola d'Autunno in Masseria",
       "Ottobre – Novembre · Autunno in Murgia",
     ),
   },
@@ -525,20 +417,30 @@ export function PosterFlyerVisual({
 
             <div aria-hidden className="my-3 h-px w-16 bg-gold/65" />
 
-            <ul className="w-full max-w-[30ch] space-y-1.5 text-left">
-              {poster.courses.map((course) => (
-                <li
-                  key={course.numeral}
-                  className={cn(
-                    "flex items-baseline gap-2 leading-snug text-ivory/90",
-                    expanded ? "text-xs sm:text-sm" : "text-[11px] sm:text-xs",
-                  )}
-                >
-                  <span className="shrink-0 font-display italic text-gold">{course.numeral}.</span>
-                  <span className="line-clamp-2">{course.dishes}</span>
-                </li>
-              ))}
-            </ul>
+            {poster.courses.length > 0 ? (
+              <ul className="w-full max-w-[30ch] space-y-1.5 text-left">
+                {poster.courses.map((course) => (
+                  <li
+                    key={course.numeral}
+                    className={cn(
+                      "flex items-baseline gap-2 leading-snug text-ivory/90",
+                      expanded ? "text-xs sm:text-sm" : "text-[11px] sm:text-xs",
+                    )}
+                  >
+                    <span className="shrink-0 font-display italic text-gold">
+                      {course.numeral}.
+                    </span>
+                    <span className="line-clamp-2">{course.dishes}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="max-w-[26ch] font-display text-xs italic leading-relaxed text-ivory/80 sm:text-sm">
+                {poster.comingSoon
+                  ? "Locandina e menù in arrivo · Già prenotabile in anticipo"
+                  : "Menù su prenotazione · Contattaci per riservare il tuo tavolo"}
+              </p>
+            )}
           </div>
 
           {/* Footer locandina con prezzo e pulsante zoom */}
@@ -734,16 +636,24 @@ export function EventPostersShowcase() {
                 </h2>
                 <p className="mt-1.5 font-display text-sm italic text-ink/75">{poster.subtitle}</p>
 
-                <dl className="mt-4 space-y-2 border-y border-ink/10 py-4 text-sm">
-                  {poster.courses.map((course) => (
-                    <div key={course.numeral} className="grid grid-cols-[auto_1fr] gap-x-2.5">
-                      <dt className="font-display font-semibold italic text-terracotta">
-                        {course.label}:
-                      </dt>
-                      <dd className="font-sans text-ink/85">{course.dishes}</dd>
-                    </div>
-                  ))}
-                </dl>
+                {poster.courses.length > 0 ? (
+                  <dl className="mt-4 space-y-2 border-y border-ink/10 py-4 text-sm">
+                    {poster.courses.map((course) => (
+                      <div key={course.numeral} className="grid grid-cols-[auto_1fr] gap-x-2.5">
+                        <dt className="font-display font-semibold italic text-terracotta">
+                          {course.label}:
+                        </dt>
+                        <dd className="font-sans text-ink/85">{course.dishes}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                ) : (
+                  <div className="mt-4 rounded-lg border border-dashed border-ink/15 bg-ivory/60 px-4 py-3 text-xs leading-relaxed text-ink/70">
+                    {poster.comingSoon
+                      ? "Locandina ufficiale e menù in preparazione. Puoi già prenotare in anticipo su WhatsApp o telefonicamente."
+                      : "Menù della domenica su prenotazione. Contattaci su WhatsApp o telefonicamente per riservare il tuo tavolo."}
+                  </div>
+                )}
 
                 <p className="mt-3 text-xs leading-relaxed text-ink/65">
                   {poster.includes} · Menù Bambini, Vegetariani, Vegani e Senza Glutine su
@@ -806,16 +716,24 @@ export function EventPostersShowcase() {
                   {expandedPoster.price} · {expandedPoster.minGuests}
                 </div>
 
-                <dl className="mt-5 space-y-2.5 border-y border-ink/12 py-4 text-sm">
-                  {expandedPoster.courses.map((course) => (
-                    <div key={course.numeral}>
-                      <dt className="font-display font-semibold text-ink">
-                        {course.numeral}. {course.label}
-                      </dt>
-                      <dd className="text-ink/80">{course.dishes}</dd>
-                    </div>
-                  ))}
-                </dl>
+                {expandedPoster.courses.length > 0 ? (
+                  <dl className="mt-5 space-y-2.5 border-y border-ink/12 py-4 text-sm">
+                    {expandedPoster.courses.map((course) => (
+                      <div key={course.numeral}>
+                        <dt className="font-display font-semibold text-ink">
+                          {course.numeral}. {course.label}
+                        </dt>
+                        <dd className="text-ink/80">{course.dishes}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                ) : (
+                  <div className="mt-5 rounded-lg border border-dashed border-ink/20 bg-background px-4 py-3.5 text-sm text-ink/75">
+                    {expandedPoster.comingSoon
+                      ? "La locandina e il menù dettagliato sono in arrivo. Puoi già bloccare il tuo tavolo o gruppo contattandoci direttamente."
+                      : "Prenota il tuo tavolo o gruppo su WhatsApp o telefonicamente per ricevere tutti i dettagli."}
+                  </div>
+                )}
 
                 <p className="mt-3 text-xs text-ink/65">
                   {expandedPoster.includes} · Menù Bambini e varianti alimentari su misura.

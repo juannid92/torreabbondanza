@@ -98,7 +98,7 @@ export function EventPostersTeaserSection() {
               {SUNDAY_POSTER.title}
             </h3>
             <p className="mt-2 max-w-2xl font-display text-base italic text-ivory/80">
-              {SUNDAY_POSTER.subtitle} — {SUNDAY_POSTER.highlight}
+              {SUNDAY_POSTER.subtitle}
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <a

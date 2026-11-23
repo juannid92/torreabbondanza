@@ -51,15 +51,22 @@ const appointmentsSchema = {
           "@type": "Menu",
           "@id": `${SITE_URL}/appuntamenti#${poster.id}`,
           name: poster.title,
-          description: `${poster.subtitle}. ${poster.period} (${poster.price}): ${poster.highlight}.`,
+          description:
+            poster.courses.length > 0
+              ? `${poster.subtitle}. ${poster.period} (${poster.price}): ${poster.highlight}.`
+              : `${poster.subtitle}. ${poster.period} (${poster.price}).`,
           url: `${SITE_URL}/appuntamenti#${poster.id}`,
           image: absoluteUrl(poster.image),
           inLanguage: "it-IT",
-          hasMenuSection: poster.courses.map((course) => ({
-            "@type": "MenuSection",
-            name: course.label,
-            description: course.dishes,
-          })),
+          ...(poster.courses.length > 0
+            ? {
+                hasMenuSection: poster.courses.map((course) => ({
+                  "@type": "MenuSection",
+                  name: course.label,
+                  description: course.dishes,
+                })),
+              }
+            : {}),
           offers: {
             "@type": "Offer",
             priceCurrency: "EUR",
