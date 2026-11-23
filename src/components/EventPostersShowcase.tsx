@@ -37,7 +37,7 @@ export interface EventPoster {
 }
 
 function makePosterWhatsAppUrl(title: string, period: string): string {
-  const message = `Ciao Masseria Torre Abbondanza, ho visto sul sito la locandina "${title}" (${period}) e vorrei informazioni per prenotare.`;
+  const message = `Ciao Masseria Torre Abbondanza, vorrei informazioni per prenotare per l'appuntamento "${title}" (${period}).`;
   return `${BUSINESS.whatsappUrl}?text=${encodeURIComponent(message)}`;
 }
 
@@ -94,7 +94,7 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
   },
   {
     id: "feste-primavera-maggio",
-    title: "Locandina Menù Ponti di Primavera & 1° Maggio",
+    title: "Convivio di Primavera & 1° Maggio",
     subtitle: "Profumi di campo, latticini freschi e brace nella corte storica",
     category: "festivita",
     categoryLabel: "Festività",
@@ -129,7 +129,7 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
     ],
     includes: "Vini del territorio e acqua inclusi · Passeggiata tra gli ulivi in fiore",
     whatsappUrl: makePosterWhatsAppUrl(
-      "Locandina Menù Ponti di Primavera & 1° Maggio",
+      "Convivio di Primavera & 1° Maggio",
       "25 Aprile · 1° Maggio · Primavera",
     ),
   },
@@ -175,7 +175,7 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
   },
   {
     id: "sapori-autunno-olio-vino",
-    title: "Locandina Menù d'Autunno — Olio Nuovo & Funghi Cardoncelli",
+    title: "Tavola d'Autunno — Olio Nuovo & Funghi Cardoncelli",
     subtitle: "I sapori intensi della Murgia tra vendemmia, uliveto e camino",
     category: "autunno",
     categoryLabel: "Autunno & Inverno",
@@ -210,13 +210,13 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
     ],
     includes: "Degustazione olio nuovo e vini rossi pugliesi inclusi su richiesta",
     whatsappUrl: makePosterWhatsAppUrl(
-      "Locandina Menù d'Autunno — Olio Nuovo & Funghi Cardoncelli",
+      "Tavola d'Autunno — Olio Nuovo & Funghi Cardoncelli",
       "Ottobre – Novembre · Autunno in Murgia",
     ),
   },
   {
     id: "menu-immacolata-natale",
-    title: "Locandina Menù delle Feste — Immacolata, Natale & Santo Stefano",
+    title: "I Convivi delle Feste — Immacolata, Natale & Santo Stefano",
     subtitle: "Convivio invernale sotto le volte storiche riscaldate in pietra",
     category: "festivita",
     categoryLabel: "Festività",
@@ -251,13 +251,13 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
     ],
     includes: "Cartellate, purceddhruzzi, vini selezionati e brindisi delle Feste inclusi",
     whatsappUrl: makePosterWhatsAppUrl(
-      "Locandina Menù delle Feste — Immacolata, Natale & Santo Stefano",
+      "I Convivi delle Feste — Immacolata, Natale & Santo Stefano",
       "8 Dicembre · 25–26 Dicembre · Capodanno",
     ),
   },
   {
     id: "pasqua-pasquetta-masseria",
-    title: "Locandina Pranzo di Pasqua & Lunedì dell'Angelo",
+    title: "Pranzo di Pasqua & Lunedì dell'Angelo",
     subtitle: "La festa della rinascita tra prato, cavalli Murgesi e grandi tavolate",
     category: "festivita",
     categoryLabel: "Festività",
@@ -292,7 +292,7 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
     ],
     includes: "Possibilità di visita ai cavalli Murgesi in scuderia su richiesta",
     whatsappUrl: makePosterWhatsAppUrl(
-      "Locandina Pranzo di Pasqua & Lunedì dell'Angelo",
+      "Pranzo di Pasqua & Lunedì dell'Angelo",
       "Pasqua & Pasquetta in Masseria",
     ),
   },
@@ -406,11 +406,11 @@ export function PosterFlyerVisual({
               <button
                 type="button"
                 onClick={onExpand}
-                aria-label={`Ingrandisci locandina ${poster.title}`}
+                aria-label={`Apri dettaglio menù ${poster.title}`}
                 className="inline-flex items-center gap-1.5 rounded-full border border-ivory/35 bg-[color:var(--murgese)]/85 px-3 py-1.5 text-[11px] font-medium tracking-wider uppercase text-ivory backdrop-blur-sm transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
               >
                 <Maximize2 className="h-3 w-3" />
-                Ingrandisci
+                Dettaglio menù
               </button>
             )}
           </div>
@@ -421,11 +421,11 @@ export function PosterFlyerVisual({
         <button
           type="button"
           onClick={onExpand}
-          aria-label={`Ingrandisci locandina ${poster.title}`}
+          aria-label={`Apri dettaglio menù ${poster.title}`}
           className="absolute right-5 bottom-5 z-10 inline-flex items-center gap-1.5 rounded-full border border-ivory/35 bg-[color:var(--murgese)]/85 px-3.5 py-2 text-xs font-medium tracking-wider uppercase text-ivory backdrop-blur-sm transition-colors hover:border-gold hover:text-gold"
         >
           <Maximize2 className="h-3.5 w-3.5" />
-          Ingrandisci locandina
+          Dettaglio menù
         </button>
       )}
     </div>
@@ -498,7 +498,7 @@ export function EventPostersShowcase() {
           }}
         />
         <div className="relative mx-auto max-w-7xl px-6 md:px-12">
-          <p className="text-eyebrow text-gold">Locandine Eventi & Menù della Masseria</p>
+          <p className="text-eyebrow text-gold">Appuntamenti a Tavola · Menù & Ricorrenze</p>
           <h1
             className="mt-4 max-w-4xl font-display font-semibold leading-[1.02] text-ivory"
             style={{
@@ -506,12 +506,12 @@ export function EventPostersShowcase() {
               letterSpacing: "-0.025em",
             }}
           >
-            Le locandine dei <em className="italic text-gold">menù ed eventi</em> in Masseria
+            Appuntamenti <em className="italic text-gold">a tavola</em> e menù delle ricorrenze
           </h1>
           <p className="mt-6 max-w-2xl font-display text-lg leading-relaxed text-ivory/80 md:text-xl">
-            Sfoglia le proposte stagionali, le domeniche in famiglia e i menù delle ricorrenze
-            preparati su misura dalla cucina di Masseria Torre Abbondanza. Su ogni locandina trovi i
-            tasti diretti per scrivere su WhatsApp o chiamare subito e prenotare la tua tavola.
+            I pranzi della domenica, le grandi festività in famiglia, le sere d'estate nella corte
+            illuminata e i menù stagionali della Masseria Torre Abbondanza. Per ogni appuntamento
+            puoi riservarci il tuo tavolo direttamente su WhatsApp o telefonicamente.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4 text-xs tracking-wider uppercase text-ivory/75">
@@ -527,12 +527,12 @@ export function EventPostersShowcase() {
         </div>
       </div>
 
-      {/* Filtri + Griglia Locandine */}
+      {/* Filtri + Griglia Appuntamenti */}
       <div className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24">
         <div
           className="mb-12 flex flex-wrap items-center justify-between gap-4 border-b border-ink/10 pb-6"
           role="group"
-          aria-label="Filtra locandine per periodo o occasione"
+          aria-label="Filtra appuntamenti per periodo o occasione"
         >
           <div className="flex flex-wrap gap-2">
             {POSTER_CATEGORIES.map((cat) => {
@@ -557,7 +557,7 @@ export function EventPostersShowcase() {
           </div>
           <p className="text-xs tracking-[0.16em] uppercase text-ink/55">
             {filteredPosters.length}{" "}
-            {filteredPosters.length === 1 ? "locandina disponibile" : "locandine disponibili"}
+            {filteredPosters.length === 1 ? "proposta in programma" : "proposte in programma"}
           </p>
         </div>
 
@@ -625,7 +625,7 @@ export function EventPostersShowcase() {
             <button
               type="button"
               onClick={() => setExpandedPoster(null)}
-              aria-label="Chiudi locandina"
+              aria-label="Chiudi dettaglio menù"
               className="absolute top-4 right-4 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-ink/15 bg-ivory text-ink transition-colors hover:border-terracotta hover:text-terracotta"
             >
               <X className="h-5 w-5" />

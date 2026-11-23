@@ -373,8 +373,8 @@ export function MenuSection() {
           <MagneticButton href="#contatti" variant="pill-solid">
             Richiedi il tuo menù →
           </MagneticButton>
-          <MagneticButton href="/locandine" variant="pill">
-            Sfoglia le locandine dei menù
+          <MagneticButton href="/appuntamenti" variant="pill">
+            Appuntamenti a tavola & menù
           </MagneticButton>
         </div>
       </div>

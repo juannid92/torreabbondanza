@@ -297,8 +297,8 @@ export function KitchenSection() {
               >
                 Scrivici su WhatsApp →
               </MagneticButton>
-              <MagneticButton href="/locandine" variant="pill-solid">
-                Sfoglia le locandine dei menù
+              <MagneticButton href="/appuntamenti" variant="pill-solid">
+                Appuntamenti a tavola & menù
               </MagneticButton>
               <MagneticButton href={TEL_HREF} variant="link">
                 Oppure chiama +39 338 483 4318

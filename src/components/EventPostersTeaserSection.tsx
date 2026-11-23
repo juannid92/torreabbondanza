@@ -13,7 +13,7 @@ const FEATURED_POSTERS = [EVENT_POSTERS[0], EVENT_POSTERS[4], EVENT_POSTERS[1]];
 export function EventPostersTeaserSection() {
   return (
     <section
-      id="locandine-eventi"
+      id="appuntamenti-tavola"
       aria-labelledby="posters-teaser-title"
       className="relative overflow-hidden bg-[color:var(--murgese)] py-24 text-ivory md:py-32"
     >
@@ -27,10 +27,12 @@ export function EventPostersTeaserSection() {
       />
 
       <div className="relative mx-auto max-w-7xl px-6 md:px-12">
-        {/* Intestazione sezione con rimando principale a /locandine */}
+        {/* Intestazione sezione con rimando principale a /appuntamenti */}
         <div className="flex flex-col gap-8 border-b border-ivory/15 pb-12 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <span className="text-eyebrow text-gold">Locandine Eventi & Menù della Masseria</span>
+            <span className="text-eyebrow text-gold">
+              Appuntamenti a Tavola · Menù & Ricorrenze
+            </span>
             <h2
               id="posters-teaser-title"
               className="mt-4 font-display font-semibold leading-[1.02] text-ivory"
@@ -39,21 +41,21 @@ export function EventPostersTeaserSection() {
                 letterSpacing: "-0.025em",
               }}
             >
-              Scopri le <em className="italic text-gold">locandine dei menù</em> e prenota subito
+              Gli appuntamenti <em className="italic text-gold">a tavola</em> della Masseria
             </h2>
             <p className="mt-5 font-display text-lg leading-relaxed text-ivory/75">
-              Domeniche in famiglia, festività, ponti di primavera e cene in corte: consulta tutte
-              le locandine aggiornate dei nostri menù fissi o su misura, e prenota direttamente con
-              un clic su WhatsApp o telefonicamente.
+              Domeniche in famiglia, festività comandate, ponti di primavera e cene estive sotto le
+              lucine della corte: scopri i menù dedicati alle date speciali e prenota il tuo tavolo
+              su WhatsApp o al telefono.
             </p>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <Link
-              to="/locandine"
+              to="/appuntamenti"
               className="inline-flex items-center justify-center gap-2.5 rounded-full bg-terracotta px-7 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase text-ivory shadow-[0_18px_40px_-18px_rgba(0,0,0,0.65)] transition-colors hover:bg-gold hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             >
-              <span>Vedi tutte le locandine e i menù</span>
+              <span>Scopri tutti gli appuntamenti a tavola</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a

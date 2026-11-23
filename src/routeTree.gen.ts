@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as LocandineRouteImport } from './routes/locandine'
 import { Route as LaMasseriaRouteImport } from './routes/la-masseria'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -19,17 +18,13 @@ import { Route as DoveSiamoRouteImport } from './routes/dove-siamo'
 import { Route as CucinaRouteImport } from './routes/cucina'
 import { Route as CookieRouteImport } from './routes/cookie'
 import { Route as CavalliRouteImport } from './routes/cavalli'
+import { Route as AppuntamentiRouteImport } from './routes/appuntamenti'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CavalliVetrinaRouteImport } from './routes/cavalli.vetrina'
 
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LocandineRoute = LocandineRouteImport.update({
-  id: '/locandine',
-  path: '/locandine',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LaMasseriaRoute = LaMasseriaRouteImport.update({
@@ -72,6 +67,11 @@ const CavalliRoute = CavalliRouteImport.update({
   path: '/cavalli',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppuntamentiRoute = AppuntamentiRouteImport.update({
+  id: '/appuntamenti',
+  path: '/appuntamenti',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -85,6 +85,7 @@ const CavalliVetrinaRoute = CavalliVetrinaRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/appuntamenti': typeof AppuntamentiRoute
   '/cavalli': typeof CavalliRouteWithChildren
   '/cookie': typeof CookieRoute
   '/cucina': typeof CucinaRoute
@@ -93,12 +94,12 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/la-masseria': typeof LaMasseriaRoute
-  '/locandine': typeof LocandineRoute
   '/privacy': typeof PrivacyRoute
   '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/appuntamenti': typeof AppuntamentiRoute
   '/cavalli': typeof CavalliRouteWithChildren
   '/cookie': typeof CookieRoute
   '/cucina': typeof CucinaRoute
@@ -107,13 +108,13 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/la-masseria': typeof LaMasseriaRoute
-  '/locandine': typeof LocandineRoute
   '/privacy': typeof PrivacyRoute
   '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/appuntamenti': typeof AppuntamentiRoute
   '/cavalli': typeof CavalliRouteWithChildren
   '/cookie': typeof CookieRoute
   '/cucina': typeof CucinaRoute
@@ -122,7 +123,6 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/la-masseria': typeof LaMasseriaRoute
-  '/locandine': typeof LocandineRoute
   '/privacy': typeof PrivacyRoute
   '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
@@ -130,6 +130,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/appuntamenti'
     | '/cavalli'
     | '/cookie'
     | '/cucina'
@@ -138,12 +139,12 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/la-masseria'
-    | '/locandine'
     | '/privacy'
     | '/cavalli/vetrina'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/appuntamenti'
     | '/cavalli'
     | '/cookie'
     | '/cucina'
@@ -152,12 +153,12 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/la-masseria'
-    | '/locandine'
     | '/privacy'
     | '/cavalli/vetrina'
   id:
     | '__root__'
     | '/'
+    | '/appuntamenti'
     | '/cavalli'
     | '/cookie'
     | '/cucina'
@@ -166,13 +167,13 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/la-masseria'
-    | '/locandine'
     | '/privacy'
     | '/cavalli/vetrina'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppuntamentiRoute: typeof AppuntamentiRoute
   CavalliRoute: typeof CavalliRouteWithChildren
   CookieRoute: typeof CookieRoute
   CucinaRoute: typeof CucinaRoute
@@ -181,7 +182,6 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   GalleryRoute: typeof GalleryRoute
   LaMasseriaRoute: typeof LaMasseriaRoute
-  LocandineRoute: typeof LocandineRoute
   PrivacyRoute: typeof PrivacyRoute
 }
 
@@ -192,13 +192,6 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/locandine': {
-      id: '/locandine'
-      path: '/locandine'
-      fullPath: '/locandine'
-      preLoaderRoute: typeof LocandineRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/la-masseria': {
@@ -257,6 +250,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CavalliRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/appuntamenti': {
+      id: '/appuntamenti'
+      path: '/appuntamenti'
+      fullPath: '/appuntamenti'
+      preLoaderRoute: typeof AppuntamentiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -287,6 +287,7 @@ const CavalliRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppuntamentiRoute: AppuntamentiRoute,
   CavalliRoute: CavalliRouteWithChildren,
   CookieRoute: CookieRoute,
   CucinaRoute: CucinaRoute,
@@ -295,7 +296,6 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   GalleryRoute: GalleryRoute,
   LaMasseriaRoute: LaMasseriaRoute,
-  LocandineRoute: LocandineRoute,
   PrivacyRoute: PrivacyRoute,
 }
 export const routeTree = rootRouteImport

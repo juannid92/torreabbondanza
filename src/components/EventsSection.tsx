@@ -907,8 +907,8 @@ export function EventsSection() {
             <MagneticButton href="#contatti" variant="pill-solid" className="w-full md:w-auto">
               Richiedi informazioni per il tuo evento →
             </MagneticButton>
-            <MagneticButton href="/locandine" variant="pill" className="w-full md:w-auto">
-              Sfoglia le locandine dei menù
+            <MagneticButton href="/appuntamenti" variant="pill" className="w-full md:w-auto">
+              Appuntamenti a tavola & menù
             </MagneticButton>
           </div>
         </div>
