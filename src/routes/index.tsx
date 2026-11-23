@@ -19,9 +19,9 @@ import heroImage from "@/assets/hero-masseria.jpg";
 import { BUSINESS, SITE_URL, absoluteUrl, buildRestaurantJsonLd } from "@/lib/site";
 import { buildHreflangLinks } from "@/lib/hreflang";
 
-const HOME_TITLE = `${BUSINESS.name} — Masseria del '700, Matrimoni, Cucina & Cavalli Murgesi | Noci, Puglia`;
+const HOME_TITLE = `${BUSINESS.name} — Ristorante, Agriturismo e Sala Ricevimenti | Noci, Puglia`;
 const HOME_DESCRIPTION =
-  "Masseria storica del Settecento a Noci (BA), nel cuore della Murgia dei Trulli: location matrimoni ed eventi, cucina pugliese su prenotazione per gruppi e allevamento di cavalli Murgesi.";
+  "Masseria e agriturismo del Settecento a Noci (BA), nelle Murge: ristorante pugliese per pranzo della domenica e gruppi, sala ricevimenti per matrimoni ed eventi, allevamento cavalli Murgesi.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/")({
       {
         name: "keywords",
         content:
-          "masseria torre abbondanza, masseria noci, matrimonio in masseria puglia, location eventi valle d'itria, cucina pugliese su prenotazione, cavalli murgesi noci, attacchi d'epoca murgia",
+          "masseria torre abbondanza, masseria noci, agriturismo noci, agriturismo noci pranzo, ristoranti noci, sale ricevimento noci, sala ricevimenti noci, matrimoni masseria murge, matrimonio in masseria puglia, location eventi valle d'itria, cavalli murgesi noci",
       },
       { property: "og:title", content: HOME_TITLE },
       { property: "og:description", content: HOME_DESCRIPTION },

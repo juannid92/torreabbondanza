@@ -10,9 +10,9 @@ import { SITE_URL, absoluteUrl, buildEventsJsonLd } from "@/lib/site";
 import { buildHreflangLinks } from "@/lib/hreflang";
 import eventsImg from "@/assets/events-wedding.jpg";
 
-const PAGE_TITLE = "Eventi, Matrimoni e Cerimonie — Masseria Torre Abbondanza | Noci, Puglia";
+const PAGE_TITLE = "Sala Ricevimenti e Matrimoni in Masseria nelle Murge — Torre Abbondanza | Noci";
 const PAGE_DESCRIPTION =
-  "Matrimoni, cerimonie civili e simboliche, battesimi e feste private in una masseria del Settecento tra sala storica in pietra e uliveto secolare nella Murgia.";
+  "Sala ricevimenti a Noci e location matrimoni in masseria nelle Murge e Valle d'Itria: sala storica del Settecento in pietra, corte tra gli ulivi, cerimonie, battesimi, feste private ed eventi aziendali.";
 
 export const Route = createFileRoute("/eventi")({
   head: () => ({
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/eventi")({
       {
         name: "keywords",
         content:
-          "matrimonio in masseria puglia, location matrimoni noci, location eventi valle d'itria, cerimonie battesimi masseria puglia, feste private murgia",
+          "sale ricevimento noci, sala ricevimenti noci, matrimoni masseria murge, matrimonio in masseria puglia, location matrimoni noci, location eventi valle d'itria, cerimonie battesimi masseria puglia, feste private murgia",
       },
       { property: "og:title", content: PAGE_TITLE },
       { property: "og:description", content: PAGE_DESCRIPTION },

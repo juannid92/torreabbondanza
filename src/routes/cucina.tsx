@@ -10,9 +10,9 @@ import { SITE_URL, absoluteUrl, buildKitchenJsonLd } from "@/lib/site";
 import { buildHreflangLinks } from "@/lib/hreflang";
 import kitchenImg from "@/assets/kitchen-antipasti.jpg";
 
-const PAGE_TITLE = "La Cucina Pugliese su Prenotazione — Masseria Torre Abbondanza | Noci";
+const PAGE_TITLE = "Ristorante e Agriturismo a Noci — Cucina Pugliese | Masseria Torre Abbondanza";
 const PAGE_DESCRIPTION =
-  "Tradizione pugliese e materie prime della Murgia: menù su misura da €50 a persona per gruppi di almeno 20 ospiti, cerimonie ed eventi a Noci (BA).";
+  "Ristorante in masseria e agriturismo a Noci (BA) nelle Murge: cucina tradizionale pugliese su prenotazione per pranzi, cerimonie e gruppi (min. 20 ospiti, menù da €50 a persona).";
 
 export const Route = createFileRoute("/cucina")({
   head: () => ({
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/cucina")({
       {
         name: "keywords",
         content:
-          "cucina pugliese noci, ristorante su prenotazione puglia, menu cerimonie masseria, pasta fatta a mano murgia, pranzo gruppi valle d'itria",
+          "ristoranti noci, ristorante noci, agriturismo noci, agriturismo noci pranzo, cucina pugliese noci, ristorante su prenotazione puglia, menu cerimonie masseria, pasta fatta a mano murge, pranzo gruppi valle d'itria",
       },
       { property: "og:title", content: PAGE_TITLE },
       { property: "og:description", content: PAGE_DESCRIPTION },

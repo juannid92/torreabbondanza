@@ -9,9 +9,9 @@ import { buildHreflangLinks } from "@/lib/hreflang";
 import saporiConvivioImg from "@/assets/sapori-convivio.jpg";
 
 const PAGE_TITLE =
-  "Appuntamenti a Tavola — Menù delle Ricorrenze & Convivi | Masseria Torre Abbondanza";
+  "Pranzo della Domenica & Appuntamenti a Tavola — Agriturismo e Ristorante Noci | Torre Abbondanza";
 const PAGE_DESCRIPTION =
-  "Scopri gli Appuntamenti a Tavola della Masseria Torre Abbondanza a Noci (Puglia): pranzi della domenica, menù delle festività (Pasqua, 1° Maggio, Natale), cene d'estate in corte e convivi stagionali. Prenota via WhatsApp o telefono.";
+  "Pranzo della domenica in agriturismo a Noci e menù delle festività (Immacolata, Natale, Santo Stefano, Capodanno) alla Masseria Torre Abbondanza nelle Murge. Prenota via WhatsApp o telefono.";
 const OG_IMAGE = absoluteUrl(saporiConvivioImg);
 
 function extractMinPrice(priceLabel: string): number {
@@ -132,7 +132,7 @@ export const Route = createFileRoute("/appuntamenti")({
       {
         name: "keywords",
         content:
-          "appuntamenti a tavola masseria torre abbondanza, menu eventi masseria noci, pranzo domenica masseria puglia, menu natale pasqua masseria, pranzo 1 maggio murgia, cene estive masseria valle d'itria, prenotazione menu masseria",
+          "agriturismo noci pranzo, pranzo domenica noci, ristoranti noci, appuntamenti a tavola masseria torre abbondanza, menu natale noci, menu santo stefano noci, menu capodanno masseria puglia, menu immacolata noci, pranzo domenica masseria puglia",
       },
       { property: "og:title", content: PAGE_TITLE },
       { property: "og:description", content: PAGE_DESCRIPTION },

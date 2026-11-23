@@ -35,7 +35,7 @@ export const BUSINESS = {
   foundedYear: 2005,
   tagline: "La tavola e il galoppo, nel cuore della Murgia.",
   description:
-    "Masseria del Settecento nel cuore della Murgia di Noci: tavola su prenotazione, cavalli Murgesi ed eventi in Puglia.",
+    "Masseria, agriturismo, ristorante e sala ricevimenti del Settecento a Noci (BA), nelle Murge: pranzi su prenotazione, matrimoni in masseria e allevamento cavalli Murgesi.",
   phone: "+39 338 483 4318",
   phoneTel: "+393384834318",
   whatsappNumber: "393384834318",
@@ -121,9 +121,13 @@ export function buildKitchenJsonLd(imageUrl: string) {
       {
         "@type": "Restaurant",
         "@id": `${SITE_URL}/cucina#kitchen`,
-        name: `${BUSINESS.name} — Cucina`,
+        name: `${BUSINESS.name} — Ristorante e Agriturismo a Noci`,
+        alternateName: [
+          "Agriturismo Masseria Torre Abbondanza Noci",
+          "Ristorante Masseria Torre Abbondanza",
+        ],
         description:
-          "Cucina pugliese su prenotazione per cerimonie ed eventi (minimo 20 ospiti, a partire da 50 euro a persona): antipasti di terra, primi fatti a mano, secondi della tradizione e dolci artigianali.",
+          "Ristorante in masseria e agriturismo a Noci (BA) nelle Murge: cucina pugliese su prenotazione per pranzi della domenica, cerimonie ed eventi (minimo 20 ospiti, a partire da 50 euro a persona).",
         url: `${SITE_URL}/cucina`,
         image: [imageUrl],
         servesCuisine: ["Pugliese", "Cucina tradizionale italiana"],
@@ -222,9 +226,13 @@ export function buildEventsJsonLd(imageUrl: string) {
       {
         "@type": "EventVenue",
         "@id": `${SITE_URL}/eventi#venue`,
-        name: `${BUSINESS.name} — Eventi & Matrimoni`,
+        name: `${BUSINESS.name} — Sala Ricevimenti e Matrimoni nelle Murge`,
+        alternateName: [
+          "Sala Ricevimenti Noci Torre Abbondanza",
+          "Location Matrimoni Masseria Murge",
+        ],
         description:
-          "Masseria del Settecento per matrimoni, cerimonie civili e simboliche, battesimi, compleanni e feste private nel cuore della Murgia di Noci.",
+          "Sala ricevimenti a Noci e masseria del Settecento per matrimoni nelle Murge e Valle d'Itria, cerimonie civili e simboliche, battesimi, compleanni, feste private ed eventi aziendali.",
         url: `${SITE_URL}/eventi`,
         image: [imageUrl],
         telephone: BUSINESS.phone,
@@ -320,6 +328,11 @@ export function buildRestaurantJsonLd(imageUrl: string) {
         "@type": ["Restaurant", "EventVenue", "LocalBusiness"],
         "@id": `${SITE_URL}/#masseria`,
         name: BUSINESS.name,
+        alternateName: [
+          "Agriturismo Masseria Torre Abbondanza Noci",
+          "Ristorante Masseria Torre Abbondanza Noci",
+          "Sala Ricevimenti Masseria Torre Abbondanza Noci",
+        ],
         legalName: BUSINESS.legalName,
         foundingDate: String(BUSINESS.foundedYear),
         vatID: BUSINESS.vatId,
