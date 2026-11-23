@@ -209,9 +209,9 @@ function StageContent({ stage }: { stage: SeasonStage }) {
           </p>
           <h3
             data-stage-title
-            className="font-display font-medium leading-[0.9]"
+            className="font-display font-medium leading-[0.92]"
             style={{
-              fontSize: "clamp(2.2rem, 10vw, 9rem)",
+              fontSize: "clamp(2.2rem, 6.2vw, 5.6rem)",
               color: stage.palette.fg,
               letterSpacing: "-0.02em",
             }}
@@ -228,23 +228,23 @@ function StageContent({ stage }: { stage: SeasonStage }) {
           </h3>
           <p
             data-stage-kicker
-            className="font-display mt-2.5 max-w-2xl text-sm italic leading-snug sm:text-base md:mt-6 md:text-xl md:leading-relaxed"
+            className="font-display mt-2 max-w-2xl text-sm italic leading-snug sm:text-base md:mt-4 md:text-lg md:leading-relaxed"
             style={{ color: `color-mix(in oklab, ${stage.palette.fg} 85%, transparent)` }}
           >
             {stage.kicker}
           </p>
         </div>
 
-        <div className="pointer-events-auto grid grid-cols-2 gap-3 sm:gap-5 md:col-span-12 md:gap-8">
+        <div className="pointer-events-auto grid grid-cols-2 gap-3 sm:gap-5 md:col-span-12 md:max-w-5xl md:gap-8">
           {stage.experiences.map((exp) => (
             <figure
               key={exp.title}
               data-stage-exp
-              className="flex flex-col gap-2 sm:gap-3 md:gap-4"
+              className="flex flex-col gap-2 sm:gap-3"
               style={{ transform: "translateY(0)", opacity: 1 }}
             >
               <div
-                className="relative aspect-[16/11] overflow-hidden sm:aspect-[5/4]"
+                className="relative aspect-[16/10] max-h-[34vh] w-full overflow-hidden sm:aspect-[16/10] md:max-h-[38vh]"
                 style={{
                   borderRadius: "10px",
                   border: `1px solid color-mix(in oklab, ${stage.palette.fg} 18%, transparent)`,
@@ -486,12 +486,50 @@ export function SeasonsSection() {
       const mixHex = (a: string, b: string, t: number) =>
         `color-mix(in oklab, ${a} ${Math.round((1 - t) * 100)}%, ${b})`;
 
+      // Timelines di reveal per ciascuna stagione, attivate direttamente in onUpdate
+      // quando lo stage entra in visibilità (evita ScrollTrigger secondari su elemento già pinnato).
+      const playedStages = new Set<number>([0]);
+      const stageTimelines = contents.map((c, idx) => {
+        const titleWords = c.querySelectorAll<HTMLElement>("[data-title-word]");
+        const kicker = c.querySelector<HTMLElement>("[data-stage-kicker]");
+        const exps = c.querySelectorAll<HTMLElement>("[data-stage-exp]");
+
+        const tl = gsap.timeline({ paused: idx !== 0 });
+        tl.fromTo(
+          titleWords,
+          { yPercent: 45 },
+          {
+            yPercent: 0,
+            duration: 0.75,
+            ease: "power3.out",
+            stagger: 0.06,
+          },
+          0,
+        );
+        if (kicker) {
+          tl.fromTo(
+            kicker,
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+            0.1,
+          );
+        }
+        tl.fromTo(
+          exps,
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.65, ease: "power3.out", stagger: 0.1 },
+          0.15,
+        );
+        return tl;
+      });
+
       ScrollTrigger.create({
         trigger: stage,
         start: "top top",
-        end: () => `+=${window.innerHeight * (isMobile ? 3 : 5)}`,
+        end: () => `+=${window.innerHeight * (isMobile ? 3 : 4.5)}`,
         pin: true,
         scrub: 0.5,
+        anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const p = self.progress * (STAGES.length - 1);
@@ -516,6 +554,12 @@ export function SeasonsSection() {
             }
             el.style.opacity = op.toFixed(3);
             el.style.transform = `translateY(${ty.toFixed(2)}px)`;
+            el.style.zIndex = op > 0.5 ? "20" : op > 0 ? "10" : "1";
+
+            if (op > 0.06 && !playedStages.has(idx)) {
+              playedStages.add(idx);
+              stageTimelines[idx]?.play();
+            }
           });
 
           const a = STAGES[i].palette;
@@ -540,50 +584,6 @@ export function SeasonsSection() {
             l.style.opacity = k === dominant ? "1" : "0.5";
           });
         },
-      });
-
-      // Reveal kinetic ad ogni stage
-      contents.forEach((c, idx) => {
-        const titleWords = c.querySelectorAll<HTMLElement>("[data-title-word]");
-        const kicker = c.querySelector<HTMLElement>("[data-stage-kicker]");
-        const exps = c.querySelectorAll<HTMLElement>("[data-stage-exp]");
-
-        const tl = gsap.timeline({ paused: true });
-        tl.fromTo(
-          titleWords,
-          { yPercent: 110 },
-          {
-            yPercent: 0,
-            duration: 0.9,
-            ease: "power3.out",
-            stagger: 0.08,
-          },
-        );
-        if (kicker) {
-          tl.fromTo(
-            kicker,
-            { opacity: 0, y: 14 },
-            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-            0.3,
-          );
-        }
-        tl.fromTo(
-          exps,
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.12 },
-          0.4,
-        );
-
-        const enterT = idx / (STAGES.length - 1);
-        ScrollTrigger.create({
-          trigger: stage,
-          start: () =>
-            `top+=${Math.max(0, enterT * window.innerHeight * (isMobile ? 3 : 5) - 100)} top`,
-          onEnter: () => tl.play(),
-          onEnterBack: () => tl.play(),
-          once: true,
-          invalidateOnRefresh: true,
-        });
       });
     }, root);
 
