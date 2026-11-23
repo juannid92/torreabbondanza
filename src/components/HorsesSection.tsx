@@ -117,19 +117,10 @@ export function HorsesSection() {
         // Il cavallo è rivolto a sinistra: scorrendo si muove da destra (+18%) verso sinistra (-18%)
         tl.fromTo(
           gallopEl,
-          { xPercent: 18, scale: 1.14 },
-          { xPercent: -18, scale: 1.06, ease: "none" },
+          { xPercent: 18, scale: 1.15 },
+          { xPercent: -18, scale: 1.05, ease: "none" },
           0,
         );
-        // Leggera oscillazione ritmica di galoppo continua
-        gsap.to(gallopEl, {
-          yPercent: -1.3,
-          rotation: -0.45,
-          duration: 0.36,
-          yoyo: true,
-          repeat: -1,
-          ease: "sine.inOut",
-        });
         if (gallopWord) {
           tl.fromTo(gallopWord, { xPercent: -25 }, { xPercent: 30, ease: "none" }, 0);
         }
@@ -344,22 +335,18 @@ export function HorsesSection() {
           }}
         />
 
-        {/* Cavallo che galoppa da destra verso sinistra (visibile intero anche su mobile) */}
-        <div className="absolute inset-0 flex items-center justify-center px-3 md:px-0">
-          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl shadow-2xl md:aspect-auto md:h-full md:w-full md:rounded-none">
-            <img
-              ref={gallopImgRef}
-              src={gallopImg}
-              alt="Cavallo Murgese morello al galoppo da destra verso sinistra lungo i muretti a secco e gli ulivi della Murgia"
-              loading="lazy"
-              decoding="async"
-              width={1280}
-              height={720}
-              className="absolute inset-0 h-full w-full object-cover object-center"
-              style={{ willChange: "transform" }}
-            />
-          </div>
-        </div>
+        {/* Cavallo che galoppa da destra verso sinistra (scrubbed translateX) */}
+        <img
+          ref={gallopImgRef}
+          src={gallopImg}
+          alt="Cavallo Murgese morello al galoppo da destra verso sinistra lungo i muretti a secco e gli ulivi della Murgia"
+          loading="eager"
+          decoding="async"
+          width={1280}
+          height={720}
+          className="absolute inset-0 h-full w-full object-contain md:object-cover"
+          style={{ willChange: "transform" }}
+        />
 
         {/* Velatura per leggibilità testo */}
         <div
