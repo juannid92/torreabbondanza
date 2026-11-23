@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -6,7 +6,7 @@ import { SplitText } from "@/lib/split-text";
 import { KineticMarquee } from "./KineticMarquee";
 import { VerticalWord } from "./VerticalWord";
 import { MagneticButton } from "./MagneticButton";
-import heroPoster from "@/assets/hero-masseria.jpg";
+import heroPoster from "@/assets/hero-video-poster.jpg";
 gsap.registerPlugin(ScrollTrigger);
 
 const MARQUEE_ITEMS = [
@@ -35,25 +35,6 @@ export function HeroSoglia() {
   const root = useRef<HTMLElement>(null);
   const marqueeItems = t("hero.marquee", { returnObjects: true }) as string[];
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoSrc, setVideoSrc] = useState<string | undefined>(undefined);
-
-  // Lazy-load video src when element enters viewport (+200px margin)
-  useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVideoSrc(HERO_VIDEO_URL);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "200px" },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -199,13 +180,14 @@ export function HeroSoglia() {
       <div data-media className="absolute inset-0 z-0 overflow-hidden bg-[var(--ivory)]">
         <video
           ref={videoRef}
+          autoPlay
           muted
           loop
           playsInline
-          preload="none"
+          preload="auto"
           poster={heroPoster}
           aria-hidden
-          src={videoSrc}
+          src={HERO_VIDEO_URL}
           onCanPlay={(e) => {
             e.currentTarget.play().catch(() => {});
           }}
