@@ -4,7 +4,13 @@ import { ArrowRight, MessageCircle, Phone } from "lucide-react";
 import { BUSINESS } from "@/lib/site";
 import { EVENT_POSTERS, PHONE_HREF, PosterFlyerVisual } from "@/components/EventPostersShowcase";
 
-const FEATURED_POSTERS = [EVENT_POSTERS[0], EVENT_POSTERS[4], EVENT_POSTERS[1]];
+const FEATURED_POSTER_IDS = new Set([
+  "immacolata-8-dicembre",
+  "natale-25-dicembre",
+  "santo-stefano-26-dicembre",
+  "capodanno-1-gennaio",
+]);
+const FEATURED_POSTERS = EVENT_POSTERS.filter((poster) => FEATURED_POSTER_IDS.has(poster.id));
 
 /**
  * Sezione editoriale di anteprima dedicata alle Locandine Eventi & Menù della Masseria:
@@ -68,8 +74,8 @@ export function EventPostersTeaserSection() {
           </div>
         </div>
 
-        {/* Griglia 3 locandine in evidenza */}
-        <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-3">
+        {/* Griglia 4 locandine ufficiali in evidenza */}
+        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURED_POSTERS.map((poster) => (
             <article
               key={poster.id}

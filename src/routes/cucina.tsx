@@ -32,7 +32,10 @@ export const Route = createFileRoute("/cucina")({
         property: "og:image:alt",
         content: "Cucina pugliese della tradizione alla Masseria Torre Abbondanza",
       },
-      { property: "og:image:alt", content: "Cucina pugliese della tradizione alla Masseria Torre Abbondanza" },
+      {
+        property: "og:image:alt",
+        content: "Cucina pugliese della tradizione alla Masseria Torre Abbondanza",
+      },
       { name: "twitter:title", content: PAGE_TITLE },
       { name: "twitter:description", content: PAGE_DESCRIPTION },
       { name: "twitter:image", content: absoluteUrl(kitchenImg) },

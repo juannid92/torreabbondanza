@@ -6,8 +6,11 @@ import saporiConvivioImg from "@/assets/sapori-convivio.jpg";
 import seasonMayImg from "@/assets/season-may.jpg";
 import eventsSpaceNightImg from "@/assets/events-space-night.jpg";
 import seasonAutumnImg from "@/assets/season-exp-autumn-olives.jpg";
-import eventsCeremonyImg from "@/assets/events-ceremony.jpg";
 import seasonSpringImg from "@/assets/season-spring.jpg";
+import posterImmacolataImg from "@/assets/poster-immacolata.jpg";
+import posterNataleImg from "@/assets/poster-natale.jpg";
+import posterSantoStefanoImg from "@/assets/poster-santo-stefano.jpg";
+import posterCapodannoImg from "@/assets/poster-capodanno.jpg";
 
 export type PosterCategory = "tutti" | "festivita" | "domenica" | "estate" | "autunno";
 
@@ -215,45 +218,166 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
     ),
   },
   {
-    id: "menu-immacolata-natale",
-    title: "I Convivi delle Feste — Immacolata, Natale & Santo Stefano",
-    subtitle: "Convivio invernale sotto le volte storiche riscaldate in pietra",
+    id: "immacolata-8-dicembre",
+    title: "Menù dell'Immacolata — 8 Dicembre",
+    subtitle: "I sapori della tradizione pugliese per aprire le feste in Masseria",
     category: "festivita",
     categoryLabel: "Festività",
-    period: "8 Dicembre · 25–26 Dicembre · Capodanno",
-    price: "da €60 a persona",
-    minGuests: "Su prenotazione · gruppi e famiglie",
-    image: eventsCeremonyImg,
-    imageAlt: "Sala storica con volte in pietra allestita per le festività natalizie in masseria",
-    highlight: "Pettole & baccalà · Lasagna bianca & ragù nobile · Arrosto delle Feste",
+    period: "8 Dicembre · Immacolata",
+    price: "Su prenotazione",
+    minGuests: "Su prenotazione · tavoli e gruppi",
+    image: posterImmacolataImg,
+    posterImage: posterImmacolataImg,
+    imageAlt: "Locandina menù Immacolata 8 Dicembre — Masseria Torre Abbondanza",
+    highlight: "Capocollo di Martina · Orecchiette cime di rapa e salsiccia · Braciola di vitello",
     courses: [
       {
         numeral: "I",
-        label: "Antipasti",
-        dishes:
-          "Gran antipasto delle Feste tra caldi di pettole, baccalà, formaggi stagionati e salumi",
+        label: "Aperitivo",
+        dishes: "Calzone di cipolle, olive e focaccia al pomodoro",
       },
       {
         numeral: "II",
-        label: "Primi",
-        dishes: "Lasagna bianca della tradizione e orecchiette al ragù nobile",
+        label: "Antipasti & Orto",
+        dishes:
+          "Capocollo di Martina, salame del contadino con treccina fresca, pecorino stagionato, insalata di grano e pomodoro secco; finocchi gratinati, cavoli con salsa mornay, frittata di funghi e lampascioni al vincotto",
       },
       {
         numeral: "III",
-        label: "Secondi",
-        dishes: "Arrosto delle Feste a lunga cottura con contorni della Murgia",
+        label: "Primo & Secondo",
+        dishes:
+          "Orecchiette con cime di rapa e salsiccia · Braciola di vitello al ragù con polpetta e sfera di patata al caciocavallo podolico con farinella",
       },
       {
         numeral: "IV",
-        label: "Dolci delle Feste",
-        dishes: "Dolci natalizi pugliesi, spumante e liquori della casa",
+        label: "Dessert",
+        dishes: "Frutta di stagione con dessert dello chef",
       },
     ],
-    includes: "Cartellate, purceddhruzzi, vini selezionati e brindisi delle Feste inclusi",
+    includes: "Menù ufficiale 8 Dicembre · Varianti alimentari e menù bambini su richiesta",
+    whatsappUrl: makePosterWhatsAppUrl("Menù dell'Immacolata", "8 Dicembre"),
+  },
+  {
+    id: "natale-25-dicembre",
+    title: "Pranzo di Natale — 25 Dicembre",
+    subtitle: "La tavola delle grandi occasioni sotto le volte storiche della Masseria",
+    category: "festivita",
+    categoryLabel: "Festività",
+    period: "25 Dicembre · Natale",
+    price: "Su prenotazione",
+    minGuests: "Su prenotazione · tavoli e famiglie",
+    image: posterNataleImg,
+    posterImage: posterNataleImg,
+    imageAlt: "Locandina menù Natale 25 Dicembre — Masseria Torre Abbondanza",
+    highlight: "Flan di carciofo e baccalà · Cavatellini al ragù di polpo · Filetto di maialino",
+    courses: [
+      {
+        numeral: "I",
+        label: "Entrée & Antipasti",
+        dishes:
+          "Zeppolina con cremoso al formaggio fresco, broccoli cacio e pepe · Flan di carciofo con baccalà fritto, crema di patate dolci e Nduja · Fagottino di lonza di maiale con ricotta e cardoncelli al timo, fonduta al caciocavallo e lampascione al vincotto",
+      },
+      {
+        numeral: "II",
+        label: "Primi Piatti",
+        dishes:
+          "Cavatellini al ragù di polpo con crema di ceci al rosmarino · Timballo di cicorielle alla pugliese",
+      },
+      {
+        numeral: "III",
+        label: "Secondo Piatto",
+        dishes:
+          "Filetto di maialino alle erbe con dattero ripieno di formaggio e noci, tortino di zucca con salsa al primitivo",
+      },
+      {
+        numeral: "IV",
+        label: "Dessert & Finale",
+        dishes: "Semifreddo alla farinella con fichi e gelée al mandarino · Prelibatezze Natalizie",
+      },
+    ],
+    includes: "Menù ufficiale 25 Dicembre · Varianti alimentari e menù bambini su richiesta",
+    whatsappUrl: makePosterWhatsAppUrl("Pranzo di Natale", "25 Dicembre"),
+  },
+  {
+    id: "santo-stefano-26-dicembre",
+    title: "Pranzo di Santo Stefano — 26 Dicembre",
+    subtitle: "Il convivio della tradizione pugliese tra camino e pietra viva",
+    category: "festivita",
+    categoryLabel: "Festività",
+    period: "26 Dicembre · Santo Stefano",
+    price: "€50 bevande incluse",
+    minGuests: "Su prenotazione · tavoli e famiglie",
+    image: posterSantoStefanoImg,
+    posterImage: posterSantoStefanoImg,
+    imageAlt: "Locandina menù Santo Stefano 26 Dicembre — Masseria Torre Abbondanza",
+    highlight: "Antipasti freddi e caldi · Timballo di cicorielle · Filetto di maialino alle erbe",
+    courses: [
+      {
+        numeral: "I",
+        label: "Antipasto della Casa",
+        dishes: "Antipasti freddi e caldi della cucina tipica pugliese",
+      },
+      {
+        numeral: "II",
+        label: "Primo Piatto",
+        dishes: "Timballo di cicorielle alla pugliese",
+      },
+      {
+        numeral: "III",
+        label: "Secondo Piatto",
+        dishes:
+          "Filetto di maialino alle erbe con dattero ripieno e tortino di zucca con salsa al primitivo",
+      },
+      {
+        numeral: "IV",
+        label: "Dessert & Bevande",
+        dishes: "Dessert della casa · Bevande incluse",
+      },
+    ],
+    includes: "€50 a persona bevande incluse · Varianti alimentari e menù bambini su richiesta",
     whatsappUrl: makePosterWhatsAppUrl(
-      "I Convivi delle Feste — Immacolata, Natale & Santo Stefano",
-      "8 Dicembre · 25–26 Dicembre · Capodanno",
+      "Pranzo di Santo Stefano",
+      "26 Dicembre · €50 bevande incluse",
     ),
+  },
+  {
+    id: "capodanno-1-gennaio",
+    title: "Pranzo di Capodanno — 1° Gennaio",
+    subtitle: "Brindisi al nuovo anno tra grandi classici della Murgia e sapori d'autore",
+    category: "festivita",
+    categoryLabel: "Festività",
+    period: "1° Gennaio · Capodanno",
+    price: "€70 bevande incluse",
+    minGuests: "Su prenotazione · tavoli e gruppi",
+    image: posterCapodannoImg,
+    posterImage: posterCapodannoImg,
+    imageAlt: "Locandina menù Capodanno 1 Gennaio — Masseria Torre Abbondanza",
+    highlight: "Baccalà mantecato · Saverin di riso alla zucca · Brasato di manzo al tartufo",
+    courses: [
+      {
+        numeral: "I",
+        label: "Aperitivo & Antipasti",
+        dishes:
+          "Focaccia al rosmarino e maionese all'aglio, rustico di ricotta e soppressata piccante · Baccalà mantecato con crostone ai cereali e crema di cime di rapa · Tortino di mela, reale di maiale al timo e fungo cardoncello",
+      },
+      {
+        numeral: "II",
+        label: "Primo Piatto",
+        dishes: "Saverin di riso alla zucca con salsiccia, fonduta di gorgonzola e noci",
+      },
+      {
+        numeral: "III",
+        label: "Secondo Piatto",
+        dishes: "Brasato di manzo con fondo bruno ai funghi e bonbon di patate al tartufo",
+      },
+      {
+        numeral: "IV",
+        label: "Dessert & Bevande",
+        dishes: "Mousse al cioccolato · Bevande incluse",
+      },
+    ],
+    includes: "€70 a persona bevande incluse · Varianti alimentari e menù bambini su richiesta",
+    whatsappUrl: makePosterWhatsAppUrl("Pranzo di Capodanno", "1° Gennaio · €70 bevande incluse"),
   },
   {
     id: "pasqua-pasquetta-masseria",
@@ -316,12 +440,14 @@ export function PosterFlyerVisual({
   expanded = false,
 }: PosterFlyerVisualProps) {
   const imageSrc = poster.posterImage ?? poster.image;
+  const isGraphicPoster = Boolean(poster.posterImage);
 
   return (
     <div
       className={cn(
-        "group relative w-full overflow-hidden rounded-lg bg-[color:var(--murgese)] text-ivory shadow-soft",
-        aspectClassName,
+        "group relative w-full overflow-hidden rounded-lg shadow-soft",
+        isGraphicPoster ? "bg-[#fbf8f1] text-ink" : "bg-[color:var(--murgese)] text-ivory",
+        isGraphicPoster ? "aspect-square" : aspectClassName,
       )}
     >
       <img
@@ -329,11 +455,14 @@ export function PosterFlyerVisual({
         alt={poster.imageAlt}
         loading={expanded ? "eager" : "lazy"}
         decoding="async"
-        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+        className={cn(
+          "absolute inset-0 h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]",
+          isGraphicPoster ? "object-contain" : "object-cover",
+        )}
       />
 
       {/* Vignetta editoriale scura per leggibilità tipografica da locandina */}
-      {!poster.posterImage && (
+      {!isGraphicPoster && (
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
@@ -344,15 +473,19 @@ export function PosterFlyerVisual({
         />
       )}
 
-      {/* Doppio filetto ornamentale interno stile stampa d'epoca */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-3 rounded-[4px] border border-gold/45"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-4 rounded-[2px] border border-ivory/20"
-      />
+      {/* Doppio filetto ornamentale interno stile stampa d'epoca (solo per locandine fotografiche) */}
+      {!isGraphicPoster && (
+        <>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-3 rounded-[4px] border border-gold/45"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-4 rounded-[2px] border border-ivory/20"
+          />
+        </>
+      )}
 
       {!poster.posterImage && (
         <div className="relative z-10 flex h-full flex-col justify-between p-6 sm:p-7">

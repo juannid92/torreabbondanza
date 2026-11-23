@@ -30,7 +30,10 @@ export const Route = createFileRoute("/cavalli")({
         property: "og:image:alt",
         content: "Allevamento cavalli Murgesi della Masseria Torre Abbondanza",
       },
-      { property: "og:image:alt", content: "Allevamento cavalli Murgesi della Masseria Torre Abbondanza" },
+      {
+        property: "og:image:alt",
+        content: "Allevamento cavalli Murgesi della Masseria Torre Abbondanza",
+      },
       { name: "twitter:title", content: PAGE_TITLE },
       { name: "twitter:description", content: PAGE_DESCRIPTION },
       { name: "twitter:image", content: absoluteUrl(murgeseImg) },
