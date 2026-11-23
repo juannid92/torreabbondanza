@@ -33,6 +33,8 @@ export interface EventPoster {
   imageAlt: string;
   /** Optional dedicated graphic flyer asset (replaces photographic poster layout if provided). */
   posterImage?: string;
+  /** True when the official flyer is not yet published, while still allowing advance booking. */
+  comingSoon?: boolean;
   highlight: string;
   courses: readonly PosterCourse[];
   includes: string;
@@ -61,7 +63,7 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
     subtitle: "La tavola della tradizione pugliese tra ulivi e pietra viva",
     category: "domenica",
     categoryLabel: "Domenica & Feste",
-    period: "Domeniche & Giorni Festivi",
+    period: "Ogni Domenica · Giorni Festivi",
     price: "da €50 a persona",
     minGuests: "Su prenotazione · gruppi min. 20 ospiti",
     image: saporiConvivioImg,
@@ -93,128 +95,6 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
     whatsappUrl: makePosterWhatsAppUrl(
       "Il Pranzo della Domenica in Masseria",
       "Domeniche & Giorni Festivi",
-    ),
-  },
-  {
-    id: "feste-primavera-maggio",
-    title: "Convivio di Primavera & 1° Maggio",
-    subtitle: "Profumi di campo, latticini freschi e brace nella corte storica",
-    category: "festivita",
-    categoryLabel: "Festività",
-    period: "25 Aprile · 1° Maggio · Primavera",
-    price: "da €55 a persona",
-    minGuests: "Su prenotazione · gruppi min. 20 ospiti",
-    image: seasonMayImg,
-    imageAlt: "Corte fiorita di primavera alla Masseria Torre Abbondanza",
-    highlight: "Latticini di Noci · Cavatelli alle erbette · Agnello al forno a legna",
-    courses: [
-      {
-        numeral: "I",
-        label: "Antipasti",
-        dishes:
-          "Selezione di latticini di Noci, salumi murgiani, frittini di campo e focaccia calda",
-      },
-      {
-        numeral: "II",
-        label: "Primi",
-        dishes: "Cavatelli alle erbette spontanee e primo sale",
-      },
-      {
-        numeral: "III",
-        label: "Secondi",
-        dishes: "Agnello e carni della Murgia al forno a legna con patate novelle",
-      },
-      {
-        numeral: "IV",
-        label: "Dolci & Rosoli",
-        dishes: "Millefoglie artigianale e rosoli della masseria",
-      },
-    ],
-    includes: "Vini del territorio e acqua inclusi · Passeggiata tra gli ulivi in fiore",
-    whatsappUrl: makePosterWhatsAppUrl(
-      "Convivio di Primavera & 1° Maggio",
-      "25 Aprile · 1° Maggio · Primavera",
-    ),
-  },
-  {
-    id: "sere-estate-corte",
-    title: "Sere d'Estate sotto le Lucine della Corte",
-    subtitle: "Cene all'aperto tra candele, pietra antica e brezza della Murgia",
-    category: "estate",
-    categoryLabel: "Estate in Corte",
-    period: "Giugno – Settembre · Cena in Corte",
-    price: "da €50 a persona",
-    minGuests: "Su prenotazione · gruppi min. 20 ospiti",
-    image: eventsSpaceNightImg,
-    imageAlt: "Corte della Masseria Torre Abbondanza illuminata dalle lucine estive la sera",
-    highlight: "Burratina artigianale · Fagottini freschi · Tagliata murgiana alle erbe",
-    courses: [
-      {
-        numeral: "I",
-        label: "Antipasti",
-        dishes: "Crudo di terra, burratina artigianale, verdure grigliate dell'orto e sfizi caldi",
-      },
-      {
-        numeral: "II",
-        label: "Primi",
-        dishes: "Fagottini di pasta fresca ai profumi mediterranei",
-      },
-      {
-        numeral: "III",
-        label: "Secondi",
-        dishes: "Tagliata murgiana alle erbe con contorni di stagione",
-      },
-      {
-        numeral: "IV",
-        label: "Dolci & Calici",
-        dishes: "Semifreddo artigianale e calice sotto gli ulivi",
-      },
-    ],
-    includes: "Allestimento serale in corte con lucine · Menù su misura per compagnie",
-    whatsappUrl: makePosterWhatsAppUrl(
-      "Sere d'Estate sotto le Lucine della Corte",
-      "Giugno – Settembre · Cena in Corte",
-    ),
-  },
-  {
-    id: "sapori-autunno-olio-vino",
-    title: "Tavola d'Autunno — Olio Nuovo & Funghi Cardoncelli",
-    subtitle: "I sapori intensi della Murgia tra vendemmia, uliveto e camino",
-    category: "autunno",
-    categoryLabel: "Autunno & Inverno",
-    period: "Ottobre – Novembre · Autunno in Murgia",
-    price: "da €55 a persona",
-    minGuests: "Su prenotazione · gruppi min. 20 ospiti",
-    image: seasonAutumnImg,
-    imageAlt: "Uliveto e sapori d'autunno alla Masseria Torre Abbondanza",
-    highlight: "Olio extravergine nuovo · Tagliolini ai cardoncelli · Brasato al Primitivo",
-    courses: [
-      {
-        numeral: "I",
-        label: "Antipasti",
-        dishes:
-          "Bruschette con olio extravergine nuovo della masseria, cardoncelli gratinati e capocollo",
-      },
-      {
-        numeral: "II",
-        label: "Primi",
-        dishes: "Tagliolini freschi ai funghi cardoncelli della Murgia",
-      },
-      {
-        numeral: "III",
-        label: "Secondi",
-        dishes: "Brasato al Primitivo e bombette della tradizione",
-      },
-      {
-        numeral: "IV",
-        label: "Dolci d'Autunno",
-        dishes: "Tortino caldo al cioccolato e caldarroste",
-      },
-    ],
-    includes: "Degustazione olio nuovo e vini rossi pugliesi inclusi su richiesta",
-    whatsappUrl: makePosterWhatsAppUrl(
-      "Tavola d'Autunno — Olio Nuovo & Funghi Cardoncelli",
-      "Ottobre – Novembre · Autunno in Murgia",
     ),
   },
   {
@@ -390,6 +270,7 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
     minGuests: "Su prenotazione · gruppi e famiglie",
     image: seasonSpringImg,
     imageAlt: "Pranzo di Pasqua e Pasquetta immerso nel verde della Masseria Torre Abbondanza",
+    comingSoon: true,
     highlight: "Benedizione pasquale · Cavatelli ragù d'agnello · Pastiera artigianale",
     courses: [
       {
@@ -418,6 +299,131 @@ export const EVENT_POSTERS: readonly EventPoster[] = [
     whatsappUrl: makePosterWhatsAppUrl(
       "Pranzo di Pasqua & Lunedì dell'Angelo",
       "Pasqua & Pasquetta in Masseria",
+    ),
+  },
+  {
+    id: "feste-primavera-maggio",
+    title: "Convivio di Primavera & 1° Maggio",
+    subtitle: "Profumi di campo, latticini freschi e brace nella corte storica",
+    category: "festivita",
+    categoryLabel: "Festività",
+    period: "25 Aprile · 1° Maggio · Primavera",
+    price: "da €55 a persona",
+    minGuests: "Su prenotazione · gruppi min. 20 ospiti",
+    image: seasonMayImg,
+    imageAlt: "Corte fiorita di primavera alla Masseria Torre Abbondanza",
+    comingSoon: true,
+    highlight: "Latticini di Noci · Cavatelli alle erbette · Agnello al forno a legna",
+    courses: [
+      {
+        numeral: "I",
+        label: "Antipasti",
+        dishes:
+          "Selezione di latticini di Noci, salumi murgiani, frittini di campo e focaccia calda",
+      },
+      {
+        numeral: "II",
+        label: "Primi",
+        dishes: "Cavatelli alle erbette spontanee e primo sale",
+      },
+      {
+        numeral: "III",
+        label: "Secondi",
+        dishes: "Agnello e carni della Murgia al forno a legna con patate novelle",
+      },
+      {
+        numeral: "IV",
+        label: "Dolci & Rosoli",
+        dishes: "Millefoglie artigianale e rosoli della masseria",
+      },
+    ],
+    includes: "Vini del territorio e acqua inclusi · Passeggiata tra gli ulivi in fiore",
+    whatsappUrl: makePosterWhatsAppUrl(
+      "Convivio di Primavera & 1° Maggio",
+      "25 Aprile · 1° Maggio · Primavera",
+    ),
+  },
+  {
+    id: "sere-estate-corte",
+    title: "Sere d'Estate sotto le Lucine della Corte",
+    subtitle: "Cene all'aperto tra candele, pietra antica e brezza della Murgia",
+    category: "estate",
+    categoryLabel: "Estate in Corte",
+    period: "Giugno – Settembre · Cena in Corte",
+    price: "da €50 a persona",
+    minGuests: "Su prenotazione · gruppi min. 20 ospiti",
+    image: eventsSpaceNightImg,
+    imageAlt: "Corte della Masseria Torre Abbondanza illuminata dalle lucine estive la sera",
+    comingSoon: true,
+    highlight: "Burratina artigianale · Fagottini freschi · Tagliata murgiana alle erbe",
+    courses: [
+      {
+        numeral: "I",
+        label: "Antipasti",
+        dishes: "Crudo di terra, burratina artigianale, verdure grigliate dell'orto e sfizi caldi",
+      },
+      {
+        numeral: "II",
+        label: "Primi",
+        dishes: "Fagottini di pasta fresca ai profumi mediterranei",
+      },
+      {
+        numeral: "III",
+        label: "Secondi",
+        dishes: "Tagliata murgiana alle erbe con contorni di stagione",
+      },
+      {
+        numeral: "IV",
+        label: "Dolci & Calici",
+        dishes: "Semifreddo artigianale e calice sotto gli ulivi",
+      },
+    ],
+    includes: "Allestimento serale in corte con lucine · Menù su misura per compagnie",
+    whatsappUrl: makePosterWhatsAppUrl(
+      "Sere d'Estate sotto le Lucine della Corte",
+      "Giugno – Settembre · Cena in Corte",
+    ),
+  },
+  {
+    id: "sapori-autunno-olio-vino",
+    title: "Tavola d'Autunno — Olio Nuovo & Funghi Cardoncelli",
+    subtitle: "I sapori intensi della Murgia tra vendemmia, uliveto e camino",
+    category: "autunno",
+    categoryLabel: "Autunno & Inverno",
+    period: "Ottobre – Novembre · Autunno in Murgia",
+    price: "da €55 a persona",
+    minGuests: "Su prenotazione · gruppi min. 20 ospiti",
+    image: seasonAutumnImg,
+    imageAlt: "Uliveto e sapori d'autunno alla Masseria Torre Abbondanza",
+    comingSoon: true,
+    highlight: "Olio extravergine nuovo · Tagliolini ai cardoncelli · Brasato al Primitivo",
+    courses: [
+      {
+        numeral: "I",
+        label: "Antipasti",
+        dishes:
+          "Bruschette con olio extravergine nuovo della masseria, cardoncelli gratinati e capocollo",
+      },
+      {
+        numeral: "II",
+        label: "Primi",
+        dishes: "Tagliolini freschi ai funghi cardoncelli della Murgia",
+      },
+      {
+        numeral: "III",
+        label: "Secondi",
+        dishes: "Brasato al Primitivo e bombette della tradizione",
+      },
+      {
+        numeral: "IV",
+        label: "Dolci d'Autunno",
+        dishes: "Tortino caldo al cioccolato e caldarroste",
+      },
+    ],
+    includes: "Degustazione olio nuovo e vini rossi pugliesi inclusi su richiesta",
+    whatsappUrl: makePosterWhatsAppUrl(
+      "Tavola d'Autunno — Olio Nuovo & Funghi Cardoncelli",
+      "Ottobre – Novembre · Autunno in Murgia",
     ),
   },
 ] as const;
@@ -498,6 +504,11 @@ export function PosterFlyerVisual({
               <CalendarDays className="h-3 w-3 text-gold" />
               {poster.period}
             </span>
+            {poster.comingSoon && (
+              <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-gold/55 bg-gold/20 px-3 py-0.5 text-[9.5px] font-semibold tracking-[0.2em] uppercase text-gold">
+                Coming Soon · Già prenotabile
+              </span>
+            )}
           </div>
 
           {/* Corpo menù stilizzato dentro la locandina */}
@@ -711,6 +722,12 @@ export function EventPostersShowcase() {
                   <span>{poster.categoryLabel}</span>
                   <span className="text-ink/55">{poster.minGuests}</span>
                 </div>
+
+                {poster.comingSoon && (
+                  <div className="mt-2.5 inline-flex w-fit items-center gap-1.5 rounded-full border border-terracotta/30 bg-terracotta/10 px-3 py-1 text-[10px] font-semibold tracking-[0.16em] uppercase text-terracotta">
+                    Coming Soon · Locandina in arrivo · Già prenotabile
+                  </div>
+                )}
 
                 <h2 className="mt-2 font-display text-2xl font-semibold leading-snug text-ink">
                   {poster.title}

@@ -1,16 +1,19 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, CalendarDays, MessageCircle, Phone } from "lucide-react";
 import { BUSINESS } from "@/lib/site";
 import { EVENT_POSTERS, PHONE_HREF, PosterFlyerVisual } from "@/components/EventPostersShowcase";
 
-const FEATURED_POSTER_IDS = new Set([
+const SUNDAY_POSTER = EVENT_POSTERS.find((p) => p.id === "pranzo-domenica-murgia")!;
+const CHRONOLOGICAL_FLYER_IDS = [
   "immacolata-8-dicembre",
   "natale-25-dicembre",
   "santo-stefano-26-dicembre",
   "capodanno-1-gennaio",
-]);
-const FEATURED_POSTERS = EVENT_POSTERS.filter((poster) => FEATURED_POSTER_IDS.has(poster.id));
+] as const;
+const FEATURED_POSTERS = CHRONOLOGICAL_FLYER_IDS.map(
+  (id) => EVENT_POSTERS.find((poster) => poster.id === id)!,
+);
 
 /**
  * Sezione editoriale di anteprima dedicata alle Locandine Eventi & Menù della Masseria:
@@ -74,8 +77,52 @@ export function EventPostersTeaserSection() {
           </div>
         </div>
 
-        {/* Griglia 4 locandine ufficiali in evidenza */}
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* 1. In primo piano: Il Pranzo della Domenica */}
+        <article className="mt-12 grid grid-cols-1 items-center gap-6 overflow-hidden rounded-2xl border border-gold/30 bg-ivory/[0.06] p-5 backdrop-blur-sm md:grid-cols-12 md:gap-8 md:p-6">
+          <div className="md:col-span-4 lg:col-span-3">
+            <PosterFlyerVisual
+              poster={SUNDAY_POSTER}
+              aspectClassName="aspect-[4/3] md:aspect-[4/5]"
+            />
+          </div>
+          <div className="flex flex-col md:col-span-8 lg:col-span-9">
+            <div className="flex flex-wrap items-center gap-3 text-[11px] font-medium tracking-[0.18em] uppercase text-gold">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-3 py-1">
+                <CalendarDays className="h-3.5 w-3.5" />
+                {SUNDAY_POSTER.period}
+              </span>
+              <span>{SUNDAY_POSTER.price}</span>
+              <span className="text-ivory/60">· {SUNDAY_POSTER.minGuests}</span>
+            </div>
+            <h3 className="mt-3 font-display text-2xl font-semibold leading-tight text-ivory md:text-3xl">
+              {SUNDAY_POSTER.title}
+            </h3>
+            <p className="mt-2 max-w-2xl font-display text-base italic text-ivory/80">
+              {SUNDAY_POSTER.subtitle} — {SUNDAY_POSTER.highlight}
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <a
+                href={SUNDAY_POSTER.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-terracotta px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-ivory transition-colors hover:bg-gold hover:text-ink"
+              >
+                <MessageCircle className="h-4 w-4 shrink-0" />
+                <span>{t("postersTeaser.whatsapp")}</span>
+              </a>
+              <a
+                href={PHONE_HREF}
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-ivory/30 px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-ivory transition-colors hover:border-gold hover:text-gold"
+              >
+                <Phone className="h-4 w-4 shrink-0" />
+                <span>{t("postersTeaser.call")}</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        {/* 2. A seguire in ordine temporale: le 4 locandine ufficiali */}
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURED_POSTERS.map((poster) => (
             <article
               key={poster.id}
