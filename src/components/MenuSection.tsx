@@ -239,8 +239,8 @@ export function MenuSection() {
             />
           </div>
 
-          {/* Parole kinetic in layering — desktop: alcune sovrapposte alla foto, altre fuori */}
-          <div aria-hidden className="pointer-events-none absolute inset-0 hidden md:block">
+          {/* Parole kinetic in layering — attive sia su desktop sia su mobile */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 block">
             {/* convivio — sovrapposto in basso a sinistra */}
             <div className="absolute" style={{ left: "4%", bottom: "8%" }}>
               <div className="overflow-hidden">
@@ -282,16 +282,16 @@ export function MenuSection() {
           </div>
         </div>
 
-        {/* Fascia parole-eco fuori dalla foto, sotto */}
-        <div className="relative mx-auto mt-10 hidden max-w-[1500px] px-10 md:block">
-          <div className="grid grid-cols-12 items-end gap-8">
-            <div className="col-span-5 overflow-hidden">
+        {/* Fascia parole-eco fuori dalla foto, sotto (identica su desktop e mobile) */}
+        <div className="relative mx-auto mt-6 block max-w-[1500px] px-6 md:mt-10 md:px-10">
+          <div className="grid grid-cols-12 items-end gap-4 md:gap-8">
+            <div className="col-span-6 overflow-hidden md:col-span-5">
               <span
                 data-kinetic
                 data-speed="0.18"
                 className="block font-display"
                 style={{
-                  fontSize: KINETIC_WORDS[1].size,
+                  fontSize: "clamp(1.85rem, 7vw, 6.5rem)",
                   color: "var(--ink)",
                   letterSpacing: "-0.035em",
                   lineHeight: 0.9,
@@ -300,13 +300,13 @@ export function MenuSection() {
                 {kWords[1]}
               </span>
             </div>
-            <div className="col-span-7 overflow-hidden text-right">
+            <div className="col-span-6 overflow-hidden text-right md:col-span-7">
               <span
                 data-kinetic
                 data-speed="0.3"
                 className="block font-display italic"
                 style={{
-                  fontSize: KINETIC_WORDS[3].size,
+                  fontSize: "clamp(1.85rem, 7vw, 6.5rem)",
                   color: "var(--terracotta)",
                   letterSpacing: "-0.03em",
                   lineHeight: 0.9,
@@ -316,26 +316,6 @@ export function MenuSection() {
               </span>
             </div>
           </div>
-        </div>
-
-        {/* Mobile: parole sotto la foto, stack */}
-        <div className="mt-8 flex flex-col gap-2 px-6 md:hidden">
-          {KINETIC_WORDS.map((w, idx) => (
-            <div key={w.label} className="overflow-hidden">
-              <span
-                data-kinetic
-                className="block font-display italic"
-                style={{
-                  fontSize: w.size,
-                  color: w.tone === "warm" ? "var(--terracotta)" : "var(--ink)",
-                  letterSpacing: "-0.03em",
-                  lineHeight: 0.95,
-                }}
-              >
-                {kWords[idx] ?? w.label}
-              </span>
-            </div>
-          ))}
         </div>
       </div>
 

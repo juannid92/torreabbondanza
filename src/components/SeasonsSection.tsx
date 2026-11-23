@@ -197,11 +197,11 @@ function StageContent({ stage }: { stage: SeasonStage }) {
       style={{ opacity: stage.index === 0 ? 1 : 0, willChange: "opacity, transform" }}
       aria-hidden={false}
     >
-      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-10 px-6 py-16 md:grid-cols-12 md:gap-12 md:px-12 md:py-20">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-4 px-5 py-10 sm:gap-6 md:grid-cols-12 md:gap-12 md:px-12 md:py-20">
         <div className="md:col-span-12">
           <p
             data-stage-eyebrow
-            className="text-eyebrow mb-3"
+            className="text-eyebrow mb-1.5 md:mb-3"
             style={{ color: `color-mix(in oklab, ${stage.palette.fg} 65%, transparent)` }}
           >
             {String(stage.index + 1).padStart(2, "0")} / 04 · La stagione{" "}
@@ -211,7 +211,7 @@ function StageContent({ stage }: { stage: SeasonStage }) {
             data-stage-title
             className="font-display font-medium leading-[0.9]"
             style={{
-              fontSize: "clamp(3rem, 11vw, 9rem)",
+              fontSize: "clamp(2.2rem, 10vw, 9rem)",
               color: stage.palette.fg,
               letterSpacing: "-0.02em",
             }}
@@ -228,26 +228,25 @@ function StageContent({ stage }: { stage: SeasonStage }) {
           </h3>
           <p
             data-stage-kicker
-            className="font-display mt-6 max-w-2xl text-lg italic leading-relaxed md:text-xl"
+            className="font-display mt-2.5 max-w-2xl text-sm italic leading-snug sm:text-base md:mt-6 md:text-xl md:leading-relaxed"
             style={{ color: `color-mix(in oklab, ${stage.palette.fg} 85%, transparent)` }}
           >
             {stage.kicker}
           </p>
         </div>
 
-        <div className="pointer-events-auto md:col-span-12 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+        <div className="pointer-events-auto grid grid-cols-2 gap-3 sm:gap-5 md:col-span-12 md:gap-8">
           {stage.experiences.map((exp) => (
             <figure
               key={exp.title}
               data-stage-exp
-              className="flex flex-col gap-4"
+              className="flex flex-col gap-2 sm:gap-3 md:gap-4"
               style={{ transform: "translateY(0)", opacity: 1 }}
             >
               <div
-                className="relative overflow-hidden"
+                className="relative aspect-[16/11] overflow-hidden sm:aspect-[5/4]"
                 style={{
                   borderRadius: "10px",
-                  aspectRatio: "5 / 4",
                   border: `1px solid color-mix(in oklab, ${stage.palette.fg} 18%, transparent)`,
                   boxShadow: `0 30px 70px -40px color-mix(in oklab, ${stage.palette.fg} 55%, transparent)`,
                 }}
@@ -263,26 +262,26 @@ function StageContent({ stage }: { stage: SeasonStage }) {
                   style={{ top: "-6%" }}
                 />
                 <span
-                  className="text-eyebrow absolute left-4 top-4 rounded-full px-3 py-1"
+                  className="text-eyebrow absolute left-2 top-2 rounded-full px-2 py-0.5 sm:left-4 sm:top-4 sm:px-3 sm:py-1"
                   style={{
                     background: SOUL_ACCENT[exp.soul],
                     color: exp.soul === "equestre" ? "#E7DDCF" : "#F7F3EC",
-                    letterSpacing: "0.2em",
-                    fontSize: "0.6rem",
+                    letterSpacing: "0.18em",
+                    fontSize: "0.55rem",
                   }}
                 >
                   {SOUL_LABEL[exp.soul]}
                 </span>
               </div>
-              <figcaption className="flex flex-col gap-2">
+              <figcaption className="flex flex-col gap-1 md:gap-2">
                 <h4
                   className="font-display font-medium leading-tight"
-                  style={{ fontSize: "clamp(1.2rem, 1.8vw, 1.55rem)", color: stage.palette.fg }}
+                  style={{ fontSize: "clamp(0.95rem, 1.8vw, 1.55rem)", color: stage.palette.fg }}
                 >
                   {exp.title}
                 </h4>
                 <p
-                  className="max-w-md text-sm leading-relaxed md:text-base"
+                  className="line-clamp-3 max-w-md text-xs leading-snug sm:line-clamp-none sm:text-sm md:text-base md:leading-relaxed"
                   style={{ color: `color-mix(in oklab, ${stage.palette.fg} 78%, transparent)` }}
                 >
                   {exp.text}
@@ -464,7 +463,6 @@ export function SeasonsSection() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return () => cleanupReveal();
     const isMobile = window.matchMedia("(max-width: 1023px)").matches;
-    if (isMobile) return () => cleanupReveal();
 
     const ctx = gsap.context(() => {
       const stage = root.querySelector<HTMLElement>("[data-pin-stage]");
@@ -623,10 +621,10 @@ export function SeasonsSection() {
         </h2>
       </div>
 
-      {/* Ciclo pinnato — desktop */}
+      {/* Ciclo pinnato — attivo sia su desktop sia su mobile */}
       <div
         data-pin-stage
-        className="relative hidden h-[100svh] w-full overflow-hidden lg:block motion-reduce:hidden"
+        className="relative block h-[100svh] w-full overflow-hidden motion-reduce:hidden"
       >
         {stages.map((s) => (
           <StageBackground key={`bg-${s.key}`} stage={s} />
@@ -637,8 +635,8 @@ export function SeasonsSection() {
         ))}
       </div>
 
-      {/* Fallback verticale: sempre su mobile, e per reduced-motion */}
-      <div className="block lg:hidden motion-reduce:block">
+      {/* Fallback verticale solo per reduced-motion */}
+      <div className="hidden motion-reduce:block">
         <StaticFallback stages={stages} />
       </div>
 

@@ -236,106 +236,11 @@ export function StorySection() {
     if (!section || !track) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const cleanupReveal = observeRevealElements(section);
 
-    if (reduced || isMobile) {
-      // Layout verticale statico: niente pin orizzontale.
+    if (reduced) {
       gsap.set(track, { x: 0 });
-
-      if (reduced) return () => cleanupReveal();
-
-      const ctxMobile = gsap.context(() => {
-        const panels = gsap.utils.toArray<HTMLElement>("[data-panel]", track);
-
-        panels.forEach((panel) => {
-          const arch = panel.querySelector<HTMLElement>("[data-arch-reveal]");
-          const img = panel.querySelector<HTMLElement>("[data-arch-image]");
-          const eyebrow = panel.querySelector<HTMLElement>("[data-panel-eyebrow]");
-          const title = panel.querySelector<HTMLElement>("[data-panel-title]");
-          const body = panel.querySelector<HTMLElement>("[data-panel-body]");
-
-          if (arch) {
-            gsap.fromTo(
-              arch,
-              { clipPath: "inset(100% 0% 0% 0%)" },
-              {
-                clipPath: "inset(0% 0% 0% 0%)",
-                ease: "power3.out",
-                duration: 1.1,
-                immediateRender: false,
-                scrollTrigger: {
-                  trigger: panel,
-                  start: "top 80%",
-                  once: true,
-                  invalidateOnRefresh: true,
-                },
-              },
-            );
-          }
-          if (img) {
-            gsap.fromTo(
-              img,
-              { yPercent: 6 },
-              {
-                yPercent: -6,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: panel,
-                  start: "top bottom",
-                  end: "bottom top",
-                  scrub: true,
-                  invalidateOnRefresh: true,
-                },
-              },
-            );
-          }
-
-          const reveals = [eyebrow, title, body].filter(Boolean) as HTMLElement[];
-          if (reveals.length) {
-            gsap.fromTo(
-              reveals,
-              { y: 24, opacity: 0 },
-              {
-                y: 0,
-                opacity: 1,
-                duration: 0.7,
-                ease: "power2.out",
-                stagger: 0.08,
-                immediateRender: false,
-                scrollTrigger: {
-                  trigger: panel,
-                  start: "top 75%",
-                  toggleActions: "play none none none",
-                  once: true,
-                  invalidateOnRefresh: true,
-                },
-              },
-            );
-          }
-
-          ScrollTrigger.create({
-            trigger: panel,
-            start: "top 60%",
-            end: "bottom 40%",
-            onToggle: (self) => {
-              if (self.isActive) {
-                const idx = Number(panel.getAttribute("data-panel-index") ?? 0);
-                setActiveIndex(idx);
-              }
-            },
-          });
-        });
-
-        const refresh = () => ScrollTrigger.refresh();
-        window.addEventListener("load", refresh);
-        return () => window.removeEventListener("load", refresh);
-      }, section);
-
-      return () => {
-        ctxMobile.revert();
-        cleanupReveal();
-      };
+      return () => cleanupReveal();
     }
 
     const ctx = gsap.context(() => {
@@ -486,27 +391,10 @@ export function StorySection() {
         La storia — Tre secoli di pietra
       </h2>
 
-      {/* Indicatore mobile sticky */}
-      <div className="pointer-events-none sticky top-3 z-30 mx-auto mb-[-2rem] flex w-[calc(100%-1.5rem)] max-w-[420px] items-center gap-3 rounded-full border border-ink/10 bg-ivory/85 px-4 py-2 backdrop-blur md:hidden">
-        <span className="text-eyebrow text-ink/70 tabular-nums">
-          {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-        </span>
-        <div className="relative h-[2px] flex-1 overflow-hidden rounded-full bg-ink/10">
-          <div
-            className="absolute inset-y-0 left-0 rounded-full transition-[width,background-color] duration-500 ease-out"
-            style={{
-              width: `${((activeIndex + 1) / total) * 100}%`,
-              backgroundColor:
-                PANELS[activeIndex]?.tone === "deep" ? "var(--murgese)" : "var(--terracotta)",
-            }}
-          />
-        </div>
-      </div>
-
-      {/* Traccia orizzontale (desktop) / colonna verticale (mobile) */}
+      {/* Traccia orizzontale pinnata (identica su desktop e mobile) */}
       <div
         ref={trackRef}
-        className="flex h-[100svh] w-max flex-row max-md:h-auto max-md:w-full max-md:flex-col"
+        className="flex h-[100svh] w-max flex-row"
         style={{ willChange: "transform" }}
       >
         {panels.map((p, i) => (
@@ -514,8 +402,8 @@ export function StorySection() {
         ))}
       </div>
 
-      {/* Linea-timeline + marker (desktop only) */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-16 z-20 hidden px-12 md:block lg:px-20">
+      {/* Linea-timeline + marker (visibile su desktop e mobile) */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-12 z-20 px-6 md:bottom-16 md:px-12 lg:px-20">
         <svg viewBox="0 0 1000 20" preserveAspectRatio="none" className="h-5 w-full" aria-hidden>
           <path
             d="M 0 10 L 1000 10"
@@ -554,8 +442,8 @@ export function StorySection() {
         </svg>
       </div>
 
-      {/* Indicatore di progresso (desktop) */}
-      <div className="pointer-events-none absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 md:block">
+      {/* Indicatore di progresso */}
+      <div className="pointer-events-none absolute bottom-5 left-1/2 z-20 -translate-x-1/2 md:bottom-6">
         <span className="text-eyebrow text-ink/70 tabular-nums">
           {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>

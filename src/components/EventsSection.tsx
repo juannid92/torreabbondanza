@@ -1214,6 +1214,43 @@ export function EventsSection() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
+      const carriageLead = root.querySelector<HTMLElement>("[data-carriage-lead]");
+      const carriageCompanion = root.querySelector<HTMLElement>("[data-carriage-companion]");
+      const carriageBand = root.querySelector<HTMLElement>("[data-carriage-band]");
+
+      if (carriageBand && carriageLead && carriageCompanion) {
+        gsap.fromTo(
+          carriageLead,
+          { yPercent: -4 },
+          {
+            yPercent: 4,
+            ease: "none",
+            scrollTrigger: {
+              trigger: carriageBand,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.7,
+              invalidateOnRefresh: true,
+            },
+          },
+        );
+        gsap.fromTo(
+          carriageCompanion,
+          { yPercent: 5 },
+          {
+            yPercent: -5,
+            ease: "none",
+            scrollTrigger: {
+              trigger: carriageBand,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.7,
+              invalidateOnRefresh: true,
+            },
+          },
+        );
+      }
+
       mm.add("(min-width: 1024px)", () => {
         const blades = root.querySelectorAll<HTMLElement>("[data-event-blade]");
         const stage = desktopStageRef.current;
@@ -1232,43 +1269,6 @@ export function EventsSection() {
                 trigger: stage,
                 start: "top 86%",
                 once: true,
-                invalidateOnRefresh: true,
-              },
-            },
-          );
-        }
-
-        const carriageLead = root.querySelector<HTMLElement>("[data-carriage-lead]");
-        const carriageCompanion = root.querySelector<HTMLElement>("[data-carriage-companion]");
-        const carriageBand = root.querySelector<HTMLElement>("[data-carriage-band]");
-
-        if (carriageBand && carriageLead && carriageCompanion) {
-          gsap.fromTo(
-            carriageLead,
-            { yPercent: -4 },
-            {
-              yPercent: 4,
-              ease: "none",
-              scrollTrigger: {
-                trigger: carriageBand,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 0.7,
-                invalidateOnRefresh: true,
-              },
-            },
-          );
-          gsap.fromTo(
-            carriageCompanion,
-            { yPercent: 5 },
-            {
-              yPercent: -5,
-              ease: "none",
-              scrollTrigger: {
-                trigger: carriageBand,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 0.7,
                 invalidateOnRefresh: true,
               },
             },

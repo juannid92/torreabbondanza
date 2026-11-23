@@ -33,7 +33,7 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
     <article
       data-panel
       data-panel-index={index}
-      className="relative flex h-full w-screen shrink-0 items-center max-md:h-auto max-md:min-h-[90svh] max-md:w-full"
+      className="relative flex h-[100svh] w-screen shrink-0 items-center"
     >
       {/* Ghost year sullo sfondo */}
       <div
@@ -43,9 +43,9 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
         <GhostYear tone={tone}>{ghost}</GhostYear>
       </div>
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1400px] flex-col items-center gap-10 px-6 py-[10vh] max-md:h-auto max-md:py-16 md:flex-row md:items-center md:justify-between md:gap-16 md:px-12 lg:px-20">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1400px] flex-col items-center justify-center gap-4 px-5 pt-16 pb-20 sm:gap-6 md:flex-row md:items-center md:justify-between md:gap-16 md:px-12 md:py-[10vh] lg:px-20">
         {isOpening ? (
-          <div className="flex w-full max-w-[820px] flex-col gap-6 md:gap-8">
+          <div className="flex w-full max-w-[820px] flex-col gap-5 md:gap-8">
             {eyebrow ? (
               <span data-panel-eyebrow className="text-eyebrow text-ink/70">
                 {eyebrow}
@@ -55,7 +55,7 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
               data-panel-title
               className="font-display text-ink"
               style={{
-                fontSize: "clamp(2.4rem, 6vw, 5.5rem)",
+                fontSize: "clamp(2.2rem, 6vw, 5.5rem)",
                 lineHeight: 1.05,
                 letterSpacing: "-0.02em",
               }}
@@ -65,7 +65,7 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
             <p
               data-panel-body
               className="max-w-[55ch] font-display text-ink/75"
-              style={{ fontSize: "clamp(1.05rem, 1.4vw, 1.4rem)", lineHeight: 1.5 }}
+              style={{ fontSize: "clamp(1rem, 1.4vw, 1.4rem)", lineHeight: 1.5 }}
             >
               {body}
             </p>
@@ -73,15 +73,15 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
           </div>
         ) : (
           <>
-            {/* Vignetta arco */}
+            {/* Vignetta arco — ridimensionata su mobile per vedersi sempre intera nel pannello 100svh */}
             {image ? (
-              <div className="w-full max-w-[360px] md:max-w-[420px] lg:max-w-[480px]">
+              <div className="w-full max-w-[190px] sm:max-w-[250px] md:max-w-[420px] lg:max-w-[480px]">
                 <ArchVignette src={image.src} alt={image.alt} eager={false} tone={tone} />
               </div>
             ) : null}
 
             {/* Colonna testo */}
-            <div className="flex w-full max-w-[520px] flex-col gap-5">
+            <div className="flex w-full max-w-[520px] flex-col gap-2.5 sm:gap-3.5 md:gap-5">
               {eyebrow ? (
                 <span
                   data-panel-eyebrow
@@ -95,8 +95,8 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
                 data-panel-title
                 className="font-display text-ink"
                 style={{
-                  fontSize: "clamp(1.8rem, 3.4vw, 3rem)",
-                  lineHeight: 1.1,
+                  fontSize: "clamp(1.5rem, 3.4vw, 3rem)",
+                  lineHeight: 1.08,
                   letterSpacing: "-0.015em",
                 }}
               >
@@ -105,13 +105,13 @@ export function StoryPanel({ data, index }: StoryPanelProps) {
               <p
                 data-panel-body
                 className="font-sans text-ink/80"
-                style={{ fontSize: "clamp(0.95rem, 1.1vw, 1.1rem)", lineHeight: 1.65 }}
+                style={{ fontSize: "clamp(0.86rem, 1.1vw, 1.1rem)", lineHeight: 1.55 }}
               >
                 {body}
               </p>
               {note ? <p className="text-eyebrow text-ink/50">{note}</p> : null}
               {cta ? (
-                <div data-panel-cta className="pt-2">
+                <div data-panel-cta className="pt-1 md:pt-2">
                   {cta}
                 </div>
               ) : null}

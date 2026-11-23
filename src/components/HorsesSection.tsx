@@ -7,12 +7,8 @@ import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
 import murgeseStudioImg from "@/assets/murgese-studio.jpg";
 import horsesTraditionImg from "@/assets/horses-tradition.jpg";
-import gallopImg from "@/assets/horse-gallop.jpg";
-import horsesSkyImg from "@/assets/horses-sky.jpg";
-import horsesHillsImg from "@/assets/horses-hills.webp";
-import horsesGrazingImg from "@/assets/horses-grazing.webp";
+import gallopImg from "@/assets/horse-gallop-murgia.jpg";
 import murgeseRiderImg from "@/assets/murgese-rider.jpg";
-import murgesePrairieBg from "@/assets/murgese-prairie-bg.webp";
 import murgeseTrottingImg from "@/assets/murgese-trotting.jpg";
 
 const MICRO_LABELS = [
@@ -101,7 +97,7 @@ export function HorsesSection() {
         );
       }
 
-      // MOMENTO B — Galoppo scroll-scrubbed: pin + traslazione orizzontale
+      // MOMENTO B — Galoppo scroll-scrubbed: pin + traslazione da destra verso sinistra
       const gallopScene = gallopSceneRef.current;
       const gallopEl = gallopImgRef.current;
       const gallopWord = gallopWordRef.current;
@@ -111,26 +107,37 @@ export function HorsesSection() {
           scrollTrigger: {
             trigger: gallopScene,
             start: "top top",
-            end: "+=180%",
+            end: "+=160%",
             pin: true,
-            scrub: 1,
+            scrub: 0.8,
             anticipatePin: 1,
+            invalidateOnRefresh: true,
           },
         });
+        // Il cavallo è rivolto a sinistra: scorrendo si muove da destra (+18%) verso sinistra (-18%)
         tl.fromTo(
           gallopEl,
-          { xPercent: -22, scale: 1.18 },
-          { xPercent: 12, scale: 1.05, ease: "none" },
+          { xPercent: 18, scale: 1.14 },
+          { xPercent: -18, scale: 1.06, ease: "none" },
           0,
         );
+        // Leggera oscillazione ritmica di galoppo continua
+        gsap.to(gallopEl, {
+          yPercent: -1.3,
+          rotation: -0.45,
+          duration: 0.36,
+          yoyo: true,
+          repeat: -1,
+          ease: "sine.inOut",
+        });
         if (gallopWord) {
-          tl.fromTo(gallopWord, { xPercent: 30 }, { xPercent: -35, ease: "none" }, 0);
+          tl.fromTo(gallopWord, { xPercent: -25 }, { xPercent: 30, ease: "none" }, 0);
         }
         if (dust) {
           tl.fromTo(
             dust,
-            { opacity: 0, xPercent: -20 },
-            { opacity: 1, xPercent: 25, ease: "none" },
+            { opacity: 0.2, xPercent: 20 },
+            { opacity: 1, xPercent: -20, ease: "none" },
             0,
           );
         }
@@ -337,18 +344,22 @@ export function HorsesSection() {
           }}
         />
 
-        {/* Cavallo che galoppa (scrubbed translateX) */}
-        <img
-          ref={gallopImgRef}
-          src={gallopImg}
-          alt="Cavallo Murgese al galoppo nella Murgia all'ora dorata, criniera al vento, polvere sollevata dagli zoccoli"
-          loading="lazy"
-          decoding="async"
-          width={1920}
-          height={1080}
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ willChange: "transform" }}
-        />
+        {/* Cavallo che galoppa da destra verso sinistra (visibile intero anche su mobile) */}
+        <div className="absolute inset-0 flex items-center justify-center px-3 md:px-0">
+          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl shadow-2xl md:aspect-auto md:h-full md:w-full md:rounded-none">
+            <img
+              ref={gallopImgRef}
+              src={gallopImg}
+              alt="Cavallo Murgese morello al galoppo da destra verso sinistra lungo i muretti a secco e gli ulivi della Murgia"
+              loading="lazy"
+              decoding="async"
+              width={1280}
+              height={720}
+              className="absolute inset-0 h-full w-full object-cover object-center"
+              style={{ willChange: "transform" }}
+            />
+          </div>
+        </div>
 
         {/* Velatura per leggibilità testo */}
         <div
@@ -370,9 +381,9 @@ export function HorsesSection() {
               Galoppo · Murgia · ora dorata
             </p>
             <p
-              className="hidden font-display italic md:block"
+              className="font-display italic"
               style={{
-                fontSize: "clamp(1rem, 1.3vw, 1.25rem)",
+                fontSize: "clamp(0.95rem, 1.3vw, 1.25rem)",
                 color: "color-mix(in oklab, var(--ivory) 85%, transparent)",
                 maxWidth: "32ch",
                 textAlign: "right",
@@ -387,7 +398,7 @@ export function HorsesSection() {
       {/* ────────── MOMENTO C — LA PRATERIA ────────── */}
       <div
         ref={prairieSceneRef}
-        className="relative mt-0 h-[100svh] w-full overflow-hidden md:h-[110vh]"
+        className="relative mt-0 h-[72svh] w-full overflow-hidden sm:h-[85svh] md:h-[110vh]"
       >
         {/* Sfondo unico: cavallo al trotto a tutto schermo */}
         <div

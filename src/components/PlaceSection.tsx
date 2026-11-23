@@ -10,7 +10,6 @@ import { BUSINESS } from "@/lib/site";
 import skyImg from "@/assets/place-sky.jpg";
 import hillsImg from "@/assets/place-hills.webp";
 import olivesImg from "@/assets/place-olives.webp";
-import masseriaImg from "@/assets/place-masseria.webp";
 import masseriaNewImg from "@/assets/place-masseria-nobg.webp";
 import horsesImg from "@/assets/place-horses.webp";
 
