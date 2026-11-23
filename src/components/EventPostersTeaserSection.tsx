@@ -1,8 +1,14 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, CalendarDays, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, CalendarDays, MessageCircle, Phone, Search, X } from "lucide-react";
 import { BUSINESS } from "@/lib/site";
-import { EVENT_POSTERS, PHONE_HREF, PosterFlyerVisual } from "@/components/EventPostersShowcase";
+import {
+  EVENT_POSTERS,
+  PHONE_HREF,
+  PosterFlyerVisual,
+  type EventPoster,
+} from "@/components/EventPostersShowcase";
 
 const SUNDAY_POSTER = EVENT_POSTERS.find((p) => p.id === "pranzo-domenica-murgia")!;
 const CHRONOLOGICAL_FLYER_IDS = [
@@ -22,6 +28,23 @@ const FEATURED_POSTERS = CHRONOLOGICAL_FLYER_IDS.map(
  */
 export function EventPostersTeaserSection() {
   const { t } = useTranslation();
+  const [openPoster, setOpenPoster] = useState<EventPoster | null>(null);
+
+  // Lightbox: chiusura con Esc e blocco dello scroll della pagina
+  useEffect(() => {
+    if (!openPoster) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenPoster(null);
+    };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [openPoster]);
+
   return (
     <section
       id="appuntamenti-tavola"
@@ -128,7 +151,18 @@ export function EventPostersTeaserSection() {
               key={poster.id}
               className="flex flex-col rounded-xl border border-ivory/15 bg-ivory/[0.04] p-4 backdrop-blur-sm transition-colors hover:border-gold/45"
             >
-              <PosterFlyerVisual poster={poster} aspectClassName="aspect-[4/5]" />
+              <button
+                type="button"
+                onClick={() => setOpenPoster(poster)}
+                aria-label={`Ingrandisci e leggi la locandina: ${poster.title}`}
+                className="group/zoom relative block w-full cursor-zoom-in rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+              >
+                <PosterFlyerVisual poster={poster} aspectClassName="aspect-[4/5]" />
+                <span className="pointer-events-none absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-ivory/95 px-3 py-1.5 text-[10px] font-semibold tracking-[0.16em] uppercase text-ink shadow-md transition-colors group-hover/zoom:bg-gold">
+                  <Search className="h-3 w-3" />
+                  Leggi menù
+                </span>
+              </button>
 
               <div className="flex flex-1 flex-col pt-5">
                 <div className="flex items-center justify-between gap-2 text-[11px] font-medium tracking-[0.18em] uppercase text-gold">
@@ -166,6 +200,56 @@ export function EventPostersTeaserSection() {
           ))}
         </div>
       </div>
+
+      {/* Lightbox: locandina ingrandita e leggibile */}
+      {openPoster && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={openPoster.title}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[color:var(--murgese)]/92 p-3 backdrop-blur-sm sm:p-6"
+          onClick={() => setOpenPoster(null)}
+        >
+          <div
+            className="relative flex max-h-full w-full max-w-3xl flex-col items-center gap-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setOpenPoster(null)}
+              aria-label="Chiudi locandina"
+              className="absolute -top-1 right-0 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-ivory/30 bg-ink/70 text-ivory transition-colors hover:border-gold hover:text-gold sm:-top-2 sm:-right-2"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <img
+              src={openPoster.posterImage ?? openPoster.image}
+              alt={openPoster.imageAlt}
+              className="mt-10 max-h-[72vh] w-auto max-w-full rounded-lg bg-[#fbf8f1] object-contain shadow-2xl sm:mt-8 sm:max-h-[78vh]"
+            />
+
+            <div className="flex w-full flex-wrap items-center justify-center gap-3">
+              <a
+                href={openPoster.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-terracotta px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-ivory transition-colors hover:bg-gold hover:text-ink"
+              >
+                <MessageCircle className="h-4 w-4 shrink-0" />
+                <span>{t("postersTeaser.whatsapp")}</span>
+              </a>
+              <a
+                href={PHONE_HREF}
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-ivory/35 px-6 py-3 text-xs font-semibold tracking-[0.14em] uppercase text-ivory transition-colors hover:border-gold hover:text-gold"
+              >
+                <Phone className="h-4 w-4 shrink-0" />
+                <span>{t("postersTeaser.call")}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
