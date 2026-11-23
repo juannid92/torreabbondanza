@@ -52,25 +52,39 @@ export function LanguageSwitcher({ className }: { className?: string }) {
       {open && (
         <ul
           role="listbox"
-          className="absolute right-0 top-full mt-2 w-36 overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black/5"
+          aria-label="Lingue disponibili"
+          className="absolute right-0 top-full z-50 mt-2 w-44 overflow-hidden rounded-xl border border-stone/80 bg-white p-1 text-ink shadow-2xl ring-1 ring-black/5"
         >
-          {SUPPORTED_LANGUAGES.map((lng) => (
-            <li key={lng}>
-              <button
-                type="button"
-                role="option"
-                aria-selected={lng === current}
-                onClick={() => changeLang(lng)}
-                className={cn(
-                  "flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-stone-100",
-                  lng === current && "bg-stone-50 font-medium text-terracotta",
-                )}
-              >
-                <span className="text-base leading-none">{LANGUAGE_FLAGS[lng]}</span>
-                <span>{LANGUAGE_LABELS[lng]}</span>
-              </button>
-            </li>
-          ))}
+          {SUPPORTED_LANGUAGES.map((lng) => {
+            const isSelected = lng === current;
+            return (
+              <li key={lng}>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={isSelected}
+                  onClick={() => changeLang(lng)}
+                  className={cn(
+                    "flex w-full items-center justify-between gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors",
+                    isSelected
+                      ? "bg-stone/40 font-semibold text-terracotta"
+                      : "text-ink hover:bg-stone/50 hover:text-ink",
+                  )}
+                >
+                  <span className="flex items-center gap-2.5">
+                    <span className="text-base leading-none">{LANGUAGE_FLAGS[lng]}</span>
+                    <span className="text-ink">{LANGUAGE_LABELS[lng]}</span>
+                  </span>
+                  {isSelected && (
+                    <span
+                      aria-hidden="true"
+                      className="h-1.5 w-1.5 rounded-full bg-terracotta flex-shrink-0"
+                    />
+                  )}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
