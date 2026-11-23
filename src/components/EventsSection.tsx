@@ -30,7 +30,7 @@ import tablePanoImg from "@/assets/events-table-pano.jpg";
 import imperialTableImg from "@/assets/story-oggi.jpg";
 import stoneCourtImg from "@/assets/story-pietra.jpg";
 import nightCourtImg from "@/assets/events-space-night.jpg";
-import facadeImg from "@/assets/story-origini.jpg";
+import facadeImg from "@/assets/story-calce-pietra.jpg";
 import horseRideImg from "@/assets/primavera-alessio/primavera-esperienza.webp";
 import carriageImg from "@/assets/events-carriage.jpg";
 import horsePortalImg from "@/assets/horses-tradition.jpg";
@@ -320,16 +320,16 @@ const EVENTS_DATA: readonly EventOccasion[] = [
     ambientTint: "rgba(107, 114, 80, 0.25)",
     image: facadeImg,
     imageAlt:
-      "Facciata padronale settecentesca della Masseria Torre Abbondanza con portale ad arco, stemma in pietra e balconi",
-    width: 1200,
-    height: 1120,
+      "Muri a calce, corte, pilastri in pietra e tetti in terracotta della Masseria Torre Abbondanza a Noci",
+    width: 1024,
+    height: 767,
     gallery: [
       {
         src: facadeImg,
-        alt: "Corpo centrale del Settecento della Masseria Torre Abbondanza",
-        caption: "La facciata settecentesca con portale ad arco e stemma",
-        width: 1200,
-        height: 1120,
+        alt: "Architettura esterna in pietra a calce e tetti in terracotta della Masseria Torre Abbondanza",
+        caption: "Muri a calce, pilastri in pietra e tetti in terracotta della Masseria",
+        width: 1024,
+        height: 767,
       },
       {
         src: stoneCourtImg,
