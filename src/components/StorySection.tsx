@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { StoryPanel, type StoryPanelData } from "./StoryPanel";
 import { observeRevealElements } from "@/lib/scroll-ready";
-import storyOrigini from "@/assets/story-origini.jpg";
+import storyAgroNoci from "@/assets/story-agro-noci.jpg";
 import storyPietra from "@/assets/story-pietra.jpg";
 import storyCavalli from "@/assets/primavera-alessio/alessio-cura.webp";
 import storyFamiglia from "@/assets/story-famiglia.jpg";
@@ -45,8 +45,8 @@ const PANELS: StoryPanelData[] = [
       </>
     ),
     image: {
-      src: storyOrigini,
-      alt: "Facciata in pietra della masseria settecentesca al tramonto",
+      src: storyAgroNoci,
+      alt: "Campagna e distese verdi nell'agro di Noci attorno alla Masseria Torre Abbondanza",
     },
     note: <>XVIII secolo · Agro di Noci · Murgia dei Trulli</>,
     tone: "warm",
