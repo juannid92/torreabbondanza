@@ -7,7 +7,7 @@ import { MagneticButton } from "./MagneticButton";
 import { splitWords } from "@/lib/split-text";
 import murgeseStudioImg from "@/assets/murgese-studio.jpg";
 import horsesTraditionImg from "@/assets/horses-tradition.jpg";
-import gallopImg from "@/assets/horse-gallop-murgia.jpg";
+import gallopImg from "@/assets/horse-gallop-murgia.gif";
 import murgeseRiderImg from "@/assets/murgese-rider.jpg";
 import murgeseTrottingImg from "@/assets/murgese-trotting.jpg";
 
