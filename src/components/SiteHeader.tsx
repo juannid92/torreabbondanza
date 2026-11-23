@@ -7,11 +7,12 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 const NAV_ITEMS: {
   label: string;
-  to: "/" | "/cucina" | "/cavalli" | "/eventi";
+  to: "/" | "/cucina" | "/cavalli" | "/eventi" | "/locandine";
   hash?: string;
 }[] = [
   { label: "La Masseria", to: "/", hash: "luogo" },
   { label: "Cucina", to: "/cucina" },
+  { label: "Locandine Menù", to: "/locandine" },
   { label: "Cavalli", to: "/cavalli" },
   { label: "Eventi", to: "/eventi" },
   { label: "Contatti", to: "/", hash: "contatti" },

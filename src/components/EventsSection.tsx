@@ -903,9 +903,12 @@ export function EventsSection() {
               masseria per voi.
             </p>
           </div>
-          <div data-fade className="flex w-full flex-shrink-0 md:w-auto">
+          <div data-fade className="flex w-full flex-shrink-0 flex-wrap gap-4 md:w-auto">
             <MagneticButton href="#contatti" variant="pill-solid" className="w-full md:w-auto">
               Richiedi informazioni per il tuo evento →
+            </MagneticButton>
+            <MagneticButton href="/locandine" variant="pill" className="w-full md:w-auto">
+              Sfoglia le locandine dei menù
             </MagneticButton>
           </div>
         </div>

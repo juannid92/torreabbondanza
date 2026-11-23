@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { KitchenSection } from "@/components/KitchenSection";
 import { MenuSection } from "@/components/MenuSection";
+import { EventPostersTeaserSection } from "@/components/EventPostersTeaserSection";
 import { VisitSection } from "@/components/VisitSection";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLenis } from "@/hooks/use-lenis";
@@ -49,6 +50,7 @@ function Cucina() {
       <SiteHeader />
       <KitchenSection />
       <MenuSection />
+      <EventPostersTeaserSection />
       <VisitSection />
       <SiteFooter />
     </main>

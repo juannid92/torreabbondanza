@@ -369,9 +369,12 @@ export function MenuSection() {
         </div>
 
         {/* CTA */}
-        <div className="mt-14 flex md:mt-20">
+        <div className="mt-14 flex flex-wrap items-center gap-6 md:mt-20">
           <MagneticButton href="#contatti" variant="pill-solid">
             Richiedi il tuo menù →
+          </MagneticButton>
+          <MagneticButton href="/locandine" variant="pill">
+            Sfoglia le locandine dei menù
           </MagneticButton>
         </div>
       </div>

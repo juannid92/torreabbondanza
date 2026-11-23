@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as LocandineRouteImport } from './routes/locandine'
 import { Route as LaMasseriaRouteImport } from './routes/la-masseria'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -24,6 +25,11 @@ import { Route as CavalliVetrinaRouteImport } from './routes/cavalli.vetrina'
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocandineRoute = LocandineRouteImport.update({
+  id: '/locandine',
+  path: '/locandine',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LaMasseriaRoute = LaMasseriaRouteImport.update({
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/la-masseria': typeof LaMasseriaRoute
+  '/locandine': typeof LocandineRoute
   '/privacy': typeof PrivacyRoute
   '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/la-masseria': typeof LaMasseriaRoute
+  '/locandine': typeof LocandineRoute
   '/privacy': typeof PrivacyRoute
   '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/la-masseria': typeof LaMasseriaRoute
+  '/locandine': typeof LocandineRoute
   '/privacy': typeof PrivacyRoute
   '/cavalli/vetrina': typeof CavalliVetrinaRoute
 }
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/la-masseria'
+    | '/locandine'
     | '/privacy'
     | '/cavalli/vetrina'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/la-masseria'
+    | '/locandine'
     | '/privacy'
     | '/cavalli/vetrina'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/la-masseria'
+    | '/locandine'
     | '/privacy'
     | '/cavalli/vetrina'
   fileRoutesById: FileRoutesById
@@ -169,6 +181,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   GalleryRoute: typeof GalleryRoute
   LaMasseriaRoute: typeof LaMasseriaRoute
+  LocandineRoute: typeof LocandineRoute
   PrivacyRoute: typeof PrivacyRoute
 }
 
@@ -179,6 +192,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/locandine': {
+      id: '/locandine'
+      path: '/locandine'
+      fullPath: '/locandine'
+      preLoaderRoute: typeof LocandineRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/la-masseria': {
@@ -275,6 +295,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   GalleryRoute: GalleryRoute,
   LaMasseriaRoute: LaMasseriaRoute,
+  LocandineRoute: LocandineRoute,
   PrivacyRoute: PrivacyRoute,
 }
 export const routeTree = rootRouteImport
